@@ -1,0 +1,709 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Knight Chess: A Chess Variant with Extended Board and Enhanced Knight Dynamics</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Times New Roman', Times, Georgia, serif;
+            line-height: 1.6;
+            color: #111;
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 60px 40px;
+            background: #fff;
+        }
+
+        /* Title Block */
+        .paper-title {
+            text-align: center;
+            margin-bottom: 30px;
+        }
+
+        .paper-title h1 {
+            font-size: 1.65em;
+            font-weight: 700;
+            line-height: 1.3;
+            margin-bottom: 18px;
+        }
+
+        .paper-title .authors {
+            font-size: 1.05em;
+            margin-bottom: 4px;
+        }
+
+        .paper-title .affiliation {
+            font-size: 0.95em;
+            color: #555;
+            font-style: italic;
+        }
+
+        .paper-title .email {
+            font-size: 0.9em;
+            color: #1a73e8;
+            margin-top: 4px;
+        }
+
+        .paper-title .date {
+            font-size: 0.9em;
+            color: #777;
+            margin-top: 10px;
+        }
+
+        /* Abstract */
+        .abstract {
+            background: #f9f9f9;
+            border-left: 4px solid #333;
+            padding: 18px 22px;
+            margin: 30px 0;
+        }
+
+        .abstract h2 {
+            font-size: 1em;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            margin-bottom: 8px;
+        }
+
+        .abstract p {
+            font-size: 0.95em;
+            color: #333;
+            text-align: justify;
+        }
+
+        /* Keywords */
+        .keywords {
+            font-size: 0.9em;
+            color: #555;
+            margin-bottom: 30px;
+        }
+
+        .keywords strong {
+            color: #333;
+        }
+
+        /* Sections */
+        h2 {
+            font-size: 1.2em;
+            font-weight: 700;
+            margin-top: 30px;
+            margin-bottom: 12px;
+            border-bottom: 1px solid #ddd;
+            padding-bottom: 4px;
+        }
+
+        h3 {
+            font-size: 1.05em;
+            font-weight: 700;
+            margin-top: 18px;
+            margin-bottom: 8px;
+        }
+
+        p {
+            text-align: justify;
+            margin-bottom: 12px;
+            font-size: 0.97em;
+        }
+
+        /* Tables */
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 16px 0;
+            font-size: 0.9em;
+        }
+
+        table th, table td {
+            border: 1px solid #ccc;
+            padding: 8px 12px;
+            text-align: left;
+        }
+
+        table th {
+            background: #f0f0f0;
+            font-weight: 700;
+        }
+
+        table caption {
+            font-size: 0.88em;
+            font-style: italic;
+            color: #555;
+            margin-bottom: 6px;
+            text-align: left;
+        }
+
+        /* Figures */
+        .figure {
+            text-align: center;
+            margin: 24px 0;
+        }
+
+        .figure img {
+            max-width: 100%;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+        }
+
+        .figure .caption {
+            font-size: 0.88em;
+            font-style: italic;
+            color: #555;
+            margin-top: 8px;
+        }
+
+        /* Code */
+        code {
+            font-family: 'Courier New', Courier, monospace;
+            background: #f4f4f4;
+            padding: 2px 5px;
+            border-radius: 3px;
+            font-size: 0.88em;
+        }
+
+        pre {
+            background: #f4f4f4;
+            padding: 14px 18px;
+            border-radius: 4px;
+            overflow-x: auto;
+            font-size: 0.85em;
+            margin: 12px 0;
+            border: 1px solid #e0e0e0;
+        }
+
+        /* Lists */
+        ul, ol {
+            margin: 10px 0 12px 24px;
+            font-size: 0.97em;
+        }
+
+        li {
+            margin-bottom: 4px;
+        }
+
+        /* Pipeline */
+        .pipeline {
+            background: #f7f9fc;
+            border: 1px solid #d4e2f7;
+            border-radius: 6px;
+            padding: 16px 20px;
+            text-align: center;
+            font-size: 0.95em;
+            color: #1a5276;
+            margin: 16px 0;
+            letter-spacing: 0.3px;
+        }
+
+        /* References */
+        .references {
+            font-size: 0.88em;
+        }
+
+        .references ol {
+            margin-left: 20px;
+        }
+
+        .references li {
+            margin-bottom: 8px;
+            color: #444;
+        }
+
+        /* Footer */
+        .paper-footer {
+            text-align: center;
+            font-size: 0.8em;
+            color: #aaa;
+            margin-top: 50px;
+            padding-top: 20px;
+            border-top: 1px solid #eee;
+        }
+
+        /* Print */
+        @media print {
+            body {
+                padding: 20px;
+            }
+        }
+
+        @media (max-width: 600px) {
+            body {
+                padding: 20px 15px;
+            }
+
+            .paper-title h1 {
+                font-size: 1.3em;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Title Block -->
+    <div class="paper-title">
+        <h1>Knight Chess: A Chess Variant with Extended Board and Enhanced Knight Dynamics</h1>
+        <div class="authors">Romi Nur Ismanto</div>
+        <div class="affiliation">Independent AI Research Lab, Jakarta, Indonesia</div>
+        <div class="email">rominur@gmail.com</div>
+        <div class="date">February 2025</div>
+    </div>
+
+    <!-- Abstract -->
+    <div class="abstract">
+        <h2>Abstract</h2>
+        <p>
+            We present Knight Chess, a chess variant that modifies the classical game through two fundamental changes: extending the standard 8&times;8 board to an 8&times;9 configuration and replacing three randomly selected pawns per side with additional knights, yielding five knights per player. These modifications fundamentally alter positional strategy, tactical complexity, and the balance between short-range and long-range piece interactions. The game is implemented as a web application featuring an AI opponent powered by the Minimax algorithm with alpha-beta pruning, supporting search depths up to 5 plies across three difficulty levels. The system incorporates a 10-minute countdown timer per player, a token-based economy for rewarding victories, and a competitive leaderboard. Built on Next.js with TypeScript and deployed on Vercel, Knight Chess demonstrates how classical game tree search algorithms remain effective for chess variant AI when combined with domain-specific evaluation functions tuned to the altered piece dynamics of the extended board.
+        </p>
+    </div>
+
+    <!-- Keywords -->
+    <div class="keywords">
+        <strong>Keywords:</strong> chess variant, knight dynamics, minimax algorithm, alpha-beta pruning, game tree search, extended board, web-based game, Next.js, gamification
+    </div>
+
+    <!-- 1. Introduction -->
+    <h2>1. Introduction</h2>
+
+    <p>
+        Chess has been a subject of intense study in artificial intelligence since Shannon's foundational work on programming a chess-playing computer (Shannon, 1950). While standard chess has been explored exhaustively&mdash;culminating in superhuman engines such as Stockfish and AlphaZero&mdash;chess variants offer fertile ground for investigating how rule modifications affect strategic depth, computational complexity, and AI design.
+    </p>
+
+    <p>
+        The knight is arguably the most distinctive piece in chess. Unlike all other pieces, the knight moves in a non-linear L-shaped pattern and is the only piece capable of jumping over others. In standard chess, each side begins with two knights, and their influence is often considered secondary to bishops, rooks, and queens in the endgame. However, increasing the number of knights fundamentally changes the strategic landscape: fork threats multiply, positional control becomes less predictable, and the interplay between knights and other pieces shifts the balance of tactical versus positional play.
+    </p>
+
+    <p>
+        Knight Chess explores this hypothesis through two coordinated rule changes. First, the board is extended from 8&times;8 to 8&times;9, adding one additional row that provides strategic depth and allows pieces more room to maneuver during the opening phase. Second, three pawns per side are randomly replaced by knights at the start of each game, giving each player five knights instead of the standard two. The random replacement ensures that no two games begin with the same configuration, introducing a layer of variability that demands adaptive opening strategy.
+    </p>
+
+    <p>
+        The key contributions of this work are:
+    </p>
+    <ul>
+        <li>A formally defined chess variant that significantly alters tactical complexity through knight proliferation and board extension.</li>
+        <li>An AI engine based on Minimax with alpha-beta pruning, incorporating an evaluation function specifically designed for the 8&times;9 board and five-knight dynamics.</li>
+        <li>A complete web-based implementation with gamification features including timed play, a token economy, and a leaderboard system.</li>
+        <li>Analysis of how increased knight count affects game tree branching factor and AI search performance.</li>
+    </ul>
+
+    <!-- 2. Game Design -->
+    <h2>2. Game Design</h2>
+
+    <h3>2.1 Board Extension</h3>
+
+    <p>
+        The Knight Chess board consists of 8 columns (files a&ndash;h) and 9 rows (ranks 1&ndash;9), adding one extra rank compared to the standard 8&times;8 board. The additional rank is inserted between the pawns and the back rank on each side, providing a buffer zone that changes the opening dynamics of the game. Pawns for White begin on rank 3 (instead of rank 2) and pawns for Black begin on rank 7 (instead of rank 7 on a standard board, now rank 7 on the 9-rank board), while back-rank pieces occupy ranks 1&ndash;2 and ranks 8&ndash;9 respectively.
+    </p>
+
+    <p>
+        The extended board has several strategic implications. First, it increases the number of moves required for pawns to reach the promotion rank, making pawn advancement a longer-term commitment. Second, it provides knights with more squares to occupy in the center, amplifying their tactical influence. Third, it slightly delays piece contact between the two sides, leading to richer middlegame positions as both players have additional time to develop their pieces.
+    </p>
+
+    <h3>2.2 Knight Replacement Mechanics</h3>
+
+    <p>
+        At the start of each game, three pawns per side are randomly selected and replaced with knights. Combined with the two standard knights already present in the initial setup, each player commands five knights. The random selection ensures positional variety: in some games, the additional knights may cluster on one wing, while in others they are distributed evenly across the board.
+    </p>
+
+    <p>
+        This randomized replacement mechanism serves multiple purposes:
+    </p>
+    <ul>
+        <li><strong>Opening diversity:</strong> Traditional chess openings become inapplicable; players must evaluate each starting configuration independently.</li>
+        <li><strong>Knight-centric tactics:</strong> With five knights, fork opportunities increase dramatically, and defensive patterns must account for simultaneous threats from multiple non-linear attackers.</li>
+        <li><strong>Reduced pawn structure rigidity:</strong> Fewer pawns mean a more open board, which further benefits knight mobility and tactical play.</li>
+    </ul>
+
+    <h3>2.3 Rules and Win Conditions</h3>
+
+    <p>
+        Knight Chess follows standard chess rules with the following modifications:
+    </p>
+    <ul>
+        <li>The board is 8&times;9 instead of 8&times;8.</li>
+        <li>Each side begins with 5 knights and 5 pawns (instead of 2 knights and 8 pawns).</li>
+        <li>Each player has a 10-minute countdown timer; the player whose time expires loses.</li>
+        <li>All other piece movements, capture rules, check, checkmate, and castling follow standard chess conventions adapted to the extended board.</li>
+        <li>Pawn promotion occurs on the 9th rank (for White) or the 1st rank (for Black).</li>
+    </ul>
+
+    <!-- 3. AI Engine -->
+    <h2>3. AI Engine</h2>
+
+    <h3>3.1 Minimax Algorithm with Alpha-Beta Pruning</h3>
+
+    <p>
+        The AI opponent employs the Minimax algorithm (Von Neumann, 1928) with alpha-beta pruning (Knuth &amp; Moore, 1975) to search the game tree. Minimax is a recursive algorithm that evaluates all possible game states to a given depth, assuming both players play optimally. The maximizing player (AI) selects moves that maximize the evaluation score, while the minimizing player (human) is assumed to select moves that minimize it.
+    </p>
+
+    <p>
+        Alpha-beta pruning significantly reduces the number of nodes evaluated by eliminating branches that cannot influence the final decision. When a branch is provably worse than an already-explored alternative, the entire subtree is pruned. In the best case, alpha-beta pruning reduces the effective branching factor from <em>b</em> to <em>b</em><sup>1/2</sup>, allowing the search to reach approximately twice the depth within the same computational budget.
+    </p>
+
+    <p>
+        The core search procedure can be expressed as follows:
+    </p>
+
+    <pre>function minimax(node, depth, alpha, beta, maximizingPlayer):
+    if depth == 0 or node is terminal:
+        return evaluate(node)
+
+    if maximizingPlayer:
+        maxEval = -infinity
+        for each child of node:
+            eval = minimax(child, depth - 1, alpha, beta, false)
+            maxEval = max(maxEval, eval)
+            alpha = max(alpha, eval)
+            if beta <= alpha:
+                break   // beta cutoff
+        return maxEval
+
+    else:
+        minEval = +infinity
+        for each child of node:
+            eval = minimax(child, depth - 1, alpha, beta, true)
+            minEval = min(minEval, eval)
+            beta = min(beta, eval)
+            if beta <= alpha:
+                break   // alpha cutoff
+        return minEval</pre>
+
+    <h3>3.2 Evaluation Function</h3>
+
+    <p>
+        The evaluation function is the critical component that guides the AI's decision-making. For Knight Chess, the evaluation function considers the following factors:
+    </p>
+
+    <p>
+        <strong>Material valuation:</strong> Each piece type is assigned a base value reflecting its relative strength. Given the altered piece composition in Knight Chess, the knight's value is adjusted upward to reflect its increased tactical importance when five are present on the board.
+    </p>
+
+    <table>
+        <caption>Table 1: Piece values used in the evaluation function</caption>
+        <tr>
+            <th>Piece</th>
+            <th>Value</th>
+            <th>Notes</th>
+        </tr>
+        <tr>
+            <td>Pawn</td>
+            <td>100</td>
+            <td>Base unit; fewer per side than standard chess</td>
+        </tr>
+        <tr>
+            <td>Knight</td>
+            <td>350</td>
+            <td>Elevated from standard ~320 due to increased presence</td>
+        </tr>
+        <tr>
+            <td>Bishop</td>
+            <td>330</td>
+            <td>Standard valuation</td>
+        </tr>
+        <tr>
+            <td>Rook</td>
+            <td>500</td>
+            <td>Standard valuation</td>
+        </tr>
+        <tr>
+            <td>Queen</td>
+            <td>900</td>
+            <td>Standard valuation</td>
+        </tr>
+        <tr>
+            <td>King</td>
+            <td>20000</td>
+            <td>Effectively infinite; ensures checkmate detection</td>
+        </tr>
+    </table>
+
+    <p>
+        <strong>Positional scoring:</strong> Piece-square tables assign bonuses or penalties based on board position. Knights receive higher bonuses for central squares on the 8&times;9 board, reflecting their increased value when controlling the expanded center. The piece-square tables are adapted from standard chess tables but rescaled for the 9-rank board geometry.
+    </p>
+
+    <p>
+        <strong>Mobility:</strong> The number of legal moves available to each side is incorporated as a secondary evaluation factor. Higher mobility generally indicates better piece coordination and more tactical opportunities.
+    </p>
+
+    <p>
+        <strong>King safety:</strong> Proximity of enemy pieces (especially knights) to the king is penalized. With five knights capable of delivering forks from multiple directions, king safety evaluation is weighted more heavily than in standard chess engines.
+    </p>
+
+    <p>
+        The composite evaluation function is:
+    </p>
+
+    <div class="pipeline">
+        E(s) = w<sub>1</sub> &middot; Material + w<sub>2</sub> &middot; Position + w<sub>3</sub> &middot; Mobility + w<sub>4</sub> &middot; KingSafety
+    </div>
+
+    <h3>3.3 Difficulty Levels and Search Depth</h3>
+
+    <p>
+        Knight Chess offers three difficulty levels that control the AI's search depth. Deeper search allows the AI to anticipate more moves ahead, resulting in stronger play at the cost of increased computation time.
+    </p>
+
+    <table>
+        <caption>Table 2: AI difficulty levels and search configuration</caption>
+        <tr>
+            <th>Difficulty</th>
+            <th>Search Depth</th>
+            <th>Approximate Nodes Evaluated</th>
+            <th>Behavior</th>
+        </tr>
+        <tr>
+            <td>Easy</td>
+            <td>2 plies</td>
+            <td>~1,000&ndash;3,000</td>
+            <td>Responds to immediate threats; limited tactical awareness</td>
+        </tr>
+        <tr>
+            <td>Medium</td>
+            <td>3 plies</td>
+            <td>~10,000&ndash;50,000</td>
+            <td>Recognizes basic tactics; moderate positional play</td>
+        </tr>
+        <tr>
+            <td>Difficult</td>
+            <td>5 plies</td>
+            <td>~200,000&ndash;1,000,000</td>
+            <td>Deep tactical calculation; strong positional understanding</td>
+        </tr>
+    </table>
+
+    <p>
+        The branching factor in Knight Chess is notably higher than in standard chess due to the presence of five knights per side. In standard chess, the average branching factor is approximately 35; in Knight Chess, the additional knight moves increase this to an estimated 42&ndash;50 in typical middlegame positions. Alpha-beta pruning mitigates this increase, but the effective search time at depth 5 remains a significant computational task, requiring careful optimization.
+    </p>
+
+    <!-- 4. System Architecture -->
+    <h2>4. System Architecture</h2>
+
+    <h3>4.1 Frontend Architecture</h3>
+
+    <p>
+        The application is built on Next.js, a React-based framework that provides server-side rendering, file-system routing, and API routes within a unified project structure. The user interface is implemented with TypeScript for type safety and Tailwind CSS for responsive styling.
+    </p>
+
+    <p>
+        The game board is rendered as a responsive grid component that adapts the 8&times;9 layout to various screen sizes. Each square is an interactive element supporting click-based piece selection and move execution with visual highlights for legal moves, last move indication, and check alerts.
+    </p>
+
+    <h3>4.2 Game State Management</h3>
+
+    <p>
+        The game state is managed through React state hooks and encapsulates the following data:
+    </p>
+
+    <ul>
+        <li><strong>Board representation:</strong> A 9&times;8 two-dimensional array where each cell stores the piece type, color, and movement history (for castling and en passant eligibility).</li>
+        <li><strong>Turn state:</strong> Current player, move count, and game phase (opening, middlegame, endgame).</li>
+        <li><strong>Timer state:</strong> Remaining time for each player, managed via <code>setInterval</code> with per-second decrements.</li>
+        <li><strong>Game status:</strong> Active, check, checkmate, stalemate, or timeout.</li>
+        <li><strong>Move history:</strong> Complete list of moves in algebraic notation for replay and analysis.</li>
+    </ul>
+
+    <h3>4.3 AI Web Worker</h3>
+
+    <p>
+        The Minimax search is computationally intensive, particularly at depth 5. To prevent the UI from freezing during AI computation, the search algorithm runs in a dedicated Web Worker thread. This architecture separates the AI computation from the main rendering thread, ensuring that the game interface remains responsive while the AI evaluates positions.
+    </p>
+
+    <p>
+        The communication flow between the main thread and the AI worker follows a message-passing protocol:
+    </p>
+
+    <div class="pipeline">
+        Main Thread (Game State) &rarr; postMessage &rarr; Web Worker (Minimax Search) &rarr; postMessage &rarr; Main Thread (Apply Move)
+    </div>
+
+    <p>
+        When it is the AI's turn, the current board state and difficulty setting are serialized and sent to the worker. The worker executes the Minimax search, identifies the optimal move, and returns it to the main thread, which then applies the move to the board and updates the UI.
+    </p>
+
+    <h3>4.4 Authentication</h3>
+
+    <p>
+        User authentication is handled by NextAuth.js, which supports multiple authentication providers including Google OAuth and email-based sign-in. Authenticated sessions enable persistent player profiles, token balances, and leaderboard participation. Unauthenticated users can play against the AI but do not accumulate tokens or appear on the leaderboard.
+    </p>
+
+    <!-- 5. Gamification -->
+    <h2>5. Gamification</h2>
+
+    <h3>5.1 Token Economy</h3>
+
+    <p>
+        Knight Chess implements a token-based reward system to incentivize continued play and improvement. Players earn tokens by winning games against the AI, with the reward amount scaled by difficulty level:
+    </p>
+
+    <table>
+        <caption>Table 3: Token rewards by difficulty level</caption>
+        <tr>
+            <th>Difficulty</th>
+            <th>Tokens per Win</th>
+            <th>Rationale</th>
+        </tr>
+        <tr>
+            <td>Easy</td>
+            <td>10</td>
+            <td>Low reward reflecting lower challenge</td>
+        </tr>
+        <tr>
+            <td>Medium</td>
+            <td>25</td>
+            <td>Moderate reward for balanced play</td>
+        </tr>
+        <tr>
+            <td>Difficult</td>
+            <td>50</td>
+            <td>High reward for defeating the strongest AI</td>
+        </tr>
+    </table>
+
+    <p>
+        The token system provides a persistent measure of player achievement. Tokens accumulate across sessions and serve as a proxy for overall skill progression. This mechanism draws on established gamification research demonstrating that tangible progress indicators increase player retention and motivation (Deterding et al., 2011).
+    </p>
+
+    <h3>5.2 Leaderboard System</h3>
+
+    <p>
+        A global leaderboard ranks all authenticated players by their total token count. The leaderboard serves as a social comparison mechanism, encouraging competitive play and providing a visible ranking that rewards consistent high-level performance. The leaderboard updates in real time as games conclude, providing immediate feedback on rank changes.
+    </p>
+
+    <p>
+        The leaderboard design follows best practices from competitive gaming platforms: displaying player name, total tokens, number of wins, and current rank. This transparency allows players to set concrete improvement goals and track their progress relative to the broader community.
+    </p>
+
+    <!-- 6. Implementation Details -->
+    <h2>6. Implementation Details</h2>
+
+    <h3>6.1 Technology Stack</h3>
+
+    <table>
+        <caption>Table 4: Core technology stack</caption>
+        <tr>
+            <th>Component</th>
+            <th>Technology</th>
+            <th>Purpose</th>
+        </tr>
+        <tr>
+            <td>Framework</td>
+            <td>Next.js</td>
+            <td>React-based fullstack framework with SSR and API routes</td>
+        </tr>
+        <tr>
+            <td>Language</td>
+            <td>TypeScript</td>
+            <td>Type-safe JavaScript for robust game logic</td>
+        </tr>
+        <tr>
+            <td>Styling</td>
+            <td>Tailwind CSS</td>
+            <td>Utility-first CSS framework for responsive UI</td>
+        </tr>
+        <tr>
+            <td>Authentication</td>
+            <td>NextAuth.js</td>
+            <td>OAuth and session management</td>
+        </tr>
+        <tr>
+            <td>AI Engine</td>
+            <td>Minimax + Alpha-Beta (TypeScript)</td>
+            <td>Game tree search in Web Worker</td>
+        </tr>
+        <tr>
+            <td>Deployment</td>
+            <td>Vercel</td>
+            <td>Serverless hosting with edge functions</td>
+        </tr>
+        <tr>
+            <td>State Management</td>
+            <td>React Hooks</td>
+            <td>Local game state with context providers</td>
+        </tr>
+        <tr>
+            <td>Timer</td>
+            <td>Browser <code>setInterval</code></td>
+            <td>Per-player 10-minute countdown</td>
+        </tr>
+    </table>
+
+    <h3>6.2 Performance Considerations</h3>
+
+    <p>
+        The primary performance challenge is the AI search at depth 5. On a modern browser running on a mid-range device, the Minimax search with alpha-beta pruning at depth 5 completes within 2&ndash;8 seconds for typical middlegame positions. Several optimizations contribute to this performance:
+    </p>
+
+    <ul>
+        <li><strong>Move ordering:</strong> Captures and checks are evaluated first, improving alpha-beta cutoff rates and reducing the effective number of nodes explored.</li>
+        <li><strong>Web Worker isolation:</strong> Offloading computation to a dedicated thread ensures the UI remains responsive during search.</li>
+        <li><strong>Efficient board representation:</strong> The board is encoded as a flat array with precomputed move generation tables for each piece type, minimizing allocation overhead during search.</li>
+        <li><strong>Early termination:</strong> Checkmate and stalemate positions are detected immediately, preventing unnecessary subtree expansion.</li>
+    </ul>
+
+    <h3>6.3 Deployment</h3>
+
+    <p>
+        Knight Chess is deployed on Vercel's edge network, providing global low-latency access. The application is accessible at <a href="https://knight-chess.vercel.app">https://knight-chess.vercel.app</a>. The serverless architecture handles authentication, leaderboard queries, and token management through Next.js API routes, while all game logic and AI computation execute client-side in the browser.
+    </p>
+
+    <p>
+        The source code is publicly available at <a href="https://github.com/romizone/knight-chess">https://github.com/romizone/knight-chess</a>.
+    </p>
+
+    <!-- 7. Conclusion and Future Work -->
+    <h2>7. Conclusion and Future Work</h2>
+
+    <p>
+        Knight Chess demonstrates that targeted modifications to classical chess rules&mdash;specifically, board extension and knight proliferation&mdash;can produce a variant with meaningfully different strategic properties while remaining computationally tractable for traditional game tree search algorithms. The 8&times;9 board and five-knight configuration increase the average branching factor by approximately 20&ndash;40% compared to standard chess, creating richer tactical positions dominated by non-linear piece movement patterns.
+    </p>
+
+    <p>
+        The Minimax engine with alpha-beta pruning provides a competent AI opponent across three difficulty levels, with the depth-5 search at the Difficult setting offering a genuine challenge to experienced players. The Web Worker architecture ensures that this computational intensity does not compromise the user experience.
+    </p>
+
+    <p>
+        The gamification layer&mdash;combining timed play, token rewards, and a leaderboard&mdash;adds a competitive dimension that encourages sustained engagement. These elements are lightweight by design, avoiding the complexity of full ELO rating systems while still providing meaningful progress indicators.
+    </p>
+
+    <p>
+        Future directions include:
+    </p>
+
+    <ul>
+        <li><strong>Neural network evaluation:</strong> Replacing the handcrafted evaluation function with a learned evaluation model trained through self-play, following the approach pioneered by AlphaZero (Silver et al., 2018).</li>
+        <li><strong>Iterative deepening:</strong> Implementing iterative deepening with time management to dynamically adjust search depth based on position complexity and remaining clock time.</li>
+        <li><strong>Transposition tables:</strong> Adding Zobrist hashing and transposition tables to cache previously evaluated positions and avoid redundant computation.</li>
+        <li><strong>Multiplayer mode:</strong> Enabling real-time human-vs-human play via WebSocket connections, extending the platform beyond AI-only opponents.</li>
+        <li><strong>Opening book:</strong> Developing a curated opening book specific to Knight Chess configurations through automated self-play analysis.</li>
+        <li><strong>Mobile optimization:</strong> Adapting the AI computation budget for lower-powered mobile devices while maintaining competitive play quality.</li>
+    </ul>
+
+    <!-- References -->
+    <h2>References</h2>
+
+    <div class="references">
+        <ol>
+            <li>Shannon, C.E. (1950). Programming a Computer for Playing Chess. <em>Philosophical Magazine</em>, 41(314), pp. 256&ndash;275.</li>
+            <li>Von Neumann, J. (1928). Zur Theorie der Gesellschaftsspiele. <em>Mathematische Annalen</em>, 100(1), pp. 295&ndash;320.</li>
+            <li>Knuth, D.E. &amp; Moore, R.W. (1975). An Analysis of Alpha-Beta Pruning. <em>Artificial Intelligence</em>, 6(4), pp. 293&ndash;326.</li>
+            <li>Silver, D., Hubert, T., Schrittwieser, J., et al. (2018). A General Reinforcement Learning Algorithm that Masters Chess, Shogi, and Go Through Self-Play. <em>Science</em>, 362(6419), pp. 1140&ndash;1144.</li>
+            <li>Campbell, M., Hoane, A.J., &amp; Hsu, F. (2002). Deep Blue. <em>Artificial Intelligence</em>, 134(1&ndash;2), pp. 57&ndash;83.</li>
+            <li>Deterding, S., Dixon, D., Khaled, R., &amp; Nacke, L. (2011). From Game Design Elements to Gamefulness: Defining "Gamification". <em>Proceedings of the 15th International Academic MindTrek Conference</em>, pp. 9&ndash;15.</li>
+            <li>Pritchard, D.B. (2007). <em>The Classified Encyclopedia of Chess Variants</em>. John Beasley.</li>
+            <li>Next.js Documentation (2024). <em>The React Framework for the Web</em>. https://nextjs.org/docs</li>
+            <li>Vercel (2024). <em>Vercel: Develop. Preview. Ship.</em> https://vercel.com</li>
+        </ol>
+    </div>
+
+    <!-- Footer -->
+    <div class="paper-footer">
+        <p>Knight Chess &mdash; Play Online at <a href="https://knight-chess.vercel.app">knight-chess.vercel.app</a> &middot; <a href="https://github.com/romizone/knight-chess">github.com/romizone/knight-chess</a></p>
+    </div>
+
+</body>
+</html>

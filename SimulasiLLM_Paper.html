@@ -1,0 +1,727 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Transformer Explainer: An Interactive Visualization Tool for Understanding GPT-2 Attention Mechanisms and Text Generation</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Times New Roman', Times, Georgia, serif;
+            line-height: 1.6;
+            color: #111;
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 60px 40px;
+            background: #fff;
+        }
+
+        /* Title Block */
+        .paper-title {
+            text-align: center;
+            margin-bottom: 30px;
+        }
+
+        .paper-title h1 {
+            font-size: 1.65em;
+            font-weight: 700;
+            line-height: 1.3;
+            margin-bottom: 18px;
+        }
+
+        .paper-title .authors {
+            font-size: 1.05em;
+            margin-bottom: 4px;
+        }
+
+        .paper-title .affiliation {
+            font-size: 0.95em;
+            color: #555;
+            font-style: italic;
+        }
+
+        .paper-title .email {
+            font-size: 0.9em;
+            color: #1a73e8;
+            margin-top: 4px;
+        }
+
+        .paper-title .date {
+            font-size: 0.9em;
+            color: #777;
+            margin-top: 10px;
+        }
+
+        /* Abstract */
+        .abstract {
+            background: #f9f9f9;
+            border-left: 4px solid #333;
+            padding: 18px 22px;
+            margin: 30px 0;
+        }
+
+        .abstract h2 {
+            font-size: 1em;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            margin-bottom: 8px;
+        }
+
+        .abstract p {
+            font-size: 0.95em;
+            color: #333;
+            text-align: justify;
+        }
+
+        /* Keywords */
+        .keywords {
+            font-size: 0.9em;
+            color: #555;
+            margin-bottom: 30px;
+        }
+
+        .keywords strong {
+            color: #333;
+        }
+
+        /* Sections */
+        h2 {
+            font-size: 1.2em;
+            font-weight: 700;
+            margin-top: 30px;
+            margin-bottom: 12px;
+            border-bottom: 1px solid #ddd;
+            padding-bottom: 4px;
+        }
+
+        h3 {
+            font-size: 1.05em;
+            font-weight: 700;
+            margin-top: 18px;
+            margin-bottom: 8px;
+        }
+
+        p {
+            text-align: justify;
+            margin-bottom: 12px;
+            font-size: 0.97em;
+        }
+
+        /* Tables */
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 16px 0;
+            font-size: 0.9em;
+        }
+
+        table th, table td {
+            border: 1px solid #ccc;
+            padding: 8px 12px;
+            text-align: left;
+        }
+
+        table th {
+            background: #f0f0f0;
+            font-weight: 700;
+        }
+
+        table caption {
+            font-size: 0.88em;
+            font-style: italic;
+            color: #555;
+            margin-bottom: 6px;
+            text-align: left;
+        }
+
+        /* Figures */
+        .figure {
+            text-align: center;
+            margin: 24px 0;
+        }
+
+        .figure img {
+            max-width: 100%;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+        }
+
+        .figure .caption {
+            font-size: 0.88em;
+            font-style: italic;
+            color: #555;
+            margin-top: 8px;
+        }
+
+        /* Code */
+        code {
+            font-family: 'Courier New', Courier, monospace;
+            background: #f4f4f4;
+            padding: 2px 5px;
+            border-radius: 3px;
+            font-size: 0.88em;
+        }
+
+        pre {
+            background: #f4f4f4;
+            padding: 14px 18px;
+            border-radius: 4px;
+            overflow-x: auto;
+            font-size: 0.85em;
+            margin: 12px 0;
+            border: 1px solid #e0e0e0;
+        }
+
+        /* Lists */
+        ul, ol {
+            margin: 10px 0 12px 24px;
+            font-size: 0.97em;
+        }
+
+        li {
+            margin-bottom: 4px;
+        }
+
+        /* Pipeline */
+        .pipeline {
+            background: #f7f9fc;
+            border: 1px solid #d4e2f7;
+            border-radius: 6px;
+            padding: 16px 20px;
+            text-align: center;
+            font-size: 0.95em;
+            color: #1a5276;
+            margin: 16px 0;
+            letter-spacing: 0.3px;
+        }
+
+        /* References */
+        .references {
+            font-size: 0.88em;
+        }
+
+        .references ol {
+            margin-left: 20px;
+        }
+
+        .references li {
+            margin-bottom: 8px;
+            color: #444;
+        }
+
+        /* Footer */
+        .paper-footer {
+            text-align: center;
+            font-size: 0.8em;
+            color: #aaa;
+            margin-top: 50px;
+            padding-top: 20px;
+            border-top: 1px solid #eee;
+        }
+
+        /* Print */
+        @media print {
+            body {
+                padding: 20px;
+            }
+        }
+
+        @media (max-width: 600px) {
+            body {
+                padding: 20px 15px;
+            }
+
+            .paper-title h1 {
+                font-size: 1.3em;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Title Block -->
+    <div class="paper-title">
+        <h1>Transformer Explainer: An Interactive Visualization Tool for Understanding GPT-2 Attention Mechanisms and Text Generation</h1>
+        <div class="authors">Romi Nur Ismanto</div>
+        <div class="affiliation">Independent AI Research Lab, Jakarta, Indonesia</div>
+        <div class="email">rominur@gmail.com</div>
+        <div class="date">February 2025</div>
+    </div>
+
+    <!-- Abstract -->
+    <div class="abstract">
+        <h2>Abstract</h2>
+        <p>
+            We present Transformer Explainer (SimulasiLLM), an interactive, browser-based educational tool that visualizes the internal mechanisms of GPT-2 style transformer models during text generation. The system provides real-time, step-by-step visualization of token embeddings, query-key-value (Q/K/V) projections, causal masking, softmax-normalized attention weights, and autoregressive sampling with adjustable temperature and top-k parameters. Built entirely with pure HTML, CSS, and JavaScript with zero external dependencies, the tool enables learners, educators, and researchers to develop intuitive understanding of how large language models process and generate text. By rendering each computational stage of the transformer architecture as an interactive, manipulable display, Transformer Explainer bridges the gap between abstract mathematical formulations and concrete, observable model behavior. The tool simulates a GPT-2 Small architecture and is freely accessible as an open-source web application.
+        </p>
+    </div>
+
+    <!-- Keywords -->
+    <div class="keywords">
+        <strong>Keywords:</strong> transformer architecture, attention mechanism, GPT-2, interactive visualization, educational tool, causal masking, autoregressive generation, self-attention, large language models, explainability
+    </div>
+
+    <!-- 1. Introduction -->
+    <h2>1. Introduction</h2>
+
+    <p>
+        Large language models (LLMs) based on the transformer architecture have become foundational to modern natural language processing, powering systems that generate text, translate languages, answer questions, and write code. Despite their widespread adoption and profound impact, the internal mechanisms by which transformers process sequences and generate output remain opaque to most practitioners, students, and even many researchers. The mathematical formulations describing self-attention, positional encoding, and autoregressive decoding, while precise, do not readily convey an intuitive understanding of the computational dynamics at work.
+    </p>
+
+    <p>
+        This opacity presents a significant educational challenge. As transformer-based models become integral to an increasing number of applications, the need for accessible, interactive tools that demystify their internal workings grows correspondingly. Static diagrams in textbooks and papers, while valuable, cannot capture the dynamic, data-dependent nature of attention weight computation. Video tutorials offer temporal progression but lack interactivity. Existing code implementations, though functional, require significant programming expertise to interpret and modify.
+    </p>
+
+    <p>
+        Transformer Explainer (SimulasiLLM) addresses this gap by providing a fully interactive, browser-based visualization tool that renders each stage of the transformer inference pipeline as a manipulable, observable display. The key contributions of this work are:
+    </p>
+    <ul>
+        <li>A comprehensive, multi-section visualization of the transformer inference pipeline, from token embedding through autoregressive output generation.</li>
+        <li>Interactive rendering of query, key, and value projections with real-time attention weight computation and causal masking display.</li>
+        <li>Adjustable generation parameters (temperature, top-k sampling) with immediate visual feedback on probability distributions and token selection.</li>
+        <li>A zero-dependency implementation using pure HTML, CSS, and JavaScript, ensuring universal accessibility without installation or configuration requirements.</li>
+        <li>An open-source, freely accessible web application deployed at <a href="https://simulasillm.vercel.app/">https://simulasillm.vercel.app/</a>.</li>
+    </ul>
+
+    <!-- 2. Transformer Architecture Overview -->
+    <h2>2. Transformer Architecture Overview</h2>
+
+    <p>
+        The transformer architecture, introduced by Vaswani et al. (2017), fundamentally changed sequence modeling by replacing recurrent computation with a purely attention-based mechanism. This section provides a concise overview of the architectural components that Transformer Explainer visualizes, establishing the conceptual framework for the tool's design.
+    </p>
+
+    <h3>2.1 Token Embeddings and Positional Encoding</h3>
+
+    <p>
+        Transformers process discrete tokens by mapping each to a continuous vector representation through an embedding layer. Given a vocabulary <em>V</em> and an embedding dimension <em>d</em>, each input token <em>t<sub>i</sub></em> is mapped to a dense vector <em>e<sub>i</sub></em> &#8712; &#8477;<sup>d</sup>. Since the self-attention mechanism is inherently permutation-invariant, positional information must be injected through positional encodings, which are added to the token embeddings to produce the final input representations.
+    </p>
+
+    <p>
+        In the GPT-2 architecture (Radford et al., 2019), learned positional embeddings are used rather than the sinusoidal encodings of the original transformer. The combined token and positional embeddings form the input to the first transformer block.
+    </p>
+
+    <h3>2.2 Self-Attention Mechanism</h3>
+
+    <p>
+        The self-attention mechanism enables each token in a sequence to attend to all other tokens, computing context-dependent representations. For each input vector, three projections are computed: a query (<em>Q</em>), a key (<em>K</em>), and a value (<em>V</em>), obtained by multiplying the input by learned weight matrices <em>W<sub>Q</sub></em>, <em>W<sub>K</sub></em>, and <em>W<sub>V</sub></em> respectively.
+    </p>
+
+    <p>
+        The attention weights are computed as the scaled dot product of queries and keys, followed by softmax normalization:
+    </p>
+
+    <div class="pipeline">
+        Attention(Q, K, V) = softmax(Q K<sup>T</sup> / &#8730;d<sub>k</sub>) V
+    </div>
+
+    <p>
+        The scaling factor &#8730;d<sub>k</sub> prevents the dot products from growing excessively large in magnitude, which would push the softmax function into regions of extremely small gradients.
+    </p>
+
+    <h3>2.3 Causal Masking</h3>
+
+    <p>
+        In autoregressive language models such as GPT-2, a causal mask is applied to the attention scores before softmax normalization. This mask ensures that each token can only attend to itself and to tokens at earlier positions in the sequence, preventing information leakage from future tokens during generation. The mask sets the attention scores for future positions to negative infinity, causing them to become zero after the softmax operation.
+    </p>
+
+    <h3>2.4 Autoregressive Generation</h3>
+
+    <p>
+        Text generation in GPT-2 proceeds autoregressively: the model generates one token at a time, appending each generated token to the input sequence and reprocessing the entire extended sequence to produce the next token. At each step, the model outputs a probability distribution over the vocabulary, from which the next token is sampled. Sampling strategies such as temperature scaling and top-k filtering control the diversity and quality of generated text.
+    </p>
+
+    <!-- 3. System Design -->
+    <h2>3. System Design</h2>
+
+    <p>
+        Transformer Explainer is designed as a single-page, client-side web application that simulates the inference pipeline of a GPT-2 Small model. The system architecture prioritizes interactivity, visual clarity, and pedagogical effectiveness over computational fidelity, making deliberate design choices to render the internal mechanics of the transformer visible and manipulable.
+    </p>
+
+    <h3>3.1 Visualization Approach</h3>
+
+    <p>
+        The tool decomposes the transformer inference pipeline into discrete, observable stages, each rendered as a dedicated visual section within the interface. This decomposition follows the natural computational flow of the model:
+    </p>
+
+    <div class="pipeline">
+        Input Text &#8594; Token Embedding &#8594; Q/K/V Projection &#8594; Attention Score &#8594; Causal Mask &#8594; Softmax &#8594; Probability Distribution &#8594; Token Sampling &#8594; Output
+    </div>
+
+    <p>
+        Each stage is presented as an interactive panel that updates in real time as the user modifies inputs or parameters. This allows learners to observe how changes propagate through the pipeline, building causal intuition about transformer behavior.
+    </p>
+
+    <h3>3.2 Interactive Components</h3>
+
+    <p>
+        The system provides six primary interactive sections:
+    </p>
+
+    <table>
+        <caption>Table 1: Interactive visualization sections and their pedagogical purpose</caption>
+        <tr>
+            <th>Section</th>
+            <th>Content Displayed</th>
+            <th>Pedagogical Purpose</th>
+        </tr>
+        <tr>
+            <td>Embedding Display</td>
+            <td>Token embeddings as numerical vectors</td>
+            <td>Shows how discrete tokens become continuous representations</td>
+        </tr>
+        <tr>
+            <td>Attention Core</td>
+            <td>Q/K/V matrices, attention weight heatmap</td>
+            <td>Reveals how tokens relate to each other through attention</td>
+        </tr>
+        <tr>
+            <td>Causal Mask</td>
+            <td>Triangular mask matrix visualization</td>
+            <td>Demonstrates autoregressive constraint on attention</td>
+        </tr>
+        <tr>
+            <td>Probability Distribution</td>
+            <td>Softmax output over vocabulary tokens</td>
+            <td>Shows how the model selects the next token</td>
+        </tr>
+        <tr>
+            <td>Query Token Details</td>
+            <td>Per-token Q/K/V vector values</td>
+            <td>Enables deep inspection of individual token representations</td>
+        </tr>
+        <tr>
+            <td>Generated Output</td>
+            <td>Autoregressive token-by-token output</td>
+            <td>Illustrates the sequential generation process</td>
+        </tr>
+    </table>
+
+    <h3>3.3 Parameter Controls</h3>
+
+    <p>
+        Two primary generation parameters are exposed to the user for real-time adjustment:
+    </p>
+
+    <p>
+        <strong>Temperature (default: 0.8):</strong> Controls the sharpness of the probability distribution over vocabulary tokens. Lower temperatures concentrate probability mass on the most likely tokens, producing more deterministic output. Higher temperatures flatten the distribution, increasing diversity and randomness. The visualization updates the probability distribution display in real time as the temperature slider is adjusted.
+    </p>
+
+    <p>
+        <strong>Top-k Sampling (default: 5):</strong> Restricts sampling to the <em>k</em> most probable tokens at each generation step, setting the probability of all other tokens to zero and renormalizing. This prevents the model from selecting highly improbable tokens while maintaining controlled diversity within the top candidates.
+    </p>
+
+    <!-- 4. Attention Mechanism Visualization -->
+    <h2>4. Attention Mechanism Visualization</h2>
+
+    <p>
+        The attention mechanism visualization is the central pedagogical component of Transformer Explainer, providing detailed, interactive renderings of the computational steps that underlie self-attention in GPT-2.
+    </p>
+
+    <h3>4.1 Q/K/V Projection Display</h3>
+
+    <p>
+        For each token in the input sequence, the tool displays the computed query, key, and value vectors. These projections are rendered as labeled numerical arrays, allowing users to inspect the specific values that determine how each token interacts with others in the attention computation. By selecting different tokens, users can observe how the projection vectors vary across positions and how these variations drive differences in attention patterns.
+    </p>
+
+    <h3>4.2 Attention Weight Heatmap</h3>
+
+    <p>
+        The attention weights&mdash;computed as the softmax-normalized dot products of queries and keys&mdash;are rendered as an interactive heatmap. Each cell in the heatmap represents the attention weight from one query token to one key token, with color intensity proportional to the weight magnitude. This visualization enables users to observe:
+    </p>
+
+    <ul>
+        <li>Which tokens attend most strongly to which other tokens.</li>
+        <li>How attention patterns change as the input text is modified.</li>
+        <li>The effect of causal masking on the attention distribution (upper-triangular cells are zeroed out).</li>
+        <li>The emergence of common attention patterns, such as attending to the first token or to adjacent tokens.</li>
+    </ul>
+
+    <h3>4.3 Causal Mask Visualization</h3>
+
+    <p>
+        The causal mask is rendered as a distinct matrix overlay showing which attention connections are permitted and which are blocked. Permitted connections (lower-triangular entries) are displayed prominently, while blocked connections (upper-triangular entries) are visually suppressed. This visualization directly demonstrates the autoregressive property: each token can only "see" tokens at its own position and earlier positions, never future tokens.
+    </p>
+
+    <p>
+        The mask visualization is particularly effective for learners who struggle with the abstract concept of causal masking from textual descriptions alone. By seeing the triangular structure and understanding its role in preventing information leakage, users develop a concrete mental model of how autoregressive constraints shape the attention computation.
+    </p>
+
+    <!-- 5. Text Generation Pipeline -->
+    <h2>5. Text Generation Pipeline</h2>
+
+    <p>
+        Transformer Explainer provides a step-by-step visualization of the autoregressive text generation process, rendering each stage from initial input processing through final token selection.
+    </p>
+
+    <h3>5.1 Autoregressive Sampling Demonstration</h3>
+
+    <p>
+        The generation process is displayed as an iterative loop: at each step, the system processes the current token sequence through the simulated transformer pipeline, computes the output probability distribution, samples a token, and appends it to the sequence. This loop is animated token by token, allowing users to observe:
+    </p>
+
+    <ul>
+        <li>How the attention pattern evolves as the sequence grows longer.</li>
+        <li>How each new token is influenced by all preceding tokens through the attention mechanism.</li>
+        <li>How the probability distribution shifts at each generation step based on the accumulated context.</li>
+        <li>The stochastic nature of sampling&mdash;regenerating from the same input may produce different outputs.</li>
+    </ul>
+
+    <h3>5.2 Temperature Effects</h3>
+
+    <p>
+        The temperature parameter is applied to the logits before softmax normalization according to the formula:
+    </p>
+
+    <div class="pipeline">
+        p(t<sub>i</sub>) = exp(z<sub>i</sub> / T) / &#8721;<sub>j</sub> exp(z<sub>j</sub> / T)
+    </div>
+
+    <p>
+        where <em>z<sub>i</sub></em> are the raw logits and <em>T</em> is the temperature. The tool visualizes the probability distribution at different temperature settings, allowing users to observe how:
+    </p>
+
+    <ul>
+        <li><strong>Low temperature (T &lt; 1):</strong> The distribution becomes sharply peaked, concentrating probability on the highest-scoring tokens and producing more predictable, repetitive output.</li>
+        <li><strong>Temperature = 1:</strong> The original model distribution is preserved without modification.</li>
+        <li><strong>High temperature (T &gt; 1):</strong> The distribution becomes flatter, distributing probability more uniformly across tokens and producing more diverse, creative, but potentially incoherent output.</li>
+    </ul>
+
+    <h3>5.3 Top-k Filtering</h3>
+
+    <p>
+        After temperature scaling, the top-k filtering step retains only the <em>k</em> highest-probability tokens and redistributes their probability mass through renormalization. The visualization displays which tokens survive the top-k cutoff and which are eliminated, providing clear insight into how this sampling strategy balances diversity and quality. With the default setting of <em>k</em> = 5, users can observe that only a small subset of the full vocabulary is considered at each generation step.
+    </p>
+
+    <h3>5.4 Probability Distribution Display</h3>
+
+    <p>
+        The final probability distribution over candidate tokens is rendered as a ranked list showing each token and its associated probability. This display updates in real time as temperature and top-k parameters are adjusted, providing immediate visual feedback on how these parameters reshape the distribution. Users can observe the direct relationship between parameter settings and sampling behavior, developing practical intuition for hyperparameter tuning in text generation applications.
+    </p>
+
+    <!-- 6. Implementation Details -->
+    <h2>6. Implementation Details</h2>
+
+    <h3>6.1 Technology Stack</h3>
+
+    <p>
+        Transformer Explainer is built entirely with vanilla web technologies, requiring zero external dependencies, libraries, or frameworks. This design choice serves multiple objectives:
+    </p>
+
+    <table>
+        <caption>Table 2: Technology stack and design rationale</caption>
+        <tr>
+            <th>Technology</th>
+            <th>Role</th>
+            <th>Rationale</th>
+        </tr>
+        <tr>
+            <td>HTML5</td>
+            <td>Document structure and semantic layout</td>
+            <td>Universal browser support, no build step required</td>
+        </tr>
+        <tr>
+            <td>CSS3</td>
+            <td>Styling, animations, heatmap rendering</td>
+            <td>Hardware-accelerated animations, no CSS framework overhead</td>
+        </tr>
+        <tr>
+            <td>Vanilla JavaScript</td>
+            <td>Simulation logic, DOM manipulation, interactivity</td>
+            <td>Zero dependency, minimal bundle size, full transparency</td>
+        </tr>
+    </table>
+
+    <p>
+        The zero-dependency architecture ensures that the application can be served from any static hosting provider, runs in any modern browser without installation, and presents no supply-chain security risks. The entire application is contained within a single HTML file, maximizing portability and minimizing deployment complexity.
+    </p>
+
+    <h3>6.2 Simulation Model</h3>
+
+    <p>
+        The tool simulates a GPT-2 Small architecture with the following configuration:
+    </p>
+
+    <table>
+        <caption>Table 3: Simulated GPT-2 Small model parameters</caption>
+        <tr>
+            <th>Parameter</th>
+            <th>Value</th>
+        </tr>
+        <tr>
+            <td>Model</td>
+            <td>GPT-2 Small (simulation)</td>
+        </tr>
+        <tr>
+            <td>Embedding Dimension</td>
+            <td>768</td>
+        </tr>
+        <tr>
+            <td>Attention Heads</td>
+            <td>12</td>
+        </tr>
+        <tr>
+            <td>Transformer Blocks</td>
+            <td>12</td>
+        </tr>
+        <tr>
+            <td>Vocabulary Size</td>
+            <td>50,257</td>
+        </tr>
+        <tr>
+            <td>Context Window</td>
+            <td>1,024 tokens</td>
+        </tr>
+    </table>
+
+    <p>
+        It is important to note that the tool provides a pedagogical simulation rather than a full inference engine. The Q/K/V projections, attention weights, and probability distributions are computed using representative numerical values that demonstrate the correct mathematical relationships and computational flow. This approach enables real-time interactivity in the browser without requiring the download or execution of the full 124M-parameter GPT-2 model, while preserving the structural and behavioral fidelity necessary for educational purposes.
+    </p>
+
+    <h3>6.3 No-Framework Philosophy</h3>
+
+    <p>
+        The decision to avoid frameworks such as React, Vue, or Angular was deliberate and pedagogically motivated. By implementing all interactivity through direct DOM manipulation and vanilla JavaScript, the tool's source code itself serves as a learning resource. Students can inspect the implementation to see exactly how attention scores are computed, how the causal mask is applied, and how the sampling procedure operates&mdash;without navigating framework-specific abstractions, build pipelines, or dependency trees.
+    </p>
+
+    <p>
+        This approach also eliminates version compatibility issues, build tool requirements, and the need for Node.js or npm on the user's machine. The application can be opened directly from the filesystem or deployed to any static hosting service without modification.
+    </p>
+
+    <!-- 7. Educational Impact -->
+    <h2>7. Educational Impact</h2>
+
+    <p>
+        Transformer Explainer addresses a well-documented challenge in machine learning education: the difficulty of translating mathematical abstractions into operational understanding. The self-attention mechanism, while concisely expressed as a matrix operation, involves complex data-dependent computation that static representations cannot fully convey.
+    </p>
+
+    <h3>7.1 Bridging the Understanding Gap</h3>
+
+    <p>
+        The tool targets several specific conceptual barriers that learners commonly encounter when studying transformer models:
+    </p>
+
+    <ul>
+        <li><strong>Embedding as representation:</strong> By displaying the numerical vectors associated with each token, the tool concretizes the abstract notion of "representing words as vectors" and shows how different tokens occupy different positions in the embedding space.</li>
+        <li><strong>Attention as soft lookup:</strong> The heatmap visualization demonstrates that attention is a weighted combination of values, where the weights are determined by query-key compatibility. Learners can observe how changing the query token shifts the attention distribution across keys.</li>
+        <li><strong>Causal constraint as structure:</strong> The mask visualization makes the autoregressive constraint physically visible, transforming an abstract mathematical condition into a concrete structural property of the attention matrix.</li>
+        <li><strong>Sampling as distribution:</strong> The probability distribution display and interactive parameter controls reveal that text generation is fundamentally probabilistic, countering the common misconception that LLMs deterministically "know" what to say next.</li>
+    </ul>
+
+    <h3>7.2 Target Audiences</h3>
+
+    <p>
+        The tool is designed to serve multiple user groups:
+    </p>
+
+    <ul>
+        <li><strong>Students:</strong> Undergraduate and graduate students studying NLP, deep learning, or AI can use the tool to supplement textbook and lecture material with hands-on exploration.</li>
+        <li><strong>Educators:</strong> Instructors can use the tool as a live classroom demonstration, adjusting parameters in real time to illustrate specific concepts during lectures.</li>
+        <li><strong>Practitioners:</strong> Machine learning engineers and data scientists who work with transformer-based models can deepen their understanding of the attention mechanism and sampling strategies.</li>
+        <li><strong>Researchers:</strong> The tool provides a rapid prototyping environment for exploring how different attention patterns emerge under various input conditions.</li>
+    </ul>
+
+    <h3>7.3 Advantages Over Existing Resources</h3>
+
+    <p>
+        Compared to existing educational resources for transformer understanding, Transformer Explainer offers several distinct advantages:
+    </p>
+
+    <table>
+        <caption>Table 4: Comparison with existing educational approaches</caption>
+        <tr>
+            <th>Approach</th>
+            <th>Interactivity</th>
+            <th>Dependencies</th>
+            <th>Accessibility</th>
+        </tr>
+        <tr>
+            <td>Textbook diagrams</td>
+            <td>None (static)</td>
+            <td>None</td>
+            <td>High (but limited depth)</td>
+        </tr>
+        <tr>
+            <td>Video tutorials</td>
+            <td>None (passive)</td>
+            <td>None</td>
+            <td>High (but no exploration)</td>
+        </tr>
+        <tr>
+            <td>Jupyter notebooks</td>
+            <td>Moderate</td>
+            <td>Python, PyTorch, etc.</td>
+            <td>Low (requires setup)</td>
+        </tr>
+        <tr>
+            <td>BertViz / exBERT</td>
+            <td>High</td>
+            <td>Python, model weights</td>
+            <td>Low (requires installation)</td>
+        </tr>
+        <tr>
+            <td>Transformer Explainer</td>
+            <td>High</td>
+            <td>None (pure browser)</td>
+            <td>High (zero setup)</td>
+        </tr>
+    </table>
+
+    <!-- 8. Conclusion and Future Work -->
+    <h2>8. Conclusion and Future Work</h2>
+
+    <p>
+        Transformer Explainer (SimulasiLLM) demonstrates that the core mechanisms of transformer-based language models can be made accessible and intuitive through carefully designed interactive visualization. By decomposing the GPT-2 inference pipeline into observable, manipulable stages&mdash;from token embedding through autoregressive sampling&mdash;the tool enables learners to build concrete mental models of how LLMs process and generate text. The zero-dependency, browser-based architecture ensures universal accessibility, requiring no installation, configuration, or technical prerequisites beyond a modern web browser.
+    </p>
+
+    <p>
+        The deliberate design choice to implement the entire tool in pure HTML, CSS, and JavaScript, without frameworks or external libraries, serves a dual purpose: it eliminates all barriers to deployment and usage, and it makes the tool's source code itself a transparent, inspectable learning resource.
+    </p>
+
+    <p>
+        Future directions for this work include:
+    </p>
+
+    <ul>
+        <li>Extension to multi-head attention visualization, displaying how different attention heads capture different linguistic relationships.</li>
+        <li>Integration of real GPT-2 model weights via WebAssembly or ONNX.js for browser-based inference with actual model outputs.</li>
+        <li>Visualization of layer normalization, feed-forward network stages, and residual connections to cover the full transformer block.</li>
+        <li>Comparative visualization across different model sizes (GPT-2 Small, Medium, Large, XL) to illustrate how scale affects attention patterns.</li>
+        <li>Support for custom vocabularies and tokenizers to enable exploration with domain-specific text.</li>
+        <li>Addition of guided tutorials and structured exercises for classroom use, with step-by-step walkthroughs of key concepts.</li>
+        <li>Cross-attention visualization to extend the tool toward encoder-decoder architectures.</li>
+    </ul>
+
+    <p>
+        The complete source code is available at <a href="https://github.com/romizone/simulasillm">https://github.com/romizone/simulasillm</a> under the MIT license, and a live deployment is accessible at <a href="https://simulasillm.vercel.app/">https://simulasillm.vercel.app/</a>.
+    </p>
+
+    <!-- References -->
+    <h2>References</h2>
+
+    <div class="references">
+        <ol>
+            <li>Vaswani, A., Shazeer, N., Parmar, N., Uszkoreit, J., Jones, L., Gomez, A.N., Kaiser, L., &amp; Polosukhin, I. (2017). Attention Is All You Need. <em>Advances in Neural Information Processing Systems (NeurIPS)</em>, 30, pp. 5998&ndash;6008.</li>
+            <li>Radford, A., Wu, J., Child, R., Luan, D., Amodei, D., &amp; Sutskever, I. (2019). Language Models are Unsupervised Multitask Learners. <em>OpenAI Technical Report</em>.</li>
+            <li>Radford, A., Narasimhan, K., Salimans, T., &amp; Sutskever, I. (2018). Improving Language Understanding by Generative Pre-Training. <em>OpenAI Technical Report</em>.</li>
+            <li>Brown, T.B., Mann, B., Ryder, N., Subbiah, M., et al. (2020). Language Models are Few-Shot Learners. <em>Advances in Neural Information Processing Systems (NeurIPS)</em>, 33, pp. 1877&ndash;1901.</li>
+            <li>Devlin, J., Chang, M.W., Lee, K., &amp; Toutanova, K. (2019). BERT: Pre-training of Deep Bidirectional Transformers for Language Understanding. <em>Proceedings of NAACL-HLT 2019</em>, pp. 4171&ndash;4186.</li>
+            <li>Vig, J. (2019). A Multiscale Visualization of Attention in the Transformer Model. <em>Proceedings of the 57th Annual Meeting of the Association for Computational Linguistics: System Demonstrations</em>, pp. 37&ndash;42.</li>
+            <li>Hoover, B., Strobelt, H., &amp; Gehrmann, S. (2020). exBERT: A Visual Analysis Tool to Explore Learned Representations in Transformer Models. <em>Proceedings of the 58th Annual Meeting of the ACL: System Demonstrations</em>, pp. 187&ndash;196.</li>
+            <li>Holtzman, A., Buys, J., Du, L., Forbes, M., &amp; Choi, Y. (2020). The Curious Case of Neural Text Degeneration. <em>Proceedings of the 8th International Conference on Learning Representations (ICLR)</em>.</li>
+            <li>Fan, A., Lewis, M., &amp; Dauphin, Y. (2018). Hierarchical Neural Story Generation. <em>Proceedings of the 56th Annual Meeting of the Association for Computational Linguistics</em>, pp. 889&ndash;898.</li>
+            <li>Alammar, J. (2018). The Illustrated Transformer. <em>Blog Post</em>. https://jalammar.github.io/illustrated-transformer/</li>
+        </ol>
+    </div>
+
+    <!-- Footer -->
+    <div class="paper-footer">
+        <p>Transformer Explainer (SimulasiLLM) &mdash; Open Source &middot; MIT License &middot; <a href="https://github.com/romizone/simulasillm">github.com/romizone/simulasillm</a></p>
+    </div>
+
+</body>
+</html>

@@ -1,0 +1,602 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>TranscribeAI: A Fully Offline AI-Powered Transcription System with Speaker Diarization</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Times New Roman', Times, Georgia, serif;
+            line-height: 1.6;
+            color: #111;
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 60px 40px;
+            background: #fff;
+        }
+
+        /* Title Block */
+        .paper-title {
+            text-align: center;
+            margin-bottom: 30px;
+        }
+
+        .paper-title h1 {
+            font-size: 1.65em;
+            font-weight: 700;
+            line-height: 1.3;
+            margin-bottom: 18px;
+        }
+
+        .paper-title .authors {
+            font-size: 1.05em;
+            margin-bottom: 4px;
+        }
+
+        .paper-title .affiliation {
+            font-size: 0.95em;
+            color: #555;
+            font-style: italic;
+        }
+
+        .paper-title .email {
+            font-size: 0.9em;
+            color: #1a73e8;
+            margin-top: 4px;
+        }
+
+        .paper-title .date {
+            font-size: 0.9em;
+            color: #777;
+            margin-top: 10px;
+        }
+
+        /* Abstract */
+        .abstract {
+            background: #f9f9f9;
+            border-left: 4px solid #333;
+            padding: 18px 22px;
+            margin: 30px 0;
+        }
+
+        .abstract h2 {
+            font-size: 1em;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            margin-bottom: 8px;
+        }
+
+        .abstract p {
+            font-size: 0.95em;
+            color: #333;
+            text-align: justify;
+        }
+
+        /* Keywords */
+        .keywords {
+            font-size: 0.9em;
+            color: #555;
+            margin-bottom: 30px;
+        }
+
+        .keywords strong {
+            color: #333;
+        }
+
+        /* Sections */
+        h2 {
+            font-size: 1.2em;
+            font-weight: 700;
+            margin-top: 30px;
+            margin-bottom: 12px;
+            border-bottom: 1px solid #ddd;
+            padding-bottom: 4px;
+        }
+
+        h3 {
+            font-size: 1.05em;
+            font-weight: 700;
+            margin-top: 18px;
+            margin-bottom: 8px;
+        }
+
+        p {
+            text-align: justify;
+            margin-bottom: 12px;
+            font-size: 0.97em;
+        }
+
+        /* Tables */
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 16px 0;
+            font-size: 0.9em;
+        }
+
+        table th, table td {
+            border: 1px solid #ccc;
+            padding: 8px 12px;
+            text-align: left;
+        }
+
+        table th {
+            background: #f0f0f0;
+            font-weight: 700;
+        }
+
+        table caption {
+            font-size: 0.88em;
+            font-style: italic;
+            color: #555;
+            margin-bottom: 6px;
+            text-align: left;
+        }
+
+        /* Figures */
+        .figure {
+            text-align: center;
+            margin: 24px 0;
+        }
+
+        .figure img {
+            max-width: 100%;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+        }
+
+        .figure .caption {
+            font-size: 0.88em;
+            font-style: italic;
+            color: #555;
+            margin-top: 8px;
+        }
+
+        /* Code */
+        code {
+            font-family: 'Courier New', Courier, monospace;
+            background: #f4f4f4;
+            padding: 2px 5px;
+            border-radius: 3px;
+            font-size: 0.88em;
+        }
+
+        pre {
+            background: #f4f4f4;
+            padding: 14px 18px;
+            border-radius: 4px;
+            overflow-x: auto;
+            font-size: 0.85em;
+            margin: 12px 0;
+            border: 1px solid #e0e0e0;
+        }
+
+        /* Lists */
+        ul, ol {
+            margin: 10px 0 12px 24px;
+            font-size: 0.97em;
+        }
+
+        li {
+            margin-bottom: 4px;
+        }
+
+        /* Pipeline */
+        .pipeline {
+            background: #f7f9fc;
+            border: 1px solid #d4e2f7;
+            border-radius: 6px;
+            padding: 16px 20px;
+            text-align: center;
+            font-size: 0.95em;
+            color: #1a5276;
+            margin: 16px 0;
+            letter-spacing: 0.3px;
+        }
+
+        /* References */
+        .references {
+            font-size: 0.88em;
+        }
+
+        .references ol {
+            margin-left: 20px;
+        }
+
+        .references li {
+            margin-bottom: 8px;
+            color: #444;
+        }
+
+        /* Footer */
+        .paper-footer {
+            text-align: center;
+            font-size: 0.8em;
+            color: #aaa;
+            margin-top: 50px;
+            padding-top: 20px;
+            border-top: 1px solid #eee;
+        }
+
+        /* Print */
+        @media print {
+            body {
+                padding: 20px;
+            }
+        }
+
+        @media (max-width: 600px) {
+            body {
+                padding: 20px 15px;
+            }
+
+            .paper-title h1 {
+                font-size: 1.3em;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Title Block -->
+    <div class="paper-title">
+        <h1>TranscribeAI: A Fully Offline AI-Powered Transcription System with Speaker Diarization</h1>
+        <div class="authors">Romi Nur Ismanto</div>
+        <div class="affiliation">Independent AI Research Lab, Jakarta, Indonesia</div>
+        <div class="email">rominur@gmail.com</div>
+        <div class="date">February 2025</div>
+    </div>
+
+    <!-- Abstract -->
+    <div class="abstract">
+        <h2>Abstract</h2>
+        <p>
+            We present TranscribeAI, an open-source, fully offline automatic speech recognition (ASR) system with integrated speaker diarization capabilities. The system operates entirely on local hardware without requiring API keys, cloud services, or internet connectivity, addressing critical privacy and cost concerns in audio transcription workflows. TranscribeAI employs a dual-engine architecture combining faster-whisper for CPU-based inference and mlx-whisper for Apple Silicon GPU acceleration, achieving 2&ndash;5x performance improvements on supported hardware. The system supports 99+ languages with automatic language detection, provides speaker identification through MFCC feature extraction and agglomerative clustering, and exports results in multiple formats (SRT, TXT, DOCX). We describe the system architecture, processing pipeline, and design decisions that enable production-quality transcription in a zero-cost, privacy-preserving local environment.
+        </p>
+    </div>
+
+    <!-- Keywords -->
+    <div class="keywords">
+        <strong>Keywords:</strong> automatic speech recognition, speaker diarization, Whisper, offline transcription, privacy-preserving AI, open-source, Apple Silicon, MLX
+    </div>
+
+    <!-- 1. Introduction -->
+    <h2>1. Introduction</h2>
+
+    <p>
+        Automatic speech recognition (ASR) has made remarkable advances in recent years, driven by large-scale transformer-based models such as OpenAI's Whisper. However, most production ASR systems rely on cloud-based APIs, introducing concerns around data privacy, recurring costs, internet dependency, and latency. For organizations handling sensitive audio data&mdash;such as legal proceedings, medical dictation, financial meetings, or journalistic interviews&mdash;transmitting audio to third-party servers presents unacceptable risks.
+    </p>
+
+    <p>
+        TranscribeAI addresses these challenges by providing a complete, locally-executed transcription system that requires zero cloud connectivity. The system combines state-of-the-art Whisper models with speaker diarization capabilities, offering a practical solution for users who require accurate, multi-speaker transcription without compromising data sovereignty.
+    </p>
+
+    <p>
+        The key contributions of this work are:
+    </p>
+    <ul>
+        <li>A dual-engine architecture that dynamically selects between CPU and GPU inference paths based on available hardware.</li>
+        <li>Integration of speaker diarization using MFCC-based feature extraction and agglomerative clustering, eliminating the need for external diarization APIs.</li>
+        <li>A complete, user-friendly system with both web-based and command-line interfaces, supporting 99+ languages and multiple export formats.</li>
+        <li>Full offline operation with automatic model caching, enabling air-gapped deployment scenarios.</li>
+    </ul>
+
+    <!-- 2. Related Work -->
+    <h2>2. Related Work</h2>
+
+    <p>
+        OpenAI's Whisper (Radford et al., 2022) demonstrated that large-scale weakly supervised pretraining on 680,000 hours of multilingual audio data can produce robust ASR models. The original Whisper models, while powerful, require significant computational resources and are primarily accessed through cloud APIs.
+    </p>
+
+    <p>
+        The faster-whisper project (Guillaumie, 2023) reimplemented Whisper using CTranslate2, achieving up to 4x faster inference with comparable accuracy. For Apple Silicon devices, mlx-whisper (Apple MLX Team, 2024) leverages the Metal Performance Shaders framework to achieve GPU-accelerated inference natively on M-series chips.
+    </p>
+
+    <p>
+        Speaker diarization&mdash;the task of determining "who spoke when"&mdash;has traditionally relied on systems like pyannote.audio (Bredin et al., 2020) which require pretrained neural models and significant dependencies. TranscribeAI takes a lightweight approach using classical signal processing (MFCC features) combined with agglomerative clustering from scikit-learn, reducing dependency complexity while maintaining practical accuracy for common use cases.
+    </p>
+
+    <!-- 3. System Architecture -->
+    <h2>3. System Architecture</h2>
+
+    <p>
+        TranscribeAI follows a modular architecture organized into four primary layers: audio input processing, speech recognition engine, speaker attribution, and output formatting.
+    </p>
+
+    <h3>3.1 Dual-Engine Design</h3>
+
+    <p>
+        The system implements a hardware-aware engine selection strategy. On Apple Silicon Macs (M1/M2/M3/M4), the system utilizes mlx-whisper, which leverages the Metal GPU framework for 2&ndash;5x faster inference compared to CPU-based processing. On all other platforms (Intel Macs, Linux, Windows), the system defaults to faster-whisper with CTranslate2 optimization.
+    </p>
+
+    <table>
+        <caption>Table 1: Engine selection based on hardware platform</caption>
+        <tr>
+            <th>Platform</th>
+            <th>Engine</th>
+            <th>Acceleration</th>
+        </tr>
+        <tr>
+            <td>Apple Silicon (M1/M2/M3/M4)</td>
+            <td>mlx-whisper</td>
+            <td>Metal GPU, 2&ndash;5x speedup</td>
+        </tr>
+        <tr>
+            <td>macOS Intel</td>
+            <td>faster-whisper</td>
+            <td>CTranslate2 (CPU)</td>
+        </tr>
+        <tr>
+            <td>Linux</td>
+            <td>faster-whisper</td>
+            <td>CTranslate2 (CPU/CUDA)</td>
+        </tr>
+        <tr>
+            <td>Windows</td>
+            <td>faster-whisper</td>
+            <td>CTranslate2 (CPU)</td>
+        </tr>
+    </table>
+
+    <h3>3.2 Processing Pipeline</h3>
+
+    <p>
+        The transcription workflow follows a five-stage pipeline:
+    </p>
+
+    <div class="pipeline">
+        Audio Upload &rarr; Model Loading &rarr; Whisper Transcription &rarr; Speaker Identification &rarr; Format Export
+    </div>
+
+    <p>
+        <strong>Stage 1 &mdash; Audio Upload:</strong> The system accepts multiple audio and video formats including MP3, MP4, WAV, M4A, OGG, FLAC, and WEBM. Input files are normalized and preprocessed using pydub and librosa for consistent downstream processing.
+    </p>
+
+    <p>
+        <strong>Stage 2 &mdash; Model Loading:</strong> Whisper models are loaded from local cache. On first use, models are downloaded once and stored persistently, enabling fully offline operation thereafter. Users select from five model sizes based on their speed/accuracy requirements.
+    </p>
+
+    <p>
+        <strong>Stage 3 &mdash; Whisper Transcription:</strong> The selected engine processes the audio through the Whisper model, producing timestamped text segments with word-level confidence scores. Voice activity detection (VAD) using Silero VAD removes silence segments to improve processing efficiency and output quality.
+    </p>
+
+    <p>
+        <strong>Stage 4 &mdash; Speaker Identification:</strong> For multi-speaker audio, the system extracts Mel-frequency cepstral coefficient (MFCC) features from each speech segment using librosa. These features are then clustered using agglomerative clustering (scikit-learn) to assign speaker labels (Speaker 1, Speaker 2, etc.) to each transcribed segment.
+    </p>
+
+    <p>
+        <strong>Stage 5 &mdash; Format Export:</strong> The final transcription with speaker labels and timestamps is exported in the user's chosen format: SRT (subtitles), TXT (plain text), or DOCX (formatted document with speaker annotations).
+    </p>
+
+    <h3>3.3 Model Specifications</h3>
+
+    <table>
+        <caption>Table 2: Available Whisper model configurations</caption>
+        <tr>
+            <th>Model</th>
+            <th>Parameters</th>
+            <th>Download Size</th>
+            <th>Speed Profile</th>
+            <th>Recommended Use</th>
+        </tr>
+        <tr>
+            <td>tiny</td>
+            <td>39M</td>
+            <td>~75 MB</td>
+            <td>Fastest</td>
+            <td>Quick drafts, low-resource devices</td>
+        </tr>
+        <tr>
+            <td>base</td>
+            <td>74M</td>
+            <td>~145 MB</td>
+            <td>Very Fast</td>
+            <td>General-purpose, balanced</td>
+        </tr>
+        <tr>
+            <td>small</td>
+            <td>244M</td>
+            <td>~465 MB</td>
+            <td>Balanced</td>
+            <td>Recommended default</td>
+        </tr>
+        <tr>
+            <td>medium</td>
+            <td>769M</td>
+            <td>~1.5 GB</td>
+            <td>Slower</td>
+            <td>High accuracy needs</td>
+        </tr>
+        <tr>
+            <td>large-v3</td>
+            <td>1,550M</td>
+            <td>~2.9 GB</td>
+            <td>Slowest</td>
+            <td>Maximum accuracy</td>
+        </tr>
+    </table>
+
+    <!-- 4. Speaker Diarization -->
+    <h2>4. Speaker Diarization</h2>
+
+    <p>
+        Speaker diarization in TranscribeAI employs a lightweight, dependency-minimal approach designed for offline operation without requiring large pretrained neural diarization models.
+    </p>
+
+    <h3>4.1 Feature Extraction</h3>
+
+    <p>
+        For each speech segment produced by the Whisper model, the system extracts 13-dimensional MFCC feature vectors using librosa. MFCCs capture the spectral envelope characteristics of speech that are distinctive across speakers, including vocal tract shape, pitch patterns, and speaking style.
+    </p>
+
+    <h3>4.2 Clustering</h3>
+
+    <p>
+        The extracted MFCC features are aggregated per segment and fed into an agglomerative clustering algorithm (scikit-learn's <code>AgglomerativeClustering</code>). This bottom-up hierarchical approach iteratively merges the most similar segments until the target number of speakers is reached. Users can specify the expected number of speakers, or the system applies a default configuration.
+    </p>
+
+    <p>
+        This approach trades some accuracy compared to neural diarization systems (e.g., pyannote.audio) for significantly reduced complexity, zero additional model downloads, and fully offline operation.
+    </p>
+
+    <!-- 5. Implementation Details -->
+    <h2>5. Implementation Details</h2>
+
+    <h3>5.1 Technology Stack</h3>
+
+    <table>
+        <caption>Table 3: Core technology stack</caption>
+        <tr>
+            <th>Component</th>
+            <th>Technology</th>
+            <th>Purpose</th>
+        </tr>
+        <tr>
+            <td>Backend</td>
+            <td>Flask (Python 3.10+)</td>
+            <td>Web server and API routing</td>
+        </tr>
+        <tr>
+            <td>ASR Engine (CPU)</td>
+            <td>faster-whisper / CTranslate2</td>
+            <td>Optimized CPU inference</td>
+        </tr>
+        <tr>
+            <td>ASR Engine (GPU)</td>
+            <td>mlx-whisper / Metal</td>
+            <td>Apple Silicon GPU acceleration</td>
+        </tr>
+        <tr>
+            <td>Audio Processing</td>
+            <td>librosa, pydub, numpy</td>
+            <td>Feature extraction, format conversion</td>
+        </tr>
+        <tr>
+            <td>Speaker Clustering</td>
+            <td>scikit-learn</td>
+            <td>Agglomerative clustering</td>
+        </tr>
+        <tr>
+            <td>VAD</td>
+            <td>Silero VAD</td>
+            <td>Voice activity detection</td>
+        </tr>
+        <tr>
+            <td>Document Export</td>
+            <td>python-docx</td>
+            <td>DOCX generation with formatting</td>
+        </tr>
+        <tr>
+            <td>Frontend</td>
+            <td>Vanilla HTML/CSS/JS</td>
+            <td>Zero-dependency web UI</td>
+        </tr>
+    </table>
+
+    <h3>5.2 User Interfaces</h3>
+
+    <p>
+        TranscribeAI provides two interaction modes:
+    </p>
+
+    <p>
+        <strong>Web Interface:</strong> A professional dark-themed web UI accessible at <code>http://localhost:8080</code>, featuring drag-and-drop file upload, real-time progress visualization across all five pipeline stages, an integrated audio player, and search functionality within transcription results.
+    </p>
+
+    <p>
+        <strong>Command-Line Interface:</strong> A CLI tool for batch processing and scripting integration:
+    </p>
+
+    <pre>python3 transcribe_cli.py audio.mp3 --language id --model medium --speakers 3</pre>
+
+    <h3>5.3 Model Management</h3>
+
+    <p>
+        Models are automatically downloaded on first use and cached locally in the user's home directory. A dedicated model management script allows pre-downloading models for air-gapped environments:
+    </p>
+
+    <pre>python3 download_models.py small medium large-v3</pre>
+
+    <!-- 6. Privacy and Security -->
+    <h2>6. Privacy and Security Considerations</h2>
+
+    <p>
+        TranscribeAI was designed with privacy as a first-class requirement. The system guarantees:
+    </p>
+
+    <ul>
+        <li><strong>Zero data transmission:</strong> All audio processing occurs exclusively on the local machine. No audio data, transcription results, or metadata are ever sent to external servers.</li>
+        <li><strong>No API dependencies:</strong> The system requires no API keys, authentication tokens, or account registration.</li>
+        <li><strong>Air-gapped operation:</strong> After initial model download, the system operates without any internet connectivity.</li>
+        <li><strong>Open-source auditability:</strong> The complete source code is available under the MIT license for independent security review.</li>
+    </ul>
+
+    <p>
+        These properties make TranscribeAI suitable for sensitive domains including legal transcription, medical dictation, confidential business meetings, and journalistic source protection.
+    </p>
+
+    <!-- 7. Platform Compatibility -->
+    <h2>7. Platform Compatibility</h2>
+
+    <p>
+        TranscribeAI supports all major desktop operating systems:
+    </p>
+
+    <ul>
+        <li><strong>macOS (Apple Silicon):</strong> Full GPU acceleration via mlx-whisper and Metal framework. Recommended platform for maximum performance.</li>
+        <li><strong>macOS (Intel):</strong> CPU-based inference via faster-whisper with CTranslate2 optimization.</li>
+        <li><strong>Linux:</strong> Full support with optional CUDA GPU acceleration where available.</li>
+        <li><strong>Windows:</strong> Full support via CPU inference with faster-whisper.</li>
+    </ul>
+
+    <!-- 8. Conclusion -->
+    <h2>8. Conclusion and Future Work</h2>
+
+    <p>
+        TranscribeAI demonstrates that production-quality speech transcription with speaker diarization can be achieved entirely on local hardware, without cloud dependencies or recurring costs. The dual-engine architecture ensures optimal performance across hardware platforms, while the MFCC-based diarization approach provides practical speaker identification without heavy neural model dependencies.
+    </p>
+
+    <p>
+        Future directions include:
+    </p>
+
+    <ul>
+        <li>Integration of neural speaker diarization models for improved accuracy in complex multi-speaker scenarios.</li>
+        <li>Support for real-time streaming transcription from microphone input.</li>
+        <li>Fine-tuning Whisper models for domain-specific vocabularies (medical, legal, technical).</li>
+        <li>Batch processing optimization for large audio archives.</li>
+        <li>Speaker embedding databases for persistent speaker identification across sessions.</li>
+    </ul>
+
+    <p>
+        The complete source code is available at <a href="https://github.com/romizone/transcribeAI">https://github.com/romizone/transcribeAI</a> under the MIT license.
+    </p>
+
+    <!-- References -->
+    <h2>References</h2>
+
+    <div class="references">
+        <ol>
+            <li>Radford, A., Kim, J.W., Xu, T., Brockman, G., McLeavey, C., & Sutskever, I. (2022). Robust Speech Recognition via Large-Scale Weak Supervision. <em>arXiv preprint arXiv:2212.04356</em>.</li>
+            <li>Guillaumie, G. (2023). faster-whisper: Faster Whisper transcription with CTranslate2. <em>GitHub Repository</em>. https://github.com/SYSTRAN/faster-whisper</li>
+            <li>Apple MLX Team (2024). mlx-whisper: Whisper inference on Apple Silicon using MLX. <em>GitHub Repository</em>. https://github.com/ml-explore/mlx-examples</li>
+            <li>Bredin, H., Yin, R., Coria, J.M., et al. (2020). pyannote.audio: neural building blocks for speaker diarization. <em>ICASSP 2020</em>.</li>
+            <li>McFee, B., Raffel, C., Liang, D., et al. (2015). librosa: Audio and Music Signal Analysis in Python. <em>Proceedings of the 14th Python in Science Conference</em>, pp. 18-25.</li>
+            <li>Pedregosa, F., Varoquaux, G., Gramfort, A., et al. (2011). Scikit-learn: Machine Learning in Python. <em>Journal of Machine Learning Research</em>, 12, pp. 2825-2830.</li>
+            <li>Silero Team (2021). Silero VAD: pre-trained enterprise-grade Voice Activity Detector. <em>GitHub Repository</em>. https://github.com/snakers4/silero-vad</li>
+        </ol>
+    </div>
+
+    <!-- Footer -->
+    <div class="paper-footer">
+        <p>TranscribeAI &mdash; Open Source &middot; MIT License &middot; <a href="https://github.com/romizone/transcribeAI">github.com/romizone/transcribeAI</a></p>
+    </div>
+
+</body>
+</html>

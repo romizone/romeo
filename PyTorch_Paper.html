@@ -1,0 +1,790 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>PyTorch Neural Network Interactive Simulation: A Web-Based Educational Platform for Deep Learning Fundamentals</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Times New Roman', Times, Georgia, serif;
+            line-height: 1.6;
+            color: #111;
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 60px 40px;
+            background: #fff;
+        }
+
+        /* Title Block */
+        .paper-title {
+            text-align: center;
+            margin-bottom: 30px;
+        }
+
+        .paper-title h1 {
+            font-size: 1.65em;
+            font-weight: 700;
+            line-height: 1.3;
+            margin-bottom: 18px;
+        }
+
+        .paper-title .authors {
+            font-size: 1.05em;
+            margin-bottom: 4px;
+        }
+
+        .paper-title .affiliation {
+            font-size: 0.95em;
+            color: #555;
+            font-style: italic;
+        }
+
+        .paper-title .email {
+            font-size: 0.9em;
+            color: #1a73e8;
+            margin-top: 4px;
+        }
+
+        .paper-title .date {
+            font-size: 0.9em;
+            color: #777;
+            margin-top: 10px;
+        }
+
+        /* Abstract */
+        .abstract {
+            background: #f9f9f9;
+            border-left: 4px solid #333;
+            padding: 18px 22px;
+            margin: 30px 0;
+        }
+
+        .abstract h2 {
+            font-size: 1em;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            margin-bottom: 8px;
+        }
+
+        .abstract p {
+            font-size: 0.95em;
+            color: #333;
+            text-align: justify;
+        }
+
+        /* Keywords */
+        .keywords {
+            font-size: 0.9em;
+            color: #555;
+            margin-bottom: 30px;
+        }
+
+        .keywords strong {
+            color: #333;
+        }
+
+        /* Sections */
+        h2 {
+            font-size: 1.2em;
+            font-weight: 700;
+            margin-top: 30px;
+            margin-bottom: 12px;
+            border-bottom: 1px solid #ddd;
+            padding-bottom: 4px;
+        }
+
+        h3 {
+            font-size: 1.05em;
+            font-weight: 700;
+            margin-top: 18px;
+            margin-bottom: 8px;
+        }
+
+        p {
+            text-align: justify;
+            margin-bottom: 12px;
+            font-size: 0.97em;
+        }
+
+        /* Tables */
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 16px 0;
+            font-size: 0.9em;
+        }
+
+        table th, table td {
+            border: 1px solid #ccc;
+            padding: 8px 12px;
+            text-align: left;
+        }
+
+        table th {
+            background: #f0f0f0;
+            font-weight: 700;
+        }
+
+        table caption {
+            font-size: 0.88em;
+            font-style: italic;
+            color: #555;
+            margin-bottom: 6px;
+            text-align: left;
+        }
+
+        /* Figures */
+        .figure {
+            text-align: center;
+            margin: 24px 0;
+        }
+
+        .figure img {
+            max-width: 100%;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+        }
+
+        .figure .caption {
+            font-size: 0.88em;
+            font-style: italic;
+            color: #555;
+            margin-top: 8px;
+        }
+
+        /* Code */
+        code {
+            font-family: 'Courier New', Courier, monospace;
+            background: #f4f4f4;
+            padding: 2px 5px;
+            border-radius: 3px;
+            font-size: 0.88em;
+        }
+
+        pre {
+            background: #f4f4f4;
+            padding: 14px 18px;
+            border-radius: 4px;
+            overflow-x: auto;
+            font-size: 0.85em;
+            margin: 12px 0;
+            border: 1px solid #e0e0e0;
+        }
+
+        /* Lists */
+        ul, ol {
+            margin: 10px 0 12px 24px;
+            font-size: 0.97em;
+        }
+
+        li {
+            margin-bottom: 4px;
+        }
+
+        /* Pipeline */
+        .pipeline {
+            background: #f7f9fc;
+            border: 1px solid #d4e2f7;
+            border-radius: 6px;
+            padding: 16px 20px;
+            text-align: center;
+            font-size: 0.95em;
+            color: #1a5276;
+            margin: 16px 0;
+            letter-spacing: 0.3px;
+        }
+
+        /* References */
+        .references {
+            font-size: 0.88em;
+        }
+
+        .references ol {
+            margin-left: 20px;
+        }
+
+        .references li {
+            margin-bottom: 8px;
+            color: #444;
+        }
+
+        /* Footer */
+        .paper-footer {
+            text-align: center;
+            font-size: 0.8em;
+            color: #aaa;
+            margin-top: 50px;
+            padding-top: 20px;
+            border-top: 1px solid #eee;
+        }
+
+        /* Print */
+        @media print {
+            body {
+                padding: 20px;
+            }
+        }
+
+        @media (max-width: 600px) {
+            body {
+                padding: 20px 15px;
+            }
+
+            .paper-title h1 {
+                font-size: 1.3em;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Title Block -->
+    <div class="paper-title">
+        <h1>PyTorch Neural Network Interactive Simulation: A Web-Based Educational Platform for Deep Learning Fundamentals</h1>
+        <div class="authors">Romi Nur Ismanto</div>
+        <div class="affiliation">Independent AI Research Lab, Jakarta, Indonesia</div>
+        <div class="email">rominur@gmail.com</div>
+        <div class="date">February 2025</div>
+    </div>
+
+    <!-- Abstract -->
+    <div class="abstract">
+        <h2>Abstract</h2>
+        <p>
+            We present PyTorch Neural Network Interactive Simulation, an open-source web-based educational platform designed to bridge the gap between theoretical deep learning concepts and practical PyTorch implementation. The system provides real-time visualization of neural network training, allowing users to dynamically adjust network architecture&mdash;including the number of hidden layers and neurons per layer&mdash;configure hyperparameters such as learning rate and activation functions, and observe the training process as it unfolds. A distinctive feature of the platform is its auto-generated PyTorch code panel, which produces syntactically correct, runnable PyTorch code that mirrors the user's current configuration in real time. The system employs the XOR classification problem as its primary pedagogical vehicle, offering interactive decision boundary visualization that demonstrates how neural networks learn to separate non-linearly separable data. Users can click on individual neurons during training to inspect activation values, weights, and biases, providing granular insight into network internals. The platform is organized into four instructional tabs&mdash;Live Simulation, PyTorch Concepts, XOR Playground, and Training Pipeline&mdash;each targeting a specific aspect of neural network education. Built with Next.js, TypeScript, Tailwind CSS, and Framer Motion, the system is deployed as a responsive web application accessible at <a href="https://pytorch-ecru.vercel.app/">https://pytorch-ecru.vercel.app/</a>.
+        </p>
+    </div>
+
+    <!-- Keywords -->
+    <div class="keywords">
+        <strong>Keywords:</strong> neural network visualization, PyTorch, interactive simulation, deep learning education, XOR problem, decision boundary, web-based learning, feedforward networks, backpropagation
+    </div>
+
+    <!-- 1. Introduction -->
+    <h2>1. Introduction</h2>
+
+    <p>
+        Deep learning has become a foundational technology across artificial intelligence, powering advances in computer vision, natural language processing, reinforcement learning, and scientific computing. PyTorch (Paszke et al., 2019) has emerged as one of the most widely adopted frameworks for deep learning research and development, valued for its dynamic computation graph, Pythonic interface, and extensive ecosystem. However, learning PyTorch and the neural network concepts it implements remains a significant challenge for newcomers, who must simultaneously grasp mathematical foundations (linear algebra, calculus, optimization), architectural principles (layers, activations, loss functions), and framework-specific APIs.
+    </p>
+
+    <p>
+        Traditional educational approaches rely on static textbook diagrams, pre-recorded lectures, and code-first tutorials that require learners to run scripts and interpret numerical outputs. These methods often fail to convey the dynamic, iterative nature of neural network training&mdash;the gradual adjustment of weights through backpropagation, the evolution of decision boundaries over epochs, and the sensitivity of convergence to hyperparameter choices. Research in educational technology consistently demonstrates that interactive, visual learning environments produce deeper understanding and better retention compared to passive instruction (Freeman et al., 2014).
+    </p>
+
+    <p>
+        This paper presents PyTorch Neural Network Interactive Simulation, a web-based platform that addresses these pedagogical gaps through four key design principles:
+    </p>
+
+    <ul>
+        <li><strong>Real-time visualization:</strong> Neural network architecture, weights, activations, and training dynamics are rendered as interactive visual elements that update continuously during training.</li>
+        <li><strong>Direct manipulation:</strong> Users modify network structure and hyperparameters through intuitive controls and observe immediate consequences, fostering experimental learning.</li>
+        <li><strong>Code-first pedagogy:</strong> An auto-generated PyTorch code panel translates every user configuration into valid, runnable PyTorch code, connecting visual intuition to practical implementation.</li>
+        <li><strong>Progressive complexity:</strong> Four organized tabs guide learners from basic simulation through theoretical concepts, practical experimentation, and training pipeline understanding.</li>
+    </ul>
+
+    <p>
+        The platform is freely accessible at <a href="https://pytorch-ecru.vercel.app/">https://pytorch-ecru.vercel.app/</a> and the source code is available at <a href="https://github.com/romizone/pytorch">https://github.com/romizone/pytorch</a> under an open-source license.
+    </p>
+
+    <!-- 2. Neural Network Fundamentals -->
+    <h2>2. Neural Network Fundamentals</h2>
+
+    <p>
+        To contextualize the educational goals of the platform, we briefly review the core neural network concepts that the system is designed to teach.
+    </p>
+
+    <h3>2.1 Feedforward Neural Networks</h3>
+
+    <p>
+        A feedforward neural network consists of an input layer, one or more hidden layers, and an output layer. Each layer contains a set of neurons (units), and each neuron in a given layer is connected to every neuron in the subsequent layer through weighted connections. For a single neuron receiving inputs <em>x</em><sub>1</sub>, <em>x</em><sub>2</sub>, ..., <em>x</em><sub>n</sub>, the pre-activation value <em>z</em> is computed as:
+    </p>
+
+    <div class="pipeline">
+        z = w<sub>1</sub>x<sub>1</sub> + w<sub>2</sub>x<sub>2</sub> + ... + w<sub>n</sub>x<sub>n</sub> + b = W<sup>T</sup>x + b
+    </div>
+
+    <p>
+        where <em>W</em> = [w<sub>1</sub>, w<sub>2</sub>, ..., w<sub>n</sub>]<sup>T</sup> is the weight vector and <em>b</em> is the bias term. The output of the neuron is then obtained by applying a nonlinear activation function <em>f</em> to the pre-activation: <em>a</em> = <em>f</em>(<em>z</em>).
+    </p>
+
+    <h3>2.2 Activation Functions</h3>
+
+    <p>
+        Activation functions introduce nonlinearity into the network, enabling it to learn complex mappings. The platform supports and visualizes several common activation functions:
+    </p>
+
+    <table>
+        <caption>Table 1: Activation functions supported by the platform</caption>
+        <tr>
+            <th>Function</th>
+            <th>Definition</th>
+            <th>Range</th>
+            <th>Properties</th>
+        </tr>
+        <tr>
+            <td>Sigmoid</td>
+            <td>&sigma;(z) = 1 / (1 + e<sup>&minus;z</sup>)</td>
+            <td>(0, 1)</td>
+            <td>Smooth, prone to vanishing gradients</td>
+        </tr>
+        <tr>
+            <td>Tanh</td>
+            <td>tanh(z) = (e<sup>z</sup> &minus; e<sup>&minus;z</sup>) / (e<sup>z</sup> + e<sup>&minus;z</sup>)</td>
+            <td>(&minus;1, 1)</td>
+            <td>Zero-centered, stronger gradients</td>
+        </tr>
+        <tr>
+            <td>ReLU</td>
+            <td>f(z) = max(0, z)</td>
+            <td>[0, &infin;)</td>
+            <td>Computationally efficient, sparse activation</td>
+        </tr>
+    </table>
+
+    <h3>2.3 Backpropagation</h3>
+
+    <p>
+        Backpropagation (Rumelhart, Hinton, & Williams, 1986) is the algorithm used to compute the gradient of the loss function with respect to each weight in the network. It applies the chain rule of calculus recursively from the output layer back through the hidden layers. Given a loss function <em>L</em>, the gradient for a weight <em>w</em><sub>ij</sub> connecting neuron <em>j</em> in layer <em>l</em>&minus;1 to neuron <em>i</em> in layer <em>l</em> is computed as:
+    </p>
+
+    <div class="pipeline">
+        &part;L / &part;w<sub>ij</sub> = &part;L / &part;a<sub>i</sub> &middot; &part;a<sub>i</sub> / &part;z<sub>i</sub> &middot; &part;z<sub>i</sub> / &part;w<sub>ij</sub>
+    </div>
+
+    <p>
+        These gradients are used by optimization algorithms such as stochastic gradient descent (SGD) to update weights iteratively: <em>w</em> &larr; <em>w</em> &minus; &eta; &middot; &nabla;<sub>w</sub><em>L</em>, where &eta; is the learning rate. The platform visualizes this entire process, showing how gradients flow backward through the network and how weight updates progressively reduce the loss.
+    </p>
+
+    <h3>2.4 The XOR Problem</h3>
+
+    <p>
+        The exclusive-or (XOR) function is a classic problem in neural network history. XOR maps two binary inputs to a binary output according to: XOR(0,0)=0, XOR(0,1)=1, XOR(1,0)=1, XOR(1,1)=0. Minsky and Papert (1969) famously demonstrated that a single-layer perceptron cannot solve XOR because the classes are not linearly separable&mdash;no single straight line can divide the input space into correct regions. This limitation contributed to the first "AI winter" and the temporary decline of neural network research.
+    </p>
+
+    <p>
+        The resolution came with multi-layer networks: a network with at least one hidden layer containing two or more neurons can learn the XOR function by constructing intermediate representations that transform the non-linearly separable input space into a linearly separable hidden representation. This makes XOR an ideal pedagogical problem for demonstrating why depth matters in neural networks, and it serves as the primary training task throughout the platform.
+    </p>
+
+    <table>
+        <caption>Table 2: XOR truth table</caption>
+        <tr>
+            <th>Input x<sub>1</sub></th>
+            <th>Input x<sub>2</sub></th>
+            <th>XOR Output</th>
+        </tr>
+        <tr>
+            <td>0</td>
+            <td>0</td>
+            <td>0</td>
+        </tr>
+        <tr>
+            <td>0</td>
+            <td>1</td>
+            <td>1</td>
+        </tr>
+        <tr>
+            <td>1</td>
+            <td>0</td>
+            <td>1</td>
+        </tr>
+        <tr>
+            <td>1</td>
+            <td>1</td>
+            <td>0</td>
+        </tr>
+    </table>
+
+    <!-- 3. System Design -->
+    <h2>3. System Design</h2>
+
+    <p>
+        The platform is organized around a tab-based interface that guides learners through progressively more detailed aspects of neural network training and PyTorch implementation. Each tab provides a self-contained learning environment while maintaining coherent pedagogical flow across the entire system.
+    </p>
+
+    <h3>3.1 Architectural Overview</h3>
+
+    <p>
+        The application follows a client-side computation model where all neural network operations&mdash;forward propagation, loss computation, backpropagation, and weight updates&mdash;are executed directly in the browser using TypeScript. This eliminates the need for a backend server, reduces latency to zero, and allows the platform to function entirely offline after initial page load. The rendering pipeline combines React's component-based architecture with Framer Motion animations to produce smooth, real-time visualizations of training dynamics.
+    </p>
+
+    <div class="pipeline">
+        User Configuration &rarr; Network Construction &rarr; Forward Pass &rarr; Loss Computation &rarr; Backpropagation &rarr; Weight Update &rarr; Visualization Render
+    </div>
+
+    <h3>3.2 Tab Structure</h3>
+
+    <p>
+        The platform's four tabs represent a carefully sequenced curriculum:
+    </p>
+
+    <table>
+        <caption>Table 3: Platform tab organization and pedagogical objectives</caption>
+        <tr>
+            <th>Tab</th>
+            <th>Purpose</th>
+            <th>Key Features</th>
+        </tr>
+        <tr>
+            <td>Live Simulation</td>
+            <td>Hands-on training with real-time feedback</td>
+            <td>Architecture controls, training visualization, neuron inspection, auto-generated code</td>
+        </tr>
+        <tr>
+            <td>PyTorch Concepts</td>
+            <td>Theoretical grounding in PyTorch abstractions</td>
+            <td>Tensors, autograd, nn.Module, optimizers, loss functions</td>
+        </tr>
+        <tr>
+            <td>XOR Playground</td>
+            <td>Focused experimentation with the XOR problem</td>
+            <td>Decision boundary visualization, epoch-by-epoch progression</td>
+        </tr>
+        <tr>
+            <td>Training Pipeline</td>
+            <td>Understanding the complete training loop</td>
+            <td>Step-by-step pipeline breakdown, data flow visualization</td>
+        </tr>
+    </table>
+
+    <h3>3.3 Live Simulation Tab</h3>
+
+    <p>
+        The Live Simulation tab serves as the platform's primary interactive environment. Users are presented with a visual neural network diagram that dynamically reflects their configuration choices. The interface provides controls for:
+    </p>
+
+    <ul>
+        <li><strong>Architecture configuration:</strong> Users can add or remove hidden layers (1&ndash;4 layers) and adjust the number of neurons per layer (1&ndash;8 neurons), with the network diagram updating instantaneously.</li>
+        <li><strong>Hyperparameter tuning:</strong> Adjustable learning rate, activation function selection (Sigmoid, Tanh, ReLU), and epoch count allow users to experiment with different training configurations.</li>
+        <li><strong>Training controls:</strong> Start, pause, resume, and reset buttons provide full control over the training process, enabling users to observe training at their own pace.</li>
+        <li><strong>Loss monitoring:</strong> A real-time loss curve plots the training loss at each epoch, providing immediate feedback on convergence behavior.</li>
+    </ul>
+
+    <h3>3.4 PyTorch Concepts Tab</h3>
+
+    <p>
+        This tab provides structured educational content covering the fundamental abstractions of the PyTorch framework. Topics are organized progressively, beginning with tensors as the basic data structure, advancing through automatic differentiation (<code>torch.autograd</code>), the module system (<code>torch.nn.Module</code>), built-in loss functions, and optimization algorithms. Each concept is accompanied by illustrative code snippets and visual explanations that connect to the behaviors observed in the Live Simulation tab.
+    </p>
+
+    <h3>3.5 XOR Playground Tab</h3>
+
+    <p>
+        The XOR Playground provides a focused environment for experimenting with the XOR classification problem. Its central feature is the decision boundary visualization, which renders a 2D heatmap showing how the network partitions the input space into class regions. As training progresses, users observe the boundary evolve from a random initial state to the characteristic non-linear separation required by XOR. This visual feedback directly connects to the theoretical discussion of why single-layer perceptrons fail on XOR while multi-layer networks succeed.
+    </p>
+
+    <h3>3.6 Training Pipeline Tab</h3>
+
+    <p>
+        The Training Pipeline tab deconstructs the neural network training loop into its constituent steps, presenting each stage as a discrete, visually annotated module. This tab is designed to help learners understand the complete flow of data and gradients through a training iteration, from input preparation through forward propagation, loss evaluation, gradient computation, and parameter updates.
+    </p>
+
+    <!-- 4. Interactive Visualization -->
+    <h2>4. Interactive Visualization</h2>
+
+    <p>
+        The platform's visualization system is designed to make the abstract mathematics of neural networks tangible and observable. Every component of the network&mdash;neurons, connections, activations, weights, biases, and gradients&mdash;is rendered as an interactive visual element.
+    </p>
+
+    <h3>4.1 Real-Time Training Visualization</h3>
+
+    <p>
+        During training, the network diagram updates at each epoch to reflect current network state. Connection lines between neurons are rendered with thickness proportional to the absolute value of the corresponding weight and colored according to sign (positive weights in one color, negative weights in another). This encoding allows users to immediately perceive which connections carry the most influence and how weight magnitudes evolve over training.
+    </p>
+
+    <p>
+        Neuron nodes display their current activation values using color intensity, providing an at-a-glance view of signal propagation through the network. The combination of animated weight lines and activation colors creates a dynamic visualization that captures the essence of the forward pass computation.
+    </p>
+
+    <h3>4.2 Neuron Inspection</h3>
+
+    <p>
+        A distinctive feature of the platform is the ability to click on any individual neuron during training to inspect its internal state. Upon clicking, a detail panel displays:
+    </p>
+
+    <ul>
+        <li>The neuron's current pre-activation value (<em>z</em>) and post-activation value (<em>a</em>).</li>
+        <li>All incoming weights and the associated bias term.</li>
+        <li>The gradient of the loss with respect to the neuron's output.</li>
+        <li>A historical trace of activation values over training epochs.</li>
+    </ul>
+
+    <p>
+        This inspection capability transforms the network from an opaque computational box into a transparent, explorable system, enabling learners to trace exactly how individual neurons contribute to the network's predictions.
+    </p>
+
+    <h3>4.3 Weight Visualization</h3>
+
+    <p>
+        Connection weights are visualized through multiple complementary encodings. Line thickness represents weight magnitude, providing rapid visual assessment of which connections are dominant. Color encoding distinguishes positive weights (excitatory connections) from negative weights (inhibitory connections). During training, smooth animations interpolate between weight states, creating a fluid visualization of the optimization process. Users can hover over individual connections to view precise numerical weight values.
+    </p>
+
+    <h3>4.4 Decision Boundary Visualization</h3>
+
+    <p>
+        The decision boundary visualizer renders a continuous 2D heatmap of the network's output across the input space. For the XOR problem with two inputs, the system evaluates the network at a dense grid of points in the [0, 1] &times; [0, 1] input space and maps the output values to a color gradient. The four XOR training points are overlaid on the heatmap with distinct markers indicating their class labels.
+    </p>
+
+    <p>
+        As training progresses, the decision boundary evolves from an essentially random partition to the characteristic non-linear separation required by XOR. This visualization provides direct visual evidence of the network's learning process and makes concrete the abstract notion of learning a non-linear function.
+    </p>
+
+    <!-- 5. Auto-Generated Code -->
+    <h2>5. Auto-Generated PyTorch Code</h2>
+
+    <p>
+        One of the platform's most distinctive pedagogical features is the auto-generated PyTorch code panel. This component produces syntactically correct, runnable Python code that precisely mirrors the user's current network configuration and hyperparameter settings. The generated code updates in real time as users modify the architecture, change the activation function, adjust the learning rate, or alter any other parameter.
+    </p>
+
+    <h3>5.1 Code Generation Architecture</h3>
+
+    <p>
+        The code generator maintains a reactive binding between the UI state and a code template engine. When the user modifies any configuration parameter, the system:
+    </p>
+
+    <ol>
+        <li>Captures the current network specification (layer sizes, activation function, learning rate, number of epochs).</li>
+        <li>Maps the specification to PyTorch API calls, selecting appropriate classes from <code>torch.nn</code> (e.g., <code>nn.Linear</code>, <code>nn.Sigmoid</code>, <code>nn.ReLU</code>).</li>
+        <li>Generates a complete Python script including model class definition, training data, loss function, optimizer, and training loop.</li>
+        <li>Renders the code with syntax highlighting in the code panel.</li>
+    </ol>
+
+    <h3>5.2 Pedagogical Value</h3>
+
+    <p>
+        The auto-generated code serves multiple educational functions. First, it demystifies the relationship between visual network diagrams and PyTorch implementations by showing that the two representations are equivalent. Second, it provides a starting template that learners can copy, modify, and execute in their own Python environments, bridging the gap between the simulation and real PyTorch development. Third, by updating in real time, it teaches learners to associate each UI action with the corresponding API call&mdash;for example, adding a hidden layer in the UI immediately adds an <code>nn.Linear</code> layer to the generated model class.
+    </p>
+
+    <p>
+        A representative example of generated code for a 2-layer network with ReLU activation:
+    </p>
+
+    <pre>import torch
+import torch.nn as nn
+import torch.optim as optim
+
+class XORNet(nn.Module):
+    def __init__(self):
+        super(XORNet, self).__init__()
+        self.layer1 = nn.Linear(2, 4)
+        self.layer2 = nn.Linear(4, 4)
+        self.output = nn.Linear(4, 1)
+        self.relu = nn.ReLU()
+        self.sigmoid = nn.Sigmoid()
+
+    def forward(self, x):
+        x = self.relu(self.layer1(x))
+        x = self.relu(self.layer2(x))
+        x = self.sigmoid(self.output(x))
+        return x
+
+# Training data (XOR)
+X = torch.tensor([[0,0],[0,1],[1,0],[1,1]], dtype=torch.float32)
+y = torch.tensor([[0],[1],[1],[0]], dtype=torch.float32)
+
+model = XORNet()
+criterion = nn.BCELoss()
+optimizer = optim.SGD(model.parameters(), lr=0.1)
+
+for epoch in range(1000):
+    output = model(X)
+    loss = criterion(output, y)
+    optimizer.zero_grad()
+    loss.backward()
+    optimizer.step()</pre>
+
+    <!-- 6. XOR Playground -->
+    <h2>6. XOR Playground</h2>
+
+    <p>
+        The XOR Playground tab provides a dedicated environment for deep exploration of the XOR classification problem, which occupies a unique position in the history of neural network research.
+    </p>
+
+    <h3>6.1 Historical Significance</h3>
+
+    <p>
+        The XOR problem gained prominence through the work of Minsky and Papert (1969), who rigorously proved that single-layer perceptrons&mdash;the dominant neural network model of the era&mdash;could not compute the XOR function. Because the four XOR data points are not linearly separable in two-dimensional input space, no single hyperplane can correctly classify all four examples. This theoretical limitation was widely interpreted as a fundamental barrier for neural networks, contributing to reduced funding and interest in the field during the 1970s.
+    </p>
+
+    <p>
+        The resolution arrived with the development of multi-layer networks and the backpropagation algorithm (Rumelhart, Hinton, & Williams, 1986). A network with a single hidden layer containing at least two neurons can learn XOR by constructing a non-linear transformation of the input space. The hidden layer effectively maps the four input points to a new representation where they become linearly separable, and the output layer then applies a linear classification boundary in this transformed space.
+    </p>
+
+    <h3>6.2 Decision Boundary Evolution</h3>
+
+    <p>
+        The XOR Playground's primary visualization shows the decision boundary as a 2D color-coded heatmap. The system evaluates the network's output across a fine grid covering the input domain and renders regions where the output exceeds 0.5 in one color and regions below 0.5 in another. Users observe the boundary evolve through several characteristic phases:
+    </p>
+
+    <ol>
+        <li><strong>Random initialization:</strong> The boundary is an approximately linear partition, typically misclassifying at least one XOR point.</li>
+        <li><strong>Early training:</strong> The boundary begins to curve as hidden neurons develop differentiated responses to the input space.</li>
+        <li><strong>Transition:</strong> The boundary develops the characteristic non-linear shape required by XOR, often forming curved or angular regions that correctly separate the diagonal classes.</li>
+        <li><strong>Convergence:</strong> The boundary stabilizes into a clear non-linear partition, with high confidence (output near 0 or 1) across most of the input space.</li>
+    </ol>
+
+    <p>
+        Users can adjust the number of hidden neurons, learning rate, and activation function to observe how these choices affect the shape, speed, and quality of boundary formation. This hands-on experimentation builds intuition about capacity, optimization dynamics, and the role of nonlinearity.
+    </p>
+
+    <!-- 7. Implementation Details -->
+    <h2>7. Implementation Details</h2>
+
+    <h3>7.1 Technology Stack</h3>
+
+    <table>
+        <caption>Table 4: Core technology stack</caption>
+        <tr>
+            <th>Component</th>
+            <th>Technology</th>
+            <th>Purpose</th>
+        </tr>
+        <tr>
+            <td>Framework</td>
+            <td>Next.js 14+</td>
+            <td>React-based application framework with server-side rendering and static export</td>
+        </tr>
+        <tr>
+            <td>Language</td>
+            <td>TypeScript</td>
+            <td>Type-safe development with compile-time error detection</td>
+        </tr>
+        <tr>
+            <td>Styling</td>
+            <td>Tailwind CSS</td>
+            <td>Utility-first CSS framework for responsive, consistent design</td>
+        </tr>
+        <tr>
+            <td>Animations</td>
+            <td>Framer Motion</td>
+            <td>Declarative animations for smooth training visualizations and UI transitions</td>
+        </tr>
+        <tr>
+            <td>Neural Network Engine</td>
+            <td>Custom TypeScript</td>
+            <td>Client-side forward/backward propagation and weight update logic</td>
+        </tr>
+        <tr>
+            <td>Visualization</td>
+            <td>HTML Canvas / SVG</td>
+            <td>Network diagrams, decision boundary heatmaps, loss curves</td>
+        </tr>
+        <tr>
+            <td>Deployment</td>
+            <td>Vercel</td>
+            <td>Serverless edge deployment with global CDN distribution</td>
+        </tr>
+        <tr>
+            <td>Version Control</td>
+            <td>Git / GitHub</td>
+            <td>Source code management and collaboration</td>
+        </tr>
+    </table>
+
+    <h3>7.2 Client-Side Neural Network Engine</h3>
+
+    <p>
+        All neural network computations are performed entirely in the browser using a custom TypeScript implementation. The engine supports configurable feedforward architectures with arbitrary numbers of hidden layers and neurons. Forward propagation computes activations layer by layer, storing intermediate values for use during backpropagation. The backward pass implements the standard backpropagation algorithm, computing gradients via the chain rule and updating weights using stochastic gradient descent.
+    </p>
+
+    <p>
+        The decision to implement the neural network engine in TypeScript rather than using WebAssembly-compiled C/C++ or WebGL-based computation was deliberate: for the small network sizes used in the educational context (typically 2&ndash;20 neurons), JavaScript/TypeScript performance is more than adequate, and the resulting code is significantly more readable and maintainable.
+    </p>
+
+    <h3>7.3 Responsive Design</h3>
+
+    <p>
+        The application uses Tailwind CSS utility classes to ensure full responsiveness across device sizes. Network diagrams scale dynamically to fit available viewport width, control panels reorganize from horizontal to vertical layouts on narrow screens, and touch interactions are fully supported for tablet-based learning scenarios. The combination of Next.js static export and Vercel edge deployment ensures sub-second load times globally.
+    </p>
+
+    <!-- 8. Educational Impact -->
+    <h2>8. Educational Impact</h2>
+
+    <p>
+        The platform is designed to address several well-documented challenges in deep learning education, leveraging principles from constructivist learning theory and interactive visualization research.
+    </p>
+
+    <h3>8.1 Bridging Theory and Practice</h3>
+
+    <p>
+        A persistent challenge in deep learning education is the gap between mathematical formulations and practical implementation. Students may understand the backpropagation equations in the abstract but struggle to connect these to PyTorch's <code>loss.backward()</code> and <code>optimizer.step()</code> calls. The platform addresses this by presenting both representations simultaneously: the visual network shows the mathematical operations as they occur, while the auto-generated code panel shows the corresponding PyTorch implementation. This dual representation enables learners to build bidirectional mappings between mathematical concepts and code.
+    </p>
+
+    <h3>8.2 Experimental Learning</h3>
+
+    <p>
+        The interactive controls encourage a hypothesis-driven learning approach. Learners can formulate questions ("What happens if I increase the learning rate?", "Will adding another layer help convergence?", "How does ReLU compare to Sigmoid on XOR?") and immediately test them by adjusting parameters and observing outcomes. This tight feedback loop supports the kind of iterative experimentation that is central to practical deep learning work but difficult to achieve with static educational materials.
+    </p>
+
+    <h3>8.3 Demystifying Network Internals</h3>
+
+    <p>
+        Neural networks are often perceived as "black boxes" whose internal operations are opaque and inscrutable. The neuron inspection feature directly counters this perception by making every internal value&mdash;weights, biases, activations, gradients&mdash;accessible through a single click. Learners can trace the flow of information from input through hidden layers to output, observing exactly how each neuron transforms its inputs and contributes to the network's predictions. This transparency builds confidence and understanding that transfers to working with larger, production-scale networks.
+    </p>
+
+    <h3>8.4 Accessibility and Reach</h3>
+
+    <p>
+        As a web-based platform requiring no installation, no Python environment setup, and no GPU hardware, the system eliminates common barriers to entry in deep learning education. Learners in resource-constrained environments can access the full platform from any modern web browser, making deep learning concepts accessible to a broader audience than traditional programming-first approaches.
+    </p>
+
+    <!-- 9. Conclusion and Future Work -->
+    <h2>9. Conclusion and Future Work</h2>
+
+    <p>
+        PyTorch Neural Network Interactive Simulation demonstrates that interactive, web-based visualization can serve as a powerful complement to traditional deep learning education. By combining real-time network visualization, neuron-level inspection, decision boundary rendering, and auto-generated PyTorch code, the platform provides a multi-modal learning experience that connects mathematical foundations to practical implementation. The use of the XOR problem as a pedagogical vehicle offers historical context, manageable complexity, and rich visual feedback that makes abstract concepts tangible.
+    </p>
+
+    <p>
+        The platform's client-side architecture ensures zero-latency interaction, offline capability, and universal accessibility, while the progressive tab-based curriculum guides learners from experimentation through conceptual understanding to practical PyTorch fluency.
+    </p>
+
+    <p>
+        Future directions for the platform include:
+    </p>
+
+    <ul>
+        <li>Support for additional network architectures, including convolutional neural networks (CNNs) and recurrent neural networks (RNNs), with corresponding visualizations.</li>
+        <li>Integration of additional training datasets beyond XOR, such as circle/spiral classification and simple regression tasks, to demonstrate broader network capabilities.</li>
+        <li>Implementation of advanced optimization algorithms (Adam, RMSProp, learning rate scheduling) with comparative visualization of convergence behaviors.</li>
+        <li>Addition of regularization techniques (dropout, L2 regularization, batch normalization) with visual demonstrations of their effects on training dynamics and generalization.</li>
+        <li>Gradient flow visualization showing the propagation of gradients backward through the network, with color-coded magnitude encoding to illustrate vanishing and exploding gradient phenomena.</li>
+        <li>Collaborative features enabling instructors to create guided exercises and share specific network configurations with students.</li>
+        <li>Exportable training reports summarizing architecture, hyperparameters, training curves, and final performance for use in coursework submissions.</li>
+    </ul>
+
+    <p>
+        The complete source code is available at <a href="https://github.com/romizone/pytorch">https://github.com/romizone/pytorch</a> and the live platform is accessible at <a href="https://pytorch-ecru.vercel.app/">https://pytorch-ecru.vercel.app/</a>.
+    </p>
+
+    <!-- References -->
+    <h2>References</h2>
+
+    <div class="references">
+        <ol>
+            <li>Goodfellow, I., Bengio, Y., & Courville, A. (2016). <em>Deep Learning</em>. MIT Press. https://www.deeplearningbook.org/</li>
+            <li>Paszke, A., Gross, S., Massa, F., Lerer, A., Bradbury, J., Chanan, G., Killeen, T., Lin, Z., Gimelshein, N., Antiga, L., Desmaison, A., K&ouml;pf, A., Yang, E., DeVito, Z., Raison, M., Tejani, A., Chilamkurthy, S., Steiner, B., Fang, L., Bai, J., & Chintala, S. (2019). PyTorch: An Imperative Style, High-Performance Deep Learning Library. <em>Advances in Neural Information Processing Systems 32 (NeurIPS 2019)</em>.</li>
+            <li>Rumelhart, D.E., Hinton, G.E., & Williams, R.J. (1986). Learning representations by back-propagating errors. <em>Nature</em>, 323(6088), 533&ndash;536.</li>
+            <li>Minsky, M., & Papert, S. (1969). <em>Perceptrons: An Introduction to Computational Geometry</em>. MIT Press.</li>
+            <li>Freeman, S., Eddy, S.L., McDonough, M., Smith, M.K., Okoroafor, N., Jordt, H., & Wenderoth, M.P. (2014). Active learning increases student performance in science, engineering, and mathematics. <em>Proceedings of the National Academy of Sciences</em>, 111(23), 8410&ndash;8415.</li>
+            <li>LeCun, Y., Bengio, Y., & Hinton, G. (2015). Deep learning. <em>Nature</em>, 521(7553), 436&ndash;444.</li>
+            <li>Glorot, X., & Bengio, Y. (2010). Understanding the difficulty of training deep feedforward neural networks. <em>Proceedings of the 13th International Conference on Artificial Intelligence and Statistics (AISTATS)</em>, pp. 249&ndash;256.</li>
+            <li>Kingma, D.P., & Ba, J. (2015). Adam: A Method for Stochastic Optimization. <em>Proceedings of the 3rd International Conference on Learning Representations (ICLR 2015)</em>.</li>
+            <li>Hornik, K., Stinchcombe, M., & White, H. (1989). Multilayer feedforward networks are universal approximators. <em>Neural Networks</em>, 2(5), 359&ndash;366.</li>
+            <li>Cybenko, G. (1989). Approximation by superpositions of a sigmoidal function. <em>Mathematics of Control, Signals, and Systems</em>, 2(4), 303&ndash;314.</li>
+            <li>Nair, V., & Hinton, G.E. (2010). Rectified linear units improve restricted Boltzmann machines. <em>Proceedings of the 27th International Conference on Machine Learning (ICML 2010)</em>.</li>
+            <li>Smilkov, D., Carter, S., Sculley, D., Vi&eacute;gas, F.B., & Wattenberg, M. (2017). Direct-Manipulation Visualization of Deep Networks. <em>ICML Workshop on Visualization for Deep Learning</em>.</li>
+        </ol>
+    </div>
+
+    <!-- Footer -->
+    <div class="paper-footer">
+        <p>PyTorch Neural Network Interactive Simulation &mdash; Open Source &middot; <a href="https://github.com/romizone/pytorch">github.com/romizone/pytorch</a> &middot; <a href="https://pytorch-ecru.vercel.app/">pytorch-ecru.vercel.app</a></p>
+    </div>
+
+</body>
+</html>

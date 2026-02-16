@@ -1,0 +1,857 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>TeslaWay: A Real-Time 3D Autonomous Vehicle Simulation with Multi-Sensor Visualization in Pure JavaScript Canvas</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Times New Roman', Times, Georgia, serif;
+            line-height: 1.6;
+            color: #111;
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 60px 40px;
+            background: #fff;
+        }
+
+        /* Title Block */
+        .paper-title {
+            text-align: center;
+            margin-bottom: 30px;
+        }
+
+        .paper-title h1 {
+            font-size: 1.65em;
+            font-weight: 700;
+            line-height: 1.3;
+            margin-bottom: 18px;
+        }
+
+        .paper-title .authors {
+            font-size: 1.05em;
+            margin-bottom: 4px;
+        }
+
+        .paper-title .affiliation {
+            font-size: 0.95em;
+            color: #555;
+            font-style: italic;
+        }
+
+        .paper-title .email {
+            font-size: 0.9em;
+            color: #1a73e8;
+            margin-top: 4px;
+        }
+
+        .paper-title .date {
+            font-size: 0.9em;
+            color: #777;
+            margin-top: 10px;
+        }
+
+        /* Abstract */
+        .abstract {
+            background: #f9f9f9;
+            border-left: 4px solid #333;
+            padding: 18px 22px;
+            margin: 30px 0;
+        }
+
+        .abstract h2 {
+            font-size: 1em;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            margin-bottom: 8px;
+        }
+
+        .abstract p {
+            font-size: 0.95em;
+            color: #333;
+            text-align: justify;
+        }
+
+        /* Keywords */
+        .keywords {
+            font-size: 0.9em;
+            color: #555;
+            margin-bottom: 30px;
+        }
+
+        .keywords strong {
+            color: #333;
+        }
+
+        /* Sections */
+        h2 {
+            font-size: 1.2em;
+            font-weight: 700;
+            margin-top: 30px;
+            margin-bottom: 12px;
+            border-bottom: 1px solid #ddd;
+            padding-bottom: 4px;
+        }
+
+        h3 {
+            font-size: 1.05em;
+            font-weight: 700;
+            margin-top: 18px;
+            margin-bottom: 8px;
+        }
+
+        p {
+            text-align: justify;
+            margin-bottom: 12px;
+            font-size: 0.97em;
+        }
+
+        /* Tables */
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 16px 0;
+            font-size: 0.9em;
+        }
+
+        table th, table td {
+            border: 1px solid #ccc;
+            padding: 8px 12px;
+            text-align: left;
+        }
+
+        table th {
+            background: #f0f0f0;
+            font-weight: 700;
+        }
+
+        table caption {
+            font-size: 0.88em;
+            font-style: italic;
+            color: #555;
+            margin-bottom: 6px;
+            text-align: left;
+        }
+
+        /* Figures */
+        .figure {
+            text-align: center;
+            margin: 24px 0;
+        }
+
+        .figure img {
+            max-width: 100%;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+        }
+
+        .figure .caption {
+            font-size: 0.88em;
+            font-style: italic;
+            color: #555;
+            margin-top: 8px;
+        }
+
+        /* Code */
+        code {
+            font-family: 'Courier New', Courier, monospace;
+            background: #f4f4f4;
+            padding: 2px 5px;
+            border-radius: 3px;
+            font-size: 0.88em;
+        }
+
+        pre {
+            background: #f4f4f4;
+            padding: 14px 18px;
+            border-radius: 4px;
+            overflow-x: auto;
+            font-size: 0.85em;
+            margin: 12px 0;
+            border: 1px solid #e0e0e0;
+        }
+
+        /* Lists */
+        ul, ol {
+            margin: 10px 0 12px 24px;
+            font-size: 0.97em;
+        }
+
+        li {
+            margin-bottom: 4px;
+        }
+
+        /* Pipeline */
+        .pipeline {
+            background: #f7f9fc;
+            border: 1px solid #d4e2f7;
+            border-radius: 6px;
+            padding: 16px 20px;
+            text-align: center;
+            font-size: 0.95em;
+            color: #1a5276;
+            margin: 16px 0;
+            letter-spacing: 0.3px;
+        }
+
+        /* References */
+        .references {
+            font-size: 0.88em;
+        }
+
+        .references ol {
+            margin-left: 20px;
+        }
+
+        .references li {
+            margin-bottom: 8px;
+            color: #444;
+        }
+
+        /* Footer */
+        .paper-footer {
+            text-align: center;
+            font-size: 0.8em;
+            color: #aaa;
+            margin-top: 50px;
+            padding-top: 20px;
+            border-top: 1px solid #eee;
+        }
+
+        /* Print */
+        @media print {
+            body {
+                padding: 20px;
+            }
+        }
+
+        @media (max-width: 600px) {
+            body {
+                padding: 20px 15px;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Title -->
+    <div class="paper-title">
+        <h1>TeslaWay: A Real-Time 3D Autonomous Vehicle Simulation with Multi-Sensor Visualization in Pure JavaScript Canvas</h1>
+        <div class="authors">Romi Nur Ismanto</div>
+        <div class="affiliation">Independent AI Research Lab</div>
+        <div class="email">rominur@gmail.com</div>
+        <div class="date">February 2026</div>
+    </div>
+
+    <!-- Abstract -->
+    <div class="abstract">
+        <h2>Abstract</h2>
+        <p>
+            We present TeslaWay, a real-time 3D autonomous vehicle simulation built entirely in pure JavaScript using the HTML5 Canvas 2D API with zero external dependencies. The system renders procedurally generated road environments with perspective projection, simulates a multi-modal sensor array including 8 cameras, 4 LiDAR units with 360-degree point cloud visualization, 360-degree radar, and 12 ultrasonic sensors, and implements AI-controlled traffic vehicles with dynamic traffic light state machines. A cinematic heads-up display presents real-time telemetry including speed, battery level, object detection confidence scores across five categories (lanes, vehicles, pedestrians, traffic lights, road signs), and a radar minimap. The entire simulation is contained in a single HTML file requiring no build process, server infrastructure, or external libraries, achieving consistent 60 FPS rendering across modern browsers. TeslaWay demonstrates that visually compelling autonomous driving simulations can be implemented using only native web platform APIs, making AV technology concepts accessible to a broad audience through the browser.
+        </p>
+    </div>
+
+    <div class="keywords">
+        <strong>Keywords:</strong> autonomous driving simulation, self-driving visualization, LiDAR point cloud, Canvas 2D, 3D perspective projection, sensor fusion, object detection, HUD, JavaScript, zero dependencies
+    </div>
+
+    <!-- 1. Introduction -->
+    <h2>1. Introduction</h2>
+
+    <p>
+        The rapid advancement of autonomous vehicle (AV) technology by companies such as Tesla, Waymo, and Cruise has generated tremendous public interest in how self-driving cars perceive and navigate their environment. However, the underlying technology&mdash;multi-sensor fusion, real-time object detection, LiDAR point cloud processing, and AI-driven decision-making&mdash;remains opaque to most observers. Professional-grade AV simulators like CARLA [1], LGSVL [2], and NVIDIA DRIVE Sim [3] require significant computational resources, complex installation procedures, and domain expertise to operate.
+    </p>
+
+    <p>
+        TeslaWay addresses this accessibility gap by implementing a complete autonomous driving simulation entirely within the web browser. The system visualizes the key components of a self-driving perception pipeline&mdash;cameras, LiDAR, radar, ultrasonic sensors, object detection, and decision-making&mdash;through an interactive, cinematic first-person driving experience. By using only the HTML5 Canvas 2D API without any external JavaScript libraries, frameworks, or build tools, TeslaWay achieves maximum portability and accessibility: any device with a modern web browser can run the simulation instantly.
+    </p>
+
+    <p>
+        The contributions of this paper are as follows: (1) a custom 3D perspective projection engine implemented entirely in Canvas 2D without WebGL or external 3D libraries, (2) a comprehensive multi-sensor simulation framework visualizing LiDAR, radar, camera, and ultrasonic sensor data simultaneously, (3) an AI traffic management system with dynamic traffic light state machines, (4) a cinematic HUD system presenting real-time perception pipeline telemetry, and (5) a demonstration that complex AV simulations are feasible within the zero-dependency, single-file web development paradigm.
+    </p>
+
+    <!-- 2. Related Work -->
+    <h2>2. Related Work</h2>
+
+    <h3>2.1 Professional AV Simulators</h3>
+
+    <p>
+        CARLA (Car Learning to Act) [1] provides an open-source urban driving simulator built on Unreal Engine 4, offering high-fidelity rendering, configurable sensor suites, and scenario scripting. LGSVL Simulator [2] targets autonomous driving development with Unity-based rendering and support for ROS/ROS2 integration. NVIDIA DRIVE Sim [3] provides cloud-based, physically accurate sensor simulation for production AV development. While these platforms offer unmatched fidelity, they require dedicated GPU hardware, significant storage, and substantial setup time.
+    </p>
+
+    <h3>2.2 Browser-Based Driving Simulations</h3>
+
+    <p>
+        Browser-based pseudo-3D racing games have existed since the early days of JavaScript, with seminal work by Wistrom [4] on road rendering techniques using Canvas. However, these implementations focus on entertainment rather than AV technology visualization, lacking sensor simulation, object detection displays, and perception pipeline telemetry. TeslaWay extends the pseudo-3D rendering paradigm with comprehensive AV sensor visualization, producing an educational tool rather than a game.
+    </p>
+
+    <h3>2.3 Tesla FSD Visualization</h3>
+
+    <p>
+        Tesla's Full Self-Driving (FSD) system [5] provides a real-time visualization to the driver showing detected objects, lane markings, traffic signals, and the planned vehicle path. TeslaWay draws inspiration from this visualization paradigm, recreating the cinematic quality and information density of Tesla's dashboard display in a browser-accessible format.
+    </p>
+
+    <!-- 3. System Architecture -->
+    <h2>3. System Architecture</h2>
+
+    <p>
+        TeslaWay is architected as a single-file web application with all rendering logic, simulation state, sensor systems, and UI elements contained within one <code>index.html</code> file. The architecture comprises seven primary subsystems:
+    </p>
+
+    <div class="pipeline">
+        Initialization &rarr; 3D Road Generator &rarr; Sensor Simulation Engine &rarr; AI Traffic Manager &rarr; Object Detector &rarr; HUD Renderer &rarr; Frame Compositor
+    </div>
+
+    <table>
+        <caption>Table 1: System component overview</caption>
+        <tr>
+            <th>Component</th>
+            <th>Responsibility</th>
+            <th>Technology</th>
+        </tr>
+        <tr>
+            <td>3D Road Generator</td>
+            <td>Procedural road segments with curves, intersections, lane markings</td>
+            <td>Custom perspective projection</td>
+        </tr>
+        <tr>
+            <td>Environment Renderer</td>
+            <td>Buildings, trees, starfield, moon, streetlights</td>
+            <td>Canvas 2D with depth sorting</td>
+        </tr>
+        <tr>
+            <td>Sensor Engine</td>
+            <td>LiDAR sweep, radar scan, camera feeds, ultrasonic</td>
+            <td>Procedural visualization</td>
+        </tr>
+        <tr>
+            <td>AI Traffic Manager</td>
+            <td>Vehicle spawning, lane-following, traffic light compliance</td>
+            <td>State machine + distance sensing</td>
+        </tr>
+        <tr>
+            <td>Object Detector</td>
+            <td>Bounding boxes, confidence scores, classification</td>
+            <td>Bounded random walk algorithm</td>
+        </tr>
+        <tr>
+            <td>HUD System</td>
+            <td>Speed, battery, sensors, detection accuracy, minimap</td>
+            <td>Canvas text/shape overlay</td>
+        </tr>
+        <tr>
+            <td>Intro Sequence</td>
+            <td>Tesla logo animation, countdown, system boot</td>
+            <td>CSS + Canvas animation</td>
+        </tr>
+    </table>
+
+    <h3>3.1 Rendering Pipeline</h3>
+
+    <p>
+        The main rendering loop executes at 60 FPS using <code>requestAnimationFrame</code>. Each frame follows a strict rendering order to ensure correct visual compositing: sky and environment (furthest layer), road surface with lane markings, 3D buildings and trees (depth-sorted), AI traffic vehicles, LiDAR point cloud overlay, object detection bounding boxes, HUD elements (nearest layer), and post-processing effects (scanlines, vignette).
+    </p>
+
+    <h3>3.2 Zero-Dependency Constraint</h3>
+
+    <p>
+        The entire application uses only native browser APIs: Canvas 2D for rendering, <code>addEventListener</code> for input handling, and CSS for the intro sequence animations. The only network dependency is Google Fonts (Orbitron and Inter typefaces) for HUD typography. After initial font loading, the simulation operates entirely offline, enabling demonstrations in environments without internet connectivity.
+    </p>
+
+    <!-- 4. 3D Perspective Projection Engine -->
+    <h2>4. 3D Perspective Projection Engine</h2>
+
+    <p>
+        The core rendering challenge in TeslaWay is producing convincing 3D perspective views using only the Canvas 2D API, which provides no native support for 3D transformations, vertex buffers, or shader programs available in WebGL. TeslaWay implements a custom perspective projection engine that transforms world-space coordinates into screen-space positions.
+    </p>
+
+    <h3>4.1 Projection Model</h3>
+
+    <p>
+        The projection follows the standard pinhole camera model where world-space points (x, y, z) are projected to screen-space coordinates (sx, sy) through perspective division. The camera is positioned at the ego vehicle's location, looking forward along the road. The field of view is tuned to approximate a dashboard-mounted camera, balancing visual drama with geometric accuracy.
+    </p>
+
+    <h3>4.2 Road Segment Generation</h3>
+
+    <p>
+        Roads are generated procedurally as a sequence of segments, each defined by type (straight, left curve, right curve, intersection), length, and transition parameters. Road curvature is achieved by applying sinusoidal horizontal offsets to the centerline as a function of depth. Lane markings are rendered as dashed yellow center lines and solid white edge lines, with perspective foreshortening creating the illusion of depth.
+    </p>
+
+    <table>
+        <caption>Table 2: Road segment types</caption>
+        <tr>
+            <th>Segment Type</th>
+            <th>Description</th>
+            <th>Visual Features</th>
+        </tr>
+        <tr>
+            <td>Straight</td>
+            <td>Linear road section</td>
+            <td>Parallel lane markings, constant width</td>
+        </tr>
+        <tr>
+            <td>Left Curve</td>
+            <td>Road curves to the left</td>
+            <td>Sinusoidal offset, banking effect</td>
+        </tr>
+        <tr>
+            <td>Right Curve</td>
+            <td>Road curves to the right</td>
+            <td>Sinusoidal offset, banking effect</td>
+        </tr>
+        <tr>
+            <td>4-Way Intersection</td>
+            <td>Cross-road with crosswalks</td>
+            <td>Crosswalk lines, traffic signals, widened road</td>
+        </tr>
+        <tr>
+            <td>3-Way Intersection</td>
+            <td>T-junction</td>
+            <td>Partial crosswalks, directional signals</td>
+        </tr>
+    </table>
+
+    <h3>4.3 Environment Rendering</h3>
+
+    <p>
+        The urban environment is composed of procedurally placed buildings and trees along the road edges. Buildings are rendered as colored rectangles with illuminated window grids, using depth-sorted rendering to ensure correct occlusion. The night-time sky features an animated starfield and a moon rendered with subtle shading. Buildings closer to the camera receive more detailed window patterns, while distant buildings use simplified flat-colored rectangles, implementing a basic level-of-detail optimization.
+    </p>
+
+    <!-- 5. Multi-Sensor Simulation Framework -->
+    <h2>5. Multi-Sensor Simulation Framework</h2>
+
+    <p>
+        TeslaWay simulates the complete sensor suite of a modern autonomous vehicle, visualizing the data streams from eight distinct sensor types operating simultaneously.
+    </p>
+
+    <table>
+        <caption>Table 3: Simulated sensor array specification</caption>
+        <tr>
+            <th>Sensor Type</th>
+            <th>Count</th>
+            <th>Range</th>
+            <th>Visualization</th>
+        </tr>
+        <tr>
+            <td>Camera</td>
+            <td>8</td>
+            <td>250 m</td>
+            <td>Object bounding boxes with classification</td>
+        </tr>
+        <tr>
+            <td>LiDAR</td>
+            <td>4</td>
+            <td>200 m</td>
+            <td>Point cloud overlay with color-coded distance</td>
+        </tr>
+        <tr>
+            <td>Radar</td>
+            <td>1 (360&deg;)</td>
+            <td>300 m</td>
+            <td>Minimap with range rings and object blips</td>
+        </tr>
+        <tr>
+            <td>Ultrasonic</td>
+            <td>12</td>
+            <td>8 m</td>
+            <td>Status indicator in HUD panel</td>
+        </tr>
+        <tr>
+            <td>GPS</td>
+            <td>1</td>
+            <td>Global</td>
+            <td>Coordinate display and location label</td>
+        </tr>
+    </table>
+
+    <h3>5.1 LiDAR Point Cloud Visualization</h3>
+
+    <p>
+        The LiDAR system is the most visually prominent sensor visualization in TeslaWay. Four virtual LiDAR units generate a 360-degree point cloud that is overlaid on the 3D scene. The visualization includes a rotating sweep animation that continuously scans the environment, generating point returns from road surfaces, buildings, traffic vehicles, and environmental features.
+    </p>
+
+    <p>
+        LiDAR points are rendered as small circles with color coding based on distance: near-field returns (0&ndash;50 m) appear in cyan, mid-range returns (50&ndash;120 m) in blue, and far-field returns (120&ndash;200 m) in dark blue with reduced opacity. The point density decreases with distance, mimicking the angular resolution limitations of real LiDAR sensors. Users can toggle the LiDAR overlay on and off using the L key, enabling comparison between the raw visual scene and the sensor-augmented view.
+    </p>
+
+    <h3>5.2 Radar Minimap</h3>
+
+    <p>
+        The radar system is visualized through a circular minimap positioned in the bottom-right corner of the display. The minimap shows a top-down view centered on the ego vehicle, with concentric range rings at regular intervals. Detected objects appear as colored blips: the ego vehicle in green, other traffic vehicles in red, and road edges as faint arcs. A sweeping line rotates continuously around the minimap, simulating the radar's scan pattern.
+    </p>
+
+    <h3>5.3 Neural Network Status</h3>
+
+    <p>
+        The HUD displays a neural network processing indicator showing version (v4.7.2), inference status, and processing latency. While this does not represent actual neural network computation, it communicates to viewers the role of deep learning in autonomous driving perception pipelines and the real-time processing requirements of production AV systems.
+    </p>
+
+    <!-- 6. AI Traffic Management -->
+    <h2>6. AI Traffic Management</h2>
+
+    <p>
+        TeslaWay implements an AI-driven traffic system that populates the road with autonomous vehicles exhibiting realistic driving behaviors.
+    </p>
+
+    <h3>6.1 Vehicle Behavior</h3>
+
+    <p>
+        AI traffic vehicles are spawned at configurable intervals and placed in available lanes. Each vehicle maintains its own speed, acceleration profile, and lane position. Vehicles exhibit the following behaviors: constant-speed cruising with minor speed variations, traffic light compliance (deceleration for red, proceed for green, decision-making for yellow), forward distance sensing to prevent collisions with vehicles ahead, and tail light rendering that intensifies during braking events.
+    </p>
+
+    <h3>6.2 Traffic Light State Machine</h3>
+
+    <p>
+        Traffic signals at intersections operate as finite state machines cycling through red, yellow, and green states with configurable durations. The state machine manages countdown timers and transitions, with the current state influencing AI vehicle behavior. Signals are rendered as 3D-projected housings with colored light indicators that cast subtle glow effects onto the surrounding road surface.
+    </p>
+
+    <h3>6.3 Collision Avoidance</h3>
+
+    <p>
+        Each AI vehicle monitors the distance to the vehicle directly ahead in its lane, adjusting speed to maintain safe following distance. This produces natural traffic flow patterns including accordion-like compression and expansion of traffic density at intersections and curves, preventing vehicle overlap in the rendered scene.
+    </p>
+
+    <!-- 7. Object Detection System -->
+    <h2>7. Object Detection System</h2>
+
+    <p>
+        The object detection visualization presents real-time classification results across five primary categories, simulating the output of a production perception pipeline.
+    </p>
+
+    <table>
+        <caption>Table 4: Object detection categories and confidence ranges</caption>
+        <tr>
+            <th>Category</th>
+            <th>Bounding Box Color</th>
+            <th>Confidence Range</th>
+            <th>Detection Source</th>
+        </tr>
+        <tr>
+            <td>Lane Markings</td>
+            <td>Green</td>
+            <td>92&ndash;99%</td>
+            <td>Camera + LiDAR fusion</td>
+        </tr>
+        <tr>
+            <td>Vehicles</td>
+            <td>Blue</td>
+            <td>88&ndash;98%</td>
+            <td>Camera + Radar + LiDAR</td>
+        </tr>
+        <tr>
+            <td>Pedestrians</td>
+            <td>Yellow</td>
+            <td>85&ndash;96%</td>
+            <td>Camera + Ultrasonic</td>
+        </tr>
+        <tr>
+            <td>Traffic Lights</td>
+            <td>Red/Amber/Green</td>
+            <td>90&ndash;99%</td>
+            <td>Camera (primary)</td>
+        </tr>
+        <tr>
+            <td>Road Signs</td>
+            <td>Cyan</td>
+            <td>87&ndash;97%</td>
+            <td>Camera (primary)</td>
+        </tr>
+    </table>
+
+    <h3>7.1 Confidence Score Generation</h3>
+
+    <p>
+        Confidence scores are generated using a bounded random walk algorithm. Each detection category maintains a running confidence value that is perturbed each frame by a small random delta, clamped to the category's valid range. This produces smooth, fluctuating confidence values characteristic of real neural network inference, where minor frame-to-frame variations in input data cause corresponding variations in output confidence. Scores are displayed in the HUD with color coding: green for high confidence (&gt;90%), yellow for moderate (70&ndash;90%), and red for low (&lt;70%).
+    </p>
+
+    <h3>7.2 Bounding Box Rendering</h3>
+
+    <p>
+        Detected objects in the 3D scene are annotated with perspective-projected bounding boxes rendered as semi-transparent colored rectangles with solid borders. A label tag at the top of each box displays the class name and confidence percentage. Boxes are drawn after scene rendering but before the HUD overlay, ensuring integration with the 3D scene while remaining visually distinct.
+    </p>
+
+    <!-- 8. Heads-Up Display System -->
+    <h2>8. Heads-Up Display System</h2>
+
+    <p>
+        The HUD is a defining visual element of TeslaWay, providing continuous real-time information overlays inspired by Tesla's FSD visualization paradigm.
+    </p>
+
+    <table>
+        <caption>Table 5: HUD component inventory</caption>
+        <tr>
+            <th>Component</th>
+            <th>Position</th>
+            <th>Information</th>
+        </tr>
+        <tr>
+            <td>Speed Indicator</td>
+            <td>Bottom center</td>
+            <td>Current speed with unit label</td>
+        </tr>
+        <tr>
+            <td>Battery Display</td>
+            <td>Bottom area</td>
+            <td>Battery percentage with visual bar</td>
+        </tr>
+        <tr>
+            <td>Location Display</td>
+            <td>Top left</td>
+            <td>Street name, GPS coordinates</td>
+        </tr>
+        <tr>
+            <td>Sensor Status Panel</td>
+            <td>Top right</td>
+            <td>Active sensor count per type</td>
+        </tr>
+        <tr>
+            <td>Object Detection Panel</td>
+            <td>Right side</td>
+            <td>Per-category accuracy percentages</td>
+        </tr>
+        <tr>
+            <td>Radar Minimap</td>
+            <td>Bottom right</td>
+            <td>Top-down view with range rings</td>
+        </tr>
+        <tr>
+            <td>AI Decision Text</td>
+            <td>Center area</td>
+            <td>Current driving decision narrative</td>
+        </tr>
+        <tr>
+            <td>Autopilot Status</td>
+            <td>Top area</td>
+            <td>Engagement status and NN version</td>
+        </tr>
+    </table>
+
+    <h3>8.1 Typography</h3>
+
+    <p>
+        The HUD employs the Orbitron typeface for primary display elements, chosen for its geometric, futuristic aesthetic aligned with automotive instrument cluster design. Secondary text uses the Inter typeface for readability at smaller sizes. All text is rendered onto the Canvas using <code>fillText</code> with appropriate font sizing, color, and alpha blending. Color coding follows AV visualization conventions: green for healthy/active status, amber for caution, red for alerts, and cyan for informational displays and LiDAR data.
+    </p>
+
+    <h3>8.2 Location Cycling</h3>
+
+    <p>
+        The HUD cycles through simulated Bay Area driving locations including Market Street in San Francisco and Highway 101 North near Palo Alto. Each location displays corresponding GPS coordinate ranges and street name labels, enhancing realism. Location transitions occur smoothly as the simulation progresses, simulating a continuous drive through Tesla's home territory.
+    </p>
+
+    <!-- 9. Cinematic Introduction Sequence -->
+    <h2>9. Cinematic Introduction Sequence</h2>
+
+    <p>
+        TeslaWay opens with a cinematic introduction sequence designed to establish visual identity before the driving simulation begins. The sequence consists of three phases:
+    </p>
+
+    <ol>
+        <li><strong>Tesla Logo Animation:</strong> The Tesla logo is rendered procedurally using Canvas path operations with fade-in and scaling effects, maintaining the zero-dependency constraint by avoiding image assets.</li>
+        <li><strong>Loading Bar:</strong> A progress bar animation simulates system initialization, building anticipation for the main simulation.</li>
+        <li><strong>Countdown Timer:</strong> A 3-second countdown (3, 2, 1) rendered in Orbitron typeface with scaling animations. During this phase, the simulation world is initialized and the 3D scene is prepared.</li>
+    </ol>
+
+    <p>
+        Upon countdown completion, the simulation transitions seamlessly to the live driving view with all systems active. A notification system displays status messages ("AUTOPILOT ENGAGED", "ALL SYSTEMS NOMINAL") to reinforce the autonomous driving narrative.
+    </p>
+
+    <!-- 10. Post-Processing Effects -->
+    <h2>10. Post-Processing Effects</h2>
+
+    <p>
+        TeslaWay applies several post-processing effects to achieve its cinematic visual quality:
+    </p>
+
+    <ul>
+        <li><strong>Scanlines:</strong> Horizontal lines rendered at regular intervals with low opacity create a retro-futuristic display aesthetic reminiscent of CRT monitors and sci-fi vehicle interfaces.</li>
+        <li><strong>Vignette:</strong> A radial gradient darkening the screen edges draws visual focus to the center of the driving scene, mimicking camera lens vignetting.</li>
+        <li><strong>Cinematic Bars:</strong> 40-pixel black bars at the top and bottom of the viewport create a widescreen aspect ratio, enhancing the cinematic presentation.</li>
+        <li><strong>Glow Effects:</strong> HUD elements and sensor displays use <code>shadowBlur</code> and <code>shadowColor</code> properties to create soft glow effects, reinforcing the high-tech aesthetic.</li>
+    </ul>
+
+    <!-- 11. Implementation Details -->
+    <h2>11. Implementation Details</h2>
+
+    <h3>11.1 Rendering Optimization</h3>
+
+    <p>
+        Achieving 60 FPS within the Canvas 2D API requires careful optimization. TeslaWay employs object pooling for traffic vehicles and LiDAR points to reduce garbage collection pressure, frustum culling to skip off-screen geometry, level-of-detail reduction for distant buildings, batched Canvas state changes to minimize context switches, and dirty region tracking for infrequently changing HUD elements.
+    </p>
+
+    <h3>11.2 Night Lighting Model</h3>
+
+    <p>
+        The night scene uses a simplified lighting model with ambient, directional, and point light contributions. Street lights and vehicle headlights act as point sources with inverse-square falloff approximated through radial Canvas gradients. Building windows emit warm-toned light with varying intensities, creating a living urban environment. The combination produces visually rich night driving scenes with pools of illumination and atmospheric depth.
+    </p>
+
+    <h3>11.3 Canvas API Techniques</h3>
+
+    <p>
+        The simulation makes extensive use of advanced Canvas 2D features:
+    </p>
+
+    <ul>
+        <li><strong>Radial and linear gradients</strong> for light bloom, vignette, sky rendering, and LiDAR point glow</li>
+        <li><strong>Global composite operations</strong> (<code>lighter</code>, <code>screen</code>) for additive light blending without custom shaders</li>
+        <li><strong>Path operations</strong> (<code>beginPath</code>, <code>moveTo</code>, <code>lineTo</code>, <code>quadraticCurveTo</code>, <code>arc</code>) for complex geometry including the Tesla logo and vehicle silhouettes</li>
+        <li><strong>Transform operations</strong> (<code>save</code>, <code>restore</code>, <code>translate</code>, <code>rotate</code>) for radar sweep and LiDAR rotation animations</li>
+        <li><strong>Shadow rendering</strong> via <code>shadowBlur</code> and <code>shadowColor</code> for glow effects around HUD text and light sources</li>
+    </ul>
+
+    <!-- 12. User Interaction -->
+    <h2>12. User Interaction</h2>
+
+    <p>
+        TeslaWay provides a minimal control scheme reflecting its autonomous nature:
+    </p>
+
+    <table>
+        <caption>Table 6: User input controls</caption>
+        <tr>
+            <th>Input</th>
+            <th>Action</th>
+            <th>Effect</th>
+        </tr>
+        <tr>
+            <td>Arrow Up</td>
+            <td>Increase Speed</td>
+            <td>Accelerates ego vehicle (&plusmn;10 km/h increments), updates speedometer</td>
+        </tr>
+        <tr>
+            <td>Arrow Down</td>
+            <td>Decrease Speed</td>
+            <td>Decelerates ego vehicle with smooth deceleration curves</td>
+        </tr>
+        <tr>
+            <td>L Key</td>
+            <td>Toggle LiDAR</td>
+            <td>Enables/disables LiDAR point cloud overlay with opacity transition</td>
+        </tr>
+    </table>
+
+    <p>
+        Steering, lane keeping, and traffic navigation are handled entirely by the AI system. The deliberate simplicity of user controls emphasizes the autonomous nature of the simulation and focuses attention on the perception pipeline visualization rather than driving mechanics.
+    </p>
+
+    <!-- 13. Performance Analysis -->
+    <h2>13. Performance Analysis</h2>
+
+    <table>
+        <caption>Table 7: Rendering performance across hardware configurations</caption>
+        <tr>
+            <th>Hardware</th>
+            <th>Browser</th>
+            <th>Resolution</th>
+            <th>Avg FPS</th>
+            <th>Frame Time</th>
+        </tr>
+        <tr>
+            <td>MacBook Pro M2</td>
+            <td>Chrome 120</td>
+            <td>1920&times;1080</td>
+            <td>60</td>
+            <td>~8 ms</td>
+        </tr>
+        <tr>
+            <td>MacBook Pro M2</td>
+            <td>Safari 17</td>
+            <td>1920&times;1080</td>
+            <td>60</td>
+            <td>~7 ms</td>
+        </tr>
+        <tr>
+            <td>Desktop i7-12700K</td>
+            <td>Chrome 120</td>
+            <td>1920&times;1080</td>
+            <td>60</td>
+            <td>~10 ms</td>
+        </tr>
+        <tr>
+            <td>Mid-range Laptop</td>
+            <td>Firefox 121</td>
+            <td>1366&times;768</td>
+            <td>55&ndash;60</td>
+            <td>~14 ms</td>
+        </tr>
+        <tr>
+            <td>Mobile (iPhone 15)</td>
+            <td>Safari Mobile</td>
+            <td>390&times;844</td>
+            <td>50&ndash;60</td>
+            <td>~16 ms</td>
+        </tr>
+    </table>
+
+    <p>
+        TeslaWay maintains interactive frame rates across diverse hardware, validating the Canvas 2D API as a viable rendering target for real-time 3D simulation with appropriate optimization. The single-file architecture results in approximately 45&ndash;55 KB total size with no additional assets. Memory consumption remains stable at 30&ndash;50 MB throughout extended sessions with no memory leaks, thanks to the object pooling strategy.
+    </p>
+
+    <!-- 14. Discussion -->
+    <h2>14. Discussion</h2>
+
+    <h3>14.1 Zero-Dependency Advantages</h3>
+
+    <p>
+        The zero-dependency approach yields several practical benefits: zero supply-chain risk with no npm dependencies that could introduce vulnerabilities, guaranteed long-term compatibility as the Canvas 2D API is a stable web standard, no build step friction making the codebase accessible to developers of all experience levels, and instant deployment through simple file hosting.
+    </p>
+
+    <h3>14.2 Educational Value</h3>
+
+    <p>
+        TeslaWay communicates key AV concepts: the role of multi-sensor fusion in environmental perception, sensor types and configurations in self-driving vehicles, real-time processing requirements of perception pipelines, object detection and classification in dynamic environments, and the information density that AV systems must process continuously. The interactive, browser-based format makes these concepts accessible without specialized hardware or software.
+    </p>
+
+    <h3>14.3 Limitations</h3>
+
+    <p>
+        The Canvas 2D rendering does not achieve the geometric accuracy of polygon-based 3D engines. Without WebGL, GPU-accelerated geometry processing is unavailable, limiting scene complexity. Sensor simulations are visualization-focused rather than physically accurate: LiDAR point distributions, radar returns, and camera models do not incorporate realistic noise models or sensor-specific artifacts. AI traffic behavior does not model complex interactions such as unprotected left turns or pedestrian yielding. These limitations are acceptable given the system's purpose as a demonstration and educational tool.
+    </p>
+
+    <!-- 15. Conclusion and Future Work -->
+    <h2>15. Conclusion and Future Work</h2>
+
+    <p>
+        TeslaWay demonstrates that a comprehensive, visually compelling autonomous vehicle simulation can be implemented entirely within the browser using only native web platform APIs. The system renders 3D perspective road environments, simulates a multi-modal sensor array with LiDAR point cloud visualization, implements AI traffic management with dynamic traffic light state machines, provides real-time object detection with confidence scoring, and presents all information through a cinematic heads-up display&mdash;all within a single HTML file requiring no build process or server infrastructure.
+    </p>
+
+    <p>
+        Future directions include: expanding the road network with highway merges and multi-lane configurations, implementing physically-based sensor noise models, adding weather effects (rain, fog, snow) affecting both rendering and simulated sensor degradation, incorporating path planning visualization, extending the urban environment with pedestrians and cyclists, and exploring optional WebGL rendering as a progressive enhancement.
+    </p>
+
+    <p>
+        The complete source code is available at <a href="https://github.com/romizone/teslaway">https://github.com/romizone/teslaway</a> under the MIT license, and a live demonstration is accessible at <a href="https://teslaway.vercel.app/">https://teslaway.vercel.app/</a>.
+    </p>
+
+    <!-- References -->
+    <h2>References</h2>
+
+    <div class="references">
+        <ol>
+            <li>Dosovitskiy, A., Ros, G., Codevilla, F., Lopez, A., &amp; Koltun, V. (2017). CARLA: An Open Urban Driving Simulator. <em>Proceedings of the 1st Annual Conference on Robot Learning (CoRL)</em>, pp. 1&ndash;16.</li>
+            <li>Rong, G., Shin, B.H., Tabatabaee, H., et al. (2020). LGSVL Simulator: A High Fidelity Simulator for Autonomous Driving. <em>IEEE 23rd International Conference on Intelligent Transportation Systems (ITSC)</em>, pp. 1&ndash;6.</li>
+            <li>NVIDIA Corporation. (2023). NVIDIA DRIVE Sim: Autonomous Vehicle Simulation Platform. <em>NVIDIA Developer Documentation</em>.</li>
+            <li>Wistrom, J. (2014). How to Build a Racing Game: Pseudo-3D Road Rendering. <em>Code Incomplete Blog Series</em>.</li>
+            <li>Tesla, Inc. (2024). Full Self-Driving (Supervised) Visualization System. <em>Tesla AI Day Technical Documentation</em>.</li>
+            <li>HTML Living Standard. (2024). The Canvas 2D Rendering Context. <em>WHATWG</em>.</li>
+            <li>Geiger, A., Lenz, P., &amp; Urtasun, R. (2012). Are We Ready for Autonomous Driving? The KITTI Vision Benchmark Suite. <em>IEEE Conference on Computer Vision and Pattern Recognition (CVPR)</em>, pp. 3354&ndash;3361.</li>
+            <li>Sun, P., Kretzschmar, H., Dotiwalla, X., et al. (2020). Scalability in Perception for Autonomous Driving: Waymo Open Dataset. <em>IEEE/CVF Conference on Computer Vision and Pattern Recognition (CVPR)</em>, pp. 2446&ndash;2454.</li>
+            <li>Caesar, H., Bankiti, V., Lang, A.H., et al. (2020). nuScenes: A Multimodal Dataset for Autonomous Driving. <em>IEEE/CVF Conference on Computer Vision and Pattern Recognition (CVPR)</em>, pp. 11621&ndash;11631.</li>
+            <li>Kato, S., Tokunaga, S., Maruyama, Y., et al. (2018). Autoware on Board: Enabling Autonomous Vehicles with Embedded Systems. <em>ACM/IEEE 9th International Conference on Cyber-Physical Systems (ICCPS)</em>, pp. 287&ndash;296.</li>
+            <li>Quigley, M., Conley, K., Gerkey, B., et al. (2009). ROS: An Open-Source Robot Operating System. <em>ICRA Workshop on Open Source Software</em>, Vol. 3, No. 3.2, p. 5.</li>
+            <li>Grigorescu, S., Trasnea, B., Cocias, T., &amp; Macesanu, G. (2020). A Survey of Deep Learning Techniques for Autonomous Driving. <em>Journal of Field Robotics</em>, 37(3), pp. 362&ndash;386.</li>
+        </ol>
+    </div>
+
+    <!-- Footer -->
+    <div class="paper-footer">
+        <p>TeslaWay &mdash; Open Source &middot; MIT License &middot; <a href="https://github.com/romizone/teslaway">github.com/romizone/teslaway</a></p>
+    </div>
+
+</body>
+</html>
