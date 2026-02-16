@@ -1,0 +1,130 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 400 280">
+  <defs>
+    <linearGradient id="skyGrad" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#0a0e1a"/>
+      <stop offset="100%" stop-color="#1a1e2e"/>
+    </linearGradient>
+    <linearGradient id="roadGrad" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#2a2a2a"/>
+      <stop offset="100%" stop-color="#1a1a1a"/>
+    </linearGradient>
+  </defs>
+  
+  <!-- Sky -->
+  <rect width="400" height="280" fill="url(#skyGrad)"/>
+  
+  <!-- Stars -->
+  <circle cx="50" cy="30" r="1.5" fill="#fff" opacity="0.8"/>
+  <circle cx="120" cy="50" r="1" fill="#fff" opacity="0.6"/>
+  <circle cx="200" cy="20" r="1.5" fill="#fff" opacity="0.7"/>
+  <circle cx="280" cy="40" r="1" fill="#fff" opacity="0.5"/>
+  <circle cx="340" cy="25" r="1.5" fill="#fff" opacity="0.8"/>
+  <circle cx="80" cy="70" r="1" fill="#fff" opacity="0.4"/>
+  <circle cx="320" cy="65" r="1" fill="#fff" opacity="0.6"/>
+  
+  <!-- Moon -->
+  <circle cx="340" cy="50" r="18" fill="#e8e8d0" opacity="0.9"/>
+  <circle cx="347" cy="45" r="16" fill="url(#skyGrad)" opacity="0.7"/>
+  
+  <!-- Road perspective -->
+  <polygon points="140,130 260,130 380,280 20,280" fill="url(#roadGrad)"/>
+  
+  <!-- Lane markings -->
+  <line x1="200" y1="135" x2="200" y2="155" stroke="#ffcc00" stroke-width="2" stroke-dasharray="8,6"/>
+  <line x1="200" y1="165" x2="200" y2="185" stroke="#ffcc00" stroke-width="2" stroke-dasharray="8,6"/>
+  <line x1="200" y1="195" x2="198" y2="220" stroke="#ffcc00" stroke-width="2.5" stroke-dasharray="10,8"/>
+  <line x1="198" y1="230" x2="195" y2="260" stroke="#ffcc00" stroke-width="3" stroke-dasharray="12,10"/>
+  
+  <!-- Side lane lines -->
+  <line x1="148" y1="135" x2="40" y2="280" stroke="#fff" stroke-width="1.5" opacity="0.6"/>
+  <line x1="252" y1="135" x2="360" y2="280" stroke="#fff" stroke-width="1.5" opacity="0.6"/>
+  
+  <!-- Buildings left -->
+  <rect x="10" y="80" width="40" height="50" fill="#1a2040" stroke="#2a3060" stroke-width="0.5"/>
+  <rect x="15" y="87" width="6" height="8" fill="#ffdd44" opacity="0.6"/>
+  <rect x="25" y="87" width="6" height="8" fill="#44aaff" opacity="0.4"/>
+  <rect x="35" y="87" width="6" height="8" fill="#ffdd44" opacity="0.5"/>
+  <rect x="15" y="100" width="6" height="8" fill="#44aaff" opacity="0.3"/>
+  <rect x="25" y="100" width="6" height="8" fill="#ffdd44" opacity="0.6"/>
+  <rect x="35" y="100" width="6" height="8" fill="#44aaff" opacity="0.5"/>
+  <rect x="15" y="113" width="6" height="8" fill="#ffdd44" opacity="0.4"/>
+  
+  <rect x="55" y="95" width="35" height="35" fill="#151a35" stroke="#253055" stroke-width="0.5"/>
+  <rect x="60" y="100" width="5" height="6" fill="#ffdd44" opacity="0.5"/>
+  <rect x="70" y="100" width="5" height="6" fill="#44aaff" opacity="0.4"/>
+  <rect x="80" y="100" width="5" height="6" fill="#ffdd44" opacity="0.6"/>
+  
+  <!-- Buildings right -->
+  <rect x="330" y="85" width="50" height="45" fill="#1a2040" stroke="#2a3060" stroke-width="0.5"/>
+  <rect x="335" y="92" width="6" height="8" fill="#44aaff" opacity="0.5"/>
+  <rect x="345" y="92" width="6" height="8" fill="#ffdd44" opacity="0.6"/>
+  <rect x="365" y="92" width="6" height="8" fill="#ffdd44" opacity="0.4"/>
+  <rect x="335" y="105" width="6" height="8" fill="#ffdd44" opacity="0.5"/>
+  <rect x="355" y="105" width="6" height="8" fill="#44aaff" opacity="0.6"/>
+  
+  <rect x="305" y="100" width="30" height="30" fill="#151a35" stroke="#253055" stroke-width="0.5"/>
+  
+  <!-- LiDAR sweep lines -->
+  <line x1="200" y1="250" x2="80" y2="150" stroke="#00c8ff" stroke-width="0.8" opacity="0.3"/>
+  <line x1="200" y1="250" x2="120" y2="140" stroke="#00c8ff" stroke-width="0.8" opacity="0.4"/>
+  <line x1="200" y1="250" x2="160" y2="135" stroke="#00c8ff" stroke-width="0.8" opacity="0.5"/>
+  <line x1="200" y1="250" x2="240" y2="135" stroke="#00c8ff" stroke-width="0.8" opacity="0.5"/>
+  <line x1="200" y1="250" x2="280" y2="140" stroke="#00c8ff" stroke-width="0.8" opacity="0.4"/>
+  <line x1="200" y1="250" x2="320" y2="150" stroke="#00c8ff" stroke-width="0.8" opacity="0.3"/>
+  
+  <!-- LiDAR dots -->
+  <circle cx="90" cy="155" r="2" fill="#00c8ff" opacity="0.7"/>
+  <circle cx="130" cy="142" r="2" fill="#00c8ff" opacity="0.8"/>
+  <circle cx="155" cy="137" r="2" fill="#00c8ff" opacity="0.9"/>
+  <circle cx="245" cy="137" r="2" fill="#00c8ff" opacity="0.9"/>
+  <circle cx="275" cy="142" r="2" fill="#00c8ff" opacity="0.8"/>
+  <circle cx="310" cy="155" r="2" fill="#00c8ff" opacity="0.7"/>
+  
+  <!-- Traffic vehicle ahead (bounding box) -->
+  <rect x="185" y="145" width="30" height="20" fill="#333" rx="3"/>
+  <rect x="188" y="160" width="4" height="3" fill="#ff3333" opacity="0.9"/>
+  <rect x="208" y="160" width="4" height="3" fill="#ff3333" opacity="0.9"/>
+  <!-- Detection box -->
+  <rect x="182" y="142" width="36" height="26" fill="none" stroke="#00ff88" stroke-width="1.5" opacity="0.8"/>
+  <text x="183" y="141" font-family="monospace" font-size="7" fill="#00ff88" opacity="0.9">CAR 94%</text>
+  
+  <!-- HUD overlay - top left -->
+  <rect x="10" y="8" width="110" height="18" rx="3" fill="#000" opacity="0.6"/>
+  <text x="15" y="20" font-family="monospace" font-size="8" fill="#00ff88">AUTOPILOT v4.7</text>
+  
+  <!-- Speed display -->
+  <rect x="10" y="240" width="70" height="35" rx="4" fill="#000" opacity="0.7"/>
+  <text x="22" y="260" font-family="monospace" font-size="18" fill="#fff" font-weight="bold">72</text>
+  <text x="15" y="272" font-family="monospace" font-size="7" fill="#888">km/h</text>
+  
+  <!-- Battery -->
+  <rect x="85" y="245" width="55" height="14" rx="3" fill="#000" opacity="0.6"/>
+  <rect x="88" y="248" width="35" height="8" rx="2" fill="#00ff88" opacity="0.7"/>
+  <text x="93" y="255" font-family="monospace" font-size="7" fill="#000" font-weight="bold">87%</text>
+  
+  <!-- Sensor status top right -->
+  <rect x="290" y="8" width="105" height="52" rx="4" fill="#000" opacity="0.6"/>
+  <text x="295" y="20" font-family="monospace" font-size="7" fill="#00c8ff">8 Cameras ●</text>
+  <text x="295" y="30" font-family="monospace" font-size="7" fill="#00c8ff">4x LiDAR ●</text>
+  <text x="295" y="40" font-family="monospace" font-size="7" fill="#00ff88">Radar 360° ●</text>
+  <text x="295" y="50" font-family="monospace" font-size="7" fill="#00ff88">12 Ultrasonic ●</text>
+  
+  <!-- Radar minimap bottom right -->
+  <circle cx="360" cy="245" r="28" fill="#000" opacity="0.6"/>
+  <circle cx="360" cy="245" r="27" fill="none" stroke="#00c8ff" stroke-width="0.5" opacity="0.4"/>
+  <circle cx="360" cy="245" r="18" fill="none" stroke="#00c8ff" stroke-width="0.3" opacity="0.3"/>
+  <circle cx="360" cy="245" r="9" fill="none" stroke="#00c8ff" stroke-width="0.3" opacity="0.3"/>
+  <line x1="333" y1="245" x2="387" y2="245" stroke="#00c8ff" stroke-width="0.3" opacity="0.3"/>
+  <line x1="360" y1="218" x2="360" y2="272" stroke="#00c8ff" stroke-width="0.3" opacity="0.3"/>
+  <!-- Vehicle dots on radar -->
+  <circle cx="360" cy="250" r="2.5" fill="#00ff88"/>
+  <circle cx="358" cy="237" r="2" fill="#ff4444" opacity="0.8"/>
+  
+  <!-- Scanline effect -->
+  <rect x="0" y="0" width="400" height="280" fill="none" stroke="#fff" stroke-width="0" opacity="0.02">
+  </rect>
+  
+  <!-- Title bar -->
+  <rect x="110" y="265" width="180" height="14" rx="3" fill="#e82127" opacity="0.85"/>
+  <text x="130" y="275" font-family="monospace" font-size="8" fill="#fff" font-weight="bold">TESLA SELF-DRIVING AI</text>
+</svg>
