@@ -1,0 +1,693 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Open Chatbot: A Privacy-First AI Document Processing Chatbot with Zero File Leakage</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Times New Roman', Times, Georgia, serif;
+            line-height: 1.6;
+            color: #111;
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 60px 40px;
+            background: #fff;
+        }
+
+        /* Title Block */
+        .paper-title {
+            text-align: center;
+            margin-bottom: 30px;
+        }
+
+        .paper-title h1 {
+            font-size: 1.65em;
+            font-weight: 700;
+            line-height: 1.3;
+            margin-bottom: 18px;
+        }
+
+        .paper-title .authors {
+            font-size: 1.05em;
+            margin-bottom: 4px;
+        }
+
+        .paper-title .affiliation {
+            font-size: 0.95em;
+            color: #555;
+            font-style: italic;
+        }
+
+        .paper-title .email {
+            font-size: 0.9em;
+            color: #1a73e8;
+            margin-top: 4px;
+        }
+
+        .paper-title .date {
+            font-size: 0.9em;
+            color: #777;
+            margin-top: 10px;
+        }
+
+        /* Abstract */
+        .abstract {
+            background: #f9f9f9;
+            border-left: 4px solid #333;
+            padding: 18px 22px;
+            margin: 30px 0;
+        }
+
+        .abstract h2 {
+            font-size: 1em;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            margin-bottom: 8px;
+        }
+
+        .abstract p {
+            font-size: 0.95em;
+            color: #333;
+            text-align: justify;
+        }
+
+        /* Keywords */
+        .keywords {
+            font-size: 0.9em;
+            color: #555;
+            margin-bottom: 30px;
+        }
+
+        .keywords strong {
+            color: #333;
+        }
+
+        /* Sections */
+        h2 {
+            font-size: 1.2em;
+            font-weight: 700;
+            margin-top: 30px;
+            margin-bottom: 12px;
+            border-bottom: 1px solid #ddd;
+            padding-bottom: 4px;
+        }
+
+        h3 {
+            font-size: 1.05em;
+            font-weight: 700;
+            margin-top: 18px;
+            margin-bottom: 8px;
+        }
+
+        p {
+            text-align: justify;
+            margin-bottom: 12px;
+            font-size: 0.97em;
+        }
+
+        /* Tables */
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 16px 0;
+            font-size: 0.9em;
+        }
+
+        table th, table td {
+            border: 1px solid #ccc;
+            padding: 8px 12px;
+            text-align: left;
+        }
+
+        table th {
+            background: #f0f0f0;
+            font-weight: 700;
+        }
+
+        table caption {
+            font-size: 0.88em;
+            font-style: italic;
+            color: #555;
+            margin-bottom: 6px;
+            text-align: left;
+        }
+
+        /* Figures */
+        .figure {
+            text-align: center;
+            margin: 24px 0;
+        }
+
+        .figure img {
+            max-width: 100%;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+        }
+
+        .figure .caption {
+            font-size: 0.88em;
+            font-style: italic;
+            color: #555;
+            margin-top: 8px;
+        }
+
+        /* Code */
+        code {
+            font-family: 'Courier New', Courier, monospace;
+            background: #f4f4f4;
+            padding: 2px 5px;
+            border-radius: 3px;
+            font-size: 0.88em;
+        }
+
+        pre {
+            background: #f4f4f4;
+            padding: 14px 18px;
+            border-radius: 4px;
+            overflow-x: auto;
+            font-size: 0.85em;
+            margin: 12px 0;
+            border: 1px solid #e0e0e0;
+        }
+
+        /* Lists */
+        ul, ol {
+            margin: 10px 0 12px 24px;
+            font-size: 0.97em;
+        }
+
+        li {
+            margin-bottom: 4px;
+        }
+
+        /* Pipeline */
+        .pipeline {
+            background: #f7f9fc;
+            border: 1px solid #d4e2f7;
+            border-radius: 6px;
+            padding: 16px 20px;
+            text-align: center;
+            font-size: 0.95em;
+            color: #1a5276;
+            margin: 16px 0;
+            letter-spacing: 0.3px;
+        }
+
+        /* References */
+        .references {
+            font-size: 0.88em;
+        }
+
+        .references ol {
+            margin-left: 20px;
+        }
+
+        .references li {
+            margin-bottom: 8px;
+            color: #444;
+        }
+
+        /* Footer */
+        .paper-footer {
+            text-align: center;
+            font-size: 0.8em;
+            color: #aaa;
+            margin-top: 50px;
+            padding-top: 20px;
+            border-top: 1px solid #eee;
+        }
+
+        /* Print */
+        @media print {
+            body {
+                padding: 20px;
+            }
+        }
+
+        @media (max-width: 600px) {
+            body {
+                padding: 20px 15px;
+            }
+
+            .paper-title h1 {
+                font-size: 1.3em;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Title Block -->
+    <div class="paper-title">
+        <h1>Open Chatbot: A Privacy-First AI Document Processing Chatbot with Zero File Leakage</h1>
+        <div class="authors">Romi Nur Ismanto</div>
+        <div class="affiliation">Independent AI Research Lab, Jakarta, Indonesia</div>
+        <div class="email">rominur@gmail.com</div>
+        <div class="date">February 2026</div>
+    </div>
+
+    <!-- Abstract -->
+    <div class="abstract">
+        <h2>Abstract</h2>
+        <p>
+            We present Open Chatbot, a privacy-first AI chatbot designed to process sensitive documents without ever transmitting original files to cloud AI providers. Built on a Privacy by Design architecture, the system extracts text locally on the user's server using specialized processing engines (PDFtotext, Mammoth, SheetJS, Tesseract OCR) and transmits only plain text JSON chunks&mdash;capped at 30KB per file&mdash;to AI inference endpoints. This three-stage pipeline (local extraction, text-only transmission, immediate cleanup) ensures that no binary files, document metadata, or structural information ever leaves the user's infrastructure. The system supports multiple AI providers (DeepSeek, OpenAI, Anthropic), handles diverse file formats including PDF, DOCX, XLSX, images with OCR, and 20+ source code formats, and features streaming responses, LaTeX rendering, syntax highlighting, and multi-session chat history. We describe the architecture, security model, and design decisions that enable privacy-preserving AI document interaction suitable for processing confidential financial, legal, and medical documents.
+        </p>
+    </div>
+
+    <!-- Keywords -->
+    <div class="keywords">
+        <strong>Keywords:</strong> privacy-preserving AI, document processing, zero file leakage, chatbot, local extraction, multi-provider LLM, Next.js, Vercel AI SDK, OCR, confidential data
+    </div>
+
+    <!-- 1. Introduction -->
+    <h2>1. Introduction</h2>
+
+    <p>
+        The rapid adoption of AI-powered chatbots such as ChatGPT, Claude, and Gemini has transformed how organizations interact with documents. Users routinely upload financial reports, legal contracts, medical records, and proprietary research to these services for summarization, analysis, and question-answering. However, this convenience creates a fundamental tension: the original files&mdash;often containing highly sensitive information&mdash;are transmitted in full to third-party servers, where they may be stored, logged with metadata, or potentially used for model training.
+    </p>
+
+    <p>
+        Consider the standard upload flow: when a user attaches a 5MB PDF to ChatGPT, the entire binary file is sent to OpenAI's servers. The document structure, embedded fonts, metadata (author, creation date, revision history), and complete content are all transmitted and stored alongside the user's account information. For organizations bound by data protection regulations (GDPR, HIPAA, banking secrecy laws), this presents unacceptable compliance risks.
+    </p>
+
+    <p>
+        Open Chatbot addresses this problem through a fundamental architectural principle: <strong>files never leave your infrastructure.</strong> Instead of transmitting documents to AI providers, the system processes files locally, extracts only plain text content, and sends compact text-only payloads to AI inference endpoints. The key contributions of this work are:
+    </p>
+    <ul>
+        <li>A three-stage privacy pipeline (local extraction, text-only transmission, immediate cleanup) that guarantees zero binary file leakage to cloud services.</li>
+        <li>A multi-provider AI architecture supporting DeepSeek, OpenAI, and Anthropic models through a unified streaming interface.</li>
+        <li>Comprehensive document processing supporting PDF (with OCR), Word, Excel, images, and 20+ source code formats, all processed locally.</li>
+        <li>A production-ready implementation built on Next.js 16, React 19, and Vercel AI SDK 6 with TypeScript strict mode.</li>
+    </ul>
+
+    <!-- 2. Related Work -->
+    <h2>2. Related Work</h2>
+
+    <p>
+        The challenge of privacy-preserving AI interaction has been approached from several directions. Retrieval-Augmented Generation (RAG) systems (Lewis et al., 2020) store document embeddings in vector databases and retrieve relevant chunks during inference, but still require document content to be processed and stored in some form. Fully local LLM solutions (e.g., llama.cpp, Ollama) eliminate cloud dependency entirely but sacrifice the quality advantages of large-scale commercial models.
+    </p>
+
+    <p>
+        Existing privacy-focused chatbot solutions typically fall into two categories: fully local systems that run smaller models on-device, or enterprise API platforms with contractual data protection guarantees. Open Chatbot occupies a unique middle ground: it leverages the superior capabilities of large commercial models (GPT-4o, Claude Sonnet 4.5) while ensuring that only extracted text&mdash;not original files&mdash;reaches these services. This approach provides state-of-the-art AI quality without compromising document confidentiality.
+    </p>
+
+    <p>
+        The Vercel AI SDK (Vercel, 2024) provides the streaming infrastructure that enables real-time response delivery. Combined with specialized extraction libraries (pdf-parse, Mammoth, SheetJS), the system achieves comprehensive format coverage without relying on cloud-based document processing services.
+    </p>
+
+    <!-- 3. System Architecture -->
+    <h2>3. System Architecture</h2>
+
+    <p>
+        Open Chatbot follows a modular, three-stage architecture designed around the principle that document content should be minimally exposed during AI interaction. The system comprises a local document processing engine, a text-only API gateway, and a reactive client interface.
+    </p>
+
+    <h3>3.1 Three-Stage Privacy Pipeline</h3>
+
+    <p>
+        The core privacy guarantee is implemented through a strict three-stage pipeline:
+    </p>
+
+    <div class="pipeline">
+        File Upload (Local Server) &rarr; Text Extraction (Local Processing) &rarr; Text-Only JSON to AI Provider &rarr; Immediate File Cleanup
+    </div>
+
+    <p>
+        <strong>Stage 1 &mdash; Local Processing:</strong> Files uploaded by the user are received by the Next.js API route (<code>/api/upload/route.ts</code>) and processed entirely on the local server. Each file type is handled by a specialized extraction engine: PDFtotext for PDF documents, Mammoth and word-extractor for DOCX/DOC files, SheetJS for spreadsheets (XLSX/XLS/CSV), and Tesseract OCR for scanned images (PNG, JPG, BMP, TIFF, WebP). The extraction output is pure text content with no binary data, embedded objects, or metadata preserved.
+    </p>
+
+    <p>
+        <strong>Stage 2 &mdash; Text-Only Transmission:</strong> The extracted text is formatted as standard JSON payloads conforming to the AI provider's chat API format. Each file's content is capped at 30KB before transmission, ensuring that even for large documents, the data exposure is strictly limited. The API request contains only: <code>{"role": "user", "content": "extracted text..."}</code>&mdash;no file attachments, no binary encodings, no metadata.
+    </p>
+
+    <p>
+        <strong>Stage 3 &mdash; Immediate Cleanup:</strong> After text extraction completes, the original file buffer is immediately released from memory using JavaScript <code>finally</code> blocks. No temporary files are written to disk, and no persistent storage of uploaded documents occurs on the server. The file exists only transiently in memory during the extraction process.
+    </p>
+
+    <h3>3.2 Multi-Provider AI Architecture</h3>
+
+    <p>
+        The system supports three AI provider families through a unified streaming interface built on Vercel AI SDK 6's <code>streamText</code> function:
+    </p>
+
+    <table>
+        <caption>Table 1: Supported AI providers and models</caption>
+        <tr>
+            <th>Provider</th>
+            <th>Models</th>
+            <th>Max Tokens</th>
+            <th>Characteristics</th>
+        </tr>
+        <tr>
+            <td>DeepSeek</td>
+            <td>Chat, Reasoner</td>
+            <td>8K&ndash;16K</td>
+            <td>Cost-effective, strong reasoning</td>
+        </tr>
+        <tr>
+            <td>OpenAI</td>
+            <td>GPT-4o, GPT-4o Mini, GPT-4.1</td>
+            <td>16K&ndash;32K</td>
+            <td>Highest versatility, broad capabilities</td>
+        </tr>
+        <tr>
+            <td>Anthropic</td>
+            <td>Claude Sonnet 4.5, Claude Haiku 4.5</td>
+            <td>8K&ndash;16K</td>
+            <td>Strong analysis, safety-focused</td>
+        </tr>
+    </table>
+
+    <p>
+        Each provider requires its own API key, stored exclusively in the browser's localStorage&mdash;never transmitted to or stored on the application server. The chat API route (<code>/api/chat/route.ts</code>) dynamically selects the appropriate SDK provider based on the user's configuration, enabling seamless switching between models without code changes.
+    </p>
+
+    <h3>3.3 Document Processing Engine</h3>
+
+    <p>
+        The file processing subsystem (<code>lib/file-processor.ts</code>) implements format-specific extraction strategies:
+    </p>
+
+    <table>
+        <caption>Table 2: Supported file formats and extraction methods</caption>
+        <tr>
+            <th>Format</th>
+            <th>Extensions</th>
+            <th>Extraction Engine</th>
+            <th>Notes</th>
+        </tr>
+        <tr>
+            <td>PDF</td>
+            <td>.pdf</td>
+            <td>pdftotext + Tesseract OCR</td>
+            <td>Text + OCR fallback for scanned pages (max 20 pages)</td>
+        </tr>
+        <tr>
+            <td>Word</td>
+            <td>.docx, .doc</td>
+            <td>Mammoth, word-extractor</td>
+            <td>DOCX via Mammoth, legacy DOC via word-extractor</td>
+        </tr>
+        <tr>
+            <td>Spreadsheet</td>
+            <td>.xlsx, .xls, .csv</td>
+            <td>SheetJS (xlsx)</td>
+            <td>Converted to structured text tables</td>
+        </tr>
+        <tr>
+            <td>Images</td>
+            <td>.png, .jpg, .bmp, .tiff, .webp</td>
+            <td>Tesseract OCR</td>
+            <td>Optical character recognition</td>
+        </tr>
+        <tr>
+            <td>Text &amp; Code</td>
+            <td>.txt, .md, .json, .xml, .html, .py, .js, .ts, etc.</td>
+            <td>Direct UTF-8 read</td>
+            <td>20+ source code formats supported</td>
+        </tr>
+    </table>
+
+    <!-- 4. Security Model -->
+    <h2>4. Security Model</h2>
+
+    <p>
+        Open Chatbot's security model is built on the principle of minimal data exposure. We formalize the security guarantees through a comparison with traditional AI document upload workflows:
+    </p>
+
+    <table>
+        <caption>Table 3: Security comparison &mdash; traditional upload vs. Open Chatbot</caption>
+        <tr>
+            <th>Aspect</th>
+            <th>Traditional AI Upload</th>
+            <th>Open Chatbot</th>
+        </tr>
+        <tr>
+            <td>Original file sent to cloud</td>
+            <td>Yes &mdash; full binary</td>
+            <td>No &mdash; never</td>
+        </tr>
+        <tr>
+            <td>Document metadata transmitted</td>
+            <td>Yes &mdash; author, dates, revisions</td>
+            <td>No &mdash; stripped during extraction</td>
+        </tr>
+        <tr>
+            <td>Binary data exposure</td>
+            <td>Complete file (MBs)</td>
+            <td>Zero &mdash; text only</td>
+        </tr>
+        <tr>
+            <td>Data size to cloud</td>
+            <td>Full file size</td>
+            <td>Max 30KB per file</td>
+        </tr>
+        <tr>
+            <td>Used for model training</td>
+            <td>Possibly (varies by provider)</td>
+            <td>No &mdash; API mode excludes training</td>
+        </tr>
+        <tr>
+            <td>Data retention control</td>
+            <td>Minimal &mdash; provider-dependent</td>
+            <td>Full &mdash; user-controlled</td>
+        </tr>
+        <tr>
+            <td>Regulatory compliance</td>
+            <td>Complex &mdash; DPA required</td>
+            <td>Simplified &mdash; no file transfer</td>
+        </tr>
+    </table>
+
+    <h3>4.1 Client-Side Key Management</h3>
+
+    <p>
+        API keys for each provider are stored exclusively in the browser's localStorage, never transmitted to the application backend except as part of authenticated API requests to the respective AI provider. This design ensures that even the application server operator cannot access users' API credentials, and no centralized key database exists as an attack surface.
+    </p>
+
+    <h3>4.2 Stateless Server Architecture</h3>
+
+    <p>
+        The Next.js API routes operate in a completely stateless manner. No session data, uploaded files, or chat histories are persisted on the server. Each request is processed independently, and all file buffers are released immediately after extraction. The server maintains zero knowledge of previous interactions, providing natural protection against data accumulation risks.
+    </p>
+
+    <!-- 5. Implementation Details -->
+    <h2>5. Implementation Details</h2>
+
+    <h3>5.1 Technology Stack</h3>
+
+    <table>
+        <caption>Table 4: Core technology stack</caption>
+        <tr>
+            <th>Layer</th>
+            <th>Technology</th>
+            <th>Purpose</th>
+        </tr>
+        <tr>
+            <td>Framework</td>
+            <td>Next.js 16 (App Router, Turbopack)</td>
+            <td>Full-stack React framework with API routes</td>
+        </tr>
+        <tr>
+            <td>UI Library</td>
+            <td>React 19, Tailwind CSS 4, Radix UI</td>
+            <td>Responsive, accessible component library</td>
+        </tr>
+        <tr>
+            <td>AI Integration</td>
+            <td>Vercel AI SDK 6 (<code>streamText</code>)</td>
+            <td>Unified streaming interface for multi-provider</td>
+        </tr>
+        <tr>
+            <td>PDF Processing</td>
+            <td>pdftotext, Tesseract</td>
+            <td>Text extraction and OCR for scanned documents</td>
+        </tr>
+        <tr>
+            <td>Word Processing</td>
+            <td>Mammoth, word-extractor</td>
+            <td>DOCX/DOC text extraction</td>
+        </tr>
+        <tr>
+            <td>Spreadsheet Processing</td>
+            <td>SheetJS (xlsx)</td>
+            <td>Excel/CSV to structured text</td>
+        </tr>
+        <tr>
+            <td>Image OCR</td>
+            <td>Tesseract.js</td>
+            <td>Optical character recognition for images</td>
+        </tr>
+        <tr>
+            <td>Math Rendering</td>
+            <td>KaTeX, remark-math, rehype-katex</td>
+            <td>LaTeX formula rendering in responses</td>
+        </tr>
+        <tr>
+            <td>Code Display</td>
+            <td>react-syntax-highlighter (Prism)</td>
+            <td>Syntax-highlighted code blocks</td>
+        </tr>
+        <tr>
+            <td>Language</td>
+            <td>TypeScript 5 (strict mode)</td>
+            <td>Type-safe development</td>
+        </tr>
+    </table>
+
+    <h3>5.2 User Interface</h3>
+
+    <p>
+        The chat interface is designed as a responsive single-page application with several advanced features:
+    </p>
+
+    <ul>
+        <li><strong>Real-time connection indicator:</strong> A green/red status badge shows whether the selected AI provider is reachable, providing immediate feedback on connectivity.</li>
+        <li><strong>Auto-Continue:</strong> When AI responses are truncated due to token limits, the system automatically sends a continuation request, seamlessly concatenating the full response for the user.</li>
+        <li><strong>LaTeX/KaTeX rendering:</strong> Mathematical formulas in AI responses are rendered using KaTeX through remark-math and rehype-katex plugins, supporting both inline and display math.</li>
+        <li><strong>Syntax highlighting:</strong> Code blocks in AI responses are highlighted using react-syntax-highlighter with the Prism engine, supporting 100+ programming languages.</li>
+        <li><strong>Multi-session history:</strong> Chat sessions with their associated file contexts are persisted in browser localStorage, enabling users to maintain separate conversations for different document workflows.</li>
+        <li><strong>Collapsible sidebar:</strong> A responsive sidebar provides session management, model selection, and settings access without consuming screen space during active conversations.</li>
+    </ul>
+
+    <h3>5.3 Streaming Architecture</h3>
+
+    <p>
+        Response delivery uses Vercel AI SDK 6's <code>streamText</code> function, which establishes a Server-Sent Events (SSE) connection between the client and the Next.js API route. The API route, in turn, streams responses from the selected AI provider. This double-streaming architecture ensures that users see response tokens as they are generated, providing a responsive experience even for long AI outputs.
+    </p>
+
+    <pre>// Simplified streaming flow
+const result = streamText({
+  model: selectedProvider(modelId),
+  messages: conversationHistory,
+  maxTokens: modelConfig.maxTokens,
+});
+return result.toDataStreamResponse();</pre>
+
+    <!-- 6. Deployment Options -->
+    <h2>6. Deployment Options</h2>
+
+    <p>
+        Open Chatbot supports three deployment configurations, each with different trade-offs between convenience and feature completeness:
+    </p>
+
+    <h3>6.1 Self-Hosted (Recommended)</h3>
+
+    <p>
+        The recommended deployment for maximum privacy and full feature support, including OCR capabilities:
+    </p>
+
+    <pre>git clone https://github.com/romizone/chatbot-next.git
+cd chatbot-next
+npm install
+npm run build
+npm start</pre>
+
+    <p>
+        This configuration supports all file formats including OCR for scanned PDFs and images, as Tesseract and poppler-utils can be installed on the host system.
+    </p>
+
+    <h3>6.2 Docker</h3>
+
+    <p>
+        A Dockerfile is provided with all OCR dependencies (Tesseract, Poppler) pre-installed:
+    </p>
+
+    <pre>docker build -t open-chatbot .
+docker run -p 3000:3000 open-chatbot</pre>
+
+    <h3>6.3 Vercel (Serverless)</h3>
+
+    <p>
+        For quick deployment without infrastructure management. Note that OCR features are limited in serverless environments due to binary dependency constraints:
+    </p>
+
+    <pre>npx vercel</pre>
+
+    <!-- 7. Project Structure -->
+    <h2>7. Project Structure</h2>
+
+    <p>
+        The codebase follows Next.js 16 App Router conventions with a clear separation between API routes, UI components, state management, and processing logic:
+    </p>
+
+    <pre>src/
+├── app/
+│   ├── api/
+│   │   ├── chat/route.ts        # Multi-provider streaming endpoint
+│   │   └── upload/route.ts      # Local file processing endpoint
+│   ├── layout.tsx               # Root layout with providers
+│   └── page.tsx                 # Entry point
+├── components/chat/
+│   ├── chat-page.tsx            # Main chat container
+│   ├── chat-area.tsx            # Message display with markdown
+│   ├── chat-input.tsx           # Input with file attachment
+│   ├── markdown-renderer.tsx    # KaTeX + syntax highlighting
+│   ├── settings-dialog.tsx      # Provider/model configuration
+│   └── sidebar.tsx              # Session management
+├── hooks/
+│   └── use-chat-store.ts       # Zustand/localStorage state
+└── lib/
+    ├── file-processor.ts        # Document extraction engine
+    └── constants.ts             # Model configs, providers</pre>
+
+    <!-- 8. Conclusion -->
+    <h2>8. Conclusion and Future Work</h2>
+
+    <p>
+        Open Chatbot demonstrates that it is possible to leverage state-of-the-art commercial AI models for document analysis while maintaining strict privacy guarantees over sensitive files. The three-stage privacy pipeline&mdash;local extraction, text-only transmission, immediate cleanup&mdash;provides a practical and auditable approach to the fundamental tension between AI capability and data confidentiality.
+    </p>
+
+    <p>
+        The system's multi-provider architecture ensures that users are not locked into a single AI vendor, while client-side key management eliminates centralized credential exposure. The comprehensive file format support, combined with streaming responses, LaTeX rendering, and syntax highlighting, delivers a production-quality user experience comparable to commercial AI chatbots.
+    </p>
+
+    <p>
+        Future directions include:
+    </p>
+
+    <ul>
+        <li>Integration with local LLM backends (Ollama, llama.cpp) for fully air-gapped operation without any cloud AI dependency.</li>
+        <li>Chunked document processing with semantic overlap for files exceeding the 30KB text limit, enabling analysis of very large documents.</li>
+        <li>RAG pipeline integration with local vector databases (ChromaDB, Qdrant) for multi-document knowledge retrieval.</li>
+        <li>End-to-end encryption for the text-only API payloads, adding transport-layer privacy beyond TLS.</li>
+        <li>Collaborative features with role-based access control for team deployments.</li>
+        <li>Plugin architecture for custom document processors and specialized domain extractors.</li>
+    </ul>
+
+    <p>
+        The complete source code is available at <a href="https://github.com/romizone/chatbot-next">https://github.com/romizone/chatbot-next</a> under the MIT license.
+    </p>
+
+    <!-- References -->
+    <h2>References</h2>
+
+    <div class="references">
+        <ol>
+            <li>Lewis, P., Perez, E., Piktus, A., et al. (2020). Retrieval-Augmented Generation for Knowledge-Intensive NLP Tasks. <em>Advances in Neural Information Processing Systems</em>, 33.</li>
+            <li>Vercel (2024). Vercel AI SDK: Build AI-powered applications with React and Next.js. <em>GitHub Repository</em>. https://github.com/vercel/ai</li>
+            <li>OpenAI (2023). GPT-4 Technical Report. <em>arXiv preprint arXiv:2303.08774</em>.</li>
+            <li>Anthropic (2024). The Claude Model Family. <em>Anthropic Technical Documentation</em>. https://docs.anthropic.com</li>
+            <li>DeepSeek AI (2024). DeepSeek-V2: A Strong, Economical, and Efficient Mixture-of-Experts Language Model. <em>arXiv preprint arXiv:2405.04434</em>.</li>
+            <li>Smith, R. (2007). An Overview of the Tesseract OCR Engine. <em>Proceedings of the Ninth International Conference on Document Analysis and Recognition</em>, pp. 629-633.</li>
+            <li>Goldberg, D. (2023). Mammoth: Convert Word documents (.docx) to HTML and Markdown. <em>GitHub Repository</em>. https://github.com/mwilliamson/mammoth.js</li>
+            <li>SheetJS Team (2024). SheetJS: Spreadsheet Data Toolkit. <em>GitHub Repository</em>. https://github.com/SheetJS/sheetjs</li>
+            <li>European Parliament (2016). General Data Protection Regulation (GDPR). <em>Regulation (EU) 2016/679</em>.</li>
+            <li>U.S. Department of Health and Human Services (1996). Health Insurance Portability and Accountability Act (HIPAA). <em>Public Law 104-191</em>.</li>
+        </ol>
+    </div>
+
+    <!-- Footer -->
+    <div class="paper-footer">
+        <p>Open Chatbot &mdash; Open Source &middot; MIT License &middot; <a href="https://github.com/romizone/chatbot-next">github.com/romizone/chatbot-next</a></p>
+    </div>
+
+</body>
+</html>

@@ -201,16 +201,17 @@
 
         /* Education */
         .edu-item {
+            display: flex;
+            align-items: center;
+            gap: 16px;
             margin-bottom: 20px;
-            padding-left: 28px;
-            position: relative;
         }
 
-        .edu-item .edu-icon {
-            position: absolute;
-            left: 0;
-            top: 2px;
-            font-size: 1.1em;
+        .edu-item .edu-logo {
+            width: 56px;
+            height: 56px;
+            object-fit: contain;
+            flex-shrink: 0;
         }
 
         .edu-item .degree {
@@ -517,6 +518,29 @@
                 </div>
             </td>
         </tr>
+        <tr>
+            <td class="project-img">
+                <img src="OpenChatbot.svg" alt="Open Chatbot">
+            </td>
+            <td class="project-info">
+                <h3>&#128172; Open Chatbot</h3>
+                <p><strong>&#128274; Ideal for processing confidential and financial data.</strong> Security-focused, local data processing, <strong>NO DATA LEAKED.</strong> Zero File Leakage AI Chatbot built with Privacy by Design. Documents are processed locally on your server&mdash;only extracted plain text (max 30KB) is sent to AI providers, never the original files. Supports PDF (with OCR), Word, Excel, images, and 20+ code formats. Multi-provider AI with DeepSeek, OpenAI GPT-4o, and Anthropic Claude. Features streaming responses via Vercel AI SDK 6, LaTeX/KaTeX math rendering, syntax highlighting, auto-continue for truncated responses, multi-session chat history, and real-time connection status. Built with Next.js 16, React 19, TypeScript strict mode, and Tailwind CSS 4.</p>
+                <div>
+                    <span class="project-badge">Next.js 16</span>
+                    <span class="project-badge">React 19</span>
+                    <span class="project-badge">TypeScript</span>
+                    <span class="project-badge">Vercel AI SDK</span>
+                    <span class="project-badge">Tesseract OCR</span>
+                    <span class="project-badge">Privacy by Design</span>
+                    <span class="project-badge">MIT License</span>
+                </div>
+                <br>
+                <div class="project-links">
+                    <a href="https://github.com/romizone/chatbot-next"><span class="link-icon">&#128187;</span> GitHub</a>
+                    <a href="https://romeo-nu.vercel.app/OpenChatbot_Paper.html"><span class="link-icon">&#128196;</span> Paper</a>
+                </div>
+            </td>
+        </tr>
     </table>
 
     <hr>
@@ -594,15 +618,19 @@
     <h2><span class="icon">&#127891;</span> Education</h2>
 
     <div class="edu-item">
-        <span class="edu-icon">&#127979;</span>
-        <div class="degree">Master of Electrical Engineering (M.Eng.) &mdash; Network Security</div>
-        <div class="school">Universitas Indonesia, Jakarta &middot; 2017</div>
+        <img src="logo-ui.png" alt="Universitas Indonesia" class="edu-logo">
+        <div>
+            <div class="degree">Master of Electrical Engineering (M.Eng.) &mdash; Network Security</div>
+            <div class="school">Universitas Indonesia, Jakarta &middot; 2017</div>
+        </div>
     </div>
 
     <div class="edu-item">
-        <span class="edu-icon">&#127979;</span>
-        <div class="degree">Bachelor of Electrical Engineering (B.Eng.) &mdash; Informatics</div>
-        <div class="school">Universitas Gadjah Mada, Yogyakarta &middot; 2004</div>
+        <img src="logo-ugm.png" alt="Universitas Gadjah Mada" class="edu-logo">
+        <div>
+            <div class="degree">Bachelor of Electrical Engineering (B.Eng.) &mdash; Informatics</div>
+            <div class="school">Universitas Gadjah Mada, Yogyakarta &middot; 2004</div>
+        </div>
     </div>
 
     <hr>
