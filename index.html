@@ -4,679 +4,886 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Romi Nur Ismanto</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&amp;family=JetBrains+Mono:wght@400;500;600&amp;display=swap" rel="stylesheet">
     <style>
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
+        :root {
+            --accent: #2563eb;
+            --accent-light: #3b82f6;
+            --accent-bg: #eff6ff;
+            --accent-border: #bfdbfe;
+            --text-primary: #0f172a;
+            --text-secondary: #475569;
+            --text-muted: #94a3b8;
+            --border: #e2e8f0;
+            --border-light: #f1f5f9;
+            --card-shadow: 0 1px 3px rgba(0,0,0,0.04), 0 4px 12px rgba(0,0,0,0.03);
+            --card-hover: 0 8px 30px rgba(37,99,235,0.08), 0 2px 8px rgba(0,0,0,0.04);
+            --radius: 16px;
+            --radius-sm: 10px;
         }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; }
 
         body {
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
             line-height: 1.7;
-            color: #333;
-            max-width: 800px;
-            margin: 0 auto;
-            padding: 40px 20px;
+            color: var(--text-primary);
             background: #fff;
+            -webkit-font-smoothing: antialiased;
         }
 
-        /* Header */
-        .header {
+        /* ===== HERO SECTION ===== */
+        .hero {
+            position: relative;
+            padding: 80px 20px 60px;
             text-align: center;
-            margin-bottom: 30px;
+            overflow: hidden;
+        }
+        .hero::before {
+            content: '';
+            position: absolute;
+            top: 0; left: 0; right: 0;
+            height: 320px;
+            background: linear-gradient(180deg, #f8faff 0%, #fff 100%);
+            z-index: 0;
+        }
+        .hero::after {
+            content: '';
+            position: absolute;
+            top: -120px; left: 50%;
+            transform: translateX(-50%);
+            width: 600px; height: 600px;
+            background: radial-gradient(circle, rgba(37,99,235,0.06) 0%, transparent 70%);
+            border-radius: 50%;
+            z-index: 0;
         }
 
-        .header img {
-            width: 180px;
-            height: 180px;
+        .hero-inner {
+            position: relative;
+            z-index: 1;
+            max-width: 700px;
+            margin: 0 auto;
+        }
+
+        .avatar-wrap {
+            position: relative;
+            display: inline-block;
+            margin-bottom: 24px;
+        }
+        .avatar-wrap::before {
+            content: '';
+            position: absolute;
+            inset: -6px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, var(--accent), #7c3aed, #ec4899);
+            z-index: 0;
+            animation: spin 8s linear infinite;
+        }
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
+        .avatar-wrap img {
+            position: relative;
+            z-index: 1;
+            width: 160px; height: 160px;
             border-radius: 50%;
             object-fit: cover;
             object-position: top;
+            border: 4px solid #fff;
+            display: block;
+        }
+
+        .hero h1 {
+            font-size: 2.8em;
+            font-weight: 900;
+            letter-spacing: -0.03em;
+            margin-bottom: 8px;
+            background: linear-gradient(135deg, var(--text-primary), var(--accent));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .tagline {
+            font-size: 1.05em;
+            color: var(--text-secondary);
+            line-height: 1.8;
             margin-bottom: 20px;
-            border: 3px solid #e8edf3;
+            font-weight: 400;
+        }
+        .tagline em {
+            font-style: normal;
+            color: var(--text-muted);
+        }
+        .tagline strong {
+            color: var(--text-primary);
+            font-weight: 600;
         }
 
-        .header h1 {
-            font-size: 2.2em;
-            font-weight: 700;
-            margin-bottom: 5px;
-            color: #111;
-        }
-
-        .header .tagline {
-            font-size: 1.1em;
-            color: #555;
-            margin-bottom: 15px;
-        }
-
-        .links {
+        .social-links {
             display: flex;
             justify-content: center;
             flex-wrap: wrap;
-            gap: 8px 18px;
-            margin-top: 10px;
+            gap: 10px;
+            margin-top: 20px;
         }
-
-        .links a {
-            color: #1a73e8;
-            text-decoration: none;
-            font-size: 0.95em;
-            transition: color 0.2s;
-        }
-
-        .links a:hover {
-            text-decoration: underline;
-            color: #0d5bba;
-        }
-
-        .links .sep {
-            color: #ccc;
-        }
-
-        /* Sections */
-        hr {
-            border: none;
-            border-top: 1px solid #e8edf3;
-            margin: 35px 0;
-        }
-
-        h2 {
-            font-size: 1.4em;
-            font-weight: 700;
-            color: #111;
-            margin-bottom: 20px;
-            display: flex;
+        .social-links a {
+            display: inline-flex;
             align-items: center;
-            gap: 10px;
-        }
-
-        h2 .icon {
-            font-size: 1.1em;
-            opacity: 0.7;
-        }
-
-        h3 {
-            font-size: 1.05em;
-            font-weight: 600;
-            color: #222;
-            margin-bottom: 2px;
-        }
-
-        /* Bio */
-        .bio {
-            font-size: 1em;
-            color: #444;
-            margin-bottom: 10px;
-        }
-
-        /* Timeline */
-        .timeline-item {
-            display: flex;
-            gap: 20px;
-            margin-bottom: 28px;
-            position: relative;
-        }
-
-        .timeline-year {
-            min-width: 120px;
-            font-weight: 600;
-            color: #888;
-            font-size: 0.9em;
-            padding-top: 2px;
-        }
-
-        .timeline-content {
-            flex: 1;
-            padding-left: 16px;
-            border-left: 2px solid #e8edf3;
-        }
-
-        .timeline-content::before {
-            content: '';
-            position: absolute;
-            left: 134px;
-            top: 8px;
-            width: 8px;
-            height: 8px;
-            background: #1a73e8;
-            border-radius: 50%;
-        }
-
-        .timeline-content h3 .t-icon {
-            margin-right: 6px;
-            font-size: 0.95em;
-        }
-
-        .timeline-content p {
-            color: #555;
-            font-size: 0.93em;
-            margin-top: 4px;
-        }
-
-        .timeline-content .org {
-            color: #777;
-            font-size: 0.9em;
-        }
-
-        /* Competencies */
-        .competencies {
-            display: flex;
-            flex-wrap: wrap;
-            gap: 10px;
-            margin-top: 10px;
-        }
-
-        .competency-tag {
-            background: #f0f4ff;
-            color: #1a5276;
-            padding: 6px 14px;
-            border-radius: 20px;
+            gap: 6px;
+            padding: 8px 18px;
+            border-radius: 100px;
             font-size: 0.88em;
-            border: 1px solid #d4e2f7;
+            font-weight: 600;
+            text-decoration: none;
+            color: var(--text-secondary);
+            background: #fff;
+            border: 1px solid var(--border);
+            transition: all 0.25s cubic-bezier(0.4,0,0.2,1);
+            box-shadow: 0 1px 2px rgba(0,0,0,0.04);
+        }
+        .social-links a:hover {
+            color: var(--accent);
+            border-color: var(--accent-border);
+            background: var(--accent-bg);
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(37,99,235,0.12);
+        }
+        .social-links .link-emoji { font-size: 1.1em; }
+
+        /* ===== CONTAINER ===== */
+        .container {
+            max-width: 900px;
+            margin: 0 auto;
+            padding: 0 24px;
         }
 
-        /* Certifications */
-        .cert-list {
-            list-style: none;
-            padding: 0;
-            display: flex;
-            flex-wrap: wrap;
-            gap: 10px;
-            margin-top: 10px;
+        /* ===== SECTION ===== */
+        .section {
+            padding: 48px 0;
+        }
+        .section + .section {
+            border-top: 1px solid var(--border-light);
         }
 
-        .cert-list li {
-            background: #f9f9f9;
-            border: 1px solid #e0e0e0;
-            padding: 6px 14px;
-            border-radius: 6px;
-            font-size: 0.9em;
-            color: #444;
-        }
-
-        .cert-list li .c-icon {
-            margin-right: 4px;
-        }
-
-        /* Education */
-        .edu-item {
+        .section-header {
             display: flex;
             align-items: center;
-            gap: 16px;
-            margin-bottom: 20px;
+            gap: 12px;
+            margin-bottom: 28px;
         }
-
-        .edu-item .edu-logo {
-            width: 56px;
-            height: 56px;
-            object-fit: contain;
+        .section-icon {
+            width: 40px; height: 40px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 12px;
+            font-size: 1.2em;
             flex-shrink: 0;
         }
+        .section-icon.blue   { background: #eff6ff; }
+        .section-icon.green  { background: #f0fdf4; }
+        .section-icon.purple { background: #faf5ff; }
+        .section-icon.amber  { background: #fffbeb; }
+        .section-icon.rose   { background: #fff1f2; }
 
-        .edu-item .degree {
-            font-weight: 600;
-            color: #222;
+        .section-header h2 {
+            font-size: 1.5em;
+            font-weight: 800;
+            letter-spacing: -0.02em;
+            color: var(--text-primary);
         }
 
-        .edu-item .school {
-            color: #666;
-            font-size: 0.93em;
+        /* ===== BIO ===== */
+        .bio-text {
+            font-size: 1.02em;
+            color: var(--text-secondary);
+            line-height: 1.85;
+            padding: 24px 28px;
+            background: var(--border-light);
+            border-radius: var(--radius);
+            border-left: 4px solid var(--accent);
         }
 
-        .edu-item .thesis {
-            font-style: italic;
-            color: #777;
+        /* ===== PROJECT CARDS ===== */
+        .projects-grid {
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+        }
+
+        .project-card {
+            display: flex;
+            gap: 24px;
+            padding: 24px;
+            border-radius: var(--radius);
+            border: 1px solid var(--border);
+            background: #fff;
+            transition: all 0.3s cubic-bezier(0.4,0,0.2,1);
+            box-shadow: var(--card-shadow);
+            position: relative;
+            overflow: hidden;
+        }
+        .project-card::before {
+            content: '';
+            position: absolute;
+            top: 0; left: 0;
+            width: 4px; height: 100%;
+            border-radius: 4px 0 0 4px;
+            opacity: 0;
+            transition: opacity 0.3s;
+        }
+        .project-card:hover {
+            transform: translateY(-3px);
+            box-shadow: var(--card-hover);
+            border-color: var(--accent-border);
+        }
+        .project-card:hover::before {
+            opacity: 1;
+        }
+        .project-card:nth-child(1)::before { background: linear-gradient(180deg, #2563eb, #7c3aed); }
+        .project-card:nth-child(2)::before { background: linear-gradient(180deg, #059669, #10b981); }
+        .project-card:nth-child(3)::before { background: linear-gradient(180deg, #dc2626, #f97316); }
+        .project-card:nth-child(4)::before { background: linear-gradient(180deg, #7c3aed, #a855f7); }
+        .project-card:nth-child(5)::before { background: linear-gradient(180deg, #0891b2, #06b6d4); }
+        .project-card:nth-child(6)::before { background: linear-gradient(180deg, #d97706, #f59e0b); }
+        .project-card:nth-child(7)::before { background: linear-gradient(180deg, #ea580c, #f97316); }
+        .project-card:nth-child(8)::before { background: linear-gradient(180deg, #4f46e5, #6366f1); }
+
+        .project-thumb {
+            flex-shrink: 0;
+            width: 220px;
+        }
+        .project-thumb img {
+            width: 100%;
+            border-radius: var(--radius-sm);
+            border: 1px solid var(--border);
+            transition: transform 0.3s;
+        }
+        .project-card:hover .project-thumb img {
+            transform: scale(1.03);
+        }
+
+        .project-body {
+            flex: 1;
+            min-width: 0;
+        }
+        .project-body h3 {
+            font-size: 1.12em;
+            font-weight: 700;
+            color: var(--text-primary);
+            margin-bottom: 8px;
+            letter-spacing: -0.01em;
+        }
+        .project-body p {
             font-size: 0.9em;
-            margin-top: 4px;
-        }
-
-        /* Footer */
-        .footer {
-            text-align: center;
-            color: #aaa;
-            font-size: 0.85em;
-            margin-top: 40px;
-            padding-top: 20px;
-            border-top: 1px solid #eee;
-        }
-
-        /* Project Table */
-        .project-table {
-            width: 100%;
-            border-collapse: collapse;
-            margin-top: 15px;
-        }
-
-        .project-table td {
-            padding: 16px;
-            vertical-align: top;
-            border-bottom: 1px solid #eee;
-        }
-
-        .project-table .project-img {
-            width: 260px;
-        }
-
-        .project-table .project-img img {
-            width: 100%;
-            border-radius: 8px;
-            border: 1px solid #e0e0e0;
-        }
-
-        .project-table .project-info h3 {
-            margin-bottom: 6px;
-        }
-
-        .project-table .project-info p {
-            color: #555;
-            font-size: 0.93em;
-            margin-bottom: 10px;
+            color: var(--text-secondary);
+            line-height: 1.7;
+            margin-bottom: 12px;
             text-align: justify;
         }
 
-        .project-table .project-links a {
-            color: #1a73e8;
-            text-decoration: none;
-            font-size: 0.9em;
-            margin-right: 14px;
-            transition: color 0.2s;
+        .badges {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 6px;
+            margin-bottom: 14px;
         }
-
-        .project-table .project-links a:hover {
-            text-decoration: underline;
-            color: #0d5bba;
-        }
-
-        .project-table .project-links a .link-icon {
-            margin-right: 3px;
-            font-size: 0.9em;
-        }
-
-        .project-badge {
+        .badge {
             display: inline-block;
-            background: #f0f4ff;
-            color: #1a5276;
             padding: 3px 10px;
-            border-radius: 12px;
+            border-radius: 100px;
+            font-size: 0.72em;
+            font-weight: 600;
+            font-family: 'JetBrains Mono', monospace;
+            background: var(--accent-bg);
+            color: var(--accent);
+            border: 1px solid var(--accent-border);
+            letter-spacing: 0.02em;
+        }
+
+        .project-actions {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+            align-items: center;
+        }
+        .project-actions a {
+            display: inline-flex;
+            align-items: center;
+            gap: 5px;
+            padding: 6px 14px;
+            border-radius: 8px;
+            font-size: 0.82em;
+            font-weight: 600;
+            text-decoration: none;
+            transition: all 0.2s;
+        }
+        .project-actions .btn-github {
+            color: var(--text-secondary);
+            background: var(--border-light);
+            border: 1px solid var(--border);
+        }
+        .project-actions .btn-github:hover {
+            color: var(--text-primary);
+            background: #e2e8f0;
+        }
+        .project-actions .btn-demo {
+            color: #fff;
+            background: var(--accent);
+            border: 1px solid var(--accent);
+        }
+        .project-actions .btn-demo:hover {
+            background: var(--accent-light);
+            transform: translateY(-1px);
+            box-shadow: 0 2px 8px rgba(37,99,235,0.3);
+        }
+        .project-actions .btn-paper {
+            color: var(--accent);
+            background: var(--accent-bg);
+            border: 1px solid var(--accent-border);
+        }
+        .project-actions .btn-paper:hover {
+            background: #dbeafe;
+        }
+
+        .deploy-date {
+            margin-top: 8px;
             font-size: 0.78em;
-            border: 1px solid #d4e2f7;
-            margin-right: 6px;
+            color: var(--text-muted);
+            font-style: italic;
+        }
+
+        /* ===== TIMELINE ===== */
+        .timeline {
+            position: relative;
+            padding-left: 32px;
+        }
+        .timeline::before {
+            content: '';
+            position: absolute;
+            left: 7px; top: 8px; bottom: 8px;
+            width: 2px;
+            background: linear-gradient(180deg, var(--accent), var(--border));
+            border-radius: 2px;
+        }
+
+        .tl-item {
+            position: relative;
+            padding-bottom: 32px;
+        }
+        .tl-item:last-child { padding-bottom: 0; }
+
+        .tl-dot {
+            position: absolute;
+            left: -32px; top: 6px;
+            width: 16px; height: 16px;
+            border-radius: 50%;
+            background: #fff;
+            border: 3px solid var(--accent);
+            z-index: 1;
+            transition: all 0.2s;
+        }
+        .tl-item:hover .tl-dot {
+            background: var(--accent);
+            box-shadow: 0 0 0 4px rgba(37,99,235,0.15);
+        }
+
+        .tl-year {
+            display: inline-block;
+            padding: 2px 10px;
+            border-radius: 6px;
+            font-size: 0.78em;
+            font-weight: 700;
+            font-family: 'JetBrains Mono', monospace;
+            color: var(--accent);
+            background: var(--accent-bg);
+            margin-bottom: 6px;
+        }
+        .tl-item h3 {
+            font-size: 1.05em;
+            font-weight: 700;
+            color: var(--text-primary);
             margin-bottom: 4px;
         }
+        .tl-item p {
+            font-size: 0.9em;
+            color: var(--text-secondary);
+            line-height: 1.7;
+        }
 
-        /* Responsive */
-        @media (max-width: 600px) {
-            body {
-                padding: 20px 15px;
-            }
+        /* ===== EDUCATION ===== */
+        .edu-card {
+            display: flex;
+            align-items: center;
+            gap: 20px;
+            padding: 20px 24px;
+            border-radius: var(--radius);
+            border: 1px solid var(--border);
+            background: #fff;
+            margin-bottom: 14px;
+            transition: all 0.25s;
+            box-shadow: var(--card-shadow);
+        }
+        .edu-card:hover {
+            transform: translateX(4px);
+            border-color: var(--accent-border);
+            box-shadow: var(--card-hover);
+        }
+        .edu-card img {
+            width: 54px; height: 54px;
+            object-fit: contain;
+            flex-shrink: 0;
+        }
+        .edu-card .degree {
+            font-weight: 700;
+            font-size: 0.95em;
+            color: var(--text-primary);
+        }
+        .edu-card .school {
+            font-size: 0.88em;
+            color: var(--text-muted);
+            margin-top: 2px;
+        }
 
-            .header h1 {
-                font-size: 1.7em;
-            }
+        /* ===== CERTIFICATIONS ===== */
+        .cert-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+            gap: 10px;
+        }
+        .cert-item {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            padding: 12px 16px;
+            border-radius: var(--radius-sm);
+            border: 1px solid var(--border);
+            background: #fff;
+            font-size: 0.88em;
+            font-weight: 500;
+            color: var(--text-secondary);
+            transition: all 0.2s;
+            box-shadow: var(--card-shadow);
+        }
+        .cert-item:hover {
+            border-color: #86efac;
+            background: #f0fdf4;
+            transform: translateY(-2px);
+        }
+        .cert-check {
+            width: 22px; height: 22px;
+            border-radius: 50%;
+            background: #dcfce7;
+            color: #16a34a;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 0.7em;
+            flex-shrink: 0;
+            font-weight: 800;
+        }
 
-            .timeline-item {
+        /* ===== FOOTER ===== */
+        .site-footer {
+            text-align: center;
+            padding: 40px 24px;
+            border-top: 1px solid var(--border-light);
+            color: var(--text-muted);
+            font-size: 0.82em;
+        }
+        .site-footer .heart {
+            color: #ef4444;
+            display: inline-block;
+            animation: pulse 1.5s ease infinite;
+        }
+        @keyframes pulse {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.2); }
+        }
+
+        /* ===== RESPONSIVE ===== */
+        @media (max-width: 768px) {
+            .hero { padding: 48px 16px 40px; }
+            .hero h1 { font-size: 2em; }
+            .avatar-wrap img { width: 120px; height: 120px; }
+            .avatar-wrap::before { inset: -5px; }
+
+            .container { padding: 0 16px; }
+            .section { padding: 36px 0; }
+
+            .project-card {
                 flex-direction: column;
-                gap: 4px;
+                gap: 16px;
+                padding: 18px;
             }
+            .project-thumb { width: 100%; }
 
-            .timeline-year {
-                min-width: unset;
+            .cert-grid {
+                grid-template-columns: 1fr;
             }
+        }
 
-            .timeline-content::before {
-                display: none;
-            }
-
-            .timeline-content {
-                border-left: none;
-                padding-left: 0;
-            }
-
-            .header img {
-                width: 140px;
-                height: 140px;
-            }
-
-            .project-table,
-            .project-table tbody,
-            .project-table tr,
-            .project-table td {
-                display: block;
-                width: 100%;
-            }
-
-            .project-table .project-img {
-                width: 100%;
-                margin-bottom: 10px;
-            }
+        @media (max-width: 480px) {
+            .hero h1 { font-size: 1.6em; }
+            .tagline { font-size: 0.92em; }
+            .social-links a { padding: 6px 12px; font-size: 0.82em; }
+            .section-header h2 { font-size: 1.25em; }
+            .project-body h3 { font-size: 1em; }
+            .bio-text { padding: 18px 20px; font-size: 0.93em; }
+            .edu-card { padding: 14px 16px; gap: 14px; }
+            .edu-card img { width: 42px; height: 42px; }
         }
     </style>
 </head>
 <body>
 
-    <!-- Header -->
-    <div class="header">
-        <img src="Foto.jpeg" alt="Romi Nur Ismanto">
-        <h1>Romi Nur Ismanto</h1>
-        <div class="tagline"><em>I like to train my agentic AI agent on large datasets</em><br><em>AI-powered tools from Node JS roots to web frontiers.</em><br><em>Every commit lands on GitHub for you to fork &amp; remix.</em></div>
-        <div class="links">
-            <a href="https://github.com/romizone"><span class="link-icon">&#9901;</span> GitHub</a>
-            <span class="sep">|</span>
-            <a href="https://huggingface.co/romizone">&#129303; Hugging Face</a>
-            <span class="sep">|</span>
-            <a href="https://www.padelfip.com/player/romi-nur-ismanto/">&#127955; Padel FIP</a>
-            <span class="sep">|</span>
-            <a href="mailto:rominur@gmail.com">&#9993; Email</a>
+    <!-- ===== HERO ===== -->
+    <div class="hero">
+        <div class="hero-inner">
+            <div class="avatar-wrap">
+                <img src="Foto.jpeg" alt="Romi Nur Ismanto">
+            </div>
+            <h1>Romi Nur Ismanto</h1>
+            <div class="tagline">
+                <em>I like to train my agentic AI agent on large datasets</em><br>
+                <strong>AI-powered tools</strong> <em>from Node JS roots to web frontiers.</em><br>
+                <em>Every commit lands on GitHub for you to fork &amp; remix.</em>
+            </div>
+            <div class="social-links">
+                <a href="https://x.com/romeografic"><span class="link-emoji">&#120143;</span> Twitter / X</a>
+                <a href="https://github.com/romizone"><span class="link-emoji">&#9901;</span> GitHub</a>
+                <a href="https://huggingface.co/romizone"><span class="link-emoji">&#129303;</span> Hugging Face</a>
+                <a href="https://www.padelfip.com/player/romi-nur-ismanto/"><span class="link-emoji">&#127955;</span> Padel FIP</a>
+                <a href="mailto:rominur@gmail.com"><span class="link-emoji">&#9993;</span> Email</a>
+            </div>
         </div>
     </div>
 
-    <hr>
+    <!-- ===== BIO ===== -->
+    <div class="container">
+        <div class="section">
+            <div class="bio-text">
+                Independent AI Research Lab and Hobbyist. Passionate about building agentic AI systems, training deep learning models, and exploring the frontier of generative AI, large language models (LLM), retrieval-augmented generation (RAG), computer vision AI, LiDAR sensing, and speech-to-text systems. With nearly two decades of background in IT infrastructure, network security, and remote operations, now channeling that experience into AI research, AI engineering, LLM fine-tuning, RAG pipelines, vision AI, and developing intelligent automation solutions.
+            </div>
+        </div>
 
-    <!-- Bio -->
-    <p class="bio">
-        Independent AI Research Lab and Hobbyist. Passionate about building agentic AI systems, training deep learning models, and exploring the frontier of generative AI, large language models (LLM), retrieval-augmented generation (RAG), computer vision AI, LiDAR sensing, and speech-to-text systems. With nearly two decades of background in IT infrastructure, network security, and remote operations, now channeling that experience into AI research, AI engineering, LLM fine-tuning, RAG pipelines, vision AI, and developing intelligent automation solutions.
-    </p>
+        <!-- ===== PROJECTS ===== -->
+        <div class="section">
+            <div class="section-header">
+                <div class="section-icon blue">&#128736;</div>
+                <h2>Featured AI Working Projects</h2>
+            </div>
+            <div class="projects-grid">
 
-    <hr>
+                <!-- 1. Optimus Perceptron -->
+                <div class="project-card">
+                    <div class="project-thumb">
+                        <img src="OptimusPerceptron.svg" alt="Optimus Perceptron">
+                    </div>
+                    <div class="project-body">
+                        <h3>&#129302; Optimus Perceptron &mdash; AI Humanoid Robot Simulation</h3>
+                        <p>Complete autonomous humanoid robot simulation platform with <strong>9 integrated tabs</strong> in a single HTML file. Features real-time city navigation with entity classification (human/robot/car/child), cinematic park walking with rich flora (roses, jasmine, orchids, lily pads, fireflies), 7-layer cognitive architecture stack (ViT-L/14, DETR, EKF Sensor Fusion, Dreamer-v3 World Model, LLM+PDDL Planner, PPO/SAC RL, PD Motor Control), FOV-based detection with progressive confidence, collision avoidance, battery management with charging stations, weekly todo planner, full damage &amp; repair diagnostics with 3D body map, <strong>Padel AI doubles (2v2)</strong> with dynamic net/back role switching, LiDAR 3D point cloud visualization, and a comprehensive academic paper. All built with <strong>zero frameworks &mdash; pure HTML5 Canvas + JavaScript.</strong></p>
+                        <div class="badges">
+                            <span class="badge">JavaScript</span>
+                            <span class="badge">HTML5 Canvas</span>
+                            <span class="badge">7-Layer AI</span>
+                            <span class="badge">9 Tabs</span>
+                            <span class="badge">Zero Dependencies</span>
+                            <span class="badge">Responsive</span>
+                            <span class="badge">Vercel</span>
+                        </div>
+                        <div class="project-actions">
+                            <a href="https://github.com/romizone/optimus" class="btn-github">&#128187; GitHub</a>
+                            <a href="https://optimus-azure.vercel.app/optimus-city-simulation.html" class="btn-demo">&#127760; Live Demo</a>
+                            <a href="https://romeo-nu.vercel.app/OptimusPerceptron_Paper.html" class="btn-paper">&#128196; Paper</a>
+                        </div>
+                        <div class="deploy-date">Deployed: 17 February 2026</div>
+                    </div>
+                </div>
 
-    <!-- Featured AI Working Projects -->
-    <h2><span class="icon">&#128736;</span> Featured AI Working Projects</h2>
-    <table class="project-table">
-        <tr>
-            <td class="project-img">
-                <img src="OptimusPerceptron.svg" alt="Optimus Perceptron">
-            </td>
-            <td class="project-info">
-                <h3>&#129302; Optimus Perceptron &mdash; AI Humanoid Robot Simulation</h3>
-                <p>Complete autonomous humanoid robot simulation platform with <strong>9 integrated tabs</strong> in a single HTML file. Features real-time city navigation with entity classification (human/robot/car/child), cinematic park walking with rich flora (roses, jasmine, orchids, lily pads, fireflies), 7-layer cognitive architecture stack (ViT-L/14, DETR, EKF Sensor Fusion, Dreamer-v3 World Model, LLM+PDDL Planner, PPO/SAC RL, PD Motor Control), FOV-based detection with progressive confidence, collision avoidance, battery management with charging stations, weekly todo planner, full damage &amp; repair diagnostics with 3D body map, <strong>Padel AI doubles (2v2)</strong> with dynamic net/back role switching, LiDAR 3D point cloud visualization, and a comprehensive academic paper. All built with <strong>zero frameworks &mdash; pure HTML5 Canvas + JavaScript.</strong></p>
+                <!-- 2. TranscribeAI -->
+                <div class="project-card">
+                    <div class="project-thumb">
+                        <img src="TranscribAI.png" alt="TranscribeAI">
+                    </div>
+                    <div class="project-body">
+                        <h3>&#127908; TranscribeAI</h3>
+                        <p><strong>&#128274; Ideal for processing confidential and financial data.</strong> Security-focused, local data processing, <strong>NO DATA LEAKED.</strong> 100% Local AI Transcription with Speaker Diarization. No API key, no cloud, no cost &mdash; runs completely offline on your machine. Powered by dual engine (faster-whisper CPU + mlx-whisper Apple Silicon GPU), supports 99+ languages with auto-detection, speaker identification, and multi-format input/output. Features 5 AI model sizes from tiny (39M) to large-v3 (1.5B), smart progress pipeline, auto model caching, and a professional dark theme web UI.</p>
+                        <div class="badges">
+                            <span class="badge">Python</span>
+                            <span class="badge">Whisper</span>
+                            <span class="badge">Apple Silicon</span>
+                            <span class="badge">100% Offline</span>
+                            <span class="badge">MIT License</span>
+                        </div>
+                        <div class="project-actions">
+                            <a href="https://github.com/romizone/transcribeAI" class="btn-github">&#128187; GitHub</a>
+                            <a href="https://romeo-nu.vercel.app/TranscribeAI_Paper.html" class="btn-paper">&#128196; Paper</a>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 3. AI PDF Tools -->
+                <div class="project-card">
+                    <div class="project-thumb">
+                        <img src="PDFTools.svg" alt="AI PDF Tools">
+                    </div>
+                    <div class="project-body">
+                        <h3>&#128196; AI PDF Tools</h3>
+                        <p><strong>&#128274; Ideal for processing confidential and financial data.</strong> Security-focused, local data processing, <strong>NO DATA LEAKED.</strong> A lightweight, privacy-focused web application providing a comprehensive suite of PDF processing utilities. Convert PDF to Word, compress, OCR with 20+ languages via Tesseract, merge, split, and unlock password-protected PDFs &mdash; all processed <strong>100% locally on your machine</strong> with zero cloud dependency. Built with Flask backend and vanilla JavaScript frontend, featuring a modern tab-based UI with drag &amp; drop upload, automatic temp file cleanup, REST API with 6 endpoints, and Docker support for containerized deployment.</p>
+                        <div class="badges">
+                            <span class="badge">Flask</span>
+                            <span class="badge">Python</span>
+                            <span class="badge">Tesseract OCR</span>
+                            <span class="badge">pdf2docx</span>
+                            <span class="badge">100% Local</span>
+                            <span class="badge">Docker</span>
+                            <span class="badge">MIT License</span>
+                        </div>
+                        <div class="project-actions">
+                            <a href="https://github.com/romizone/PDFtoword" class="btn-github">&#128187; GitHub</a>
+                            <a href="https://romeo-nu.vercel.app/PDFTools_Paper.html" class="btn-paper">&#128196; Paper</a>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 4. Tesla Self-Driving AI Simulation -->
+                <div class="project-card">
+                    <div class="project-thumb">
+                        <img src="TeslaWay.svg" alt="Tesla Self-Driving AI Simulation">
+                    </div>
+                    <div class="project-body">
+                        <h3>&#128663; Tesla Self-Driving AI Simulation</h3>
+                        <p>Real-time 3D autonomous vehicle simulation built entirely in pure JavaScript Canvas with <strong>zero external dependencies.</strong> Features a custom perspective projection engine, procedurally generated roads with curves and intersections, AI-controlled traffic vehicles with detection bounding boxes, 360&deg; LiDAR sweep with point cloud visualization, dynamic traffic light state machine, and a cinematic HUD displaying sensor status (8 cameras, 4x LiDAR, radar, 12 ultrasonic), speed, battery, and real-time object detection accuracy for lanes, vehicles, pedestrians, and traffic signs. All in a single HTML file.</p>
+                        <div class="badges">
+                            <span class="badge">JavaScript</span>
+                            <span class="badge">HTML5 Canvas</span>
+                            <span class="badge">3D Projection</span>
+                            <span class="badge">LiDAR Simulation</span>
+                            <span class="badge">Zero Dependencies</span>
+                            <span class="badge">Vercel</span>
+                        </div>
+                        <div class="project-actions">
+                            <a href="https://github.com/romizone/teslaway" class="btn-github">&#128187; GitHub</a>
+                            <a href="https://teslaway.vercel.app" class="btn-demo">&#127760; Live Demo</a>
+                            <a href="https://romeo-nu.vercel.app/TeslaWay_Paper.html" class="btn-paper">&#128196; Paper</a>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 5. Knight Chess AI -->
+                <div class="project-card">
+                    <div class="project-thumb">
+                        <img src="KnightChess.png" alt="Knight Chess">
+                    </div>
+                    <div class="project-body">
+                        <h3>&#9822; Knight Chess AI</h3>
+                        <p>A strategic chess variant with 5 knights per side on an extended 8&times;9 board, powered by a custom Minimax AI Engine with alpha-beta pruning. The non-standard 8&times;9 board (vs standard 8&times;8) combined with 5 knights per side makes it <strong>almost impossible for humans or traditional chess AI engines like Stockfish to win &mdash; no existing opening book, endgame tablebase, or positional theory applies.</strong> The AI searches up to depth 5 with position evaluation covering material balance, piece mobility, king safety, and knight fork detection. Features three difficulty levels (Easy, Medium, Difficult), 10-minute game timer, token economy, and leaderboard system. 3 pawns are randomly replaced by knights each game, creating infinite strategic possibilities.</p>
+                        <div class="badges">
+                            <span class="badge">Minimax AI</span>
+                            <span class="badge">Alpha-Beta Pruning</span>
+                            <span class="badge">Next.js</span>
+                            <span class="badge">TypeScript</span>
+                            <span class="badge">Web Worker</span>
+                            <span class="badge">Vercel</span>
+                        </div>
+                        <div class="project-actions">
+                            <a href="https://github.com/romizone/knight-chess" class="btn-github">&#128187; GitHub</a>
+                            <a href="https://knight-chess.vercel.app" class="btn-demo">&#127760; Live Demo</a>
+                            <a href="https://romeo-nu.vercel.app/KnightChess_Paper.html" class="btn-paper">&#128196; Paper</a>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 6. Transformer Explainer -->
+                <div class="project-card">
+                    <div class="project-thumb">
+                        <img src="SimulasiLLM.svg" alt="SimulasiLLM">
+                    </div>
+                    <div class="project-body">
+                        <h3>&#129504; Transformer Explainer (SimulasiLLM)</h3>
+                        <p>Interactive LLM Attention Simulation that visualizes how GPT-2 style transformer models process and generate text. Explore token embeddings, Q/K/V projections, causal masking, softmax sampling, and attention weights in real-time. Adjust temperature and top-k parameters to see how they affect next-token prediction. Features autoregressive text generation, probability distribution visualization, and a full breakdown of the self-attention mechanism &mdash; all running in the browser with <strong>zero dependencies and zero frameworks.</strong></p>
+                        <div class="badges">
+                            <span class="badge">Transformer</span>
+                            <span class="badge">GPT-2 Simulation</span>
+                            <span class="badge">Attention Mechanism</span>
+                            <span class="badge">Pure HTML/CSS/JS</span>
+                            <span class="badge">Zero Dependencies</span>
+                        </div>
+                        <div class="project-actions">
+                            <a href="https://github.com/romizone/simulasillm" class="btn-github">&#128187; GitHub</a>
+                            <a href="https://simulasillm.vercel.app" class="btn-demo">&#127760; Live Demo</a>
+                            <a href="https://romeo-nu.vercel.app/SimulasiLLM_Paper.html" class="btn-paper">&#128196; Paper</a>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 7. PyTorch Neural Network Simulation -->
+                <div class="project-card">
+                    <div class="project-thumb">
+                        <img src="PyTorch.svg" alt="PyTorch Neural Network Simulation">
+                    </div>
+                    <div class="project-body">
+                        <h3>&#128293; PyTorch Neural Network Simulation</h3>
+                        <p>Interactive web-based educational platform for learning PyTorch and neural network fundamentals through real-time visualization. Build, train, and visualize networks live while learning PyTorch with <strong>auto-generated code that mirrors your configuration in real-time.</strong> Features live neural network simulation with adjustable architecture (layers/neurons), clickable neuron inspection during training, XOR Playground with decision boundary visualization, and a complete training pipeline walkthrough.</p>
+                        <div class="badges">
+                            <span class="badge">PyTorch</span>
+                            <span class="badge">Neural Networks</span>
+                            <span class="badge">Next.js</span>
+                            <span class="badge">TypeScript</span>
+                            <span class="badge">Framer Motion</span>
+                            <span class="badge">Vercel</span>
+                        </div>
+                        <div class="project-actions">
+                            <a href="https://github.com/romizone/pytorch" class="btn-github">&#128187; GitHub</a>
+                            <a href="https://pytorch-ecru.vercel.app" class="btn-demo">&#127760; Live Demo</a>
+                            <a href="https://romeo-nu.vercel.app/PyTorch_Paper.html" class="btn-paper">&#128196; Paper</a>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 8. Open Chatbot -->
+                <div class="project-card">
+                    <div class="project-thumb">
+                        <img src="OpenChatbot.svg" alt="Open Chatbot">
+                    </div>
+                    <div class="project-body">
+                        <h3>&#128172; Open Chatbot</h3>
+                        <p><strong>&#128274; Ideal for processing confidential and financial data.</strong> Security-focused, local data processing, <strong>NO DATA LEAKED.</strong> Zero File Leakage AI Chatbot built with Privacy by Design. Documents are processed locally on your server&mdash;only extracted plain text (max 30KB) is sent to AI providers, never the original files. Supports PDF (with OCR), Word, Excel, images, and 20+ code formats. Multi-provider AI with DeepSeek, OpenAI GPT-4o, and Anthropic Claude. Features streaming responses via Vercel AI SDK 6, LaTeX/KaTeX math rendering, syntax highlighting, auto-continue for truncated responses, multi-session chat history, and real-time connection status. Built with Next.js 16, React 19, TypeScript strict mode, and Tailwind CSS 4.</p>
+                        <div class="badges">
+                            <span class="badge">Next.js 16</span>
+                            <span class="badge">React 19</span>
+                            <span class="badge">TypeScript</span>
+                            <span class="badge">Vercel AI SDK</span>
+                            <span class="badge">Tesseract OCR</span>
+                            <span class="badge">Privacy by Design</span>
+                            <span class="badge">MIT License</span>
+                        </div>
+                        <div class="project-actions">
+                            <a href="https://github.com/romizone/chatbot-next" class="btn-github">&#128187; GitHub</a>
+                            <a href="https://romeo-nu.vercel.app/OpenChatbot_Paper.html" class="btn-paper">&#128196; Paper</a>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+
+        <!-- ===== EXPERIENCE ===== -->
+        <div class="section">
+            <div class="section-header">
+                <div class="section-icon purple">&#128640;</div>
+                <h2>Professional Experience</h2>
+            </div>
+            <div class="timeline">
+
+                <div class="tl-item">
+                    <div class="tl-dot"></div>
+                    <div class="tl-year">2026</div>
+                    <h3>&#129302; Deep Learning &amp; Agentic AI</h3>
+                    <p>Building and training neural networks with PyTorch. Designing autonomous AI agents capable of multi-step reasoning, tool use, and self-correction. Multi-vector embeddings for image retrieval and semantic search using vector databases.</p>
+                </div>
+
+                <div class="tl-item">
+                    <div class="tl-dot"></div>
+                    <div class="tl-year">2025</div>
+                    <h3>&#129504; Generative AI &amp; AI Safety</h3>
+                    <p>Applying large language models for content generation, summarization, and analysis. Implementing guardrails, input/output validation, and safety layers to ensure responsible and reliable AI deployment in production systems.</p>
+                </div>
+
+                <div class="tl-item">
+                    <div class="tl-dot"></div>
+                    <div class="tl-year">2023</div>
+                    <h3>&#128172; AI Engineering &amp; LLM Integration</h3>
+                    <p>Crafting effective prompts for ChatGPT and other LLMs. Building AI-powered workflows and integrating language models into applications for automation, code generation, and intelligent data processing.</p>
+                </div>
+
+                <div class="tl-item">
+                    <div class="tl-dot"></div>
+                    <div class="tl-year">2023</div>
+                    <h3>&#128225; Intelligent Network Operation</h3>
+                    <p>Leading 24/7 monitoring, incident response, and proactive maintenance for nationwide communication networks including VSAT satellite, terrestrial, and cellular infrastructures. Ensuring high availability and performance optimization for thousands of remote banking units across Indonesia.</p>
+                </div>
+
+                <div class="tl-item">
+                    <div class="tl-dot"></div>
+                    <div class="tl-year">2009</div>
+                    <h3>&#127974; E-Channel Monitoring &amp; Operations</h3>
+                    <p>Monitored and ensured 24/7 availability of over 20,000 ATMs, 200,000 EDCs, 500 CDMs, and CRM systems across the national banking network. Developed digital dashboards for real-time monitoring, root cause analysis, and operational reliability of electronic channel infrastructure.</p>
+                </div>
+
+                <div class="tl-item">
+                    <div class="tl-dot"></div>
+                    <div class="tl-year">2017</div>
+                    <h3>&#128272; Cryptography &amp; Web Application Security</h3>
+                    <p>Applied AES encryption for front-end code obfuscation to protect web applications. Deep expertise in cryptographic algorithms, secure coding practices, and vulnerability mitigation for banking-grade systems.</p>
+                </div>
+
+                <div class="tl-item">
+                    <div class="tl-dot"></div>
+                    <div class="tl-year">2005</div>
+                    <h3>&#128737; Enterprise Security Infrastructure</h3>
+                    <p>Deployed and operated firewall, IDS, IPS, anti-spam, and antivirus systems for banking environments. Built enterprise Active Directory infrastructure managing authentication and access control for large-scale organizations.</p>
+                </div>
+
+                <div class="tl-item">
+                    <div class="tl-dot"></div>
+                    <div class="tl-year">2004</div>
+                    <h3>&#128273; Authentication Systems &amp; Algorithm Design</h3>
+                    <p>Designed multi-factor authentication systems using one-time passwords with MD5 hashing. Foundation in algorithm design, network protocols, and informatics engineering.</p>
+                </div>
+
+            </div>
+        </div>
+
+        <!-- ===== EDUCATION ===== -->
+        <div class="section">
+            <div class="section-header">
+                <div class="section-icon green">&#127891;</div>
+                <h2>Education</h2>
+            </div>
+
+            <div class="edu-card">
+                <img src="logo-ui.svg" alt="Universitas Indonesia">
                 <div>
-                    <span class="project-badge">JavaScript</span>
-                    <span class="project-badge">HTML5 Canvas</span>
-                    <span class="project-badge">7-Layer AI</span>
-                    <span class="project-badge">9 Tabs</span>
-                    <span class="project-badge">Zero Dependencies</span>
-                    <span class="project-badge">Responsive</span>
-                    <span class="project-badge">Vercel</span>
+                    <div class="degree">Master of Electrical Engineering (M.Eng.) &mdash; Network Security</div>
+                    <div class="school">Universitas Indonesia, Jakarta &middot; 2017</div>
                 </div>
-                <br>
-                <div class="project-links">
-                    <a href="https://github.com/romizone/optimus"><span class="link-icon">&#128187;</span> GitHub</a>
-                    <a href="https://optimus-azure.vercel.app"><span class="link-icon">&#127760;</span> Live Demo</a>
-                    <a href="https://romeo-nu.vercel.app/OptimusPerceptron_Paper.html"><span class="link-icon">&#128196;</span> Paper</a>
-                </div>
-                <div style="margin-top:6px;font-size:0.8em;color:#999;font-style:italic;">Deployed: 17 February 2026</div>
-            </td>
-        </tr>
-        <tr>
-            <td class="project-img">
-                <img src="TranscribAI.png" alt="TranscribeAI">
-            </td>
-            <td class="project-info">
-                <h3>&#127908; TranscribeAI</h3>
-                <p><strong>&#128274; Ideal for processing confidential and financial data.</strong> Security-focused, local data processing, <strong>NO DATA LEAKED.</strong> 100% Local AI Transcription with Speaker Diarization. No API key, no cloud, no cost &mdash; runs completely offline on your machine. Powered by dual engine (faster-whisper CPU + mlx-whisper Apple Silicon GPU), supports 99+ languages with auto-detection, speaker identification, and multi-format input/output. Features 5 AI model sizes from tiny (39M) to large-v3 (1.5B), smart progress pipeline, auto model caching, and a professional dark theme web UI.</p>
+            </div>
+
+            <div class="edu-card">
+                <img src="logo-ugm.gif" alt="Universitas Gadjah Mada">
                 <div>
-                    <span class="project-badge">Python</span>
-                    <span class="project-badge">Whisper</span>
-                    <span class="project-badge">Apple Silicon</span>
-                    <span class="project-badge">100% Offline</span>
-                    <span class="project-badge">MIT License</span>
+                    <div class="degree">Bachelor of Electrical Engineering (B.Eng.) &mdash; Informatics</div>
+                    <div class="school">Universitas Gadjah Mada, Yogyakarta &middot; 2004</div>
                 </div>
-                <br>
-                <div class="project-links">
-                    <a href="https://github.com/romizone/transcribeAI"><span class="link-icon">&#128187;</span> GitHub</a>
-                    <a href="https://romeo-nu.vercel.app/TranscribeAI_Paper.html"><span class="link-icon">&#128196;</span> Paper</a>
-                </div>
-            </td>
-        </tr>
-        <tr>
-            <td class="project-img">
-                <img src="PDFTools.svg" alt="AI PDF Tools">
-            </td>
-            <td class="project-info">
-                <h3>&#128196; AI PDF Tools</h3>
-                <p><strong>&#128274; Ideal for processing confidential and financial data.</strong> Security-focused, local data processing, <strong>NO DATA LEAKED.</strong> A lightweight, privacy-focused web application providing a comprehensive suite of PDF processing utilities. Convert PDF to Word, compress, OCR with 20+ languages via Tesseract, merge, split, and unlock password-protected PDFs &mdash; all processed <strong>100% locally on your machine</strong> with zero cloud dependency. Built with Flask backend and vanilla JavaScript frontend, featuring a modern tab-based UI with drag &amp; drop upload, automatic temp file cleanup, REST API with 6 endpoints, and Docker support for containerized deployment.</p>
-                <div>
-                    <span class="project-badge">Flask</span>
-                    <span class="project-badge">Python</span>
-                    <span class="project-badge">Tesseract OCR</span>
-                    <span class="project-badge">pdf2docx</span>
-                    <span class="project-badge">100% Local</span>
-                    <span class="project-badge">Docker</span>
-                    <span class="project-badge">MIT License</span>
-                </div>
-                <br>
-                <div class="project-links">
-                    <a href="https://github.com/romizone/PDFtoword"><span class="link-icon">&#128187;</span> GitHub</a>
-                    <a href="https://romeo-nu.vercel.app/PDFTools_Paper.html"><span class="link-icon">&#128196;</span> Paper</a>
-                </div>
-            </td>
-        </tr>
-        <tr>
-            <td class="project-img">
-                <img src="TeslaWay.svg" alt="Tesla Self-Driving AI Simulation">
-            </td>
-            <td class="project-info">
-                <h3>&#128663; Tesla Self-Driving AI Simulation</h3>
-                <p>Real-time 3D autonomous vehicle simulation built entirely in pure JavaScript Canvas with <strong>zero external dependencies.</strong> Features a custom perspective projection engine, procedurally generated roads with curves and intersections, AI-controlled traffic vehicles with detection bounding boxes, 360&deg; LiDAR sweep with point cloud visualization, dynamic traffic light state machine, and a cinematic HUD displaying sensor status (8 cameras, 4x LiDAR, radar, 12 ultrasonic), speed, battery, and real-time object detection accuracy for lanes, vehicles, pedestrians, and traffic signs. All in a single HTML file.</p>
-                <div>
-                    <span class="project-badge">JavaScript</span>
-                    <span class="project-badge">HTML5 Canvas</span>
-                    <span class="project-badge">3D Projection</span>
-                    <span class="project-badge">LiDAR Simulation</span>
-                    <span class="project-badge">Zero Dependencies</span>
-                    <span class="project-badge">Vercel</span>
-                </div>
-                <br>
-                <div class="project-links">
-                    <a href="https://github.com/romizone/teslaway"><span class="link-icon">&#128187;</span> GitHub</a>
-                    <a href="https://teslaway.vercel.app"><span class="link-icon">&#127760;</span> Live Demo</a>
-                    <a href="https://romeo-nu.vercel.app/TeslaWay_Paper.html"><span class="link-icon">&#128196;</span> Paper</a>
-                </div>
-            </td>
-        </tr>
-        <tr>
-            <td class="project-img">
-                <img src="KnightChess.png" alt="Knight Chess">
-            </td>
-            <td class="project-info">
-                <h3>&#9822; Knight Chess AI</h3>
-                <p>A strategic chess variant with 5 knights per side on an extended 8&times;9 board, powered by a custom Minimax AI Engine with alpha-beta pruning. The non-standard 8&times;9 board (vs standard 8&times;8) combined with 5 knights per side makes it <strong>almost impossible for humans or traditional chess AI engines like Stockfish to win &mdash; no existing opening book, endgame tablebase, or positional theory applies.</strong> The AI searches up to depth 5 with position evaluation covering material balance, piece mobility, king safety, and knight fork detection. Features three difficulty levels (Easy, Medium, Difficult), 10-minute game timer, token economy, and leaderboard system. 3 pawns are randomly replaced by knights each game, creating infinite strategic possibilities.</p>
-                <div>
-                    <span class="project-badge">Minimax AI</span>
-                    <span class="project-badge">Alpha-Beta Pruning</span>
-                    <span class="project-badge">Next.js</span>
-                    <span class="project-badge">TypeScript</span>
-                    <span class="project-badge">Web Worker</span>
-                    <span class="project-badge">Vercel</span>
-                </div>
-                <br>
-                <div class="project-links">
-                    <a href="https://github.com/romizone/knight-chess"><span class="link-icon">&#128187;</span> GitHub</a>
-                    <a href="https://knight-chess.vercel.app"><span class="link-icon">&#127760;</span> Live Demo</a>
-                    <a href="https://romeo-nu.vercel.app/KnightChess_Paper.html"><span class="link-icon">&#128196;</span> Paper</a>
-                </div>
-            </td>
-        </tr>
-        <tr>
-            <td class="project-img">
-                <img src="SimulasiLLM.svg" alt="SimulasiLLM">
-            </td>
-            <td class="project-info">
-                <h3>&#129504; Transformer Explainer (SimulasiLLM)</h3>
-                <p>Interactive LLM Attention Simulation that visualizes how GPT-2 style transformer models process and generate text. Explore token embeddings, Q/K/V projections, causal masking, softmax sampling, and attention weights in real-time. Adjust temperature and top-k parameters to see how they affect next-token prediction. Features autoregressive text generation, probability distribution visualization, and a full breakdown of the self-attention mechanism &mdash; all running in the browser with <strong>zero dependencies and zero frameworks.</strong></p>
-                <div>
-                    <span class="project-badge">Transformer</span>
-                    <span class="project-badge">GPT-2 Simulation</span>
-                    <span class="project-badge">Attention Mechanism</span>
-                    <span class="project-badge">Pure HTML/CSS/JS</span>
-                    <span class="project-badge">Zero Dependencies</span>
-                </div>
-                <br>
-                <div class="project-links">
-                    <a href="https://github.com/romizone/simulasillm"><span class="link-icon">&#128187;</span> GitHub</a>
-                    <a href="https://simulasillm.vercel.app"><span class="link-icon">&#127760;</span> Live Demo</a>
-                    <a href="https://romeo-nu.vercel.app/SimulasiLLM_Paper.html"><span class="link-icon">&#128196;</span> Paper</a>
-                </div>
-            </td>
-        </tr>
-        <tr>
-            <td class="project-img">
-                <img src="PyTorch.svg" alt="PyTorch Neural Network Simulation">
-            </td>
-            <td class="project-info">
-                <h3>&#128293; PyTorch Neural Network Simulation</h3>
-                <p>Interactive web-based educational platform for learning PyTorch and neural network fundamentals through real-time visualization. Build, train, and visualize networks live while learning PyTorch with <strong>auto-generated code that mirrors your configuration in real-time.</strong> Features live neural network simulation with adjustable architecture (layers/neurons), clickable neuron inspection during training, XOR Playground with decision boundary visualization, and a complete training pipeline walkthrough.</p>
-                <div>
-                    <span class="project-badge">PyTorch</span>
-                    <span class="project-badge">Neural Networks</span>
-                    <span class="project-badge">Next.js</span>
-                    <span class="project-badge">TypeScript</span>
-                    <span class="project-badge">Framer Motion</span>
-                    <span class="project-badge">Vercel</span>
-                </div>
-                <br>
-                <div class="project-links">
-                    <a href="https://github.com/romizone/pytorch"><span class="link-icon">&#128187;</span> GitHub</a>
-                    <a href="https://pytorch-ecru.vercel.app"><span class="link-icon">&#127760;</span> Live Demo</a>
-                    <a href="https://romeo-nu.vercel.app/PyTorch_Paper.html"><span class="link-icon">&#128196;</span> Paper</a>
-                </div>
-            </td>
-        </tr>
-        <tr>
-            <td class="project-img">
-                <img src="OpenChatbot.svg" alt="Open Chatbot">
-            </td>
-            <td class="project-info">
-                <h3>&#128172; Open Chatbot</h3>
-                <p><strong>&#128274; Ideal for processing confidential and financial data.</strong> Security-focused, local data processing, <strong>NO DATA LEAKED.</strong> Zero File Leakage AI Chatbot built with Privacy by Design. Documents are processed locally on your server&mdash;only extracted plain text (max 30KB) is sent to AI providers, never the original files. Supports PDF (with OCR), Word, Excel, images, and 20+ code formats. Multi-provider AI with DeepSeek, OpenAI GPT-4o, and Anthropic Claude. Features streaming responses via Vercel AI SDK 6, LaTeX/KaTeX math rendering, syntax highlighting, auto-continue for truncated responses, multi-session chat history, and real-time connection status. Built with Next.js 16, React 19, TypeScript strict mode, and Tailwind CSS 4.</p>
-                <div>
-                    <span class="project-badge">Next.js 16</span>
-                    <span class="project-badge">React 19</span>
-                    <span class="project-badge">TypeScript</span>
-                    <span class="project-badge">Vercel AI SDK</span>
-                    <span class="project-badge">Tesseract OCR</span>
-                    <span class="project-badge">Privacy by Design</span>
-                    <span class="project-badge">MIT License</span>
-                </div>
-                <br>
-                <div class="project-links">
-                    <a href="https://github.com/romizone/chatbot-next"><span class="link-icon">&#128187;</span> GitHub</a>
-                    <a href="https://romeo-nu.vercel.app/OpenChatbot_Paper.html"><span class="link-icon">&#128196;</span> Paper</a>
-                </div>
-            </td>
-        </tr>
-    </table>
-
-    <hr>
-
-    <!-- Professional Experience (Timeline) -->
-    <h2><span class="icon">&#128640;</span> Professional Experience</h2>
-
-    <div class="timeline-item">
-        <div class="timeline-year">2026</div>
-        <div class="timeline-content">
-            <h3><span class="t-icon">&#129302;</span> Deep Learning &amp; Agentic AI</h3>
-            <p>Building and training neural networks with PyTorch. Designing autonomous AI agents capable of multi-step reasoning, tool use, and self-correction. Multi-vector embeddings for image retrieval and semantic search using vector databases.</p>
+            </div>
         </div>
+
+        <!-- ===== CERTIFICATIONS ===== -->
+        <div class="section">
+            <div class="section-header">
+                <div class="section-icon amber">&#127942;</div>
+                <h2>Certifications</h2>
+            </div>
+            <div class="cert-grid">
+                <div class="cert-item"><div class="cert-check">&#10003;</div> CEH (Certified Ethical Hacker)</div>
+                <div class="cert-item"><div class="cert-check">&#10003;</div> CDMP (Certified Data Management Professional)</div>
+                <div class="cert-item"><div class="cert-check">&#10003;</div> Lead Auditor ISO 9001</div>
+                <div class="cert-item"><div class="cert-check">&#10003;</div> Lead Auditor ISO 55001</div>
+                <div class="cert-item"><div class="cert-check">&#10003;</div> CGEIT (Governance of Enterprise IT)</div>
+                <div class="cert-item"><div class="cert-check">&#10003;</div> Generative AI &mdash; DeepLearning.AI</div>
+                <div class="cert-item"><div class="cert-check">&#10003;</div> Agentic AI &mdash; DeepLearning.AI</div>
+            </div>
+        </div>
+
     </div>
 
-    <div class="timeline-item">
-        <div class="timeline-year">2025</div>
-        <div class="timeline-content">
-            <h3><span class="t-icon">&#129504;</span> Generative AI &amp; AI Safety</h3>
-            <p>Applying large language models for content generation, summarization, and analysis. Implementing guardrails, input/output validation, and safety layers to ensure responsible and reliable AI deployment in production systems.</p>
-        </div>
-    </div>
-
-    <div class="timeline-item">
-        <div class="timeline-year">2023</div>
-        <div class="timeline-content">
-            <h3><span class="t-icon">&#128172;</span> AI Engineering &amp; LLM Integration</h3>
-            <p>Crafting effective prompts for ChatGPT and other LLMs. Building AI-powered workflows and integrating language models into applications for automation, code generation, and intelligent data processing.</p>
-        </div>
-    </div>
-
-    <div class="timeline-item">
-        <div class="timeline-year">2023</div>
-        <div class="timeline-content">
-            <h3><span class="t-icon">&#128225;</span> Intelligent Network Operation</h3>
-            <p>Leading 24/7 monitoring, incident response, and proactive maintenance for nationwide communication networks including VSAT satellite, terrestrial, and cellular infrastructures. Ensuring high availability and performance optimization for thousands of remote banking units across Indonesia.</p>
-        </div>
-    </div>
-
-    <div class="timeline-item">
-        <div class="timeline-year">2009</div>
-        <div class="timeline-content">
-            <h3><span class="t-icon">&#127974;</span> E-Channel Monitoring &amp; Operations</h3>
-            <p>Monitored and ensured 24/7 availability of over 20,000 ATMs, 200,000 EDCs, 500 CDMs, and CRM systems across the national banking network. Developed digital dashboards for real-time monitoring, root cause analysis, and operational reliability of electronic channel infrastructure.</p>
-        </div>
-    </div>
-
-    <div class="timeline-item">
-        <div class="timeline-year">2017</div>
-        <div class="timeline-content">
-            <h3><span class="t-icon">&#128272;</span> Cryptography &amp; Web Application Security</h3>
-            <p>Applied AES encryption for front-end code obfuscation to protect web applications. Deep expertise in cryptographic algorithms, secure coding practices, and vulnerability mitigation for banking-grade systems.</p>
-        </div>
-    </div>
-
-    <div class="timeline-item">
-        <div class="timeline-year">2005</div>
-        <div class="timeline-content">
-            <h3><span class="t-icon">&#128737;</span> Enterprise Security Infrastructure</h3>
-            <p>Deployed and operated firewall, IDS, IPS, anti-spam, and antivirus systems for banking environments. Built enterprise Active Directory infrastructure managing authentication and access control for large-scale organizations.</p>
-        </div>
-    </div>
-
-    <div class="timeline-item">
-        <div class="timeline-year">2004</div>
-        <div class="timeline-content">
-            <h3><span class="t-icon">&#128273;</span> Authentication Systems &amp; Algorithm Design</h3>
-            <p>Designed multi-factor authentication systems using one-time passwords with MD5 hashing. Foundation in algorithm design, network protocols, and informatics engineering.</p>
-        </div>
-    </div>
-
-    <hr>
-
-    <!-- Education -->
-    <h2><span class="icon">&#127891;</span> Education</h2>
-
-    <div class="edu-item">
-        <img src="logo-ui.png" alt="Universitas Indonesia" class="edu-logo">
-        <div>
-            <div class="degree">Master of Electrical Engineering (M.Eng.) &mdash; Network Security</div>
-            <div class="school">Universitas Indonesia, Jakarta &middot; 2017</div>
-        </div>
-    </div>
-
-    <div class="edu-item">
-        <img src="logo-ugm.png" alt="Universitas Gadjah Mada" class="edu-logo">
-        <div>
-            <div class="degree">Bachelor of Electrical Engineering (B.Eng.) &mdash; Informatics</div>
-            <div class="school">Universitas Gadjah Mada, Yogyakarta &middot; 2004</div>
-        </div>
-    </div>
-
-    <hr>
-
-    <!-- Certifications -->
-    <h2><span class="icon">&#127942;</span> Certifications</h2>
-    <ul class="cert-list">
-        <li><span class="c-icon">&#9989;</span> CEH (Certified Ethical Hacker)</li>
-        <li><span class="c-icon">&#9989;</span> CDMP (Certified Data Management Professional)</li>
-        <li><span class="c-icon">&#9989;</span> Lead Auditor ISO 9001</li>
-        <li><span class="c-icon">&#9989;</span> Lead Auditor ISO 55001</li>
-        <li><span class="c-icon">&#9989;</span> CGEIT (Certified in Governance of Enterprise IT)</li>
-        <li><span class="c-icon">&#9989;</span> Generative AI &mdash; DeepLearning.AI</li>
-        <li><span class="c-icon">&#9989;</span> Agentic AI &mdash; DeepLearning.AI</li>
-    </ul>
-
-    <hr>
-
-    <!-- Footer -->
-    <div class="footer">
-        <p>0 frameworks were used to make this simple responsive website. Just pure HTML and CSS.</p>
+    <!-- ===== FOOTER ===== -->
+    <div class="site-footer">
+        <p>0 frameworks were used to make this website. Just pure HTML and CSS. <span class="heart">&#10084;</span></p>
     </div>
 
 </body>
