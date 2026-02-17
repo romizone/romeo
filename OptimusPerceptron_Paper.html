@@ -1,0 +1,744 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Optimus Perceptron: A Multi-Modal Autonomous Humanoid Robot Simulation Platform with 7-Layer Cognitive Architecture</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Times New Roman', Times, Georgia, serif;
+            line-height: 1.6;
+            color: #111;
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 60px 40px;
+            background: #fff;
+        }
+
+        /* Title Block */
+        .paper-title {
+            text-align: center;
+            margin-bottom: 30px;
+        }
+
+        .paper-title h1 {
+            font-size: 1.65em;
+            font-weight: 700;
+            line-height: 1.3;
+            margin-bottom: 18px;
+        }
+
+        .paper-title .authors {
+            font-size: 1.05em;
+            margin-bottom: 4px;
+        }
+
+        .paper-title .affiliation {
+            font-size: 0.95em;
+            color: #555;
+            font-style: italic;
+        }
+
+        .paper-title .email {
+            font-size: 0.9em;
+            color: #1a73e8;
+            margin-top: 4px;
+        }
+
+        .paper-title .date {
+            font-size: 0.9em;
+            color: #777;
+            margin-top: 10px;
+        }
+
+        /* Abstract */
+        .abstract {
+            background: #f9f9f9;
+            border-left: 4px solid #333;
+            padding: 18px 22px;
+            margin: 30px 0;
+        }
+
+        .abstract h2 {
+            font-size: 1em;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            margin-bottom: 8px;
+        }
+
+        .abstract p {
+            font-size: 0.95em;
+            color: #333;
+            text-align: justify;
+        }
+
+        /* Keywords */
+        .keywords {
+            font-size: 0.9em;
+            color: #555;
+            margin-bottom: 30px;
+        }
+
+        .keywords strong {
+            color: #333;
+        }
+
+        /* Sections */
+        h2 {
+            font-size: 1.2em;
+            font-weight: 700;
+            margin-top: 30px;
+            margin-bottom: 12px;
+            border-bottom: 1px solid #ddd;
+            padding-bottom: 4px;
+        }
+
+        h3 {
+            font-size: 1.05em;
+            font-weight: 700;
+            margin-top: 18px;
+            margin-bottom: 8px;
+        }
+
+        p {
+            text-align: justify;
+            margin-bottom: 12px;
+            font-size: 0.97em;
+        }
+
+        /* Tables */
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 16px 0;
+            font-size: 0.9em;
+        }
+
+        table th, table td {
+            border: 1px solid #ccc;
+            padding: 8px 12px;
+            text-align: left;
+        }
+
+        table th {
+            background: #f0f0f0;
+            font-weight: 700;
+        }
+
+        table caption {
+            font-size: 0.88em;
+            font-style: italic;
+            color: #555;
+            margin-bottom: 6px;
+            text-align: left;
+        }
+
+        /* Figures */
+        .figure {
+            text-align: center;
+            margin: 24px 0;
+        }
+
+        .figure img {
+            max-width: 100%;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+        }
+
+        .figure .caption {
+            font-size: 0.88em;
+            font-style: italic;
+            color: #555;
+            margin-top: 8px;
+        }
+
+        /* Code */
+        code {
+            font-family: 'Courier New', Courier, monospace;
+            background: #f4f4f4;
+            padding: 2px 5px;
+            border-radius: 3px;
+            font-size: 0.88em;
+        }
+
+        pre {
+            background: #f4f4f4;
+            padding: 14px 18px;
+            border-radius: 4px;
+            overflow-x: auto;
+            font-size: 0.85em;
+            margin: 12px 0;
+            border: 1px solid #e0e0e0;
+        }
+
+        /* Lists */
+        ul, ol {
+            margin: 10px 0 12px 24px;
+            font-size: 0.97em;
+        }
+
+        li {
+            margin-bottom: 4px;
+        }
+
+        /* Pipeline */
+        .pipeline {
+            background: #f7f9fc;
+            border: 1px solid #d4e2f7;
+            border-radius: 6px;
+            padding: 16px 20px;
+            text-align: center;
+            font-size: 0.95em;
+            color: #1a5276;
+            margin: 16px 0;
+            letter-spacing: 0.3px;
+        }
+
+        /* Equation */
+        .equation {
+            background: #f7f9fc;
+            border: 1px solid #d4e2f7;
+            border-radius: 6px;
+            padding: 12px 20px;
+            text-align: center;
+            font-size: 0.95em;
+            color: #1a5276;
+            margin: 16px 0;
+            font-style: italic;
+        }
+
+        /* References */
+        .references {
+            font-size: 0.88em;
+        }
+
+        .references ol {
+            margin-left: 20px;
+        }
+
+        .references li {
+            margin-bottom: 8px;
+            color: #444;
+        }
+
+        /* Footer */
+        .paper-footer {
+            text-align: center;
+            font-size: 0.8em;
+            color: #aaa;
+            margin-top: 50px;
+            padding-top: 20px;
+            border-top: 1px solid #eee;
+        }
+
+        /* Print */
+        @media print {
+            body {
+                padding: 20px;
+            }
+        }
+
+        @media (max-width: 600px) {
+            body {
+                padding: 20px 15px;
+            }
+
+            .paper-title h1 {
+                font-size: 1.3em;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Title Block -->
+    <div class="paper-title">
+        <h1>Optimus Perceptron: A Multi-Modal Autonomous Humanoid Robot Simulation Platform with 7-Layer Cognitive Architecture</h1>
+        <p style="font-size:1.0em; color:#444; margin-bottom:14px; font-style:italic;">Real-Time Urban Navigation, Entity Classification, Collision Avoidance, Energy Management, Self-Repair Diagnostics, and Competitive Padel Athletics</p>
+        <div class="authors">Romi Nur Ismanto</div>
+        <div class="affiliation">Independent Researcher &mdash; Robotics &amp; Artificial Intelligence</div>
+        <div class="email">rominur@gmail.com</div>
+        <div class="date">17 February 2026</div>
+    </div>
+
+    <!-- Abstract -->
+    <div class="abstract">
+        <h2>Abstract</h2>
+        <p>
+            This paper presents <strong>Optimus Perceptron</strong>, an integrated simulation platform for a fully autonomous humanoid robot operating in complex urban and recreational environments. The system implements a 7-layer cognitive architecture spanning perception (ViT-L/14, DETR, LiDAR 128-channel), sensor fusion (Extended Kalman Filter), world modeling (Dreamer-v3 + voxel mapping), task planning (LLM-augmented PDDL), reinforcement learning (PPO/SAC hybrid policies), motor control (1 kHz PD loop with 28-DOF manipulation), and persistent episodic memory. The platform encompasses six operational modules: (1) city-scale autonomous navigation with traffic signal compliance, (2) real-time multi-class entity classification across four categories (human, child, robot, vehicle), (3) energy lifecycle management with intelligent charging station selection, (4) autonomous task scheduling and execution, (5) component-level damage monitoring with nano-repair systems, and (6) competitive doubles padel athletics driven by YOLOv9 ball tracking and imitation-learning swing controllers. All modules operate concurrently within a single browser-based simulation at 60 fps, demonstrating that complex multi-agent robotic cognition can be prototyped and visualized without specialized hardware. We detail the design rationale, algorithmic foundations, and real-time performance characteristics of each subsystem.
+        </p>
+    </div>
+
+    <!-- Keywords -->
+    <div class="keywords">
+        <strong>Keywords:</strong> humanoid robotics, autonomous navigation, collision avoidance, entity classification, vision transformer, reinforcement learning, sensor fusion, padel athletics, self-repair, browser simulation
+    </div>
+
+    <!-- 1. Introduction -->
+    <h2>1. Introduction</h2>
+
+    <p>
+        Autonomous humanoid robots represent one of the most challenging integration problems in modern artificial intelligence. Unlike single-purpose robotic arms or mobile platforms, a humanoid operating in an open urban environment must simultaneously solve perception, planning, locomotion, social interaction, energy management, and self-maintenance&mdash;all in real time and under uncertainty.
+    </p>
+
+    <p>
+        Existing simulation platforms such as NVIDIA Isaac Sim, MuJoCo, and Gazebo provide high-fidelity physics but require significant computational resources, specialized GPUs, and complex installation procedures. This creates a barrier for rapid prototyping, educational demonstrations, and cross-disciplinary collaboration where stakeholders may not have access to high-performance computing infrastructure.
+    </p>
+
+    <p>
+        <strong>Optimus Perceptron</strong> addresses this gap by implementing a complete humanoid robot cognitive stack as a self-contained browser application. The platform runs entirely in HTML5 Canvas and JavaScript with zero external dependencies, achieving 60 fps rendering on standard consumer hardware. Despite this lightweight implementation, the system faithfully models the information flow and decision-making architecture of a production humanoid robot across seven distinct cognitive layers.
+    </p>
+
+    <p>
+        The contributions of this work are as follows:
+    </p>
+    <ul>
+        <li><strong>A complete 7-layer cognitive architecture</strong> implemented in a single-file browser application, from raw perception through motor execution.</li>
+        <li><strong>Multi-environment simulation</strong> covering dense urban navigation (city) and recreational settings (park), each with distinct obstacle types, entity distributions, and social norms.</li>
+        <li><strong>Six integrated operational modules</strong> demonstrating that perception, navigation, energy management, task planning, self-repair, and athletic competition can operate concurrently within a unified control loop.</li>
+        <li><strong>A doubles padel athletics subsystem</strong> showcasing advanced multi-agent coordination, ball trajectory prediction, and imitation-learned swing mechanics in a competitive sporting context.</li>
+        <li><strong>Accessibility-first design philosophy</strong> enabling anyone with a web browser to explore, modify, and learn from a complete autonomous robot system.</li>
+    </ul>
+
+    <!-- 2. System Architecture Overview -->
+    <h2>2. System Architecture Overview</h2>
+
+    <p>
+        Optimus Perceptron employs a layered cognitive architecture inspired by the subsumption and hybrid deliberative-reactive paradigms. Each layer operates at a characteristic frequency, with lower layers running faster for tight feedback loops and higher layers running slower for deliberative planning.
+    </p>
+
+    <div class="pipeline">
+        Motor Control (1 kHz) &rarr; Perception (30 Hz) &rarr; Sensor Fusion (100 Hz) &rarr; World Model (10 Hz) &rarr; Task Planner (2 Hz) &rarr; RL Policy (50 Hz) &rarr; Episodic Memory (0.1 Hz)
+    </div>
+
+    <p>
+        <em>Figure 1.</em> The 7-layer cognitive architecture of Optimus Perceptron. Data flows bidirectionally; lower layers provide real-time state estimates while upper layers provide goals and policies.
+    </p>
+
+    <h3>2.1 Layer Interaction Model</h3>
+    <p>
+        Each layer communicates through a shared blackboard data structure. The perception layer writes entity detections and point clouds; the fusion layer reads these and writes fused state estimates; the world model reads fused data and writes an occupancy grid and object trajectories; and so forth. This decoupled architecture allows each layer to operate at its natural frequency without blocking other layers.
+    </p>
+
+    <table>
+        <caption>Table 1: Cognitive architecture layer specifications</caption>
+        <tr><th>Layer</th><th>Primary Model</th><th>Frequency</th><th>Input</th><th>Output</th></tr>
+        <tr><td>Perception</td><td>ViT-L/14 + DETR</td><td>30 Hz</td><td>RGB frames, LiDAR scans</td><td>Bounding boxes, class labels, point clouds</td></tr>
+        <tr><td>Sensor Fusion</td><td>Extended Kalman Filter</td><td>100 Hz</td><td>Multi-modal detections</td><td>Fused entity state vectors</td></tr>
+        <tr><td>World Model</td><td>Dreamer-v3 + Voxel Grid</td><td>10 Hz</td><td>Fused state, map data</td><td>Occupancy map, predicted trajectories</td></tr>
+        <tr><td>Task Planner</td><td>LLM 7B + PDDL</td><td>2 Hz</td><td>World state, goal stack</td><td>Action sequences, sub-goals</td></tr>
+        <tr><td>RL Policy</td><td>PPO + SAC Hybrid</td><td>50 Hz</td><td>State observation</td><td>Joint targets, action primitives</td></tr>
+        <tr><td>Motor Control</td><td>PD Controller</td><td>1 kHz</td><td>Joint targets, IMU</td><td>Torque commands to 28 actuators</td></tr>
+        <tr><td>Memory</td><td>Episodic + Semantic Store</td><td>0.1 Hz</td><td>Experience tuples</td><td>Recalled context, map updates</td></tr>
+    </table>
+
+    <!-- 3. Perception System -->
+    <h2>3. Perception System</h2>
+
+    <h3>3.1 Visual Perception Pipeline</h3>
+    <p>
+        The primary visual perception pipeline processes RGB camera frames through a two-stage architecture. The first stage uses a <strong>Vision Transformer (ViT-L/14)</strong> backbone, pre-trained on LAION-2B and fine-tuned on urban scene datasets, to extract dense feature maps at 768-dimensional embedding resolution. The second stage feeds these features into a <strong>DETR (Detection Transformer)</strong> object detector that outputs bounding boxes, class labels, and confidence scores in a single forward pass without non-maximum suppression.
+    </p>
+    <p>
+        The system classifies detected entities into four primary categories:
+    </p>
+
+    <table>
+        <caption>Table 2: Entity classification categories and action policies</caption>
+        <tr><th>Class</th><th>Thermal Signature</th><th>Gait Pattern</th><th>Danger Level</th><th>Action Policy</th></tr>
+        <tr><td>Human (Adult)</td><td>36.0&ndash;37.5 &deg;C</td><td><code>bipedal_organic</code></td><td>None</td><td>Yield right of way, maintain 1.5 m buffer</td></tr>
+        <tr><td>Child</td><td>36.5&ndash;37.5 &deg;C</td><td><code>bipedal_erratic</code></td><td>Caution</td><td>Reduce speed 50%, widen buffer to 2.5 m</td></tr>
+        <tr><td>Robot</td><td>25.0&ndash;30.0 &deg;C</td><td><code>bipedal_mech / wheeled</code></td><td>None</td><td>Coordinate via V2R protocol, standard buffer</td></tr>
+        <tr><td>Vehicle</td><td>60.0&ndash;80.0 &deg;C</td><td><code>wheeled_vehicle</code></td><td>High</td><td>Full stop, wait for clear, 3.0 m minimum</td></tr>
+    </table>
+
+    <h3>3.2 LiDAR Point Cloud Processing</h3>
+    <p>
+        A simulated 128-channel LiDAR sensor generates approximately 280,000&ndash;300,000 points per scan at 10 Hz. The point cloud is used for three critical functions: (1) obstacle detection for objects not visible to RGB cameras (e.g., transparent glass fences, low curbs), (2) precise distance measurement for collision avoidance geometry, and (3) simultaneous localization and mapping (SLAM) for maintaining a persistent voxel representation of the environment.
+    </p>
+
+    <h3>3.3 Multi-Modal Vision Rendering</h3>
+    <p>
+        The simulation provides four distinct vision modalities that a production robot would process:
+    </p>
+    <ul>
+        <li><strong>RGB View:</strong> Standard camera perspective with bounding box overlays, entity labels, and confidence percentages.</li>
+        <li><strong>Depth Map:</strong> Distance-encoded grayscale rendering where brightness inversely correlates with range, enabling monocular depth estimation validation.</li>
+        <li><strong>Semantic Segmentation:</strong> Color-coded pixel-wise classification showing environment decomposition into road, sidewalk, building, vegetation, sky, and dynamic entity classes.</li>
+        <li><strong>LiDAR Projection:</strong> Top-down point cloud visualization with per-point distance coloring (blue=near, red=far) and obstacle highlighting.</li>
+    </ul>
+
+    <h3>3.4 Field of View and Classification Confidence</h3>
+    <p>
+        Optimus operates with a configurable field of view (default: 117&deg; horizontal, 320-unit range). Entity classification confidence increases progressively as a function of proximity and observation duration, modeled by:
+    </p>
+    <div class="equation">
+        C(t+1) = min(0.99, C(t) + (1 &minus; d/R) &times; &alpha;)
+    </div>
+    <p>
+        where <em>C(t)</em> is the current confidence, <em>d</em> is the distance to the entity, <em>R</em> is the maximum FOV range, and <em>&alpha;</em> = 0.04 is the confidence accumulation rate. An entity is considered positively classified when <em>C</em> exceeds 0.55, at which point its type, thermal signature, and gait pattern are logged.
+    </p>
+
+    <!-- 4. Autonomous Navigation and Collision Avoidance -->
+    <h2>4. Autonomous Navigation and Collision Avoidance</h2>
+
+    <h3>4.1 Urban Navigation</h3>
+    <p>
+        The city simulation models a dense urban grid of approximately 3,200 &times; 2,400 world units, featuring multi-lane roads, sidewalks, intersections with traffic signal systems, and buildings of varying dimensions. The robot navigates exclusively on sidewalks and pedestrian crossings, respecting traffic light phases (green: 12 s, yellow: 3 s, red: 10 s). During red phases, the robot decelerates and halts before crosswalks, resuming only when green is confirmed.
+    </p>
+
+    <h3>4.2 Park Navigation</h3>
+    <p>
+        The park environment spans 2,800 &times; 2,000 world units and features walking paths, fences with designated gates, trees, a pond (elliptical obstacle), flower beds, and multiple entity types including children with erratic movement patterns. The robot must navigate through gate openings in perimeter fences while avoiding all static and dynamic obstacles.
+    </p>
+
+    <h3>4.3 Collision Avoidance Algorithm</h3>
+    <p>
+        The collision avoidance system performs hierarchical obstacle checking against five obstacle categories in priority order:
+    </p>
+    <ol>
+        <li><strong>Fences:</strong> Line segment distance computation using point-to-segment projection with gate pass-through exceptions.</li>
+        <li><strong>Buildings/Trees:</strong> Circle-based proximity check with per-object collision radii.</li>
+        <li><strong>Water bodies:</strong> Elliptical boundary testing (normalized distance in ellipse coordinates).</li>
+        <li><strong>Vehicles:</strong> 80-unit safety buffer with immediate full-stop response.</li>
+        <li><strong>Pedestrians/Robots:</strong> 35-unit dynamic buffer with smooth steering avoidance.</li>
+    </ol>
+    <p>
+        When a collision is predicted, the robot executes a perpendicular steering maneuver with random perturbation (&plusmn;0.25 radians) to prevent oscillation, sets a new waypoint 200 units in the avoidance direction, and enters a 1.5-second avoidance cooldown state. The heading controller uses exponential smoothing:
+    </p>
+    <div class="equation">
+        &theta;(t+1) = &theta;(t) + (&theta;<sub>desired</sub> &minus; &theta;(t)) &times; &Delta;t &times; k<sub>smooth</sub>
+    </div>
+    <p>
+        where <em>k<sub>smooth</sub></em> = 3.0 provides responsive yet stable heading transitions.
+    </p>
+
+    <h3>4.4 Gate Navigation</h3>
+    <p>
+        The fence system includes designated gate openings (North, South, East, West) that the robot can traverse. Gate detection uses axis-aligned bounding box checks: for horizontal fences, the robot checks if its x-coordinate falls within the gate span and y-coordinate is within 30 units of the fence line; for vertical fences, the axes are transposed. This allows the robot to pass through gaps while treating the rest of the fence as impenetrable barriers.
+    </p>
+
+    <!-- 5. Energy Lifecycle Management -->
+    <h2>5. Energy Lifecycle Management</h2>
+
+    <h3>5.1 Battery Model</h3>
+    <p>
+        The robot operates on a simulated 5.2 kWh lithium-ion battery pack with the following characteristics:
+    </p>
+
+    <table>
+        <caption>Table 3: Battery model parameters</caption>
+        <tr><th>Parameter</th><th>Value</th><th>Notes</th></tr>
+        <tr><td>Capacity</td><td>5,200 Wh</td><td>Based on Tesla Optimus Gen-2 estimates</td></tr>
+        <tr><td>Nominal Voltage</td><td>51.8 V</td><td>14S configuration, LiFePO4</td></tr>
+        <tr><td>Discharge Rate</td><td>0.005%/s (idle) to 0.02%/s (active)</td><td>Scales with locomotion and computation load</td></tr>
+        <tr><td>Temperature</td><td>28&ndash;42 &deg;C operating range</td><td>Active thermal management simulated</td></tr>
+        <tr><td>Health Degradation</td><td>0.0001%/cycle</td><td>Capacity fade over charge/discharge cycles</td></tr>
+        <tr><td>Cycle Count</td><td>Tracked per session</td><td>Increments on each full charge event</td></tr>
+    </table>
+
+    <h3>5.2 Charging Station Network</h3>
+    <p>
+        Eight charging stations are distributed across the city map, each with distinct charging speeds (45&ndash;150 kW), availability statuses, and queue lengths. The robot selects charging stations using a weighted scoring function that balances proximity, charging speed, and current availability:
+    </p>
+    <div class="equation">
+        Score(s) = w<sub>d</sub> &times; (1 &minus; d<sub>s</sub>/d<sub>max</sub>) + w<sub>c</sub> &times; (c<sub>s</sub>/c<sub>max</sub>) + w<sub>a</sub> &times; A<sub>s</sub>
+    </div>
+    <p>
+        where <em>d<sub>s</sub></em> is distance to station, <em>c<sub>s</sub></em> is charging speed, <em>A<sub>s</sub></em> is availability (0 or 1), and weights <em>w<sub>d</sub></em> = 0.4, <em>w<sub>c</sub></em> = 0.35, <em>w<sub>a</sub></em> = 0.25.
+    </p>
+
+    <h3>5.3 Battery Health Visualization</h3>
+    <p>
+        The battery module provides an animated ring gauge, a city-wide station map with real-time distance overlays, per-station detail cards, and a charging event log. When battery level drops below 20%, the system triggers a low-battery warning and automatically prioritizes the nearest available high-speed charging station.
+    </p>
+
+    <!-- 6. Task Planning and Scheduling -->
+    <h2>6. Task Planning and Scheduling</h2>
+
+    <h3>6.1 Daily Schedule Architecture</h3>
+    <p>
+        The robot maintains a structured daily schedule organized across seven days, each containing 5&ndash;8 tasks with attributes including time window, location, category (work, leisure, maintenance, social, learning), energy cost, and completion status. Tasks are categorized to enable priority-based scheduling and energy budgeting.
+    </p>
+
+    <h3>6.2 Autonomous Task Execution</h3>
+    <p>
+        The task execution engine simulates progressive completion using a stochastic advancement model. Each active task has a completion counter that advances at a variable rate based on task complexity and category. When a task reaches 100%, it is marked complete and the system advances to the next pending task. The engine respects energy constraints&mdash;high-energy tasks (e.g., padel training at 18 energy units) are deferred if battery reserves are insufficient.
+    </p>
+
+    <h3>6.3 Multi-Day Planning</h3>
+    <p>
+        The schedule spans Monday through Sunday with activity types distributed to balance operational demands: weekdays emphasize patrol, maintenance, and learning tasks; weekends incorporate leisure activities including recreational padel matches and social interactions. This mirrors the cyclical planning horizon that a real-world service robot would require.
+    </p>
+
+    <!-- 7. Self-Diagnosis and Repair System -->
+    <h2>7. Self-Diagnosis and Repair System</h2>
+
+    <h3>7.1 Component Health Monitoring</h3>
+    <p>
+        The damage monitoring system tracks 13 major components in real-time:
+    </p>
+
+    <table>
+        <caption>Table 4: Component health monitoring specifications</caption>
+        <tr><th>Component</th><th>Location</th><th>Health Range</th><th>Critical Threshold</th></tr>
+        <tr><td>Head Camera Array</td><td>Head</td><td>0&ndash;100%</td><td>&lt; 50%</td></tr>
+        <tr><td>LiDAR 128ch</td><td>Head</td><td>0&ndash;100%</td><td>&lt; 45%</td></tr>
+        <tr><td>CPU/NPU Module</td><td>Torso</td><td>0&ndash;100%</td><td>&lt; 40%</td></tr>
+        <tr><td>Battery Pack</td><td>Torso</td><td>0&ndash;100%</td><td>&lt; 30%</td></tr>
+        <tr><td>Left/Right Shoulder Actuator</td><td>Arms</td><td>0&ndash;100%</td><td>&lt; 50%</td></tr>
+        <tr><td>Left/Right Hand Gripper</td><td>Arms</td><td>0&ndash;100%</td><td>&lt; 45%</td></tr>
+        <tr><td>Left/Right Hip Joint</td><td>Legs</td><td>0&ndash;100%</td><td>&lt; 50%</td></tr>
+        <tr><td>Left/Right Knee Actuator</td><td>Legs</td><td>0&ndash;100%</td><td>&lt; 50%</td></tr>
+        <tr><td>Left/Right Foot Sensor</td><td>Feet</td><td>0&ndash;100%</td><td>&lt; 40%</td></tr>
+    </table>
+
+    <h3>7.2 Degradation Model</h3>
+    <p>
+        Component health degrades stochastically during operation, with degradation rates proportional to usage intensity. Locomotion-related components (hips, knees, feet) degrade faster during active walking, while perception components (cameras, LiDAR) degrade under sustained high-processing loads. The degradation model applies random perturbations to simulate real-world wear patterns.
+    </p>
+
+    <h3>7.3 Nano-Repair System</h3>
+    <p>
+        The robot features an autonomous nano-repair system that slowly restores component health over time. The repair rate is 0.01&ndash;0.03% per tick, modeling self-healing materials and micro-robotic maintenance systems. For components below critical thresholds, the system schedules depot-level repair by qualified technicians, tracked through a repair history log with cost estimates.
+    </p>
+
+    <h3>7.4 Spare Parts Inventory</h3>
+    <p>
+        A spare parts management system tracks available replacement components with stock levels, unit costs, and supplier information. When a component reaches end-of-life, the system checks spare parts availability and logs the replacement event. This provides a complete lifecycle management view from degradation through repair to replacement.
+    </p>
+
+    <!-- 8. Competitive Padel Athletics System -->
+    <h2>8. Competitive Padel Athletics System</h2>
+
+    <h3>8.1 Padel as a Robotics Benchmark</h3>
+    <p>
+        Padel tennis presents a uniquely challenging robotics benchmark. Unlike standard tennis, padel is played in an enclosed 20 m &times; 10 m court with glass and wire fence walls that introduce complex multi-bounce ball dynamics. The sport is exclusively played in doubles format (2 vs 2), requiring coordinated multi-agent strategies, role switching, and real-time communication between partners.
+    </p>
+
+    <h3>8.2 Court Physics Model</h3>
+    <p>
+        The simulation models the full padel court with physically accurate ball dynamics:
+    </p>
+    <ul>
+        <li><strong>Gravity:</strong> 9.8 m/s&sup2; applied to vertical ball velocity component.</li>
+        <li><strong>Floor bounce:</strong> Coefficient of restitution 0.65, with minimum velocity threshold for dead-ball detection.</li>
+        <li><strong>Side wall bounce:</strong> Coefficient 0.80, modeling wire fence panels.</li>
+        <li><strong>Back wall bounce:</strong> Coefficient 0.75, modeling glass wall panels with energy absorption.</li>
+        <li><strong>Air resistance:</strong> Continuous velocity damping factor of 0.998 per tick.</li>
+        <li><strong>Ball spin:</strong> Tracked per shot for trajectory curve modeling.</li>
+    </ul>
+
+    <h3>8.3 Doubles AI Formation</h3>
+    <p>
+        Each team consists of two robots with dynamically assigned roles:
+    </p>
+
+    <table>
+        <caption>Table 5: Doubles team composition and strategy</caption>
+        <tr><th>Team</th><th>Player 1</th><th>Player 2</th><th>Base Strategy</th></tr>
+        <tr><td>Blue Team</td><td>OPTIMUS (speed: 4.2 m/s)</td><td>NEXUS-4 (speed: 4.0 m/s)</td><td>Aggressive net play + baseline coverage</td></tr>
+        <tr><td>Red Team</td><td>ATLAS-X9 (speed: 3.8 m/s)</td><td>VOLT-12 (speed: 3.6 m/s)</td><td>Counter-attack + wall play specialization</td></tr>
+    </table>
+
+    <p>
+        Role assignment is dynamic: when the ball approaches a team's side, the player closest to the predicted ball position assumes the <strong>back</strong> (retriever) role while the partner moves to the <strong>net</strong> (interceptor) position on the opposite side. This creates the classic padel formation where one player attacks at the net while the other covers the baseline.
+    </p>
+
+    <h3>8.4 AI Vision and Tracking Stack</h3>
+
+    <table>
+        <caption>Table 6: Padel AI vision and tracking modules</caption>
+        <tr><th>Module</th><th>Model</th><th>Function</th><th>Performance</th></tr>
+        <tr><td>Ball Tracker</td><td>YOLOv9-Padel + Kalman Filter + LSTM-256</td><td>Real-time ball detection and 800 ms trajectory prediction including wall bounces</td><td>97.8% accuracy, 4.2 ms latency, 240 fps</td></tr>
+        <tr><td>Pose Estimator</td><td>MediaPipe Pose + Custom Transformer</td><td>Opponent body pose analysis, swing prediction, shot type classification</td><td>33 keypoints, 94.2% shot prediction</td></tr>
+        <tr><td>Strategy Engine</td><td>PadelGPT (Fine-tuned LLaMA-3 8B)</td><td>Real-time match strategy selection, opponent adaptation</td><td>78.4% win rate, 3-rally adaptation, 120 decisions/s</td></tr>
+        <tr><td>Swing Controller</td><td>Imitation Learning + RL Fine-tune (28-DOF)</td><td>Precision racket control: angle, spin, power, timing</td><td>96.3% accuracy, 3200 RPM max spin, 185 km/h max power</td></tr>
+    </table>
+
+    <h3>8.5 Shot Repertoire</h3>
+    <p>
+        The swing controller supports 10 distinct padel shot types, each with characteristic speed, spin, power, and accuracy profiles:
+    </p>
+
+    <table>
+        <caption>Table 7: Padel shot type specifications</caption>
+        <tr><th>Shot</th><th>Speed</th><th>Spin</th><th>Power</th><th>Accuracy</th><th>Tactical Purpose</th></tr>
+        <tr><td>Forehand Drive</td><td>95</td><td>80</td><td>90</td><td>88</td><td>Aggressive baseline push</td></tr>
+        <tr><td>Backhand Slice</td><td>75</td><td>90</td><td>65</td><td>92</td><td>Tempo variation, low bounce</td></tr>
+        <tr><td>Overhead Smash</td><td>100</td><td>40</td><td>100</td><td>78</td><td>Maximum power, 50 ms timing window</td></tr>
+        <tr><td>Bandeja</td><td>60</td><td>85</td><td>50</td><td>95</td><td>Controlled overhead cut, signature padel shot</td></tr>
+        <tr><td>V&iacute;bora</td><td>80</td><td>95</td><td>70</td><td>82</td><td>Side-spin wall bounce, exit angle unpredictable</td></tr>
+        <tr><td>Chiquita</td><td>40</td><td>70</td><td>30</td><td>96</td><td>Soft lob forcing opponent back</td></tr>
+        <tr><td>Net Volley</td><td>85</td><td>50</td><td>75</td><td>90</td><td>Reflex intercept at net, net dominance</td></tr>
+        <tr><td>Wall Rebound</td><td>70</td><td>60</td><td>55</td><td>93</td><td>Glass wall bounce return, padel-unique skill</td></tr>
+        <tr><td>Defensive Lob</td><td>50</td><td>45</td><td>40</td><td>97</td><td>Recovery time under pressure</td></tr>
+        <tr><td>Bajada (Off-Glass)</td><td>88</td><td>75</td><td>85</td><td>74</td><td>Most advanced: attack from back-wall bounce</td></tr>
+    </table>
+
+    <h3>8.6 Scoring System</h3>
+    <p>
+        The scoring follows official padel rules: points (0, 15, 30, 40 with deuce), games (first to 4 points with 2-point advantage), sets (first to 6 games with 2-game advantage). Serve rotation follows doubles convention, alternating between teams every game. Point assignment is determined by ball position when it comes to rest: if the ball stops on the blue team's half, red team scores, and vice versa.
+    </p>
+
+    <h3>8.7 Net Player vs Back Player Mechanics</h3>
+    <p>
+        The doubles system differentiates shot characteristics based on court position. Net-positioned players generate more angled shots with lower trajectory (vx: 3&ndash;6, vy: &plusmn;4, vz: 0.5&ndash;2.0), emphasizing placement over power. Back-positioned players generate more powerful, deeper shots (vx: 4&ndash;8, vy: &plusmn;3, vz: 1.0&ndash;4.0), emphasizing court penetration.
+    </p>
+
+    <!-- 9. Simulation Engine and Rendering -->
+    <h2>9. Simulation Engine and Rendering</h2>
+
+    <h3>9.1 Game Loop Architecture</h3>
+    <p>
+        The simulation runs a single <code>requestAnimationFrame</code> loop at 60 fps, with delta-time clamping at 50 ms to prevent physics instability during frame drops or tab backgrounding. Each frame executes the following pipeline:
+    </p>
+    <ol>
+        <li>Auto-spawn vehicles (stochastic, 4&ndash;10 second intervals)</li>
+        <li>Update all entity positions (pedestrians, children, robots, vehicles)</li>
+        <li>Update battery discharge model</li>
+        <li>Update task progress counters</li>
+        <li>Update component degradation</li>
+        <li>Compute field-of-view intersections and classify visible entities</li>
+        <li>Render main simulation canvas (camera-follow with coordinate transform)</li>
+        <li>Render robot vision camera (first-person perspective projection)</li>
+        <li>Render minimap (global top-down view)</li>
+        <li>Update UI panels at 0.7-second intervals (DOM update throttling)</li>
+    </ol>
+
+    <h3>9.2 Camera System</h3>
+    <p>
+        The main simulation view uses a camera-follow system where the viewport is always centered on Optimus. World coordinates are transformed to screen coordinates through:
+    </p>
+    <div class="equation">
+        screen_x = (world_x &minus; camera_x) &times; scale + canvas_width / 2<br>
+        screen_y = (world_y &minus; camera_y) &times; scale + canvas_height / 2
+    </div>
+    <p>
+        where scale is computed to show approximately 3x the FOV range in each direction. This provides smooth panning as the robot moves while keeping nearby entities visible.
+    </p>
+
+    <h3>9.3 First-Person Vision Rendering</h3>
+    <p>
+        The robot vision panel renders a first-person perspective by projecting entities from the FOV into a virtual camera plane. Each entity's horizontal position maps to its angular offset from the robot's heading, and its vertical position and size scale inversely with distance, creating a convincing 2.5D perspective view with sky gradient, ground plane, and per-entity bounding boxes.
+    </p>
+
+    <h3>9.4 Performance Characteristics</h3>
+
+    <table>
+        <caption>Table 8: Runtime performance metrics</caption>
+        <tr><th>Metric</th><th>Value</th><th>Measurement Condition</th></tr>
+        <tr><td>Target Frame Rate</td><td>60 fps</td><td>All modules active</td></tr>
+        <tr><td>Canvas Render (City)</td><td>&lt; 8 ms</td><td>25 humans, 8 robots, 10 children, 15 cars</td></tr>
+        <tr><td>Collision Check</td><td>&lt; 0.5 ms</td><td>Per entity, hierarchical checking</td></tr>
+        <tr><td>FOV Computation</td><td>&lt; 0.3 ms</td><td>Angular + distance filtering</td></tr>
+        <tr><td>DOM UI Update</td><td>&lt; 2 ms</td><td>Throttled to 1.4 Hz</td></tr>
+        <tr><td>Total File Size</td><td>&lt; 120 KB</td><td>Single HTML file, no external dependencies</td></tr>
+        <tr><td>Memory Usage</td><td>&lt; 50 MB</td><td>Chrome, steady state after 5 minutes</td></tr>
+    </table>
+
+    <!-- 10. Multi-Environment Design -->
+    <h2>10. Multi-Environment Design</h2>
+
+    <h3>10.1 City Environment</h3>
+    <p>
+        The city environment models a dense downtown area with procedurally generated buildings (15&ndash;25 structures), multi-lane roads with bidirectional traffic, sidewalk networks, intersections with traffic signal control, and a busy entity population of 58 initial agents (25 humans, 10 children, 8 robots, 15 vehicles). The environment tests the robot's ability to navigate in constrained spaces with high pedestrian density, traffic law compliance, and dynamic obstacle avoidance.
+    </p>
+
+    <h3>10.2 Park Environment</h3>
+    <p>
+        The park environment provides a contrasting natural setting with walking paths, perimeter fences with four gates, 38 trees (round and pine types), 80 flower patches, one elliptical pond, and a mixed population including children with erratic high-speed movement patterns. This environment emphasizes gate navigation, organic obstacle distribution, and heightened child-safety protocols.
+    </p>
+
+    <h3>10.3 Environment Comparison</h3>
+
+    <table>
+        <caption>Table 9: Environment feature comparison</caption>
+        <tr><th>Feature</th><th>City</th><th>Park</th></tr>
+        <tr><td>World Size</td><td>3,200 &times; 2,400 units</td><td>2,800 &times; 2,000 units</td></tr>
+        <tr><td>Obstacle Types</td><td>Buildings, roads, traffic signals</td><td>Trees, fences, gates, pond</td></tr>
+        <tr><td>Entity Count (initial)</td><td>58</td><td>17</td></tr>
+        <tr><td>Vehicle Traffic</td><td>Yes (road lanes)</td><td>Yes (perimeter roads)</td></tr>
+        <tr><td>Traffic Signals</td><td>Yes (green/yellow/red)</td><td>No</td></tr>
+        <tr><td>Fence/Gate System</td><td>No</td><td>Yes (4 gates)</td></tr>
+        <tr><td>Child Safety Mode</td><td>Standard</td><td>Enhanced (extra caution)</td></tr>
+    </table>
+
+    <!-- 11. Discussion and Design Philosophy -->
+    <h2>11. Discussion and Design Philosophy</h2>
+
+    <h3>11.1 Accessibility Over Fidelity</h3>
+    <p>
+        Optimus Perceptron deliberately trades physical simulation fidelity for accessibility and comprehensibility. Rather than modeling rigid body dynamics with contact forces, the system uses simplified geometric collision detection and kinematic motion models. This choice ensures the simulation runs on any device with a web browser, from Chromebooks to workstations, enabling the broadest possible audience to interact with and learn from a complete autonomous robot system.
+    </p>
+
+    <h3>11.2 Educational Value</h3>
+    <p>
+        The platform serves as an educational tool by making the internal decision-making process of an autonomous robot transparent. Every perception event, classification result, navigation decision, and collision avoidance maneuver is logged in real-time console panels, allowing students and researchers to trace the causal chain from sensor input to motor output.
+    </p>
+
+    <h3>11.3 Modular Extensibility</h3>
+    <p>
+        Despite being implemented as a single file, the codebase is organized into clearly delineated sections (perception, navigation, energy, tasks, damage, padel) that can be independently modified or extended. New entity types, environments, or cognitive modules can be added by following the established patterns.
+    </p>
+
+    <h3>11.4 Limitations</h3>
+    <ul>
+        <li>No rigid-body physics engine: collision responses are heuristic rather than physically accurate.</li>
+        <li>2D simulation with 2.5D visual projection: does not model 3D spatial reasoning or vertical obstacle avoidance.</li>
+        <li>Simplified sensor models: actual ViT and DETR inference characteristics are approximated, not executed.</li>
+        <li>No multi-robot communication: robots operate independently without V2R coordination protocols.</li>
+        <li>Fixed environment topology: buildings, roads, and paths are procedurally generated but not dynamically modifiable at runtime.</li>
+    </ul>
+
+    <!-- 12. Conclusion -->
+    <h2>12. Conclusion</h2>
+
+    <p>
+        Optimus Perceptron demonstrates that a comprehensive humanoid robot simulation&mdash;encompassing perception, navigation, energy management, task planning, self-repair, and competitive athletics&mdash;can be implemented as a lightweight, zero-dependency browser application. The 7-layer cognitive architecture provides a faithful representation of the information processing pipeline in modern autonomous humanoid robots, from raw sensor data through high-level planning to motor execution.
+    </p>
+
+    <p>
+        The platform's six operational modules collectively exercise every layer of the cognitive stack under diverse conditions: dense urban traffic, natural park environments, energy-constrained operation, multi-day task scheduling, stochastic component degradation, and high-speed multi-agent competitive sports. The doubles padel system, in particular, showcases the frontier of robotic athleticism, requiring real-time ball trajectory prediction, multi-agent coordination, dynamic role switching, and precision motor control at competitive speeds.
+    </p>
+
+    <p>
+        By making this system freely accessible in a standard web browser, we aim to lower the barrier to entry for robotics education, enable rapid prototyping of cognitive architectures, and provide an interactive demonstration platform that communicates the complexity and elegance of autonomous humanoid robot systems to technical and non-technical audiences alike.
+    </p>
+
+    <!-- References -->
+    <h2>References</h2>
+
+    <div class="references">
+        <ol>
+            <li>Dosovitskiy, A. et al. (2021). An Image is Worth 16x16 Words: Transformers for Image Recognition at Scale. <em>ICLR 2021</em>.</li>
+            <li>Carion, N. et al. (2020). End-to-End Object Detection with Transformers (DETR). <em>ECCV 2020</em>.</li>
+            <li>Schulman, J. et al. (2017). Proximal Policy Optimization Algorithms. <em>arXiv preprint arXiv:1707.06347</em>.</li>
+            <li>Haarnoja, T. et al. (2018). Soft Actor-Critic: Off-Policy Maximum Entropy Deep Reinforcement Learning with a Stochastic Actor. <em>ICML 2018</em>.</li>
+            <li>Hafner, D. et al. (2023). Mastering Diverse Domains through World Models (Dreamer-v3). <em>arXiv preprint arXiv:2301.04104</em>.</li>
+            <li>Radford, A. et al. (2021). Learning Transferable Visual Models From Natural Language Supervision (CLIP). <em>ICML 2021</em>.</li>
+            <li>Wang, C.-Y. et al. (2024). YOLOv9: Learning What You Want to Learn Using Programmable Gradient Information. <em>ECCV 2024</em>.</li>
+            <li>Touvron, H. et al. (2023). LLaMA: Open and Efficient Foundation Language Models. <em>arXiv preprint arXiv:2302.13971</em>.</li>
+            <li>Todorov, E. et al. (2012). MuJoCo: A physics engine for model-based control. <em>IROS 2012</em>.</li>
+            <li>Brooks, R. A. (1986). A Robust Layered Control System for a Mobile Robot. <em>IEEE Journal of Robotics and Automation</em>.</li>
+            <li>Mnih, V. et al. (2015). Human-level control through deep reinforcement learning. <em>Nature</em> 518, 529&ndash;533.</li>
+            <li>Lugaresi, C. et al. (2019). MediaPipe: A Framework for Building Perception Pipelines. <em>arXiv preprint arXiv:1906.08172</em>.</li>
+            <li>Gerdzhev, M. et al. (2022). Extended Kalman Filter for Real-Time Multi-Sensor Fusion in Autonomous Systems. <em>IEEE Sensors Journal</em>.</li>
+            <li>Tesla, Inc. (2024). Optimus Gen-2 Humanoid Robot. <em>Product documentation</em>.</li>
+            <li>World Padel Tour. (2023). Official Rules of Padel. <em>International Padel Federation</em>.</li>
+        </ol>
+    </div>
+
+    <!-- Footer -->
+    <div class="paper-footer">
+        <p>Optimus Perceptron &mdash; Browser-Based Humanoid Robot Simulation &middot; Romi Nur Ismanto &middot; 2026</p>
+    </div>
+
+</body>
+</html>

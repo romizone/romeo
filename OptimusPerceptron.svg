@@ -1,0 +1,166 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 500" width="800" height="500">
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0%" stop-color="#0a0a0f"/>
+      <stop offset="100%" stop-color="#12121a"/>
+    </linearGradient>
+    <linearGradient id="accent" x1="0" y1="0" x2="1" y2="0">
+      <stop offset="0%" stop-color="#00d4ff"/>
+      <stop offset="100%" stop-color="#7c3aed"/>
+    </linearGradient>
+    <linearGradient id="green" x1="0" y1="0" x2="1" y2="0">
+      <stop offset="0%" stop-color="#10b981"/>
+      <stop offset="100%" stop-color="#059669"/>
+    </linearGradient>
+  </defs>
+  <!-- Background -->
+  <rect width="800" height="500" fill="url(#bg)" rx="12"/>
+  <!-- Header bar -->
+  <rect x="0" y="0" width="800" height="44" fill="#12121a" rx="12"/>
+  <rect x="0" y="30" width="800" height="14" fill="#12121a"/>
+  <text x="20" y="28" font-family="monospace" font-size="15" font-weight="bold" fill="url(#accent)">OPTIMUS PERCEPTRON</text>
+  <text x="230" y="28" font-family="monospace" font-size="9" fill="#8888aa">Humanoid AI Robot — 9 Tabs Integrated Suite</text>
+  <circle cx="610" cy="22" r="4" fill="#10b981"/>
+  <text x="620" y="26" font-family="monospace" font-size="9" fill="#e0e0f0">ACTIVE</text>
+  <rect x="660" y="15" width="50" height="16" rx="3" fill="rgba(0,212,255,0.1)" stroke="#00d4ff" stroke-width="0.5"/>
+  <text x="670" y="27" font-family="monospace" font-size="8" fill="#00d4ff">ENT 62</text>
+  <rect x="715" y="15" width="60" height="16" rx="3" fill="rgba(239,68,68,0.1)" stroke="#ef4444" stroke-width="0.5"/>
+  <text x="722" y="27" font-family="monospace" font-size="8" fill="#ef4444">AVOID 43</text>
+  <!-- Tab bar -->
+  <rect x="0" y="44" width="800" height="28" fill="#1a1a26"/>
+  <text x="18" y="62" font-family="monospace" font-size="8" font-weight="bold" fill="#00d4ff">🏙 CITY</text>
+  <text x="80" y="62" font-family="monospace" font-size="8" fill="#8888aa">🌳 PARK</text>
+  <text x="140" y="62" font-family="monospace" font-size="8" fill="#8888aa">⚙ TECH</text>
+  <text x="200" y="62" font-family="monospace" font-size="8" fill="#8888aa">🔋 BATT</text>
+  <text x="260" y="62" font-family="monospace" font-size="8" fill="#8888aa">📋 TODO</text>
+  <text x="320" y="62" font-family="monospace" font-size="8" fill="#8888aa">🔧 DMG</text>
+  <text x="380" y="62" font-family="monospace" font-size="8" fill="#8888aa">🎾 PADEL</text>
+  <text x="450" y="62" font-family="monospace" font-size="8" fill="#8888aa">📄 PAPER</text>
+  <text x="520" y="62" font-family="monospace" font-size="8" fill="#8888aa">🧠 AI ARCH</text>
+  <line x1="15" y1="70" x2="70" y2="70" stroke="#00d4ff" stroke-width="2"/>
+  <!-- City simulation area -->
+  <rect x="0" y="72" width="540" height="428" fill="#0d0d14"/>
+  <!-- Grid/Buildings -->
+  <rect x="20" y="90" width="80" height="60" fill="#1a1a2a" stroke="#2a2a3a" stroke-width="0.5" rx="2"/>
+  <rect x="20" y="90" width="80" height="8" fill="#2a3a5a" rx="2"/>
+  <rect x="110" y="90" width="100" height="80" fill="#1a1a2a" stroke="#2a2a3a" stroke-width="0.5" rx="2"/>
+  <rect x="110" y="90" width="100" height="8" fill="#3a2a4a" rx="2"/>
+  <rect x="220" y="85" width="60" height="90" fill="#1a1a2a" stroke="#2a2a3a" stroke-width="0.5" rx="2"/>
+  <rect x="300" y="100" width="110" height="70" fill="#1a1a2a" stroke="#2a2a3a" stroke-width="0.5" rx="2"/>
+  <rect x="420" y="85" width="90" height="85" fill="#1a1a2a" stroke="#2a2a3a" stroke-width="0.5" rx="2"/>
+  <!-- More buildings row 2 -->
+  <rect x="20" y="200" width="120" height="70" fill="#1a1a2a" stroke="#2a2a3a" stroke-width="0.5" rx="2"/>
+  <rect x="160" y="195" width="90" height="80" fill="#1a1a2a" stroke="#2a2a3a" stroke-width="0.5" rx="2"/>
+  <rect x="270" y="200" width="110" height="70" fill="#1a1a2a" stroke="#2a2a3a" stroke-width="0.5" rx="2"/>
+  <rect x="400" y="195" width="115" height="80" fill="#1a1a2a" stroke="#2a2a3a" stroke-width="0.5" rx="2"/>
+  <!-- FOV cone -->
+  <path d="M250,310 L180,250 L320,250 Z" fill="rgba(0,212,255,0.07)" stroke="rgba(0,212,255,0.2)" stroke-width="0.5" stroke-dasharray="4,3"/>
+  <!-- Optimus robot -->
+  <rect x="240" y="300" width="20" height="24" fill="#2a2a4a" stroke="#00d4ff" stroke-width="1" rx="2"/>
+  <circle cx="250" cy="294" r="8" fill="#2a2a4a" stroke="#00d4ff" stroke-width="0.8"/>
+  <circle cx="247" cy="292" r="1.5" fill="#00d4ff"/>
+  <circle cx="253" cy="292" r="1.5" fill="#00d4ff"/>
+  <circle cx="250" cy="310" r="4" fill="#7c3aed" opacity="0.6"/>
+  <text x="234" y="288" font-family="monospace" font-size="6" fill="#00d4ff" font-weight="bold">OPTIMUS</text>
+  <!-- Entity labels -->
+  <rect x="130" y="240" width="55" height="12" rx="2" fill="rgba(245,158,11,0.85)"/>
+  <text x="134" y="249" font-family="monospace" font-size="7" fill="#fff" font-weight="bold">HUMAN 94%</text>
+  <rect x="350" y="230" width="52" height="12" rx="2" fill="rgba(124,58,237,0.85)"/>
+  <text x="354" y="239" font-family="monospace" font-size="7" fill="#fff" font-weight="bold">ROBOT 87%</text>
+  <rect x="420" y="170" width="50" height="12" rx="2" fill="rgba(239,68,68,0.85)"/>
+  <text x="426" y="179" font-family="monospace" font-size="7" fill="#fff" font-weight="bold">CAR 91%</text>
+  <rect x="80" y="300" width="52" height="12" rx="2" fill="rgba(16,185,129,0.85)"/>
+  <text x="84" y="309" font-family="monospace" font-size="7" fill="#fff" font-weight="bold">CHILD 78%</text>
+  <!-- Roads -->
+  <line x1="0" y1="185" x2="540" y2="185" stroke="#2a2a2a" stroke-width="12"/>
+  <line x1="0" y1="185" x2="540" y2="185" stroke="#ffd700" stroke-width="0.8" stroke-dasharray="8,6"/>
+  <line x1="0" y1="290" x2="540" y2="290" stroke="#2a2a2a" stroke-width="12"/>
+  <!-- Minimap -->
+  <rect x="430" y="80" width="100" height="80" rx="4" fill="rgba(0,0,0,0.6)" stroke="#2a2a3a" stroke-width="0.5"/>
+  <circle cx="470" cy="120" r="3" fill="#00d4ff"/>
+  <rect x="440" y="90" width="2" height="60" fill="#1a4a1a" opacity="0.5"/>
+  <rect x="460" y="90" width="2" height="60" fill="#1a4a1a" opacity="0.5"/>
+  <circle cx="500" cy="100" r="1.5" fill="#f59e0b"/>
+  <circle cx="455" cy="130" r="1.5" fill="#7c3aed"/>
+  <!-- Controls -->
+  <rect x="15" y="440" width="62" height="18" rx="4" fill="rgba(0,0,0,0.7)" stroke="#10b981" stroke-width="0.8"/>
+  <text x="22" y="452" font-family="monospace" font-size="7" fill="#10b981">AUTO WALK</text>
+  <rect x="85" y="440" width="50" height="18" rx="4" fill="rgba(0,0,0,0.7)" stroke="#2a2a3a" stroke-width="0.8"/>
+  <text x="92" y="452" font-family="monospace" font-size="7" fill="#e0e0f0">+ HUMAN</text>
+  <rect x="143" y="440" width="46" height="18" rx="4" fill="rgba(0,0,0,0.7)" stroke="#2a2a3a" stroke-width="0.8"/>
+  <text x="150" y="452" font-family="monospace" font-size="7" fill="#e0e0f0">+ CHILD</text>
+  <!-- Stats overlay -->
+  <rect x="15" y="80" width="85" height="80" rx="4" fill="rgba(0,0,0,0.7)" stroke="#2a2a3a" stroke-width="0.5"/>
+  <text x="22" y="95" font-family="monospace" font-size="7" fill="#8888aa">Humans</text>
+  <text x="72" y="95" font-family="monospace" font-size="7" fill="#f59e0b" font-weight="bold">8</text>
+  <text x="22" y="107" font-family="monospace" font-size="7" fill="#8888aa">Robots</text>
+  <text x="72" y="107" font-family="monospace" font-size="7" fill="#7c3aed" font-weight="bold">4</text>
+  <text x="22" y="119" font-family="monospace" font-size="7" fill="#8888aa">Cars</text>
+  <text x="72" y="119" font-family="monospace" font-size="7" fill="#ef4444" font-weight="bold">3</text>
+  <text x="22" y="131" font-family="monospace" font-size="7" fill="#8888aa">Children</text>
+  <text x="72" y="131" font-family="monospace" font-size="7" fill="#10b981" font-weight="bold">3</text>
+  <text x="22" y="148" font-family="monospace" font-size="7" fill="#8888aa">Avoidances</text>
+  <text x="72" y="148" font-family="monospace" font-size="7" fill="#00d4ff" font-weight="bold">43</text>
+  <!-- Right panel -->
+  <rect x="540" y="72" width="260" height="428" fill="#12121a"/>
+  <line x1="540" y1="72" x2="540" y2="500" stroke="#2a2a3a" stroke-width="1"/>
+  <!-- Vision section -->
+  <text x="552" y="88" font-family="monospace" font-size="7" fill="#8888aa" text-transform="uppercase" letter-spacing="1">ROBOT VISION — WHAT OPTIMUS SEES</text>
+  <rect x="548" y="94" width="244" height="120" rx="6" fill="#0a0a14" stroke="#2a2a3a" stroke-width="0.5"/>
+  <!-- Vision sky/ground -->
+  <rect x="549" y="95" width="242" height="50" fill="#1a2a3a" rx="6"/>
+  <rect x="549" y="145" width="242" height="68" fill="#0f200f"/>
+  <rect x="552" y="98" width="56" height="12" rx="2" fill="rgba(0,0,0,0.7)"/>
+  <text x="556" y="107" font-family="monospace" font-size="6" fill="#00d4ff">CAM | 30fps</text>
+  <!-- Bounding box in vision -->
+  <rect x="620" y="110" width="40" height="60" fill="none" stroke="rgba(245,158,11,0.8)" stroke-width="1" stroke-dasharray="3,2"/>
+  <rect x="620" y="104" width="45" height="8" fill="rgba(245,158,11,0.85)"/>
+  <text x="623" y="110" font-family="monospace" font-size="5" fill="#fff" font-weight="bold">HUMAN Alice</text>
+  <!-- Entity detection section -->
+  <text x="552" y="226" font-family="monospace" font-size="7" fill="#8888aa">DETECTED ENTITIES</text>
+  <rect x="548" y="232" width="244" height="30" rx="4" fill="#12121a" stroke="#2a2a3a" stroke-width="0.5"/>
+  <text x="556" y="250" font-family="monospace" font-size="9" fill="#e0e0f0">🧑 Alice</text>
+  <rect x="610" y="240" width="40" height="13" rx="6" fill="rgba(245,158,11,0.15)"/>
+  <text x="616" y="250" font-family="monospace" font-size="7" fill="#f59e0b" font-weight="bold">HUMAN</text>
+  <text x="720" y="250" font-family="monospace" font-size="7" fill="#8888aa">42m</text>
+  <text x="748" y="250" font-family="monospace" font-size="7" fill="#10b981" font-weight="bold">94%</text>
+  <rect x="548" y="264" width="244" height="30" rx="4" fill="#12121a" stroke="#00d4ff" stroke-width="0.5"/>
+  <text x="556" y="282" font-family="monospace" font-size="9" fill="#e0e0f0">🤖 Atlas-7</text>
+  <rect x="625" y="272" width="40" height="13" rx="6" fill="rgba(124,58,237,0.15)"/>
+  <text x="631" y="282" font-family="monospace" font-size="7" fill="#7c3aed" font-weight="bold">ROBOT</text>
+  <text x="720" y="282" font-family="monospace" font-size="7" fill="#8888aa">78m</text>
+  <text x="748" y="282" font-family="monospace" font-size="7" fill="#f59e0b">87%</text>
+  <!-- Features -->
+  <text x="552" y="310" font-family="monospace" font-size="7" fill="#8888aa">CLASSIFICATION FEATURES</text>
+  <rect x="548" y="316" width="120" height="28" rx="4" fill="#12121a" stroke="#2a2a3a" stroke-width="0.5"/>
+  <text x="554" y="327" font-family="monospace" font-size="6" fill="#8888aa">TYPE</text>
+  <text x="554" y="338" font-family="monospace" font-size="8" fill="#f59e0b" font-weight="bold">HUMAN</text>
+  <rect x="672" y="316" width="120" height="28" rx="4" fill="#12121a" stroke="#2a2a3a" stroke-width="0.5"/>
+  <text x="678" y="327" font-family="monospace" font-size="6" fill="#8888aa">THERMAL</text>
+  <text x="678" y="338" font-family="monospace" font-size="8" fill="#f59e0b" font-weight="bold">36.8°C</text>
+  <rect x="548" y="348" width="120" height="28" rx="4" fill="#12121a" stroke="#2a2a3a" stroke-width="0.5"/>
+  <text x="554" y="359" font-family="monospace" font-size="6" fill="#8888aa">GAIT</text>
+  <text x="554" y="370" font-family="monospace" font-size="8" fill="#e0e0f0" font-weight="bold">bipedal</text>
+  <rect x="672" y="348" width="120" height="28" rx="4" fill="#12121a" stroke="#2a2a3a" stroke-width="0.5"/>
+  <text x="678" y="359" font-family="monospace" font-size="6" fill="#8888aa">DANGER</text>
+  <text x="678" y="370" font-family="monospace" font-size="8" fill="#10b981" font-weight="bold">none</text>
+  <!-- Console -->
+  <rect x="548" y="382" width="244" height="20" fill="#12121a" stroke="#2a2a3a" stroke-width="0.5"/>
+  <text x="556" y="396" font-family="monospace" font-size="7" fill="#00d4ff" font-weight="bold">ACTIVITY LOG</text>
+  <text x="554" y="412" font-family="monospace" font-size="6" fill="#8888aa">08:14:22</text>
+  <rect x="598" y="404" width="28" height="10" rx="2" fill="rgba(0,212,255,0.12)"/>
+  <text x="601" y="412" font-family="monospace" font-size="6" fill="#00d4ff">VISION</text>
+  <text x="630" y="412" font-family="monospace" font-size="6" fill="#e0e0f0">Tracking 18 entities</text>
+  <text x="554" y="424" font-family="monospace" font-size="6" fill="#8888aa">08:14:21</text>
+  <rect x="598" y="416" width="20" height="10" rx="2" fill="rgba(16,185,129,0.12)"/>
+  <text x="601" y="424" font-family="monospace" font-size="6" fill="#10b981">NAV</text>
+  <text x="622" y="424" font-family="monospace" font-size="6" fill="#e0e0f0">Heading 142° | 11m walked</text>
+  <text x="554" y="436" font-family="monospace" font-size="6" fill="#8888aa">08:14:20</text>
+  <rect x="598" y="428" width="28" height="10" rx="2" fill="rgba(239,68,68,0.12)"/>
+  <text x="601" y="436" font-family="monospace" font-size="6" fill="#ef4444">AVOID</text>
+  <text x="630" y="436" font-family="monospace" font-size="6" fill="#e0e0f0">Obstacle: tree — rerouting</text>
+  <text x="554" y="448" font-family="monospace" font-size="6" fill="#8888aa">08:14:19</text>
+  <rect x="598" y="440" width="28" height="10" rx="2" fill="rgba(124,58,237,0.12)"/>
+  <text x="601" y="448" font-family="monospace" font-size="6" fill="#7c3aed">LIDAR</text>
+  <text x="630" y="448" font-family="monospace" font-size="6" fill="#e0e0f0">295K pts scanned</text>
+</svg>
