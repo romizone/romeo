@@ -270,6 +270,7 @@
         .project-card:nth-child(7)::before { background: linear-gradient(180deg, #111827, #374151); }
         .project-card:nth-child(8)::before { background: linear-gradient(180deg, #1f2937, #4b5563); }
         .project-card:nth-child(9)::before { background: linear-gradient(180deg, #374151, #6b7280); }
+        .project-card:nth-child(10)::before { background: linear-gradient(180deg, #111827, #374151); }
 
         .project-thumb {
             flex-shrink: 0;
@@ -697,7 +698,33 @@
             </div>
             <div class="projects-grid">
 
-                <!-- 1. Web 4.0 -->
+                <!-- 1. LeCun 1989 CNN Reproduction -->
+                <div class="project-card">
+                    <div class="project-thumb">
+                        <img src="LeCun1989CNN.svg" alt="LeCun 1989 CNN Reproduction" loading="lazy">
+                    </div>
+                    <div class="project-body">
+                        <h3>&#129504; LeCun 1989 CNN Reproduction</h3>
+                        <p>Faithful reproduction of the seminal 1989 convolutional neural network from LeCun et al.'s paper "Backpropagation Applied to Handwritten Zip Code Recognition" &mdash; the network that the U.S. Postal Service used for automated zip code reading. Built entirely in <strong>pure Node.js with zero external dependencies.</strong> Features a complete CNN training pipeline on MNIST (7,291 training + 2,007 test samples), achieving <strong>4.19% test error rate</strong> (closely matching Karpathy's PyTorch reproduction at 4.09%). The 9,760-parameter model implements manual forward/backward propagation, 12 convolutional feature maps with 5&times;5 kernels, sparse H2 connectivity, per-unit biases, tanh activation, and SGD with MSE loss &mdash; all faithful to the 1989 architecture. Includes an interactive web demo with Canvas-based digit drawing, real-time browser inference, probability visualization, and learned filter display.</p>
+                        <div class="badges">
+                            <span class="badge">Node.js</span>
+                            <span class="badge">CNN</span>
+                            <span class="badge">MNIST</span>
+                            <span class="badge">Backpropagation</span>
+                            <span class="badge">Zero Dependencies</span>
+                            <span class="badge">Browser Inference</span>
+                            <span class="badge">MIT License</span>
+                        </div>
+                        <div class="project-actions">
+                            <a href="https://github.com/romizone/lecun1989-cnn" class="btn-github">&#128187; GitHub</a>
+                            <a href="https://lecun1989-cnn.vercel.app" class="btn-demo">&#127760; Live Demo</a>
+                            <a href="https://romeo-nu.vercel.app/LeCun1989CNN_Paper.html" class="btn-paper">&#128196; Paper</a>
+                        </div>
+                        <div class="deploy-date">Deployed: 22 February 2026</div>
+                    </div>
+                </div>
+
+                <!-- 2. Web 4.0 -->
                 <div class="project-card">
                     <div class="project-thumb">
                         <img src="Web40.svg" alt="Web 4.0" loading="lazy">
@@ -722,7 +749,7 @@
                     </div>
                 </div>
 
-                <!-- 2. Optimus Perceptron -->
+                <!-- 3. Optimus Perceptron -->
                 <div class="project-card">
                     <div class="project-thumb">
                         <img src="OptimusPerceptron.svg" alt="Optimus Perceptron" loading="lazy">
@@ -748,7 +775,7 @@
                     </div>
                 </div>
 
-                <!-- 3. TranscribeAI -->
+                <!-- 4. TranscribeAI -->
                 <div class="project-card">
                     <div class="project-thumb">
                         <img src="TranscribAI.png" alt="TranscribeAI" loading="lazy">
@@ -771,7 +798,7 @@
                     </div>
                 </div>
 
-                <!-- 4. AI PDF Tools -->
+                <!-- 5. AI PDF Tools -->
                 <div class="project-card">
                     <div class="project-thumb">
                         <img src="PDFTools.svg" alt="AI PDF Tools" loading="lazy">
@@ -796,7 +823,7 @@
                     </div>
                 </div>
 
-                <!-- 5. Tesla Self-Driving AI Simulation -->
+                <!-- 6. Tesla Self-Driving AI Simulation -->
                 <div class="project-card">
                     <div class="project-thumb">
                         <img src="TeslaWay.svg" alt="Tesla Self-Driving AI Simulation" loading="lazy">
@@ -820,7 +847,7 @@
                     </div>
                 </div>
 
-                <!-- 6. Knight Chess AI -->
+                <!-- 7. Knight Chess AI -->
                 <div class="project-card">
                     <div class="project-thumb">
                         <img src="KnightChess.png" alt="Knight Chess" loading="lazy">
@@ -844,7 +871,7 @@
                     </div>
                 </div>
 
-                <!-- 7. Transformer Explainer -->
+                <!-- 8. Transformer Explainer -->
                 <div class="project-card">
                     <div class="project-thumb">
                         <img src="SimulasiLLM.svg" alt="SimulasiLLM" loading="lazy">
@@ -867,7 +894,7 @@
                     </div>
                 </div>
 
-                <!-- 8. PyTorch Neural Network Simulation -->
+                <!-- 9. PyTorch Neural Network Simulation -->
                 <div class="project-card">
                     <div class="project-thumb">
                         <img src="PyTorch.svg" alt="PyTorch Neural Network Simulation" loading="lazy">
@@ -891,7 +918,7 @@
                     </div>
                 </div>
 
-                <!-- 9. Open Chatbot -->
+                <!-- 10. Open Chatbot -->
                 <div class="project-card">
                     <div class="project-thumb">
                         <img src="OpenChatbot.svg" alt="Open Chatbot" loading="lazy">
