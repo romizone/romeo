@@ -1,0 +1,686 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>WinRA: A Modern Native Archive Manager for macOS with CustomTkinter GUI</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Times New Roman', Times, Georgia, serif;
+            line-height: 1.6;
+            color: #111;
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 60px 40px;
+            background: #fff;
+        }
+
+        /* Title Block */
+        .paper-title {
+            text-align: center;
+            margin-bottom: 30px;
+        }
+
+        .paper-title h1 {
+            font-size: 1.65em;
+            font-weight: 700;
+            line-height: 1.3;
+            margin-bottom: 18px;
+        }
+
+        .paper-title .authors {
+            font-size: 1.05em;
+            margin-bottom: 4px;
+        }
+
+        .paper-title .affiliation {
+            font-size: 0.95em;
+            color: #555;
+            font-style: italic;
+        }
+
+        .paper-title .email {
+            font-size: 0.9em;
+            color: #1a73e8;
+            margin-top: 4px;
+        }
+
+        .paper-title .date {
+            font-size: 0.9em;
+            color: #777;
+            margin-top: 10px;
+        }
+
+        /* Abstract */
+        .abstract {
+            background: #f9f9f9;
+            border-left: 4px solid #333;
+            padding: 18px 22px;
+            margin: 30px 0;
+        }
+
+        .abstract h2 {
+            font-size: 1em;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            margin-bottom: 8px;
+        }
+
+        .abstract p {
+            font-size: 0.95em;
+            color: #333;
+            text-align: justify;
+        }
+
+        /* Keywords */
+        .keywords {
+            font-size: 0.9em;
+            color: #555;
+            margin-bottom: 30px;
+        }
+
+        .keywords strong {
+            color: #333;
+        }
+
+        /* Sections */
+        h2 {
+            font-size: 1.2em;
+            font-weight: 700;
+            margin-top: 30px;
+            margin-bottom: 12px;
+            border-bottom: 1px solid #ddd;
+            padding-bottom: 4px;
+        }
+
+        h3 {
+            font-size: 1.05em;
+            font-weight: 700;
+            margin-top: 18px;
+            margin-bottom: 8px;
+        }
+
+        p {
+            text-align: justify;
+            margin-bottom: 12px;
+            font-size: 0.97em;
+        }
+
+        /* Tables */
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 16px 0;
+            font-size: 0.9em;
+        }
+
+        table th, table td {
+            border: 1px solid #ccc;
+            padding: 8px 12px;
+            text-align: left;
+        }
+
+        table th {
+            background: #f0f0f0;
+            font-weight: 700;
+        }
+
+        table caption {
+            font-size: 0.88em;
+            font-style: italic;
+            color: #555;
+            margin-bottom: 6px;
+            text-align: left;
+        }
+
+        /* Figures */
+        .figure {
+            text-align: center;
+            margin: 24px 0;
+        }
+
+        .figure img {
+            max-width: 100%;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+        }
+
+        .figure .caption {
+            font-size: 0.88em;
+            font-style: italic;
+            color: #555;
+            margin-top: 8px;
+        }
+
+        /* Code */
+        code {
+            font-family: 'Courier New', Courier, monospace;
+            background: #f4f4f4;
+            padding: 2px 5px;
+            border-radius: 3px;
+            font-size: 0.88em;
+        }
+
+        pre {
+            background: #f4f4f4;
+            padding: 14px 18px;
+            border-radius: 4px;
+            overflow-x: auto;
+            font-size: 0.85em;
+            margin: 12px 0;
+            border: 1px solid #e0e0e0;
+        }
+
+        /* Lists */
+        ul, ol {
+            margin: 10px 0 12px 24px;
+            font-size: 0.97em;
+        }
+
+        li {
+            margin-bottom: 4px;
+        }
+
+        /* Pipeline */
+        .pipeline {
+            background: #f7f9fc;
+            border: 1px solid #d4e2f7;
+            border-radius: 6px;
+            padding: 16px 20px;
+            text-align: center;
+            font-size: 0.95em;
+            color: #1a5276;
+            margin: 16px 0;
+            letter-spacing: 0.3px;
+        }
+
+        /* References */
+        .references {
+            font-size: 0.88em;
+        }
+
+        .references ol {
+            margin-left: 20px;
+        }
+
+        .references li {
+            margin-bottom: 8px;
+            color: #444;
+        }
+
+        /* Footer */
+        .paper-footer {
+            text-align: center;
+            font-size: 0.8em;
+            color: #aaa;
+            margin-top: 50px;
+            padding-top: 20px;
+            border-top: 1px solid #eee;
+        }
+
+        /* Print */
+        @media print {
+            body {
+                padding: 20px;
+            }
+        }
+
+        @media (max-width: 600px) {
+            body {
+                padding: 20px 15px;
+            }
+
+            .paper-title h1 {
+                font-size: 1.3em;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Title Block -->
+    <div class="paper-title">
+        <h1>WinRA: A Modern Native Archive Manager for macOS with CustomTkinter GUI</h1>
+        <div class="authors">Romi Nur Ismanto</div>
+        <div class="affiliation">Independent AI Research Lab, Jakarta, Indonesia</div>
+        <div class="email">rominur@gmail.com</div>
+        <div class="date">February 2026</div>
+    </div>
+
+    <!-- Abstract -->
+    <div class="abstract">
+        <h2>Abstract</h2>
+        <p>
+            We present WinRA, a lightweight archive manager designed exclusively for macOS that brings WinRAR-style functionality to the Apple ecosystem with a modern, native-feeling interface. Built with Python 3.13 and CustomTkinter, WinRA provides three core operations&mdash;extract, compress, and convert&mdash;for ZIP and RAR archive formats through a sidebar-navigated GUI that follows Apple's Human Interface Guidelines. The application features automatic dark/light mode detection via the <code>darkdetect</code> library, a comprehensive macOS color system with full light and dark palettes, real-time progress tracking with file-level granularity, a Treeview-based archive content inspector, and Finder integration for output navigation. WinRA leverages Python's built-in <code>zipfile</code> module for ZIP operations and the <code>unar</code>/<code>lsar</code> command-line tools for RAR support, enabling format conversion between RAR and ZIP through a temporary extraction pipeline. The application is distributed as a native macOS <code>.app</code> bundle via PyInstaller, with both DMG (drag-and-drop) and PKG (installer) distribution formats generated by a single build script. All archive operations run in background threads to maintain UI responsiveness, and the entire codebase follows a clean MVC separation with dedicated modules for GUI, archive operations, and utility functions.
+        </p>
+    </div>
+
+    <!-- Keywords -->
+    <div class="keywords">
+        <strong>Keywords:</strong> archive manager, macOS, CustomTkinter, ZIP, RAR, Python, dark mode, native GUI, file compression, format conversion, PyInstaller
+    </div>
+
+    <!-- 1. Introduction -->
+    <h2>1. Introduction</h2>
+
+    <p>
+        Archive management on macOS has historically been limited compared to the Windows ecosystem. While Windows users have long relied on tools like WinRAR, 7-Zip, and WinZip for comprehensive archive handling, macOS provides only basic ZIP extraction through the built-in Archive Utility. Users who need RAR support, format conversion, or detailed archive inspection must resort to command-line tools or third-party applications that often feel foreign to the macOS environment.
+    </p>
+
+    <p>
+        WinRA addresses this gap by providing a native-feeling macOS application that combines the core functionality of WinRAR&mdash;extraction, compression, and format conversion&mdash;with a modern GUI that respects Apple's design language. The application is built entirely in Python using CustomTkinter, a modern widget library that extends Tkinter with contemporary styling capabilities including rounded corners, smooth transitions, and system-aware theming.
+    </p>
+
+    <p>
+        The key contributions of this work are:
+    </p>
+    <ul>
+        <li>A complete archive management solution for macOS supporting both ZIP and RAR formats with extract, compress, and convert operations.</li>
+        <li>A native-feeling macOS GUI built with CustomTkinter featuring automatic dark/light mode detection, SF Pro typography, and Apple-style color palettes.</li>
+        <li>A threaded architecture that maintains UI responsiveness during long-running archive operations with real-time progress tracking.</li>
+        <li>A comprehensive build pipeline producing <code>.app</code>, <code>.dmg</code>, and <code>.pkg</code> distribution artifacts from a single script.</li>
+    </ul>
+
+    <!-- 2. Related Work -->
+    <h2>2. Related Work</h2>
+
+    <p>
+        The archive management landscape on macOS is dominated by a handful of tools. The built-in Archive Utility handles ZIP creation and extraction but offers no GUI for archive inspection, no RAR support, and no format conversion. The Unarchiver (codename: <code>unar</code>) provides broad format support via command-line tools but lacks a modern GUI. Keka offers a native macOS interface but is primarily focused on compression rather than archive inspection or conversion.
+    </p>
+
+    <p>
+        On the GUI framework side, CustomTkinter (Schimansky, 2022) has emerged as a popular choice for building modern-looking desktop applications in Python. Unlike traditional Tkinter, which produces dated-looking interfaces, CustomTkinter provides rounded widgets, system-aware theming, and a flat design aesthetic that aligns with contemporary macOS design. Alternative frameworks like PyQt and wxPython offer more comprehensive widget sets but introduce significant dependency overhead and licensing considerations.
+    </p>
+
+    <p>
+        WinRA combines the format breadth of <code>unar</code> with the modern GUI capabilities of CustomTkinter, resulting in an application that feels native to macOS while providing the comprehensive archive management functionality previously available only on Windows through tools like WinRAR.
+    </p>
+
+    <!-- 3. System Architecture -->
+    <h2>3. System Architecture</h2>
+
+    <p>
+        WinRA follows a clean Model-View-Controller architecture with three dedicated Python modules: <code>gui.py</code> for the user interface, <code>archive_ops.py</code> for archive operations, and <code>utils.py</code> for utility functions. This separation ensures that archive logic remains independent of the GUI layer, facilitating testing and maintenance.
+    </p>
+
+    <h3>3.1 Application Structure</h3>
+
+    <pre>WinRA/
+  main.py              # Application entry point
+  requirements.txt     # Python dependencies
+  build.sh             # Build script (.app, .dmg, .pkg)
+  build_pkg.sh         # PKG installer builder
+  app/
+    __init__.py
+    gui.py             # Main GUI (CustomTkinter) &mdash; 1,141 lines
+    archive_ops.py     # Archive operations (extract, compress, convert)
+    utils.py           # Utility functions (path handling, format detection)</pre>
+
+    <h3>3.2 Operation Flow</h3>
+
+    <p>
+        All three core operations follow a consistent pattern:
+    </p>
+
+    <div class="pipeline">
+        User Selection (GUI) &rarr; Input Validation &rarr; Background Thread Spawn &rarr; Operation with Progress Callback &rarr; UI Update via <code>self.after()</code> &rarr; Completion/Error Dialog
+    </div>
+
+    <p>
+        The critical design decision is the use of <code>threading.Thread</code> with <code>daemon=True</code> for all archive operations. This ensures the GUI remains responsive during long-running extractions or compressions. Progress updates are marshaled back to the main thread using Tkinter's <code>self.after(0, callback)</code> mechanism, which schedules UI updates on the next event loop iteration.
+    </p>
+
+    <!-- 4. GUI Design -->
+    <h2>4. GUI Design</h2>
+
+    <p>
+        WinRA's interface is designed to feel native to macOS, drawing from Apple's Human Interface Guidelines while adapting them to CustomTkinter's widget capabilities.
+    </p>
+
+    <h3>4.1 macOS Color System</h3>
+
+    <p>
+        The application implements a comprehensive dual-mode color system through the <code>MacColors</code> class, which defines both system accent colors (Blue <code>#007AFF</code>, Green <code>#34C759</code>, Purple <code>#AF52DE</code>, Red <code>#FF3B30</code>) and complete light/dark palettes covering backgrounds, text hierarchy, separators, cards, toolbar, inputs, and tags. The initial mode is detected at startup using the <code>darkdetect</code> library, which reads macOS system preferences.
+    </p>
+
+    <table>
+        <caption>Table 1: Key color tokens for light and dark modes</caption>
+        <tr>
+            <th>Token</th>
+            <th>Light Mode</th>
+            <th>Dark Mode</th>
+            <th>Purpose</th>
+        </tr>
+        <tr>
+            <td>BG</td>
+            <td>#F5F5F7</td>
+            <td>#1D1D1F</td>
+            <td>Primary background</td>
+        </tr>
+        <tr>
+            <td>BG_SECONDARY</td>
+            <td>#FFFFFF</td>
+            <td>#2C2C2E</td>
+            <td>Card backgrounds</td>
+        </tr>
+        <tr>
+            <td>TEXT_PRIMARY</td>
+            <td>#1D1D1F</td>
+            <td>#F5F5F7</td>
+            <td>Main text</td>
+        </tr>
+        <tr>
+            <td>TEXT_SECONDARY</td>
+            <td>#6E6E73</td>
+            <td>#A1A1A6</td>
+            <td>Descriptions</td>
+        </tr>
+        <tr>
+            <td>SIDEBAR_BG</td>
+            <td>#F0F0F2</td>
+            <td>#252528</td>
+            <td>Navigation sidebar</td>
+        </tr>
+        <tr>
+            <td>CARD_BORDER</td>
+            <td>#E5E5EA</td>
+            <td>#3A3A3C</td>
+            <td>Card edges</td>
+        </tr>
+    </table>
+
+    <h3>4.2 Layout Architecture</h3>
+
+    <p>
+        The main window (1060&times;680px, minimum 900&times;580px) uses a two-column grid layout:
+    </p>
+
+    <ul>
+        <li><strong>Left sidebar (220px fixed):</strong> Contains the application branding (blue icon badge + title), a "TOOLS" section label, three navigation buttons (Extract Archive, Compress Files, Convert Format), a dark/light mode toggle switch, and the version string.</li>
+        <li><strong>Right main area (flexible):</strong> Comprises a toolbar with mode title and contextual action buttons, an action card with drop zone, file information display, and primary action button, an output path bar with "Show in Finder" integration, a Treeview-based file content inspector, and a progress bar with status label.</li>
+    </ul>
+
+    <h3>4.3 Tab-Based Navigation</h3>
+
+    <p>
+        The three operational modes are implemented as soft tabs controlled by sidebar buttons. Each tab configures the UI with mode-specific labels, button colors, toolbar actions, and empty-state messages. The active tab receives a blue highlight (<code>#007AFF</code>) while inactive tabs use transparent backgrounds with hover effects:
+    </p>
+
+    <table>
+        <caption>Table 2: Tab configurations</caption>
+        <tr>
+            <th>Tab</th>
+            <th>Primary Action</th>
+            <th>Button Color</th>
+            <th>Toolbar Actions</th>
+        </tr>
+        <tr>
+            <td>Extract</td>
+            <td>Extract</td>
+            <td>Blue (#007AFF)</td>
+            <td>Open, Extract Here, Info</td>
+        </tr>
+        <tr>
+            <td>Compress</td>
+            <td>Create ZIP</td>
+            <td>Green (#34C759)</td>
+            <td>Add Files, Add Folder, Clear</td>
+        </tr>
+        <tr>
+            <td>Convert</td>
+            <td>Convert</td>
+            <td>Purple (#AF52DE)</td>
+            <td>Open Archive, RAR&rarr;ZIP, ZIP&rarr;RAR</td>
+        </tr>
+    </table>
+
+    <h3>4.4 Theme Toggle</h3>
+
+    <p>
+        The dark/light mode switch triggers a comprehensive theme update that refreshes over 25 UI elements including the sidebar, navigation buttons, toolbar, action cards, drop zone, file info labels, output bar, tree card, progress bar, and ttk Treeview styles. This is necessary because CustomTkinter's <code>set_appearance_mode()</code> does not automatically propagate to all custom-configured widgets.
+    </p>
+
+    <!-- 5. Archive Operations -->
+    <h2>5. Archive Operations</h2>
+
+    <h3>5.1 ZIP Handling</h3>
+
+    <p>
+        ZIP operations use Python's built-in <code>zipfile</code> module with <code>ZIP_DEFLATED</code> compression. Extraction iterates over archive members with per-file progress callbacks, while compression supports both individual files and recursive directory walking with relative path preservation. The <code>get_archive_info()</code> function parses ZIP metadata including per-file sizes, compressed sizes, and directory flags.
+    </p>
+
+    <h3>5.2 RAR Handling</h3>
+
+    <p>
+        RAR operations delegate to the <code>unar</code> and <code>lsar</code> command-line tools from The Unarchiver project (installable via <code>brew install unar</code>). The <code>lsar -j</code> command provides JSON-formatted archive listings for the content inspector, while <code>unar -o &lt;dest&gt; -f</code> performs extraction. A file-snapshotting approach is used for progress tracking: the destination directory is scanned before and after extraction, with only newly created files counted as extracted.
+    </p>
+
+    <p>
+        Tool discovery uses a cascading search strategy: <code>shutil.which()</code> for PATH-based lookup, followed by checks at <code>/opt/homebrew/bin/</code> (Apple Silicon), <code>/usr/local/bin/</code> (Intel Homebrew), and <code>/usr/bin/</code> (system).
+    </p>
+
+    <h3>5.3 Format Conversion</h3>
+
+    <p>
+        Conversion between RAR and ZIP formats is implemented as a two-phase pipeline using a temporary directory:
+    </p>
+
+    <div class="pipeline">
+        Source Archive &rarr; Extract to tempdir &rarr; Re-compress to Target Format &rarr; Cleanup tempdir
+    </div>
+
+    <p>
+        RAR-to-ZIP conversion extracts via <code>unar</code> and re-compresses with <code>zipfile</code>. ZIP-to-RAR conversion requires the <code>rar</code> command-line tool, which is noted as optional since WinRAR CLI is a proprietary tool. Progress callbacks report approximate percentages (0&ndash;50% for extraction, 50&ndash;100% for re-compression).
+    </p>
+
+    <!-- 6. Archive Content Inspector -->
+    <h2>6. Archive Content Inspector</h2>
+
+    <p>
+        The Treeview-based content inspector displays four columns: Name (with file-type emoji icons), Size (human-readable), Packed (compressed size), and Kind (file extension). The icon mapping covers 30+ file types including documents, images, audio, video, code files, and archives. The inspector uses ttk Treeview with custom styling to match the macOS aesthetic, including selection highlighting in system blue and header styling consistent with the application's color system.
+    </p>
+
+    <table>
+        <caption>Table 3: File type icon mapping (selected entries)</caption>
+        <tr>
+            <th>Extensions</th>
+            <th>Icon</th>
+            <th>Category</th>
+        </tr>
+        <tr>
+            <td>.pdf</td>
+            <td>&#128213;</td>
+            <td>Document</td>
+        </tr>
+        <tr>
+            <td>.jpg, .png, .svg, .webp</td>
+            <td>&#128444;</td>
+            <td>Image</td>
+        </tr>
+        <tr>
+            <td>.py</td>
+            <td>&#128013;</td>
+            <td>Python</td>
+        </tr>
+        <tr>
+            <td>.js</td>
+            <td>&#128993;</td>
+            <td>JavaScript</td>
+        </tr>
+        <tr>
+            <td>.zip, .rar, .gz</td>
+            <td>&#128230;</td>
+            <td>Archive</td>
+        </tr>
+        <tr>
+            <td>.dmg</td>
+            <td>&#128191;</td>
+            <td>Disk Image</td>
+        </tr>
+    </table>
+
+    <!-- 7. Build and Distribution -->
+    <h2>7. Build and Distribution</h2>
+
+    <p>
+        The <code>build.sh</code> script produces three distribution artifacts from a single invocation:
+    </p>
+
+    <h3>7.1 Build Pipeline</h3>
+
+    <div class="pipeline">
+        Clean &rarr; PyInstaller (<code>--windowed --onedir</code>) &rarr; DMG (<code>hdiutil create</code>) &rarr; Code Sign (<code>codesign -s -</code>) &rarr; PKG (<code>pkgbuild</code>)
+    </div>
+
+    <p>
+        PyInstaller bundles the application with <code>--windowed</code> (no terminal window) and <code>--onedir</code> (directory bundle), collecting all CustomTkinter resources and hidden imports (PIL, rarfile, darkdetect). The DMG is created using macOS's native <code>hdiutil</code> with UDZO compression and includes a symbolic link to <code>/Applications</code> for drag-and-drop installation. Ad-hoc code signing with <code>codesign -s -</code> removes quarantine attributes that would otherwise trigger Gatekeeper warnings.
+    </p>
+
+    <table>
+        <caption>Table 4: Distribution artifacts</caption>
+        <tr>
+            <th>Format</th>
+            <th>File</th>
+            <th>Installation Method</th>
+        </tr>
+        <tr>
+            <td>.app</td>
+            <td>dist/WinRA.app</td>
+            <td>Direct execution</td>
+        </tr>
+        <tr>
+            <td>.dmg</td>
+            <td>WinRA.dmg</td>
+            <td>Drag to Applications</td>
+        </tr>
+        <tr>
+            <td>.pkg</td>
+            <td>WinRA.pkg</td>
+            <td>macOS Installer wizard</td>
+        </tr>
+    </table>
+
+    <h3>7.2 Dependencies</h3>
+
+    <table>
+        <caption>Table 5: Python dependencies</caption>
+        <tr>
+            <th>Package</th>
+            <th>Version</th>
+            <th>Purpose</th>
+        </tr>
+        <tr>
+            <td>customtkinter</td>
+            <td>&ge;5.2.0</td>
+            <td>Modern Tkinter GUI widgets</td>
+        </tr>
+        <tr>
+            <td>rarfile</td>
+            <td>&ge;4.0</td>
+            <td>RAR archive metadata reading</td>
+        </tr>
+        <tr>
+            <td>Pillow</td>
+            <td>&ge;10.0</td>
+            <td>Image handling for GUI</td>
+        </tr>
+        <tr>
+            <td>pyinstaller</td>
+            <td>&ge;6.0</td>
+            <td>Application bundling</td>
+        </tr>
+        <tr>
+            <td>darkdetect</td>
+            <td>(bundled)</td>
+            <td>System theme detection</td>
+        </tr>
+    </table>
+
+    <!-- 8. System Requirements -->
+    <h2>8. System Requirements</h2>
+
+    <table>
+        <caption>Table 6: Runtime requirements</caption>
+        <tr>
+            <th>Requirement</th>
+            <th>Specification</th>
+        </tr>
+        <tr>
+            <td>Operating System</td>
+            <td>macOS 12.0 Monterey or later</td>
+        </tr>
+        <tr>
+            <td>Architecture</td>
+            <td>Apple Silicon (M1/M2/M3/M4) and Intel x86_64</td>
+        </tr>
+        <tr>
+            <td>Python (development)</td>
+            <td>3.13+</td>
+        </tr>
+        <tr>
+            <td>RAR support</td>
+            <td><code>unar</code> via Homebrew (<code>brew install unar</code>)</td>
+        </tr>
+        <tr>
+            <td>ZIP support</td>
+            <td>Built-in (Python <code>zipfile</code> stdlib)</td>
+        </tr>
+    </table>
+
+    <!-- 9. Conclusion -->
+    <h2>9. Conclusion and Future Work</h2>
+
+    <p>
+        WinRA demonstrates that Python with CustomTkinter is a viable platform for building native-feeling macOS desktop applications. The combination of CustomTkinter's modern widget styling, <code>darkdetect</code>'s system theme integration, and SF Pro typography produces an interface that is visually consistent with native macOS applications while maintaining the rapid development velocity that Python provides.
+    </p>
+
+    <p>
+        The threaded architecture ensures UI responsiveness during resource-intensive archive operations, and the clean MVC separation between GUI, operations, and utilities facilitates maintainability. The single-script build pipeline producing <code>.app</code>, <code>.dmg</code>, and <code>.pkg</code> artifacts simplifies distribution to end users.
+    </p>
+
+    <p>
+        Future directions include:
+    </p>
+
+    <ul>
+        <li>Support for additional archive formats (7z, tar.gz, tar.bz2, tar.xz) through integration with <code>py7zr</code> and Python's <code>tarfile</code> module.</li>
+        <li>Drag-and-drop file input using Tkinter DnD extensions or platform-specific APIs.</li>
+        <li>Archive encryption support with AES-256 for creating password-protected ZIP files.</li>
+        <li>Batch operations for processing multiple archives simultaneously.</li>
+        <li>Integration with macOS Quick Look for archive preview without opening the full application.</li>
+        <li>Apple Notarization for distribution outside the Mac App Store without Gatekeeper warnings.</li>
+    </ul>
+
+    <p>
+        The complete source code is available at <a href="https://github.com/romizone/WinRA">https://github.com/romizone/WinRA</a> under the MIT license.
+    </p>
+
+    <!-- References -->
+    <h2>References</h2>
+
+    <div class="references">
+        <ol>
+            <li>Schimansky, T. (2022). CustomTkinter: A Python UI library based on Tkinter with modern themes. <em>GitHub Repository</em>. https://github.com/TomSchimansky/CustomTkinter</li>
+            <li>Apple Inc. (2024). Human Interface Guidelines: macOS. <em>Apple Developer Documentation</em>. https://developer.apple.com/design/human-interface-guidelines/macos</li>
+            <li>Python Software Foundation (2024). zipfile &mdash; Work with ZIP archives. <em>Python Standard Library Documentation</em>. https://docs.python.org/3/library/zipfile.html</li>
+            <li>Krustev, D. (2024). The Unarchiver: unar and lsar command-line tools. <em>GitHub Repository</em>. https://theunarchiver.com/command-line</li>
+            <li>PyInstaller Development Team (2024). PyInstaller: Freeze Python applications into stand-alone executables. <em>GitHub Repository</em>. https://pyinstaller.org</li>
+            <li>Apple Inc. (2024). Code Signing Guide. <em>Apple Developer Documentation</em>. https://developer.apple.com/library/archive/documentation/Security/Conceptual/CodeSigningGuide</li>
+            <li>Clark, A. et al. (2024). Pillow: The friendly PIL fork. <em>GitHub Repository</em>. https://python-pillow.org</li>
+            <li>Lundh, F. (2024). An Introduction to Tkinter. <em>Python GUI Programming</em>. https://docs.python.org/3/library/tkinter.html</li>
+        </ol>
+    </div>
+
+    <!-- Footer -->
+    <div class="paper-footer">
+        <p>WinRA &mdash; Open Source &middot; MIT License &middot; <a href="https://github.com/romizone/WinRA">github.com/romizone/WinRA</a></p>
+    </div>
+
+</body>
+</html>
