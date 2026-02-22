@@ -4,6 +4,28 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Romi Nur Ismanto</title>
+    <meta name="description" content="Romi Nur Ismanto — AI Engineer & Researcher based in Jakarta. Building agentic AI systems, deep learning models, LLM fine-tuning, RAG pipelines, and intelligent automation solutions.">
+    <meta name="author" content="Romi Nur Ismanto">
+    <meta name="keywords" content="AI Engineer, Deep Learning, LLM, Agentic AI, PyTorch, RAG, Computer Vision, Jakarta">
+
+    <!-- Open Graph -->
+    <meta property="og:type" content="website">
+    <meta property="og:title" content="Romi Nur Ismanto — AI Engineer & Researcher">
+    <meta property="og:description" content="Building agentic AI systems, deep learning models, LLM fine-tuning, RAG pipelines, and intelligent automation solutions.">
+    <meta property="og:image" content="https://romeo-nu.vercel.app/Foto.jpeg">
+    <meta property="og:url" content="https://romeo-nu.vercel.app">
+    <meta property="og:site_name" content="Romi Nur Ismanto">
+
+    <!-- Twitter Card -->
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:site" content="@romeografic">
+    <meta name="twitter:title" content="Romi Nur Ismanto — AI Engineer & Researcher">
+    <meta name="twitter:description" content="Building agentic AI systems, deep learning models, LLM fine-tuning, RAG pipelines, and intelligent automation solutions.">
+    <meta name="twitter:image" content="https://romeo-nu.vercel.app/Foto.jpeg">
+
+    <!-- Favicon -->
+    <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>&#129302;</text></svg>">
+
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&amp;family=JetBrains+Mono:wght@400;500;600&amp;display=swap" rel="stylesheet">
     <style>
@@ -501,6 +523,101 @@
             50% { transform: scale(1.2); }
         }
 
+        /* ===== DARK MODE TOGGLE ===== */
+        .theme-toggle {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            z-index: 999;
+            width: 44px; height: 44px;
+            border-radius: 50%;
+            border: 1px solid var(--border);
+            background: var(--accent-bg);
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.2em;
+            transition: all 0.3s;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+        }
+        .theme-toggle:hover {
+            transform: scale(1.1);
+            box-shadow: 0 4px 16px rgba(0,0,0,0.12);
+        }
+
+        /* ===== DARK MODE ===== */
+        [data-theme="dark"] {
+            --accent: #9ca3af;
+            --accent-light: #d1d5db;
+            --accent-bg: #1f2937;
+            --accent-border: #374151;
+            --text-primary: #f9fafb;
+            --text-secondary: #d1d5db;
+            --text-muted: #6b7280;
+            --border: #374151;
+            --border-light: #1f2937;
+            --card-shadow: 0 1px 3px rgba(0,0,0,0.2), 0 4px 12px rgba(0,0,0,0.1);
+            --card-hover: 0 8px 30px rgba(0,0,0,0.3), 0 2px 8px rgba(0,0,0,0.15);
+        }
+        [data-theme="dark"] body {
+            background: #111827;
+        }
+        [data-theme="dark"] .hero::before {
+            background: linear-gradient(180deg, #1f2937 0%, #111827 100%);
+        }
+        [data-theme="dark"] .hero::after {
+            background: radial-gradient(circle, rgba(255,255,255,0.03) 0%, transparent 70%);
+        }
+        [data-theme="dark"] .avatar-wrap::before {
+            background: linear-gradient(135deg, #6b7280, #9ca3af, #d1d5db);
+        }
+        [data-theme="dark"] .avatar-wrap img {
+            border-color: #1f2937;
+        }
+        [data-theme="dark"] .social-links a {
+            background: #1f2937;
+        }
+        [data-theme="dark"] .project-card,
+        [data-theme="dark"] .edu-card,
+        [data-theme="dark"] .cert-item {
+            background: #1f2937;
+        }
+        [data-theme="dark"] .project-actions .btn-demo {
+            background: #374151;
+            border-color: #4b5563;
+        }
+        [data-theme="dark"] .project-actions .btn-demo:hover {
+            background: #4b5563;
+        }
+        [data-theme="dark"] .project-actions .btn-github:hover {
+            background: #374151;
+        }
+        [data-theme="dark"] .project-actions .btn-paper:hover {
+            background: #374151;
+        }
+        [data-theme="dark"] .cert-item:hover {
+            background: #374151;
+        }
+        [data-theme="dark"] .cert-check {
+            background: #374151;
+            color: #d1d5db;
+        }
+        [data-theme="dark"] .tl-dot {
+            background: #111827;
+            border-color: #9ca3af;
+        }
+        [data-theme="dark"] .tl-item:hover .tl-dot {
+            background: #9ca3af;
+        }
+        [data-theme="dark"] .timeline::before {
+            background: linear-gradient(180deg, #9ca3af, #374151);
+        }
+        [data-theme="dark"] .theme-toggle {
+            background: #374151;
+            border-color: #4b5563;
+        }
+
         /* ===== RESPONSIVE ===== */
         @media (max-width: 768px) {
             .hero { padding: 48px 16px 40px; }
@@ -536,6 +653,11 @@
     </style>
 </head>
 <body>
+
+    <!-- ===== DARK MODE TOGGLE ===== -->
+    <button class="theme-toggle" onclick="toggleTheme()" aria-label="Toggle dark mode" title="Toggle dark mode">
+        <span id="theme-icon">&#127769;</span>
+    </button>
 
     <!-- ===== HERO ===== -->
     <div class="hero">
@@ -578,7 +700,7 @@
                 <!-- 1. Web 4.0 -->
                 <div class="project-card">
                     <div class="project-thumb">
-                        <img src="Web40.svg" alt="Web 4.0">
+                        <img src="Web40.svg" alt="Web 4.0" loading="lazy">
                     </div>
                     <div class="project-body">
                         <h3>&#129302; Web 4.0 &mdash; Autonomous AI Living World</h3>
@@ -603,7 +725,7 @@
                 <!-- 2. Optimus Perceptron -->
                 <div class="project-card">
                     <div class="project-thumb">
-                        <img src="OptimusPerceptron.svg" alt="Optimus Perceptron">
+                        <img src="OptimusPerceptron.svg" alt="Optimus Perceptron" loading="lazy">
                     </div>
                     <div class="project-body">
                         <h3>&#129302; Optimus Perceptron &mdash; AI Humanoid Robot Simulation</h3>
@@ -629,7 +751,7 @@
                 <!-- 3. TranscribeAI -->
                 <div class="project-card">
                     <div class="project-thumb">
-                        <img src="TranscribAI.png" alt="TranscribeAI">
+                        <img src="TranscribAI.png" alt="TranscribeAI" loading="lazy">
                     </div>
                     <div class="project-body">
                         <h3>&#127908; TranscribeAI</h3>
@@ -652,7 +774,7 @@
                 <!-- 4. AI PDF Tools -->
                 <div class="project-card">
                     <div class="project-thumb">
-                        <img src="PDFTools.svg" alt="AI PDF Tools">
+                        <img src="PDFTools.svg" alt="AI PDF Tools" loading="lazy">
                     </div>
                     <div class="project-body">
                         <h3>&#128196; AI PDF Tools</h3>
@@ -677,7 +799,7 @@
                 <!-- 5. Tesla Self-Driving AI Simulation -->
                 <div class="project-card">
                     <div class="project-thumb">
-                        <img src="TeslaWay.svg" alt="Tesla Self-Driving AI Simulation">
+                        <img src="TeslaWay.svg" alt="Tesla Self-Driving AI Simulation" loading="lazy">
                     </div>
                     <div class="project-body">
                         <h3>&#128663; Tesla Self-Driving AI Simulation</h3>
@@ -701,7 +823,7 @@
                 <!-- 6. Knight Chess AI -->
                 <div class="project-card">
                     <div class="project-thumb">
-                        <img src="KnightChess.png" alt="Knight Chess">
+                        <img src="KnightChess.png" alt="Knight Chess" loading="lazy">
                     </div>
                     <div class="project-body">
                         <h3>&#9822; Knight Chess AI</h3>
@@ -725,7 +847,7 @@
                 <!-- 7. Transformer Explainer -->
                 <div class="project-card">
                     <div class="project-thumb">
-                        <img src="SimulasiLLM.svg" alt="SimulasiLLM">
+                        <img src="SimulasiLLM.svg" alt="SimulasiLLM" loading="lazy">
                     </div>
                     <div class="project-body">
                         <h3>&#129504; Transformer Explainer (SimulasiLLM)</h3>
@@ -748,7 +870,7 @@
                 <!-- 8. PyTorch Neural Network Simulation -->
                 <div class="project-card">
                     <div class="project-thumb">
-                        <img src="PyTorch.svg" alt="PyTorch Neural Network Simulation">
+                        <img src="PyTorch.svg" alt="PyTorch Neural Network Simulation" loading="lazy">
                     </div>
                     <div class="project-body">
                         <h3>&#128293; PyTorch Neural Network Simulation</h3>
@@ -772,7 +894,7 @@
                 <!-- 9. Open Chatbot -->
                 <div class="project-card">
                     <div class="project-thumb">
-                        <img src="OpenChatbot.svg" alt="Open Chatbot">
+                        <img src="OpenChatbot.svg" alt="Open Chatbot" loading="lazy">
                     </div>
                     <div class="project-body">
                         <h3>&#128172; Open Chatbot</h3>
@@ -788,6 +910,7 @@
                         </div>
                         <div class="project-actions">
                             <a href="https://github.com/romizone/chatbot-next" class="btn-github">&#128187; GitHub</a>
+                            <a href="https://huggingface.co/spaces/romizone/open-chatbot" class="btn-demo">&#127760; Live Demo</a>
                             <a href="https://romeo-nu.vercel.app/OpenChatbot_Paper.html" class="btn-paper">&#128196; Paper</a>
                         </div>
                     </div>
@@ -834,16 +957,16 @@
 
                 <div class="tl-item">
                     <div class="tl-dot"></div>
-                    <div class="tl-year">2009</div>
-                    <h3>&#127974; E-Channel Monitoring &amp; Operations</h3>
-                    <p>Monitored and ensured 24/7 availability of over 20,000 ATMs, 200,000 EDCs, 500 CDMs, and CRM systems across the national banking network. Developed digital dashboards for real-time monitoring, root cause analysis, and operational reliability of electronic channel infrastructure.</p>
+                    <div class="tl-year">2017</div>
+                    <h3>&#128272; Cryptography &amp; Web Application Security</h3>
+                    <p>Applied AES encryption for front-end code obfuscation to protect web applications. Deep expertise in cryptographic algorithms, secure coding practices, and vulnerability mitigation for banking-grade systems.</p>
                 </div>
 
                 <div class="tl-item">
                     <div class="tl-dot"></div>
-                    <div class="tl-year">2017</div>
-                    <h3>&#128272; Cryptography &amp; Web Application Security</h3>
-                    <p>Applied AES encryption for front-end code obfuscation to protect web applications. Deep expertise in cryptographic algorithms, secure coding practices, and vulnerability mitigation for banking-grade systems.</p>
+                    <div class="tl-year">2009</div>
+                    <h3>&#127974; E-Channel Monitoring &amp; Operations</h3>
+                    <p>Monitored and ensured 24/7 availability of over 20,000 ATMs, 200,000 EDCs, 500 CDMs, and CRM systems across the national banking network. Developed digital dashboards for real-time monitoring, root cause analysis, and operational reliability of electronic channel infrastructure.</p>
                 </div>
 
                 <div class="tl-item">
@@ -871,7 +994,7 @@
             </div>
 
             <div class="edu-card">
-                <img src="logo-ui.svg" alt="Universitas Indonesia">
+                <img src="logo-ui.svg" alt="Universitas Indonesia" loading="lazy">
                 <div>
                     <div class="degree">Master of Electrical Engineering (M.Eng.) &mdash; Network Security</div>
                     <div class="school">Universitas Indonesia, Jakarta &middot; 2017</div>
@@ -879,7 +1002,7 @@
             </div>
 
             <div class="edu-card">
-                <img src="logo-ugm.gif" alt="Universitas Gadjah Mada">
+                <img src="logo-ugm.gif" alt="Universitas Gadjah Mada" loading="lazy">
                 <div>
                     <div class="degree">Bachelor of Electrical Engineering (B.Eng.) &mdash; Informatics</div>
                     <div class="school">Universitas Gadjah Mada, Yogyakarta &middot; 2004</div>
@@ -911,5 +1034,29 @@
         <p>0 frameworks were used to make this website. Just pure HTML and CSS. <span class="heart">&#10084;</span></p>
     </div>
 
+    <script>
+        function toggleTheme() {
+            const html = document.documentElement;
+            const icon = document.getElementById('theme-icon');
+            if (html.getAttribute('data-theme') === 'dark') {
+                html.removeAttribute('data-theme');
+                icon.innerHTML = '&#127769;';
+                localStorage.setItem('theme', 'light');
+            } else {
+                html.setAttribute('data-theme', 'dark');
+                icon.innerHTML = '&#9728;';
+                localStorage.setItem('theme', 'dark');
+            }
+        }
+        // Auto-detect system preference or saved preference
+        (function() {
+            var saved = localStorage.getItem('theme');
+            var icon = document.getElementById('theme-icon');
+            if (saved === 'dark' || (!saved && window.matchMedia('(prefers-color-scheme: dark)').matches)) {
+                document.documentElement.setAttribute('data-theme', 'dark');
+                icon.innerHTML = '&#9728;';
+            }
+        })();
+    </script>
 </body>
 </html>
