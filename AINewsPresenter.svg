@@ -1,0 +1,184 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 500">
+  <defs>
+    <linearGradient id="bg" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#0f172a"/>
+      <stop offset="50%" style="stop-color:#1e293b"/>
+      <stop offset="100%" style="stop-color:#0f172a"/>
+    </linearGradient>
+    <linearGradient id="red1" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#ef4444"/>
+      <stop offset="100%" style="stop-color:#dc2626"/>
+    </linearGradient>
+    <linearGradient id="blue1" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#3b82f6"/>
+      <stop offset="100%" style="stop-color:#2563eb"/>
+    </linearGradient>
+    <linearGradient id="amber1" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#f59e0b"/>
+      <stop offset="100%" style="stop-color:#d97706"/>
+    </linearGradient>
+    <linearGradient id="screen" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" style="stop-color:#1e3a5f"/>
+      <stop offset="100%" style="stop-color:#0f172a"/>
+    </linearGradient>
+    <radialGradient id="spotlight" cx="50%" cy="30%" r="60%">
+      <stop offset="0%" style="stop-color:#3b82f6;stop-opacity:0.15"/>
+      <stop offset="100%" style="stop-color:transparent;stop-opacity:0"/>
+    </radialGradient>
+  </defs>
+
+  <!-- Background -->
+  <rect width="800" height="500" fill="url(#bg)"/>
+
+  <!-- Grid pattern -->
+  <g opacity="0.04">
+    <line x1="0" y1="50" x2="800" y2="50" stroke="#94a3b8" stroke-width="0.5"/>
+    <line x1="0" y1="100" x2="800" y2="100" stroke="#94a3b8" stroke-width="0.5"/>
+    <line x1="0" y1="150" x2="800" y2="150" stroke="#94a3b8" stroke-width="0.5"/>
+    <line x1="0" y1="200" x2="800" y2="200" stroke="#94a3b8" stroke-width="0.5"/>
+    <line x1="0" y1="250" x2="800" y2="250" stroke="#94a3b8" stroke-width="0.5"/>
+    <line x1="0" y1="300" x2="800" y2="300" stroke="#94a3b8" stroke-width="0.5"/>
+    <line x1="0" y1="350" x2="800" y2="350" stroke="#94a3b8" stroke-width="0.5"/>
+    <line x1="0" y1="400" x2="800" y2="400" stroke="#94a3b8" stroke-width="0.5"/>
+    <line x1="0" y1="450" x2="800" y2="450" stroke="#94a3b8" stroke-width="0.5"/>
+    <line x1="100" y1="0" x2="100" y2="500" stroke="#94a3b8" stroke-width="0.5"/>
+    <line x1="200" y1="0" x2="200" y2="500" stroke="#94a3b8" stroke-width="0.5"/>
+    <line x1="300" y1="0" x2="300" y2="500" stroke="#94a3b8" stroke-width="0.5"/>
+    <line x1="400" y1="0" x2="400" y2="500" stroke="#94a3b8" stroke-width="0.5"/>
+    <line x1="500" y1="0" x2="500" y2="500" stroke="#94a3b8" stroke-width="0.5"/>
+    <line x1="600" y1="0" x2="600" y2="500" stroke="#94a3b8" stroke-width="0.5"/>
+    <line x1="700" y1="0" x2="700" y2="500" stroke="#94a3b8" stroke-width="0.5"/>
+  </g>
+
+  <!-- TV Monitor Frame -->
+  <g transform="translate(120,50)">
+    <!-- Monitor outer -->
+    <rect x="0" y="0" width="560" height="340" rx="14" fill="#1e293b" stroke="#334155" stroke-width="2"/>
+    <!-- Screen -->
+    <rect x="12" y="12" width="536" height="280" rx="8" fill="url(#screen)"/>
+    <!-- Spotlight effect -->
+    <rect x="12" y="12" width="536" height="280" rx="8" fill="url(#spotlight)"/>
+
+    <!-- LIVE badge -->
+    <g transform="translate(28,28)">
+      <rect x="0" y="0" width="52" height="22" rx="4" fill="url(#red1)"/>
+      <circle cx="14" cy="11" r="4" fill="#fff" opacity="0.9"/>
+      <text x="32" y="15" font-family="Arial,sans-serif" font-size="10" fill="white" font-weight="800" text-anchor="middle">LIVE</text>
+    </g>
+
+    <!-- Clock -->
+    <g transform="translate(468,28)">
+      <rect x="0" y="0" width="64" height="22" rx="4" fill="#0f172a" stroke="#334155" stroke-width="1"/>
+      <text x="32" y="15" font-family="JetBrains Mono,monospace" font-size="10" fill="#94a3b8" text-anchor="middle">19:00 WIB</text>
+    </g>
+
+    <!-- Avatar (stylized female presenter) -->
+    <g transform="translate(200,60)">
+      <!-- Avatar glow -->
+      <ellipse cx="80" cy="100" rx="70" ry="90" fill="#3b82f6" opacity="0.06"/>
+
+      <!-- Body / shoulders -->
+      <path d="M30,180 Q30,155 55,145 L105,145 Q130,155 130,180 L130,200 L30,200 Z" fill="#1e293b" stroke="#3b82f6" stroke-width="1.2" opacity="0.9"/>
+      <!-- Collar -->
+      <path d="M65,145 L80,160 L95,145" fill="none" stroke="#3b82f6" stroke-width="1.2"/>
+
+      <!-- Head -->
+      <ellipse cx="80" cy="100" rx="38" ry="44" fill="#fbbf24" opacity="0.12"/>
+      <ellipse cx="80" cy="100" rx="36" ry="42" fill="#1e293b" stroke="#f59e0b" stroke-width="1.2"/>
+
+      <!-- Hair -->
+      <path d="M44,90 Q44,56 80,54 Q116,56 116,90 Q116,72 104,66 Q80,58 56,66 Q44,72 44,90 Z" fill="#1e293b" stroke="#94a3b8" stroke-width="1"/>
+
+      <!-- Eyes -->
+      <ellipse cx="66" cy="96" rx="5" ry="3.5" fill="#94a3b8"/>
+      <ellipse cx="94" cy="96" rx="5" ry="3.5" fill="#94a3b8"/>
+      <circle cx="66" cy="96" r="2" fill="#f9fafb"/>
+      <circle cx="94" cy="96" r="2" fill="#f9fafb"/>
+
+      <!-- Mouth (speaking) -->
+      <ellipse cx="80" cy="116" rx="10" ry="6" fill="#0f172a" stroke="#94a3b8" stroke-width="0.8"/>
+    </g>
+
+    <!-- News Desk -->
+    <g transform="translate(60,240)">
+      <rect x="0" y="0" width="420" height="40" rx="6" fill="#1e293b" stroke="#334155" stroke-width="1.5"/>
+      <rect x="8" y="6" width="404" height="28" rx="4" fill="#0f172a" stroke="#334155" stroke-width="0.8"/>
+      <text x="210" y="24" font-family="Arial,sans-serif" font-size="10" fill="#3b82f6" text-anchor="middle" font-weight="700" letter-spacing="2">ROMIZONE NEWS</text>
+    </g>
+
+    <!-- News Ticker bar -->
+    <g transform="translate(12,270)">
+      <rect x="0" y="0" width="536" height="22" rx="0 0 8 8" fill="#ef4444" opacity="0.9"/>
+      <text x="10" y="15" font-family="Arial,sans-serif" font-size="9" fill="white" font-weight="700">BREAKING</text>
+      <line x1="72" y1="4" x2="72" y2="18" stroke="white" stroke-width="1" opacity="0.5"/>
+      <text x="82" y="15" font-family="Arial,sans-serif" font-size="9" fill="white" opacity="0.9">AI-powered virtual news anchor with bilingual TTS and lip-sync animation...</text>
+    </g>
+
+    <!-- Monitor stand -->
+    <rect x="230" y="300" width="100" height="12" rx="3" fill="#334155"/>
+    <rect x="210" y="312" width="140" height="8" rx="4" fill="#334155"/>
+  </g>
+
+  <!-- Audio Equalizer (left side) -->
+  <g transform="translate(50,180)">
+    <rect x="0" y="60" width="8" height="40" rx="3" fill="#3b82f6" opacity="0.5"/>
+    <rect x="14" y="40" width="8" height="60" rx="3" fill="#3b82f6" opacity="0.6"/>
+    <rect x="28" y="20" width="8" height="80" rx="3" fill="#3b82f6" opacity="0.7"/>
+    <rect x="42" y="50" width="8" height="50" rx="3" fill="#3b82f6" opacity="0.5"/>
+    <rect x="56" y="30" width="8" height="70" rx="3" fill="#3b82f6" opacity="0.6"/>
+    <text x="32" y="118" font-family="monospace" font-size="8" fill="#64748b" text-anchor="middle">TTS</text>
+  </g>
+
+  <!-- Subtitle block (right side) -->
+  <g transform="translate(700,150)">
+    <rect x="-5" y="0" width="90" height="120" rx="8" fill="#1e293b" stroke="#f59e0b" stroke-width="1.2" opacity="0.9"/>
+    <text x="40" y="20" font-family="Arial,sans-serif" font-size="9" fill="#f59e0b" text-anchor="middle" font-weight="700">Subtitle</text>
+    <!-- Text lines -->
+    <rect x="8" y="32" width="68" height="4" rx="2" fill="#f59e0b" opacity="0.4"/>
+    <rect x="8" y="42" width="55" height="4" rx="2" fill="#f59e0b" opacity="0.3"/>
+    <rect x="8" y="52" width="62" height="4" rx="2" fill="#f59e0b" opacity="0.4"/>
+    <!-- Highlighted word -->
+    <rect x="8" y="66" width="24" height="8" rx="2" fill="#f59e0b" opacity="0.7"/>
+    <rect x="36" y="66" width="40" height="8" rx="2" fill="#f59e0b" opacity="0.2"/>
+    <rect x="8" y="80" width="50" height="4" rx="2" fill="#f59e0b" opacity="0.3"/>
+    <rect x="8" y="90" width="60" height="4" rx="2" fill="#f59e0b" opacity="0.3"/>
+    <text x="40" y="112" font-family="monospace" font-size="7" fill="#64748b" text-anchor="middle">word sync</text>
+  </g>
+
+  <!-- Language badges (right) -->
+  <g transform="translate(700,290)">
+    <rect x="0" y="0" width="36" height="22" rx="6" fill="#1e293b" stroke="#3b82f6" stroke-width="1"/>
+    <text x="18" y="15" font-family="Arial,sans-serif" font-size="9" fill="#3b82f6" text-anchor="middle" font-weight="600">ID</text>
+    <rect x="44" y="0" width="36" height="22" rx="6" fill="#1e293b" stroke="#ef4444" stroke-width="1"/>
+    <text x="62" y="15" font-family="Arial,sans-serif" font-size="9" fill="#ef4444" text-anchor="middle" font-weight="600">EN</text>
+    <text x="40" y="40" font-family="monospace" font-size="7" fill="#64748b" text-anchor="middle">Bilingual</text>
+  </g>
+
+  <!-- Floating particles -->
+  <circle cx="100" cy="80" r="2" fill="#3b82f6" opacity="0.2"/>
+  <circle cx="720" cy="100" r="2.5" fill="#f59e0b" opacity="0.2"/>
+  <circle cx="750" cy="420" r="2" fill="#ef4444" opacity="0.2"/>
+  <circle cx="60" cy="400" r="2" fill="#3b82f6" opacity="0.15"/>
+  <circle cx="400" cy="30" r="1.5" fill="#f59e0b" opacity="0.2"/>
+
+  <!-- Title -->
+  <text x="400" y="480" font-family="Arial,sans-serif" font-size="14" fill="#94a3b8" text-anchor="middle" font-weight="700" letter-spacing="1">AI News Presenter &#8212; Virtual Anchor with Bilingual TTS</text>
+
+  <!-- Tech badges -->
+  <g transform="translate(30,450)">
+    <rect x="0" y="0" width="60" height="22" rx="6" fill="#e34f26" opacity="0.15"/>
+    <text x="30" y="15" font-family="monospace" font-size="9" fill="#e34f26" text-anchor="middle" font-weight="600">HTML5</text>
+  </g>
+  <g transform="translate(100,450)">
+    <rect x="0" y="0" width="50" height="22" rx="6" fill="#1572b6" opacity="0.15"/>
+    <text x="25" y="15" font-family="monospace" font-size="9" fill="#1572b6" text-anchor="middle" font-weight="600">CSS3</text>
+  </g>
+  <g transform="translate(160,450)">
+    <rect x="0" y="0" width="85" height="22" rx="6" fill="#f7df1e" opacity="0.15"/>
+    <text x="42" y="15" font-family="monospace" font-size="9" fill="#f7df1e" text-anchor="middle" font-weight="600">JavaScript</text>
+  </g>
+  <g transform="translate(255,450)">
+    <rect x="0" y="0" width="100" height="22" rx="6" fill="#3b82f6" opacity="0.15"/>
+    <text x="50" y="15" font-family="monospace" font-size="9" fill="#3b82f6" text-anchor="middle" font-weight="600">Speech API</text>
+  </g>
+</svg>

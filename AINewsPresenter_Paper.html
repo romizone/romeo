@@ -1,0 +1,769 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AI News Presenter Simulator: Virtual News Anchor with Bilingual Text-to-Speech and Animated SVG Avatar</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Times New Roman', Times, Georgia, serif;
+            line-height: 1.6;
+            color: #111;
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 60px 40px;
+            background: #fff;
+        }
+
+        /* Title Block */
+        .paper-title {
+            text-align: center;
+            margin-bottom: 30px;
+        }
+
+        .paper-title h1 {
+            font-size: 1.65em;
+            font-weight: 700;
+            line-height: 1.3;
+            margin-bottom: 18px;
+        }
+
+        .paper-title .authors {
+            font-size: 1.05em;
+            margin-bottom: 4px;
+        }
+
+        .paper-title .affiliation {
+            font-size: 0.95em;
+            color: #555;
+            font-style: italic;
+        }
+
+        .paper-title .email {
+            font-size: 0.9em;
+            color: #1a73e8;
+            margin-top: 4px;
+        }
+
+        .paper-title .date {
+            font-size: 0.9em;
+            color: #777;
+            margin-top: 10px;
+        }
+
+        /* Abstract */
+        .abstract {
+            background: #f9f9f9;
+            border-left: 4px solid #333;
+            padding: 18px 22px;
+            margin: 30px 0;
+        }
+
+        .abstract h2 {
+            font-size: 1em;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            margin-bottom: 8px;
+        }
+
+        .abstract p {
+            font-size: 0.95em;
+            color: #333;
+            text-align: justify;
+        }
+
+        /* Keywords */
+        .keywords {
+            font-size: 0.9em;
+            color: #555;
+            margin-bottom: 30px;
+        }
+
+        .keywords strong {
+            color: #333;
+        }
+
+        /* Sections */
+        h2 {
+            font-size: 1.2em;
+            font-weight: 700;
+            margin-top: 30px;
+            margin-bottom: 12px;
+            border-bottom: 1px solid #ddd;
+            padding-bottom: 4px;
+        }
+
+        h3 {
+            font-size: 1.05em;
+            font-weight: 700;
+            margin-top: 18px;
+            margin-bottom: 8px;
+        }
+
+        p {
+            text-align: justify;
+            margin-bottom: 12px;
+            font-size: 0.97em;
+        }
+
+        /* Tables */
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 16px 0;
+            font-size: 0.9em;
+        }
+
+        table th, table td {
+            border: 1px solid #ccc;
+            padding: 8px 12px;
+            text-align: left;
+        }
+
+        table th {
+            background: #f0f0f0;
+            font-weight: 700;
+        }
+
+        table caption {
+            font-size: 0.88em;
+            font-style: italic;
+            color: #555;
+            margin-bottom: 6px;
+            text-align: left;
+        }
+
+        /* Figures */
+        .figure {
+            text-align: center;
+            margin: 24px 0;
+        }
+
+        .figure img {
+            max-width: 100%;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+        }
+
+        .figure .caption {
+            font-size: 0.88em;
+            font-style: italic;
+            color: #555;
+            margin-top: 8px;
+        }
+
+        /* Code */
+        code {
+            font-family: 'Courier New', Courier, monospace;
+            background: #f4f4f4;
+            padding: 2px 5px;
+            border-radius: 3px;
+            font-size: 0.88em;
+        }
+
+        pre {
+            background: #f4f4f4;
+            padding: 14px 18px;
+            border-radius: 4px;
+            overflow-x: auto;
+            font-size: 0.85em;
+            margin: 12px 0;
+            border: 1px solid #e0e0e0;
+        }
+
+        /* Lists */
+        ul, ol {
+            margin: 10px 0 12px 24px;
+            font-size: 0.97em;
+        }
+
+        li {
+            margin-bottom: 4px;
+        }
+
+        /* Pipeline */
+        .pipeline {
+            background: #f7f9fc;
+            border: 1px solid #d4e2f7;
+            border-radius: 6px;
+            padding: 16px 20px;
+            text-align: center;
+            font-size: 0.95em;
+            color: #1a5276;
+            margin: 16px 0;
+            letter-spacing: 0.3px;
+        }
+
+        /* References */
+        .references {
+            font-size: 0.88em;
+        }
+
+        .references ol {
+            margin-left: 20px;
+        }
+
+        .references li {
+            margin-bottom: 8px;
+            color: #444;
+        }
+
+        /* Footer */
+        .paper-footer {
+            text-align: center;
+            font-size: 0.8em;
+            color: #aaa;
+            margin-top: 50px;
+            padding-top: 20px;
+            border-top: 1px solid #eee;
+        }
+
+        /* Print */
+        @media print {
+            body {
+                padding: 20px;
+            }
+        }
+
+        @media (max-width: 600px) {
+            body {
+                padding: 20px 15px;
+            }
+
+            .paper-title h1 {
+                font-size: 1.3em;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Title Block -->
+    <div class="paper-title">
+        <h1>AI News Presenter Simulator: Virtual News Anchor with Bilingual Text-to-Speech and Animated SVG Avatar</h1>
+        <div class="authors">Romi Nur Ismanto</div>
+        <div class="affiliation">Independent AI Research Lab, Jakarta, Indonesia</div>
+        <div class="email">rominur@gmail.com</div>
+        <div class="date">February 2026</div>
+    </div>
+
+    <!-- Abstract -->
+    <div class="abstract">
+        <h2>Abstract</h2>
+        <p>
+            We present AI News Presenter Simulator, a browser-based virtual news anchor application that combines animated SVG avatars with real-time Text-to-Speech (TTS) synthesis and synchronized subtitles. The system renders a professional female presenter avatar with lip-sync mouth animation, automatic eye blink cycles, subtle breathing motion, and intensified glow effects during broadcast. Audio generation leverages the Web Speech API with bilingual support for Bahasa Indonesia and English, featuring adjustable speech rate (0.5x&ndash;2x), pitch control (0.5&ndash;2.0), multiple voice selection per language, and automatic voice switching on language change. The TV studio experience includes a running BREAKING news ticker, blinking LIVE badge, real-time clock display, SVG news desk, audio equalizer animation, floating particles, spotlight effects, and glassmorphism UI styling. Real-time subtitles with word-level highlighting provide visual reinforcement of spoken content. The entire application is built as a single HTML file with zero external dependencies using vanilla HTML5, CSS3, and JavaScript, deployed on Vercel with edge CDN distribution. We describe the avatar animation system, TTS integration pipeline, subtitle synchronization mechanism, and responsive design architecture.
+        </p>
+    </div>
+
+    <!-- Keywords -->
+    <div class="keywords">
+        <strong>Keywords:</strong> text-to-speech, TTS, Web Speech API, SVG animation, virtual presenter, news anchor, lip-sync, bilingual, subtitle synchronization, single-page application, zero dependencies, browser-based
+    </div>
+
+    <!-- 1. Introduction -->
+    <h2>1. Introduction</h2>
+
+    <p>
+        The broadcasting industry has increasingly explored virtual presenters as cost-effective alternatives to human anchors for routine news delivery, weather updates, and informational segments. Traditional virtual presenter systems require substantial infrastructure&mdash;video generation models, GPU-intensive lip-sync networks such as Wav2Lip or SadTalker, dedicated backend servers, and complex audio-video synchronization pipelines. These requirements place virtual presenter technology beyond the reach of educators, small newsrooms, and individual creators.
+    </p>
+
+    <p>
+        AI News Presenter Simulator demonstrates that a compelling virtual news anchor experience can be achieved entirely within the browser using standard web technologies. By combining SVG-based avatar animation with the Web Speech API for text-to-speech synthesis, the system eliminates the need for external servers, GPU hardware, or third-party API subscriptions. The result is a zero-cost, zero-dependency application that runs on any modern browser.
+    </p>
+
+    <p>
+        The key contributions of this work are:
+    </p>
+    <ul>
+        <li>A complete SVG avatar animation system with lip-sync mouth animation, eye blink cycles, breathing motion, and broadcast-mode glow effects&mdash;all implemented in pure CSS and JavaScript.</li>
+        <li>Bilingual Text-to-Speech integration using the Web Speech API with automatic voice selection, language switching, and configurable speech parameters.</li>
+        <li>Real-time subtitle synchronization with word-level highlighting driven by the <code>SpeechSynthesisUtterance</code> boundary events.</li>
+        <li>A full TV studio visual experience including news ticker, LIVE badge, news desk, equalizer, and glassmorphism effects in a single HTML file with zero dependencies.</li>
+        <li>Responsive design supporting desktop, tablet, and mobile viewports with adaptive layout and touch-friendly controls.</li>
+    </ul>
+
+    <!-- 2. Related Work -->
+    <h2>2. Related Work</h2>
+
+    <p>
+        Virtual presenter systems have evolved along two trajectories: deep learning-based approaches and web-based approaches. On the deep learning side, SadTalker (Zhang et al., 2023) generates realistic talking head videos from a single image and audio input using 3D motion coefficients, while Wav2Lip (Prajwal et al., 2020) achieves accurate lip-sync by training on the LRS2 dataset. These systems produce photorealistic results but require GPU inference, introducing latency, cost, and infrastructure dependencies.
+    </p>
+
+    <p>
+        The Web Speech API (W3C, 2012) provides browser-native text-to-speech synthesis without server-side processing. While the synthesis quality varies across browsers and operating systems, modern implementations on Chrome (Google TTS), Edge (Microsoft Azure TTS), and Safari (Apple TTS) deliver acceptable quality for informational content. The API exposes <code>SpeechSynthesisUtterance</code> events including <code>boundary</code> events that report the character offset of each spoken word&mdash;a capability we leverage for subtitle synchronization.
+    </p>
+
+    <p>
+        SVG animation for character representation has been explored in educational contexts and interactive storytelling. Unlike raster-based approaches, SVG avatars scale to any resolution without quality loss, render efficiently on low-powered devices, and can be manipulated programmatically through CSS and JavaScript. The combination of SVG avatars with TTS has not been extensively explored for news presentation scenarios, which is the gap this work addresses.
+    </p>
+
+    <!-- 3. System Architecture -->
+    <h2>3. System Architecture</h2>
+
+    <p>
+        AI News Presenter Simulator is architected as a single-page application contained entirely within one HTML file. The application comprises four major subsystems: the SVG Avatar Engine, the TTS Pipeline, the Subtitle Synchronizer, and the Studio UI Layer. All subsystems communicate through a shared JavaScript state object and DOM event listeners.
+    </p>
+
+    <h3>3.1 Application Flow</h3>
+
+    <div class="pipeline">
+        User Input (Text + Language) &rarr; TTS Engine (Web Speech API) &rarr; Avatar Animation Controller &rarr; Lip-Sync + Glow Effects &rarr; Subtitle Synchronizer (Word Boundary Events) &rarr; Real-Time Display (Ticker + Clock + Equalizer)
+    </div>
+
+    <h3>3.2 SVG Avatar Engine</h3>
+
+    <p>
+        The presenter avatar is a hand-crafted inline SVG element with individually addressable components for the face, hair, eyes, mouth, blazer, and body. Each component uses SVG gradient fills for depth and realism. The animation system manages four concurrent animation loops:
+    </p>
+
+    <table>
+        <caption>Table 1: Avatar animation subsystems</caption>
+        <tr>
+            <th>Animation</th>
+            <th>Trigger</th>
+            <th>Mechanism</th>
+            <th>Frequency</th>
+        </tr>
+        <tr>
+            <td>Lip-sync (mouth)</td>
+            <td>TTS speaking state</td>
+            <td>CSS class toggle on SVG mouth path</td>
+            <td>~150ms cycle</td>
+        </tr>
+        <tr>
+            <td>Eye blink</td>
+            <td>Interval timer</td>
+            <td>SVG ellipse ry attribute animation</td>
+            <td>Every 3&ndash;5 seconds (randomized)</td>
+        </tr>
+        <tr>
+            <td>Breathing</td>
+            <td>CSS animation (infinite)</td>
+            <td>Subtle translateY on torso group</td>
+            <td>4-second cycle</td>
+        </tr>
+        <tr>
+            <td>Broadcast glow</td>
+            <td>TTS speaking state</td>
+            <td>CSS box-shadow pulse on avatar container</td>
+            <td>2-second pulse cycle</td>
+        </tr>
+    </table>
+
+    <p>
+        The lip-sync animation operates by toggling between open and closed mouth SVG paths. When the TTS engine is actively speaking, a JavaScript interval alternates the mouth state at approximately 150ms intervals, creating the visual impression of speech. The mouth animation is synchronized with the TTS state rather than individual phonemes&mdash;a deliberate design choice that avoids the complexity of phoneme-to-viseme mapping while maintaining visual believability at the application's typical viewing distance.
+    </p>
+
+    <h3>3.3 Text-to-Speech Pipeline</h3>
+
+    <p>
+        The TTS subsystem wraps the Web Speech API <code>SpeechSynthesis</code> interface with language management, voice selection, and parameter control:
+    </p>
+
+    <table>
+        <caption>Table 2: TTS configuration parameters</caption>
+        <tr>
+            <th>Parameter</th>
+            <th>Range</th>
+            <th>Default</th>
+            <th>Control</th>
+        </tr>
+        <tr>
+            <td>Language</td>
+            <td>id-ID, en-US/en-GB</td>
+            <td>id-ID</td>
+            <td>Toggle button</td>
+        </tr>
+        <tr>
+            <td>Speech Rate</td>
+            <td>0.5x &ndash; 2.0x</td>
+            <td>1.0x</td>
+            <td>Range slider</td>
+        </tr>
+        <tr>
+            <td>Pitch</td>
+            <td>0.5 &ndash; 2.0</td>
+            <td>1.0</td>
+            <td>Range slider</td>
+        </tr>
+        <tr>
+            <td>Voice</td>
+            <td>Available system voices</td>
+            <td>First matching voice</td>
+            <td>Dropdown select</td>
+        </tr>
+    </table>
+
+    <p>
+        When the user switches language, the system performs a cascading update: the voice list is re-filtered for the new locale, the UI labels (buttons, headers, placeholders) switch to the corresponding language, the news template presets update, and any active broadcast is stopped. Voice availability depends on the user's operating system and browser&mdash;Chrome on macOS typically offers 20+ voices, while Chrome on Linux may offer fewer options.
+    </p>
+
+    <h3>3.4 Subtitle Synchronization</h3>
+
+    <p>
+        Real-time subtitle display with word-level highlighting is achieved through the <code>SpeechSynthesisUtterance.onboundary</code> event. This event fires at word boundaries during speech synthesis, providing the character index and length of the currently spoken word. The subtitle system:
+    </p>
+
+    <ol>
+        <li>Pre-renders the full transcript as a sequence of <code>&lt;span&gt;</code> elements, one per word.</li>
+        <li>Listens for <code>boundary</code> events and maps the reported character offset to the corresponding word span.</li>
+        <li>Applies a highlight CSS class to the current word, creating a karaoke-style visual effect.</li>
+        <li>Auto-scrolls the subtitle container to keep the highlighted word visible.</li>
+    </ol>
+
+    <p>
+        The word highlight uses a distinct background color and increased font weight, providing clear visual indication of the current reading position. This feature is particularly valuable for language learners and hearing-impaired users who benefit from simultaneous audio and visual text presentation.
+    </p>
+
+    <!-- 4. Studio UI Design -->
+    <h2>4. Studio UI Design</h2>
+
+    <p>
+        The visual design replicates the aesthetics of a professional TV news studio using pure CSS techniques:
+    </p>
+
+    <h3>4.1 Visual Components</h3>
+
+    <table>
+        <caption>Table 3: Studio UI elements</caption>
+        <tr>
+            <th>Element</th>
+            <th>Implementation</th>
+            <th>Behavior</th>
+        </tr>
+        <tr>
+            <td>LIVE Badge</td>
+            <td>CSS animation (opacity pulse)</td>
+            <td>Blinks continuously during broadcast</td>
+        </tr>
+        <tr>
+            <td>News Ticker</td>
+            <td>CSS translateX animation</td>
+            <td>Continuous horizontal scroll with BREAKING prefix</td>
+        </tr>
+        <tr>
+            <td>Real-time Clock</td>
+            <td>JavaScript setInterval</td>
+            <td>Updates every second (HH:MM:SS WIB format)</td>
+        </tr>
+        <tr>
+            <td>News Desk</td>
+            <td>SVG with gradient fills</td>
+            <td>Static foreground element in front of avatar</td>
+        </tr>
+        <tr>
+            <td>Audio Equalizer</td>
+            <td>CSS animation (scaleY randomized)</td>
+            <td>Animated bars during broadcast, static when idle</td>
+        </tr>
+        <tr>
+            <td>Floating Particles</td>
+            <td>CSS keyframe animation</td>
+            <td>Subtle floating dots for ambient depth</td>
+        </tr>
+        <tr>
+            <td>Spotlight</td>
+            <td>CSS radial-gradient overlay</td>
+            <td>Intensifies during broadcast mode</td>
+        </tr>
+    </table>
+
+    <h3>4.2 Glassmorphism Design</h3>
+
+    <p>
+        The control panel and subtitle container use glassmorphism styling&mdash;semi-transparent backgrounds with <code>backdrop-filter: blur()</code>&mdash;creating a modern, layered visual effect. This design choice allows the studio background and avatar to remain partially visible behind the controls, reinforcing the immersive broadcast environment.
+    </p>
+
+    <h3>4.3 Responsive Layout</h3>
+
+    <p>
+        The layout adapts to three viewport categories using CSS media queries:
+    </p>
+
+    <table>
+        <caption>Table 4: Responsive breakpoints</caption>
+        <tr>
+            <th>Viewport</th>
+            <th>Width</th>
+            <th>Layout Adaptation</th>
+        </tr>
+        <tr>
+            <td>Desktop</td>
+            <td>&ge; 1024px</td>
+            <td>Full studio layout with side-by-side controls</td>
+        </tr>
+        <tr>
+            <td>Tablet</td>
+            <td>768px &ndash; 1023px</td>
+            <td>Stacked layout, reduced ticker speed</td>
+        </tr>
+        <tr>
+            <td>Mobile</td>
+            <td>&lt; 768px</td>
+            <td>Single column, touch-optimized controls, compact avatar</td>
+        </tr>
+    </table>
+
+    <!-- 5. Implementation Details -->
+    <h2>5. Implementation Details</h2>
+
+    <h3>5.1 Technology Stack</h3>
+
+    <table>
+        <caption>Table 5: Core technology stack</caption>
+        <tr>
+            <th>Layer</th>
+            <th>Technology</th>
+            <th>Purpose</th>
+        </tr>
+        <tr>
+            <td>Markup</td>
+            <td>HTML5</td>
+            <td>Document structure, semantic elements, inline SVG avatar</td>
+        </tr>
+        <tr>
+            <td>Styling</td>
+            <td>CSS3</td>
+            <td>Animations, glassmorphism, gradients, responsive layout (600+ lines)</td>
+        </tr>
+        <tr>
+            <td>Logic</td>
+            <td>Vanilla JavaScript</td>
+            <td>TTS control, animation orchestration, state management</td>
+        </tr>
+        <tr>
+            <td>TTS Engine</td>
+            <td>Web Speech API</td>
+            <td>Browser-native speech synthesis (zero cost, no API key)</td>
+        </tr>
+        <tr>
+            <td>Avatar</td>
+            <td>Inline SVG</td>
+            <td>Vector-based presenter with gradient fills and CSS animation</td>
+        </tr>
+        <tr>
+            <td>Typography</td>
+            <td>Google Fonts</td>
+            <td>Playfair Display, Source Sans 3, JetBrains Mono</td>
+        </tr>
+        <tr>
+            <td>Hosting</td>
+            <td>Vercel</td>
+            <td>Static deployment with edge CDN and CI/CD</td>
+        </tr>
+        <tr>
+            <td>Source Control</td>
+            <td>GitHub</td>
+            <td>Version control with automatic Vercel deployment on push</td>
+        </tr>
+    </table>
+
+    <h3>5.2 Zero-Dependency Architecture</h3>
+
+    <p>
+        A defining architectural decision is the zero-dependency approach: the entire application&mdash;HTML structure, CSS styling (600+ lines), SVG avatar definition, and JavaScript logic&mdash;resides in a single <code>index.html</code> file. No npm packages, no build step, no bundler, no framework. This choice yields several advantages:
+    </p>
+
+    <ul>
+        <li><strong>Instant deployment:</strong> The file can be served from any static host, opened directly in a browser, or embedded in other pages.</li>
+        <li><strong>Zero maintenance burden:</strong> No dependency updates, no version conflicts, no supply chain vulnerabilities.</li>
+        <li><strong>Maximum portability:</strong> Works identically across hosting providers (Vercel, Netlify, GitHub Pages, S3) without configuration.</li>
+        <li><strong>Transparency:</strong> The entire codebase is inspectable in a single file, making it suitable for educational purposes.</li>
+    </ul>
+
+    <h3>5.3 News Template System</h3>
+
+    <p>
+        The application includes four pre-built news script templates to demonstrate its capabilities without requiring users to write content:
+    </p>
+
+    <table>
+        <caption>Table 6: Pre-built news templates</caption>
+        <tr>
+            <th>Template</th>
+            <th>Language</th>
+            <th>Topic</th>
+        </tr>
+        <tr>
+            <td>Berita Utama</td>
+            <td>Indonesian</td>
+            <td>General news headline</td>
+        </tr>
+        <tr>
+            <td>Berita Ekonomi</td>
+            <td>Indonesian</td>
+            <td>Economic/financial news</td>
+        </tr>
+        <tr>
+            <td>Tech News</td>
+            <td>English</td>
+            <td>Technology news</td>
+        </tr>
+        <tr>
+            <td>World News</td>
+            <td>English</td>
+            <td>International news</td>
+        </tr>
+    </table>
+
+    <p>
+        Templates automatically switch when the user changes language, ensuring the displayed content always matches the selected TTS language. Users can also write custom scripts in the text area for any topic.
+    </p>
+
+    <!-- 6. Deployment -->
+    <h2>6. Deployment</h2>
+
+    <h3>6.1 Vercel Deployment (Recommended)</h3>
+
+    <p>
+        The project is deployed on Vercel with the following configuration:
+    </p>
+
+    <pre>{
+  "rewrites": [{ "source": "/(.*)", "destination": "/index.html" }],
+  "headers": [{
+    "source": "/(.*)",
+    "headers": [
+      { "key": "Cache-Control", "value": "public, max-age=3600, s-maxage=86400" },
+      { "key": "X-Content-Type-Options", "value": "nosniff" },
+      { "key": "X-Frame-Options", "value": "DENY" }
+    ]
+  }]
+}</pre>
+
+    <p>
+        The configuration enables SPA routing, sets appropriate cache headers for static content, and applies security headers to prevent content-type sniffing and clickjacking attacks. Vercel's edge CDN ensures low-latency delivery globally.
+    </p>
+
+    <h3>6.2 Local Development</h3>
+
+    <pre>git clone https://github.com/romizone/ai-news-presenter.git
+cd ai-news-presenter
+npx serve .
+# Or: python3 -m http.server 3000</pre>
+
+    <p>
+        Due to the zero-dependency architecture, the application can also be opened directly as a local file (<code>open index.html</code>) without a web server, though some browsers may restrict Web Speech API access in the <code>file://</code> protocol.
+    </p>
+
+    <!-- 7. Browser Compatibility -->
+    <h2>7. Browser Compatibility</h2>
+
+    <p>
+        The Web Speech API is the primary compatibility constraint. The following table summarizes TTS support across major browsers:
+    </p>
+
+    <table>
+        <caption>Table 7: Browser TTS compatibility</caption>
+        <tr>
+            <th>Browser</th>
+            <th>TTS Support</th>
+            <th>Indonesian Voices</th>
+            <th>Boundary Events</th>
+        </tr>
+        <tr>
+            <td>Chrome (Desktop)</td>
+            <td>Full</td>
+            <td>Yes (Google TTS)</td>
+            <td>Yes</td>
+        </tr>
+        <tr>
+            <td>Edge (Desktop)</td>
+            <td>Full</td>
+            <td>Yes (Azure TTS)</td>
+            <td>Yes</td>
+        </tr>
+        <tr>
+            <td>Safari (macOS/iOS)</td>
+            <td>Full</td>
+            <td>Limited</td>
+            <td>Partial</td>
+        </tr>
+        <tr>
+            <td>Firefox</td>
+            <td>Partial</td>
+            <td>OS-dependent</td>
+            <td>Limited</td>
+        </tr>
+        <tr>
+            <td>Chrome (Android)</td>
+            <td>Full</td>
+            <td>Yes</td>
+            <td>Yes</td>
+        </tr>
+    </table>
+
+    <p>
+        Chrome and Edge provide the best experience due to their comprehensive voice collections and reliable boundary event firing. The word highlighting feature degrades gracefully on browsers with limited boundary event support&mdash;subtitles still display but without word-level tracking.
+    </p>
+
+    <!-- 8. Project Structure -->
+    <h2>8. Project Structure</h2>
+
+    <pre>ai-news-presenter/
+├── index.html              # Complete application (single-file, all-in-one)
+│   ├── &lt;style&gt;             # CSS: animations, glassmorphism, responsive (600+ lines)
+│   ├── &lt;body&gt;              # HTML: structure + inline SVG avatar
+│   └── &lt;script&gt;            # JS: TTS, animation, state management
+├── package.json            # Project metadata and npm scripts
+├── vercel.json             # Vercel routing and cache configuration
+├── LICENSE                 # MIT License
+└── README.md               # Documentation</pre>
+
+    <!-- 9. Future Work -->
+    <h2>9. Future Work</h2>
+
+    <p>
+        The current v1.0.0 release establishes the foundation for more advanced virtual presenter capabilities. Planned enhancements include:
+    </p>
+
+    <ul>
+        <li><strong>v2.0 &mdash; Enhanced TTS:</strong> Integration with Edge TTS for higher-quality synthesis, Coqui XTTS for voice cloning, a backend API on Hugging Face Spaces, and SSML support for broadcast-appropriate intonation patterns.</li>
+        <li><strong>v3.0 &mdash; Realistic Avatar:</strong> Integration with SadTalker or Wav2Lip for photorealistic lip-sync from a single photo, multiple presenter characters, and green screen mode for compositing.</li>
+        <li><strong>v4.0 &mdash; Full News Platform:</strong> Automatic news script generation from RSS feeds, multi-segment news programs, background music and sound effects, video export to MP4/WebM, and AI-generated news content.</li>
+    </ul>
+
+    <!-- 10. Conclusion -->
+    <h2>10. Conclusion</h2>
+
+    <p>
+        AI News Presenter Simulator demonstrates that a compelling virtual news anchor experience can be built entirely with standard web technologies&mdash;HTML5, CSS3, and vanilla JavaScript&mdash;without external dependencies, server infrastructure, or API costs. The combination of SVG avatar animation, Web Speech API synthesis, and word-level subtitle synchronization creates an engaging broadcast simulation that runs on any modern browser.
+    </p>
+
+    <p>
+        The zero-dependency, single-file architecture makes the application immediately deployable, easily maintainable, and fully transparent for educational purposes. The bilingual support for Bahasa Indonesia and English, combined with four pre-built news templates, provides a ready-to-use tool for educators, content creators, and developers exploring virtual presenter technology.
+    </p>
+
+    <p>
+        The complete source code is available at <a href="https://github.com/romizone/ai-news-presenter">https://github.com/romizone/ai-news-presenter</a> and a live demo is accessible at <a href="https://files-navy-three.vercel.app">https://files-navy-three.vercel.app</a>.
+    </p>
+
+    <!-- References -->
+    <h2>References</h2>
+
+    <div class="references">
+        <ol>
+            <li>Zhang, W., Cun, X., Wang, X., et al. (2023). SadTalker: Learning Realistic 3D Motion Coefficients for Stylized Audio-Driven Single Image Talking Face Animation. <em>Proceedings of the IEEE/CVF Conference on Computer Vision and Pattern Recognition (CVPR)</em>.</li>
+            <li>Prajwal, K.R., Mukhopadhyay, R., Namboodiri, V.P., and Jawahar, C.V. (2020). A Lip Sync Expert Is All You Need for Speech to Lip Generation In the Wild. <em>Proceedings of the 28th ACM International Conference on Multimedia</em>.</li>
+            <li>W3C. (2012). Web Speech API Specification. <em>World Wide Web Consortium</em>. https://wicg.github.io/speech-api/</li>
+            <li>MDN Web Docs. (2024). SpeechSynthesisUtterance: boundary event. <em>Mozilla Developer Network</em>. https://developer.mozilla.org/en-US/docs/Web/API/SpeechSynthesisUtterance</li>
+            <li>Vercel Inc. (2024). Vercel Documentation: Edge Network. <em>Vercel</em>. https://vercel.com/docs</li>
+            <li>Dahlb&auml;ck, N., J&ouml;nsson, A., and Ahrenberg, L. (1993). Wizard of Oz Studies: Why and How. <em>Knowledge-Based Systems</em>, 6(4), 258&ndash;266.</li>
+            <li>Cassell, J., Sullivan, J., Prevost, S., and Churchill, E. (2000). <em>Embodied Conversational Agents</em>. MIT Press.</li>
+            <li>W3C. (2011). Scalable Vector Graphics (SVG) 1.1 (Second Edition). <em>World Wide Web Consortium</em>. https://www.w3.org/TR/SVG11/</li>
+        </ol>
+    </div>
+
+    <!-- Footer -->
+    <div class="paper-footer">
+        <p>AI News Presenter Simulator &mdash; Open Source &middot; MIT License &middot; <a href="https://github.com/romizone/ai-news-presenter">github.com/romizone/ai-news-presenter</a></p>
+    </div>
+
+</body>
+</html>
