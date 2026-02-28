@@ -199,7 +199,7 @@
   </g>
 
   <!-- Title -->
-  <text x="400" y="480" font-family="Arial,sans-serif" font-size="14" fill="#94a3b8" text-anchor="middle" font-weight="700" letter-spacing="1">RAG SOP Assistant &mdash; Retrieval-Augmented Generation Pipeline</text>
+  <text x="400" y="480" font-family="Arial,sans-serif" font-size="14" fill="#94a3b8" text-anchor="middle" font-weight="700" letter-spacing="1">RAG SOP Assistant &#8212; Retrieval-Augmented Generation Pipeline</text>
 
   <!-- Gradio badge -->
   <g transform="translate(30,450)">
