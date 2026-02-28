@@ -272,6 +272,7 @@
         .project-card:nth-child(9)::before { background: linear-gradient(180deg, #374151, #6b7280); }
         .project-card:nth-child(10)::before { background: linear-gradient(180deg, #111827, #374151); }
         .project-card:nth-child(11)::before { background: linear-gradient(180deg, #1f2937, #4b5563); }
+        .project-card:nth-child(12)::before { background: linear-gradient(180deg, #374151, #6b7280); }
 
         .project-thumb {
             flex-shrink: 0;
@@ -600,7 +601,33 @@
             </div>
             <div class="projects-grid">
 
-                <!-- 1. LeCun 1989 CNN Reproduction -->
+                <!-- 1. RAG SOP Assistant -->
+                <div class="project-card">
+                    <div class="project-thumb">
+                        <img src="RAGSOP.svg" alt="RAG SOP Assistant" loading="lazy">
+                    </div>
+                    <div class="project-body">
+                        <h3>&#128218; RAG SOP Assistant</h3>
+                        <p>AI-powered Q&amp;A system that transforms corporate Standard Operating Procedure (SOP) documents into a dynamic, conversational knowledge base using Retrieval-Augmented Generation (RAG). Employees ask natural language questions and receive accurate, <strong>source-attributed answers</strong> grounded in official SOP documents. Features intelligent sentence-boundary-aware text chunking (~500 chars with 100 overlap), <strong>384-dimensional multilingual semantic embeddings</strong> via E5-Small, ChromaDB vector storage with cosine similarity search (Top-5 retrieval), and DeepSeek-V3 for context-grounded answer generation. Includes a 3-tab Gradio interface for Q&amp;A chat, document upload (PDF/DOCX/TXT), and database management, with thread-safe operations, XSS prevention, input validation, and auto-indexing of 5 default SOP documents at startup.</p>
+                        <div class="badges">
+                            <span class="badge">Python</span>
+                            <span class="badge">RAG</span>
+                            <span class="badge">ChromaDB</span>
+                            <span class="badge">E5 Embeddings</span>
+                            <span class="badge">DeepSeek</span>
+                            <span class="badge">Gradio</span>
+                            <span class="badge">Sentence-Transformers</span>
+                        </div>
+                        <div class="project-actions">
+                            <a href="https://github.com/romizone/RAGSOP" class="btn-github">&#128187; GitHub</a>
+                            <a href="https://huggingface.co/spaces/romizone/RAG-SOP" class="btn-demo">&#127760; Live Demo</a>
+                            <a href="https://romeo-nu.vercel.app/RAGSOP_Paper.html" class="btn-paper">&#128196; Paper</a>
+                        </div>
+                        <div class="deploy-date">Deployed: 28 February 2026</div>
+                    </div>
+                </div>
+
+                <!-- 2. LeCun 1989 CNN Reproduction -->
                 <div class="project-card">
                     <div class="project-thumb">
                         <img src="LeCun1989CNN.svg" alt="LeCun 1989 CNN Reproduction" loading="lazy">

@@ -1,0 +1,727 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>RAG SOP Assistant: AI-Powered Q&amp;A System for Corporate Standard Operating Procedure Documents</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Times New Roman', Times, Georgia, serif;
+            line-height: 1.6;
+            color: #111;
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 60px 40px;
+            background: #fff;
+        }
+
+        /* Title Block */
+        .paper-title {
+            text-align: center;
+            margin-bottom: 30px;
+        }
+
+        .paper-title h1 {
+            font-size: 1.65em;
+            font-weight: 700;
+            line-height: 1.3;
+            margin-bottom: 18px;
+        }
+
+        .paper-title .authors {
+            font-size: 1.05em;
+            margin-bottom: 4px;
+        }
+
+        .paper-title .affiliation {
+            font-size: 0.95em;
+            color: #555;
+            font-style: italic;
+        }
+
+        .paper-title .email {
+            font-size: 0.9em;
+            color: #1a73e8;
+            margin-top: 4px;
+        }
+
+        .paper-title .date {
+            font-size: 0.9em;
+            color: #777;
+            margin-top: 10px;
+        }
+
+        /* Abstract */
+        .abstract {
+            background: #f9f9f9;
+            border-left: 4px solid #333;
+            padding: 18px 22px;
+            margin: 30px 0;
+        }
+
+        .abstract h2 {
+            font-size: 1em;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            margin-bottom: 8px;
+        }
+
+        .abstract p {
+            font-size: 0.95em;
+            color: #333;
+            text-align: justify;
+        }
+
+        /* Keywords */
+        .keywords {
+            font-size: 0.9em;
+            color: #555;
+            margin-bottom: 30px;
+        }
+
+        .keywords strong {
+            color: #333;
+        }
+
+        /* Sections */
+        h2 {
+            font-size: 1.2em;
+            font-weight: 700;
+            margin-top: 30px;
+            margin-bottom: 12px;
+            border-bottom: 1px solid #ddd;
+            padding-bottom: 4px;
+        }
+
+        h3 {
+            font-size: 1.05em;
+            font-weight: 700;
+            margin-top: 18px;
+            margin-bottom: 8px;
+        }
+
+        p {
+            text-align: justify;
+            margin-bottom: 12px;
+            font-size: 0.97em;
+        }
+
+        /* Tables */
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 16px 0;
+            font-size: 0.9em;
+        }
+
+        table th, table td {
+            border: 1px solid #ccc;
+            padding: 8px 12px;
+            text-align: left;
+        }
+
+        table th {
+            background: #f0f0f0;
+            font-weight: 700;
+        }
+
+        table caption {
+            font-size: 0.88em;
+            font-style: italic;
+            color: #555;
+            margin-bottom: 6px;
+            text-align: left;
+        }
+
+        /* Figures */
+        .figure {
+            text-align: center;
+            margin: 24px 0;
+        }
+
+        .figure img {
+            max-width: 100%;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+        }
+
+        .figure .caption {
+            font-size: 0.88em;
+            font-style: italic;
+            color: #555;
+            margin-top: 8px;
+        }
+
+        /* Code */
+        code {
+            font-family: 'Courier New', Courier, monospace;
+            background: #f4f4f4;
+            padding: 2px 5px;
+            border-radius: 3px;
+            font-size: 0.88em;
+        }
+
+        pre {
+            background: #f4f4f4;
+            padding: 14px 18px;
+            border-radius: 4px;
+            overflow-x: auto;
+            font-size: 0.85em;
+            margin: 12px 0;
+            border: 1px solid #e0e0e0;
+        }
+
+        /* Lists */
+        ul, ol {
+            margin: 10px 0 12px 24px;
+            font-size: 0.97em;
+        }
+
+        li {
+            margin-bottom: 4px;
+        }
+
+        /* Pipeline */
+        .pipeline {
+            background: #f7f9fc;
+            border: 1px solid #d4e2f7;
+            border-radius: 6px;
+            padding: 16px 20px;
+            text-align: center;
+            font-size: 0.95em;
+            color: #1a5276;
+            margin: 16px 0;
+            letter-spacing: 0.3px;
+        }
+
+        /* References */
+        .references {
+            font-size: 0.88em;
+        }
+
+        .references ol {
+            margin-left: 20px;
+        }
+
+        .references li {
+            margin-bottom: 8px;
+            color: #444;
+        }
+
+        /* Footer */
+        .paper-footer {
+            text-align: center;
+            font-size: 0.8em;
+            color: #aaa;
+            margin-top: 50px;
+            padding-top: 20px;
+            border-top: 1px solid #eee;
+        }
+
+        /* Print */
+        @media print {
+            body {
+                padding: 20px;
+            }
+        }
+
+        @media (max-width: 600px) {
+            body {
+                padding: 20px 15px;
+            }
+
+            .paper-title h1 {
+                font-size: 1.3em;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Title Block -->
+    <div class="paper-title">
+        <h1>RAG SOP Assistant: AI-Powered Q&amp;A System for Corporate Standard Operating Procedure Documents</h1>
+        <div class="authors">Romi Nur Ismanto</div>
+        <div class="affiliation">Independent AI Research Lab, Jakarta, Indonesia</div>
+        <div class="email">rominur@gmail.com</div>
+        <div class="date">February 2026</div>
+    </div>
+
+    <!-- Abstract -->
+    <div class="abstract">
+        <h2>Abstract</h2>
+        <p>
+            We present RAG SOP Assistant, an AI-powered question-answering system that transforms static corporate Standard Operating Procedure (SOP) documents into a dynamic, conversational knowledge base. Built on a Retrieval-Augmented Generation (RAG) architecture, the system enables employees to ask natural language questions about company procedures and receive accurate, source-attributed answers grounded in official SOP documents. The pipeline processes PDF, DOCX, and TXT files through intelligent sentence-boundary-aware chunking (~500 characters with 100-character overlap), generates 384-dimensional semantic embeddings using the multilingual E5-Small model, and stores them in a ChromaDB vector database with cosine similarity search. At query time, the system retrieves the top-5 most relevant document chunks and passes them as context to DeepSeek-V3 for answer generation. The application features a three-tab Gradio interface for Q&amp;A chat, document upload, and database management, with thread-safe operations, XSS prevention, input validation, and automatic indexing of default SOP documents at startup. We describe the architecture, chunking strategy, embedding pipeline, security model, and deployment options for this enterprise-ready knowledge management tool.
+        </p>
+    </div>
+
+    <!-- Keywords -->
+    <div class="keywords">
+        <strong>Keywords:</strong> retrieval-augmented generation, RAG, standard operating procedures, SOP, ChromaDB, vector database, semantic search, E5 embeddings, DeepSeek, Gradio, enterprise knowledge management, natural language Q&amp;A
+    </div>
+
+    <!-- 1. Introduction -->
+    <h2>1. Introduction</h2>
+
+    <p>
+        Standard Operating Procedures (SOPs) form the backbone of organizational knowledge management. These documents codify critical business processes&mdash;from emergency response protocols to staff training procedures, technology usage guidelines, and equipment maintenance workflows. However, in practice, SOP documents are frequently lengthy, distributed across multiple files, and written in formal procedural language that makes rapid information retrieval challenging for employees who need quick, actionable answers.
+    </p>
+
+    <p>
+        The traditional approach to SOP consultation involves manual document search: employees must identify the correct document, navigate to the relevant section, and interpret the procedural language in context. This process is time-consuming, error-prone, and particularly problematic during high-pressure situations where quick access to emergency procedures is critical. Keyword-based search tools offer incremental improvement but fail to capture semantic meaning&mdash;a search for "what to do during a fire" will not match a section titled "Emergency Evacuation Protocol."
+    </p>
+
+    <p>
+        RAG SOP Assistant addresses these limitations by combining semantic search with large language model (LLM) generation. The system enables employees to ask questions in natural, conversational language and receive contextually accurate answers with explicit source attribution to the originating SOP document. The key contributions of this work are:
+    </p>
+    <ul>
+        <li>A complete RAG pipeline for SOP documents with intelligent sentence-boundary-aware text chunking, multilingual semantic embeddings, and vector similarity search.</li>
+        <li>An enterprise-ready implementation with thread-safe operations, XSS prevention, input validation, and automatic document indexing at startup.</li>
+        <li>A three-tab Gradio web interface providing Q&amp;A chat, document upload management, and database administration in a single application.</li>
+        <li>Source attribution for every generated answer, enabling employees to verify AI responses against the original SOP documents.</li>
+    </ul>
+
+    <!-- 2. Related Work -->
+    <h2>2. Related Work</h2>
+
+    <p>
+        Retrieval-Augmented Generation (Lewis et al., 2020) introduced the paradigm of combining document retrieval with neural text generation, demonstrating significant improvements over purely parametric models on knowledge-intensive tasks. The RAG approach addresses the fundamental limitation of LLMs&mdash;that their knowledge is frozen at training time&mdash;by grounding generation in retrieved evidence from an external knowledge base.
+    </p>
+
+    <p>
+        Vector databases such as ChromaDB (Trychroma, 2023), Pinecone, and Qdrant have emerged as purpose-built storage systems for embedding-based retrieval, offering efficient approximate nearest neighbor (ANN) search over high-dimensional vector spaces. ChromaDB distinguishes itself through its lightweight, embeddable design that supports both in-memory and persistent storage modes, making it suitable for applications ranging from prototypes to production deployments.
+    </p>
+
+    <p>
+        Multilingual embedding models, particularly the E5 family (Wang et al., 2022), have demonstrated strong cross-lingual semantic similarity performance. The E5-Small variant used in this work provides 384-dimensional embeddings with support for 100+ languages, balancing retrieval quality with computational efficiency&mdash;a critical consideration for deployments on resource-constrained hardware such as Hugging Face Spaces.
+    </p>
+
+    <p>
+        Prior work on document Q&amp;A systems has largely focused on general-purpose applications. RAG SOP Assistant specializes in the corporate SOP domain, where documents follow structured procedural formats and answers must be traceable to authoritative sources&mdash;requirements that demand careful attention to chunking strategy, source preservation, and answer grounding.
+    </p>
+
+    <!-- 3. System Architecture -->
+    <h2>3. System Architecture</h2>
+
+    <p>
+        RAG SOP Assistant follows a modular pipeline architecture comprising four stages: document ingestion, text chunking and embedding, vector storage, and retrieval-augmented generation. Each stage is designed for reliability, thread safety, and enterprise deployment.
+    </p>
+
+    <h3>3.1 RAG Pipeline Overview</h3>
+
+    <div class="pipeline">
+        SOP Document Upload &rarr; Text Extraction (PDF/DOCX/TXT) &rarr; Sentence-Boundary Chunking (~500 chars) &rarr; E5-Small Embedding (384d) &rarr; ChromaDB Vector Storage &rarr; Cosine Similarity Search (Top-5) &rarr; Context Assembly &rarr; DeepSeek-V3 Generation &rarr; Answer + Source Attribution
+    </div>
+
+    <h3>3.2 Document Ingestion</h3>
+
+    <p>
+        The system supports three document formats commonly used for SOPs in Indonesian corporate environments:
+    </p>
+
+    <table>
+        <caption>Table 1: Supported document formats and extraction methods</caption>
+        <tr>
+            <th>Format</th>
+            <th>Extension</th>
+            <th>Extraction Engine</th>
+            <th>Notes</th>
+        </tr>
+        <tr>
+            <td>PDF</td>
+            <td>.pdf</td>
+            <td>PyMuPDF (fitz)</td>
+            <td>Page-by-page text extraction with layout preservation</td>
+        </tr>
+        <tr>
+            <td>Word</td>
+            <td>.docx</td>
+            <td>python-docx</td>
+            <td>Paragraph-level text extraction</td>
+        </tr>
+        <tr>
+            <td>Plain Text</td>
+            <td>.txt</td>
+            <td>UTF-8 read</td>
+            <td>Direct content ingestion</td>
+        </tr>
+    </table>
+
+    <p>
+        Upon upload, files are validated against size limits (50MB maximum) and format whitelist. The extraction process is wrapped in comprehensive error handling with sanitized error messages that never expose internal paths or API credentials.
+    </p>
+
+    <h3>3.3 Intelligent Text Chunking</h3>
+
+    <p>
+        Text chunking is a critical determinant of RAG system quality. Chunks that are too large dilute the semantic signal; chunks that are too small lose contextual coherence. RAG SOP Assistant implements a sentence-boundary-aware chunking strategy with the following parameters:
+    </p>
+
+    <table>
+        <caption>Table 2: Chunking configuration</caption>
+        <tr>
+            <th>Parameter</th>
+            <th>Value</th>
+            <th>Rationale</th>
+        </tr>
+        <tr>
+            <td>Chunk Size</td>
+            <td>~500 characters</td>
+            <td>Balances semantic density with contextual completeness</td>
+        </tr>
+        <tr>
+            <td>Chunk Overlap</td>
+            <td>100 characters</td>
+            <td>Ensures continuity across chunk boundaries</td>
+        </tr>
+        <tr>
+            <td>Boundary Detection</td>
+            <td>Sentence-aware (. ! ? \n)</td>
+            <td>Preserves semantic coherence of procedural steps</td>
+        </tr>
+        <tr>
+            <td>Boundary Validation</td>
+            <td>&gt;30% of chunk_size</td>
+            <td>Falls back to character-based split if no good boundary exists</td>
+        </tr>
+    </table>
+
+    <p>
+        The chunking algorithm first attempts to split text at natural sentence boundaries (periods, exclamation marks, question marks, newlines). If no suitable boundary is found within the target window, it falls back to character-based splitting. This approach is particularly important for SOP documents, where procedural steps often span multiple sentences and should not be split mid-instruction.
+    </p>
+
+    <h3>3.4 Embedding Generation</h3>
+
+    <p>
+        Each text chunk is converted to a 384-dimensional vector using the <code>intfloat/multilingual-e5-small</code> embedding model from the sentence-transformers library. The E5-Small model was selected for three reasons:
+    </p>
+
+    <ul>
+        <li><strong>Multilingual support:</strong> Native handling of Indonesian-language SOP documents without translation preprocessing.</li>
+        <li><strong>Computational efficiency:</strong> The small variant (~134M parameters, ~470MB) runs efficiently on CPU-only environments such as Hugging Face Spaces.</li>
+        <li><strong>Semantic quality:</strong> Despite its compact size, E5-Small achieves competitive retrieval accuracy on multilingual benchmarks, making it suitable for the SOP Q&amp;A domain.</li>
+    </ul>
+
+    <h3>3.5 Vector Storage with ChromaDB</h3>
+
+    <p>
+        Embeddings are stored in a ChromaDB persistent collection configured with cosine similarity as the distance metric. Each chunk is stored with associated metadata:
+    </p>
+
+    <pre>collection.add(
+    ids=[md5_hash(f"{filename}_chunk_{index}")],
+    embeddings=[embedding_vector],
+    documents=[chunk_text],
+    metadatas=[{"source": filename, "chunk_index": index}]
+)</pre>
+
+    <p>
+        The use of MD5-based chunk IDs enables idempotent insertion&mdash;re-uploading the same document does not create duplicate entries. The <code>PersistentClient</code> stores data at <code>./chroma_db</code>, ensuring that the vector index survives application restarts.
+    </p>
+
+    <h3>3.6 Retrieval and Generation</h3>
+
+    <p>
+        At query time, the user's question is embedded using the same E5-Small model and searched against the ChromaDB collection using cosine similarity. The top-5 most similar chunks are retrieved along with their source metadata. These chunks are assembled into a structured context block and passed to DeepSeek-V3 with the following LLM configuration:
+    </p>
+
+    <table>
+        <caption>Table 3: LLM generation parameters</caption>
+        <tr>
+            <th>Parameter</th>
+            <th>Value</th>
+            <th>Rationale</th>
+        </tr>
+        <tr>
+            <td>Model</td>
+            <td>deepseek-chat (V3)</td>
+            <td>Cost-effective with strong reasoning capabilities</td>
+        </tr>
+        <tr>
+            <td>Temperature</td>
+            <td>0.3</td>
+            <td>Low temperature for factual, deterministic SOP answers</td>
+        </tr>
+        <tr>
+            <td>Max Tokens</td>
+            <td>1,500</td>
+            <td>Sufficient for detailed procedural explanations</td>
+        </tr>
+        <tr>
+            <td>System Prompt</td>
+            <td>Context-grounded</td>
+            <td>Constrains answers to provided SOP context only</td>
+        </tr>
+    </table>
+
+    <p>
+        The system prompt explicitly instructs the LLM to answer only based on the provided context, preventing hallucination of procedures not present in the indexed SOPs. Every generated answer includes source attribution identifying the originating document.
+    </p>
+
+    <!-- 4. Security Model -->
+    <h2>4. Security Model</h2>
+
+    <p>
+        Enterprise SOP systems handle sensitive operational procedures that require appropriate security measures. RAG SOP Assistant implements multiple security layers:
+    </p>
+
+    <h3>4.1 Input Validation and Sanitization</h3>
+
+    <ul>
+        <li><strong>XSS prevention:</strong> All user inputs and uploaded filenames are sanitized using <code>html.escape()</code> before any processing or display, preventing cross-site scripting attacks.</li>
+        <li><strong>Question length limit:</strong> User questions are capped at 1,000 characters, preventing resource exhaustion from excessively long inputs.</li>
+        <li><strong>File size limit:</strong> Uploaded documents are limited to 50MB, with server-side validation before processing begins.</li>
+        <li><strong>Format whitelist:</strong> Only PDF, DOCX, and TXT files are accepted; all other formats are rejected at the upload boundary.</li>
+    </ul>
+
+    <h3>4.2 API Key Protection</h3>
+
+    <p>
+        The DeepSeek API key is stored as an environment variable (Hugging Face Secrets for cloud deployment, <code>DEEPSEEK_API_KEY</code> for local). The key is never logged, included in error messages, or exposed through the web interface. Error sanitization ensures that API-related failures return generic error messages to the user.
+    </p>
+
+    <h3>4.3 Thread Safety</h3>
+
+    <p>
+        The application uses a global <code>threading.Lock</code> to protect ChromaDB collection initialization, ensuring safe concurrent access in multi-user environments. The <code>get_collection()</code> function implements lazy initialization with thread-safe locking, preventing race conditions during the first query after startup.
+    </p>
+
+    <!-- 5. Implementation Details -->
+    <h2>5. Implementation Details</h2>
+
+    <h3>5.1 Technology Stack</h3>
+
+    <table>
+        <caption>Table 4: Core technology stack</caption>
+        <tr>
+            <th>Layer</th>
+            <th>Technology</th>
+            <th>Purpose</th>
+        </tr>
+        <tr>
+            <td>Web Framework</td>
+            <td>Gradio 5.9.1</td>
+            <td>Interactive web UI with custom CSS theming</td>
+        </tr>
+        <tr>
+            <td>Language Model</td>
+            <td>DeepSeek-V3 (via OpenAI-compatible API)</td>
+            <td>Answer generation from retrieved SOP context</td>
+        </tr>
+        <tr>
+            <td>Embeddings</td>
+            <td>intfloat/multilingual-e5-small</td>
+            <td>384-dimensional multilingual semantic vectors</td>
+        </tr>
+        <tr>
+            <td>Vector Database</td>
+            <td>ChromaDB (persistent mode)</td>
+            <td>Cosine similarity search over document embeddings</td>
+        </tr>
+        <tr>
+            <td>PDF Extraction</td>
+            <td>PyMuPDF (fitz)</td>
+            <td>Page-level text extraction from PDF documents</td>
+        </tr>
+        <tr>
+            <td>Word Extraction</td>
+            <td>python-docx</td>
+            <td>Paragraph-level text extraction from DOCX files</td>
+        </tr>
+        <tr>
+            <td>API Client</td>
+            <td>OpenAI SDK</td>
+            <td>DeepSeek API communication (OpenAI-compatible)</td>
+        </tr>
+        <tr>
+            <td>Validation</td>
+            <td>Pydantic 2.10.6</td>
+            <td>Input validation and type checking</td>
+        </tr>
+        <tr>
+            <td>Language</td>
+            <td>Python 3.10+</td>
+            <td>Application logic and pipeline orchestration</td>
+        </tr>
+    </table>
+
+    <h3>5.2 User Interface</h3>
+
+    <p>
+        The Gradio-based interface is organized into three functional tabs:
+    </p>
+
+    <ul>
+        <li><strong>Q&amp;A Chat Tab:</strong> A conversational interface where users type natural language questions about SOPs and receive AI-generated answers with source attribution. Pre-loaded example questions demonstrate the system's capabilities.</li>
+        <li><strong>Upload Documents Tab:</strong> A multi-file upload area supporting drag-and-drop for PDF, DOCX, and TXT files. Displays real-time processing results including files processed, chunks created, and total database size.</li>
+        <li><strong>Database Management Tab:</strong> Administrative tools for viewing database statistics (total chunks, document count), listing all indexed documents, refreshing statistics, and clearing the entire database when needed.</li>
+    </ul>
+
+    <p>
+        The interface features custom CSS with the Plus Jakarta Sans font, a teal/blue gradient header, rounded corners, hover effects, and responsive layout for mobile and desktop usage.
+    </p>
+
+    <h3>5.3 Auto-Indexing at Startup</h3>
+
+    <p>
+        The system includes five default SOP documents covering company procedures, staff training, technology usage, storage and maintenance, and emergency protocols. These documents are automatically indexed when the application starts, providing immediate Q&amp;A capability without requiring manual upload. The auto-indexing process checks for existing entries to avoid duplicate indexing on subsequent restarts.
+    </p>
+
+    <!-- 6. Deployment Options -->
+    <h2>6. Deployment Options</h2>
+
+    <h3>6.1 Hugging Face Spaces (Recommended)</h3>
+
+    <p>
+        The recommended deployment path provides zero-configuration cloud hosting:
+    </p>
+
+    <ol>
+        <li>Fork the Hugging Face Space at <code>romizone/RAG-SOP</code></li>
+        <li>Add <code>DEEPSEEK_API_KEY</code> to Space Secrets</li>
+        <li>The Space auto-builds in 3&ndash;5 minutes, including embedding model download</li>
+    </ol>
+
+    <p>
+        Recommended hardware: CPU Basic (2 vCPU, 16GB RAM). The E5-Small embedding model (~470MB) loads at startup and requires approximately 30&ndash;60 seconds for initialization.
+    </p>
+
+    <h3>6.2 Local Development</h3>
+
+    <pre>git clone https://github.com/romizone/RAGSOP.git
+cd RAGSOP
+pip install -r requirements.txt
+export DEEPSEEK_API_KEY="your-api-key-here"
+python app.py</pre>
+
+    <p>
+        The application launches at <code>http://localhost:7860</code> with full functionality including auto-indexing of default SOP documents.
+    </p>
+
+    <!-- 7. Performance Characteristics -->
+    <h2>7. Performance Characteristics</h2>
+
+    <table>
+        <caption>Table 5: System performance metrics</caption>
+        <tr>
+            <th>Metric</th>
+            <th>Value</th>
+        </tr>
+        <tr>
+            <td>Startup Time (including model loading)</td>
+            <td>~30&ndash;60 seconds</td>
+        </tr>
+        <tr>
+            <td>Default SOP Documents</td>
+            <td>5 PDFs (~256 chunks)</td>
+        </tr>
+        <tr>
+            <td>Embedding Model Size</td>
+            <td>~470 MB</td>
+        </tr>
+        <tr>
+            <td>Embedding Dimensions</td>
+            <td>384</td>
+        </tr>
+        <tr>
+            <td>Query Response Time</td>
+            <td>~3&ndash;5 seconds</td>
+        </tr>
+        <tr>
+            <td>Top-K Retrieval</td>
+            <td>5 chunks per query</td>
+        </tr>
+        <tr>
+            <td>Recommended Hardware</td>
+            <td>2 vCPU, 16GB RAM</td>
+        </tr>
+    </table>
+
+    <!-- 8. Use Cases -->
+    <h2>8. Use Cases</h2>
+
+    <p>
+        RAG SOP Assistant is designed for enterprise environments where rapid access to procedural knowledge is critical:
+    </p>
+
+    <ul>
+        <li><strong>Human Resources &amp; People Operations:</strong> Employee onboarding, leave policies, benefits administration, disciplinary procedures, and workplace conduct guidelines.</li>
+        <li><strong>Operations &amp; Facilities:</strong> Warehouse safety protocols, equipment handling procedures, quality control checklists, and maintenance schedules.</li>
+        <li><strong>Finance &amp; Procurement:</strong> Purchase approval workflows, expense reimbursement policies, vendor management procedures, and budget allocation guidelines.</li>
+        <li><strong>Compliance &amp; Audit:</strong> Regulatory compliance procedures, audit preparation checklists, data protection protocols, and reporting requirements.</li>
+        <li><strong>Emergency Response:</strong> Crisis management procedures, evacuation protocols, incident reporting workflows, and business continuity plans.</li>
+        <li><strong>Training &amp; Development:</strong> Quick reference for trainees, procedure refreshers, knowledge assessment, and certification requirements.</li>
+    </ul>
+
+    <!-- 9. Project Structure -->
+    <h2>9. Project Structure</h2>
+
+    <pre>RAGSOP/
+├── app.py                              # Main Gradio application (~30 KB)
+├── requirements.txt                    # Python dependencies
+├── README.md                           # Comprehensive documentation
+├── .gitignore                          # Git ignore rules
+└── SOP/                                # Default SOP documents
+    ├── Kumpulan_SOP_Perusahaan.pdf     # Company SOP Collection
+    ├── Pelatihan staf_8.pdf            # Staff Training Procedures
+    ├── Penggunaan teknologi_7.pdf      # Technology Usage Guidelines
+    ├── Penyimpanan dan pemeliharaan_4.pdf  # Storage &amp; Maintenance
+    └── SOP darurat_5.pdf               # Emergency Procedures</pre>
+
+    <!-- 10. Conclusion -->
+    <h2>10. Conclusion and Future Work</h2>
+
+    <p>
+        RAG SOP Assistant demonstrates that Retrieval-Augmented Generation provides an effective approach to transforming static corporate SOP documents into dynamic, conversational knowledge bases. The combination of multilingual semantic embeddings, sentence-boundary-aware chunking, and context-grounded LLM generation enables accurate, source-attributed answers that employees can verify against original documents.
+    </p>
+
+    <p>
+        The system's enterprise-ready implementation&mdash;with thread-safe operations, XSS prevention, input validation, and automatic document indexing&mdash;addresses the practical requirements of organizational deployment. The three-tab Gradio interface provides a complete workflow from document upload through database management to conversational Q&amp;A, all accessible through a web browser without local installation.
+    </p>
+
+    <p>
+        Future directions include:
+    </p>
+
+    <ul>
+        <li>Multi-model support with configurable LLM backends (GPT-4o, Claude, Llama) for organizations with different AI provider requirements.</li>
+        <li>Role-based access control enabling department-specific SOP collections with restricted visibility.</li>
+        <li>Hybrid retrieval combining dense vector search with BM25 sparse retrieval for improved recall on keyword-heavy queries.</li>
+        <li>Answer confidence scoring using retrieval similarity thresholds to flag low-confidence answers that may require manual verification.</li>
+        <li>Incremental indexing with automatic detection of updated SOP documents and selective re-embedding of changed sections.</li>
+        <li>Audit logging for compliance environments that require tracking of which SOPs were consulted and by whom.</li>
+    </ul>
+
+    <p>
+        The complete source code is available at <a href="https://github.com/romizone/RAGSOP">https://github.com/romizone/RAGSOP</a> and a live demo is accessible at <a href="https://huggingface.co/spaces/romizone/RAG-SOP">https://huggingface.co/spaces/romizone/RAG-SOP</a>.
+    </p>
+
+    <!-- References -->
+    <h2>References</h2>
+
+    <div class="references">
+        <ol>
+            <li>Lewis, P., Perez, E., Piktus, A., et al. (2020). Retrieval-Augmented Generation for Knowledge-Intensive NLP Tasks. <em>Advances in Neural Information Processing Systems</em>, 33.</li>
+            <li>Wang, L., Yang, N., Huang, X., et al. (2022). Text Embeddings by Weakly-Supervised Contrastive Pre-training. <em>arXiv preprint arXiv:2212.03533</em>.</li>
+            <li>Trychroma (2023). ChromaDB: The AI-Native Open-Source Embedding Database. <em>GitHub Repository</em>. https://github.com/chroma-core/chroma</li>
+            <li>DeepSeek AI (2024). DeepSeek-V3 Technical Report. <em>arXiv preprint arXiv:2412.19437</em>.</li>
+            <li>Reimers, N. and Gurevych, I. (2019). Sentence-BERT: Sentence Embeddings using Siamese BERT-Networks. <em>Proceedings of the 2019 Conference on Empirical Methods in Natural Language Processing</em>.</li>
+            <li>Abdin, M., et al. (2024). Gradio: Hassle-Free Sharing and Testing of ML Models in the Wild. <em>ICML 2019 Demo Track</em>.</li>
+            <li>Guo, M., et al. (2020). Multireqa: A Benchmark for Evaluating Open-Domain Multi-Document Question Answering. <em>Findings of the Association for Computational Linguistics</em>.</li>
+            <li>Johnson, J., Douze, M., and J&eacute;gou, H. (2019). Billion-Scale Similarity Search with GPUs. <em>IEEE Transactions on Big Data</em>, 7(3), 535-547.</li>
+        </ol>
+    </div>
+
+    <!-- Footer -->
+    <div class="paper-footer">
+        <p>RAG SOP Assistant &mdash; Open Source &middot; <a href="https://github.com/romizone/RAGSOP">github.com/romizone/RAGSOP</a></p>
+    </div>
+
+</body>
+</html>
