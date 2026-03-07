@@ -1,0 +1,956 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AI Image Diffusion Simulator: Interactive Visualization of Denoising Diffusion Probabilistic Models with Procedural Canvas Generation</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Times New Roman', Times, Georgia, serif;
+            line-height: 1.6;
+            color: #111;
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 60px 40px;
+            background: #fff;
+        }
+
+        /* Title Block */
+        .paper-title {
+            text-align: center;
+            margin-bottom: 30px;
+        }
+
+        .paper-title h1 {
+            font-size: 1.65em;
+            font-weight: 700;
+            line-height: 1.3;
+            margin-bottom: 18px;
+        }
+
+        .paper-title .authors {
+            font-size: 1.05em;
+            margin-bottom: 4px;
+        }
+
+        .paper-title .affiliation {
+            font-size: 0.95em;
+            color: #555;
+            font-style: italic;
+        }
+
+        .paper-title .email {
+            font-size: 0.9em;
+            color: #1a73e8;
+            margin-top: 4px;
+        }
+
+        .paper-title .date {
+            font-size: 0.9em;
+            color: #777;
+            margin-top: 10px;
+        }
+
+        /* Abstract */
+        .abstract {
+            background: #f9f9f9;
+            border-left: 4px solid #333;
+            padding: 18px 22px;
+            margin: 30px 0;
+        }
+
+        .abstract h2 {
+            font-size: 1em;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            margin-bottom: 8px;
+        }
+
+        .abstract p {
+            font-size: 0.95em;
+            color: #333;
+            text-align: justify;
+        }
+
+        /* Keywords */
+        .keywords {
+            font-size: 0.9em;
+            color: #555;
+            margin-bottom: 30px;
+        }
+
+        .keywords strong {
+            color: #333;
+        }
+
+        /* Sections */
+        h2 {
+            font-size: 1.2em;
+            font-weight: 700;
+            margin-top: 30px;
+            margin-bottom: 12px;
+            border-bottom: 1px solid #ddd;
+            padding-bottom: 4px;
+        }
+
+        h3 {
+            font-size: 1.05em;
+            font-weight: 700;
+            margin-top: 18px;
+            margin-bottom: 8px;
+        }
+
+        p {
+            text-align: justify;
+            margin-bottom: 12px;
+            font-size: 0.97em;
+        }
+
+        /* Tables */
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 16px 0;
+            font-size: 0.9em;
+        }
+
+        table th, table td {
+            border: 1px solid #ccc;
+            padding: 8px 12px;
+            text-align: left;
+        }
+
+        table th {
+            background: #f0f0f0;
+            font-weight: 700;
+        }
+
+        table caption {
+            font-size: 0.88em;
+            font-style: italic;
+            color: #555;
+            margin-bottom: 6px;
+            text-align: left;
+        }
+
+        /* Figures */
+        .figure {
+            text-align: center;
+            margin: 24px 0;
+        }
+
+        .figure img {
+            max-width: 100%;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+        }
+
+        .figure .caption {
+            font-size: 0.88em;
+            font-style: italic;
+            color: #555;
+            margin-top: 8px;
+        }
+
+        /* Code */
+        code {
+            font-family: 'Courier New', Courier, monospace;
+            background: #f4f4f4;
+            padding: 2px 5px;
+            border-radius: 3px;
+            font-size: 0.88em;
+        }
+
+        pre {
+            background: #f4f4f4;
+            padding: 14px 18px;
+            border-radius: 4px;
+            overflow-x: auto;
+            font-size: 0.85em;
+            margin: 12px 0;
+            border: 1px solid #e0e0e0;
+        }
+
+        /* Lists */
+        ul, ol {
+            margin: 10px 0 12px 24px;
+            font-size: 0.97em;
+        }
+
+        li {
+            margin-bottom: 4px;
+        }
+
+        /* Pipeline */
+        .pipeline {
+            background: #f7f9fc;
+            border: 1px solid #d4e2f7;
+            border-radius: 6px;
+            padding: 16px 20px;
+            text-align: center;
+            font-size: 0.95em;
+            color: #1a5276;
+            margin: 16px 0;
+            letter-spacing: 0.3px;
+        }
+
+        /* Math */
+        .math {
+            background: #fafafa;
+            border: 1px solid #e8e8e8;
+            border-radius: 4px;
+            padding: 12px 18px;
+            text-align: center;
+            font-family: 'Times New Roman', serif;
+            font-size: 1.05em;
+            margin: 14px 0;
+            font-style: italic;
+        }
+
+        /* References */
+        .references {
+            font-size: 0.88em;
+        }
+
+        .references ol {
+            margin-left: 20px;
+        }
+
+        .references li {
+            margin-bottom: 8px;
+            color: #444;
+        }
+
+        /* Footer */
+        .paper-footer {
+            text-align: center;
+            font-size: 0.8em;
+            color: #aaa;
+            margin-top: 50px;
+            padding-top: 20px;
+            border-top: 1px solid #eee;
+        }
+
+        /* Print */
+        @media print {
+            body {
+                padding: 20px;
+            }
+        }
+
+        @media (max-width: 600px) {
+            body {
+                padding: 20px 15px;
+            }
+
+            .paper-title h1 {
+                font-size: 1.3em;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Title Block -->
+    <div class="paper-title">
+        <h1>AI Image Diffusion Simulator: Interactive Visualization of Denoising Diffusion Probabilistic Models with Procedural Canvas Generation</h1>
+        <div class="authors">Romi Nur Ismanto</div>
+        <div class="affiliation">Jakarta AI Research Lab, Jakarta, Indonesia</div>
+        <div class="email">rominur@gmail.com</div>
+        <div class="date">March 2026</div>
+    </div>
+
+    <!-- Abstract -->
+    <div class="abstract">
+        <h2>Abstract</h2>
+        <p>
+            We present AI Image Diffusion Simulator, a browser-based interactive educational tool that visualizes the core mechanics of Denoising Diffusion Probabilistic Models (DDPMs). The application enables users to select from 10 procedurally generated animal illustrations and observe the reverse diffusion process&mdash;transforming Gaussian noise into coherent images through iterative denoising steps. The simulator exposes key diffusion model hyperparameters including the number of denoising steps, Classifier-Free Guidance (CFG) scale, and manual noise level, allowing users to develop intuition for how these parameters influence generation quality. The system implements procedural image generation using the HTML5 Canvas API, where each animal is rendered algorithmically with custom color palettes and geometric primitives. A timeline carousel captures snapshots at each denoising iteration, providing a visual record of the generation trajectory. The entire application is built as a single HTML file with zero external dependencies using vanilla JavaScript, CSS3, and Canvas API, deployed on Vercel with edge CDN distribution. We describe the diffusion simulation algorithm, procedural rendering pipeline, state machine architecture, and interactive parameter controls.
+        </p>
+    </div>
+
+    <!-- Keywords -->
+    <div class="keywords">
+        <strong>Keywords:</strong> diffusion models, DDPM, denoising, image generation, noise schedule, Classifier-Free Guidance, CFG, procedural generation, Canvas API, interactive visualization, educational tool, zero dependencies
+    </div>
+
+    <!-- 1. Introduction -->
+    <h2>1. Introduction</h2>
+
+    <p>
+        Denoising Diffusion Probabilistic Models (DDPMs) have emerged as the dominant paradigm for generative image synthesis, powering systems such as DALL-E 2, Stable Diffusion, Imagen, and Midjourney. Despite their widespread impact, the core mechanism&mdash;iteratively removing noise from a random sample to reveal a coherent image&mdash;remains conceptually opaque to many practitioners, students, and enthusiasts. The mathematical formulation involving variational inference, Markov chains, and noise schedules creates a significant barrier to intuitive understanding.
+    </p>
+
+    <p>
+        Existing educational resources for diffusion models predominantly rely on static diagrams, mathematical notation, and code notebooks that require GPU infrastructure. Interactive visualizations that allow users to manipulate diffusion parameters and observe their effects in real-time are notably absent from the educational landscape.
+    </p>
+
+    <p>
+        AI Image Diffusion Simulator addresses this gap by providing a browser-based, zero-dependency interactive tool that simulates the reverse diffusion process. Users select a target image (from 10 procedurally generated animal illustrations), configure generation parameters, and observe the step-by-step transformation from noise to image. The key contributions of this work are:
+    </p>
+
+    <ul>
+        <li>An interactive simulation of the reverse diffusion (denoising) process with configurable step count, CFG scale, and noise level, enabling hands-on exploration of diffusion model behavior.</li>
+        <li>A procedural image generation system using Canvas API that renders 10 distinct animal illustrations algorithmically with custom color palettes and geometric primitives.</li>
+        <li>A timeline carousel that captures and displays snapshots at each denoising step, providing visual evidence of the generation trajectory.</li>
+        <li>A forward diffusion mode that demonstrates the noise addition process, completing the conceptual picture of diffusion models.</li>
+        <li>A zero-dependency, single-file implementation deployable to any static host without build tools or server infrastructure.</li>
+    </ul>
+
+    <!-- 2. Related Work -->
+    <h2>2. Related Work</h2>
+
+    <h3>2.1 Denoising Diffusion Probabilistic Models</h3>
+
+    <p>
+        Ho et al. (2020) formalized DDPMs as a class of latent variable models that learn to reverse a fixed Markov chain that gradually adds Gaussian noise to data. The forward process is defined as:
+    </p>
+
+    <div class="math">
+        q(x<sub>t</sub> | x<sub>t-1</sub>) = N(x<sub>t</sub>; &radic;(1 - &beta;<sub>t</sub>) x<sub>t-1</sub>, &beta;<sub>t</sub> I)
+    </div>
+
+    <p>
+        where &beta;<sub>t</sub> is the noise schedule controlling the amount of noise added at each step. The reverse process learns to denoise:
+    </p>
+
+    <div class="math">
+        p<sub>&theta;</sub>(x<sub>t-1</sub> | x<sub>t</sub>) = N(x<sub>t-1</sub>; &mu;<sub>&theta;</sub>(x<sub>t</sub>, t), &Sigma;<sub>&theta;</sub>(x<sub>t</sub>, t))
+    </div>
+
+    <p>
+        Our simulator approximates this reverse process visually by interpolating between a noise image and the target image according to a cosine noise schedule, providing an intuitive analog to the mathematical denoising operation.
+    </p>
+
+    <h3>2.2 Classifier-Free Guidance</h3>
+
+    <p>
+        Ho and Salimans (2022) introduced Classifier-Free Guidance (CFG), a technique that interpolates between conditional and unconditional model predictions to control the fidelity-diversity trade-off:
+    </p>
+
+    <div class="math">
+        &epsilon;<sub>guided</sub> = &epsilon;<sub>uncond</sub> + s &middot; (&epsilon;<sub>cond</sub> - &epsilon;<sub>uncond</sub>)
+    </div>
+
+    <p>
+        where <em>s</em> is the guidance scale. Higher values produce images that more closely match the conditioning signal (prompt) at the cost of diversity. Our simulator exposes this parameter as a slider (range 1&ndash;20), allowing users to observe how CFG scale influences the sharpness and fidelity of the generated output.
+    </p>
+
+    <h3>2.3 Educational Visualizations for Deep Learning</h3>
+
+    <p>
+        Interactive visualizations have proven effective for teaching deep learning concepts. TensorFlow Playground (Smilkov et al., 2017) demonstrates neural network training on 2D datasets. CNN Explainer (Wang et al., 2020) visualizes convolutional neural network operations. However, no comparable interactive tool exists specifically for diffusion models. Our work fills this gap by targeting the diffusion generation process with an accessible, browser-based simulator.
+    </p>
+
+    <!-- 3. System Architecture -->
+    <h2>3. System Architecture</h2>
+
+    <p>
+        The application is architected as an event-driven state machine contained within a single HTML file. Four major subsystems interact through a shared state object and DOM event listeners: the Procedural Renderer, the Diffusion Engine, the Timeline Manager, and the UI Controller.
+    </p>
+
+    <h3>3.1 Application Flow</h3>
+
+    <div class="pipeline">
+        Animal Selection &rarr; Procedural Canvas Rendering &rarr; Noise Generation (Gaussian) &rarr; Reverse Diffusion (Iterative Denoising) &rarr; Timeline Snapshot Capture &rarr; Progress Visualization &rarr; Generated Image Display
+    </div>
+
+    <h3>3.2 State Machine</h3>
+
+    <p>
+        The application manages state transitions through a finite state machine with the following states:
+    </p>
+
+    <table>
+        <caption>Table 1: Application state machine</caption>
+        <tr>
+            <th>State</th>
+            <th>Description</th>
+            <th>Transitions</th>
+        </tr>
+        <tr>
+            <td>IDLE</td>
+            <td>Waiting for animal selection</td>
+            <td>&rarr; SELECTED (on card click)</td>
+        </tr>
+        <tr>
+            <td>SELECTED</td>
+            <td>Animal chosen, ready to generate</td>
+            <td>&rarr; GENERATING (on start), &rarr; IDLE (on deselect)</td>
+        </tr>
+        <tr>
+            <td>GENERATING</td>
+            <td>Reverse diffusion in progress</td>
+            <td>&rarr; COMPLETED (on finish), &rarr; SELECTED (on stop)</td>
+        </tr>
+        <tr>
+            <td>COMPLETED</td>
+            <td>Generation finished, displaying result</td>
+            <td>&rarr; GENERATING (on regenerate), &rarr; SELECTED (on new animal)</td>
+        </tr>
+        <tr>
+            <td>FORWARD</td>
+            <td>Forward diffusion (adding noise)</td>
+            <td>&rarr; COMPLETED (on finish), &rarr; SELECTED (on stop)</td>
+        </tr>
+    </table>
+
+    <h3>3.3 Procedural Animal Renderer</h3>
+
+    <p>
+        Each of the 10 animal illustrations is rendered procedurally using the Canvas 2D API. Rather than loading pre-made image assets, the system draws each animal from geometric primitives (circles, ellipses, arcs, bezier curves) with custom color palettes. This approach eliminates external image dependencies and allows the application to remain fully self-contained.
+    </p>
+
+    <table>
+        <caption>Table 2: Procedural animal library</caption>
+        <tr>
+            <th>Animal</th>
+            <th>Primary Color</th>
+            <th>Key Features</th>
+            <th>Geometric Primitives</th>
+        </tr>
+        <tr>
+            <td>Cat</td>
+            <td>Orange/Amber</td>
+            <td>Pointed ears, whiskers, tail</td>
+            <td>Ellipses, bezier curves, lines</td>
+        </tr>
+        <tr>
+            <td>Dog</td>
+            <td>Brown/Tan</td>
+            <td>Floppy ears, tongue, collar</td>
+            <td>Arcs, ellipses, rectangles</td>
+        </tr>
+        <tr>
+            <td>Bunny</td>
+            <td>White/Pink</td>
+            <td>Long ears, round tail, whiskers</td>
+            <td>Elongated ellipses, circles</td>
+        </tr>
+        <tr>
+            <td>Panda</td>
+            <td>Black/White</td>
+            <td>Eye patches, round body</td>
+            <td>Concentric circles, ellipses</td>
+        </tr>
+        <tr>
+            <td>Fox</td>
+            <td>Orange/White</td>
+            <td>Pointed ears, bushy tail</td>
+            <td>Triangles, bezier curves</td>
+        </tr>
+        <tr>
+            <td>Penguin</td>
+            <td>Black/White</td>
+            <td>Belly patch, beak, flippers</td>
+            <td>Ellipses, arcs, triangles</td>
+        </tr>
+        <tr>
+            <td>Hamster</td>
+            <td>Beige/Brown</td>
+            <td>Cheek pouches, small ears</td>
+            <td>Overlapping circles</td>
+        </tr>
+        <tr>
+            <td>Owl</td>
+            <td>Brown/Gold</td>
+            <td>Large eyes, beak, feather tufts</td>
+            <td>Concentric circles, triangles</td>
+        </tr>
+        <tr>
+            <td>Koala</td>
+            <td>Gray/White</td>
+            <td>Round ears, large nose</td>
+            <td>Circles, ellipses, arcs</td>
+        </tr>
+        <tr>
+            <td>Duck</td>
+            <td>Yellow/Orange</td>
+            <td>Flat beak, wing, tail feathers</td>
+            <td>Ellipses, bezier curves</td>
+        </tr>
+    </table>
+
+    <p>
+        Each animal rendering function accepts a Canvas 2D context and dimensions, then draws the complete illustration using approximately 20&ndash;40 drawing calls. Background colors and accent gradients are derived from each animal's custom palette, creating visually cohesive cards.
+    </p>
+
+    <!-- 4. Diffusion Simulation Algorithm -->
+    <h2>4. Diffusion Simulation Algorithm</h2>
+
+    <h3>4.1 Noise Generation</h3>
+
+    <p>
+        The noise image is generated by filling each pixel of the canvas with random RGB values sampled from a uniform distribution. While true DDPMs use Gaussian noise, the visual effect of uniform random pixels is perceptually equivalent for educational purposes and avoids the need for a Gaussian sampling implementation.
+    </p>
+
+    <pre>for (let i = 0; i &lt; imageData.data.length; i += 4) {
+    imageData.data[i]     = Math.random() * 255;  // R
+    imageData.data[i + 1] = Math.random() * 255;  // G
+    imageData.data[i + 2] = Math.random() * 255;  // B
+    imageData.data[i + 3] = 255;                   // A
+}</pre>
+
+    <h3>4.2 Reverse Diffusion (Denoising)</h3>
+
+    <p>
+        The reverse diffusion process is simulated by progressively blending the noise image with the target animal image over <em>T</em> steps. At each step <em>t</em>, the displayed image is a weighted combination:
+    </p>
+
+    <div class="math">
+        x<sub>display</sub>(t) = (1 - &alpha;<sub>t</sub>) &middot; x<sub>noise</sub> + &alpha;<sub>t</sub> &middot; x<sub>target</sub>
+    </div>
+
+    <p>
+        where &alpha;<sub>t</sub> follows a cosine schedule from 0 to 1 over <em>T</em> steps. The cosine schedule provides smoother visual transitions compared to a linear schedule, as it spends more time in the perceptually important middle range where the image structure emerges from noise.
+    </p>
+
+    <h3>4.3 CFG Scale Simulation</h3>
+
+    <p>
+        The Classifier-Free Guidance scale modifies the denoising behavior by adjusting how aggressively the noise is removed at each step. In the simulator, higher CFG values increase the contrast between the emerging image and remaining noise, producing sharper but potentially over-saturated results at extreme values (mimicking the real-world behavior of high CFG in Stable Diffusion):
+    </p>
+
+    <div class="math">
+        &alpha;<sub>effective</sub>(t) = clamp(&alpha;<sub>t</sub> &middot; (1 + log(cfg_scale) / log(7.5)), 0, 1)
+    </div>
+
+    <p>
+        This formulation ensures that at the default CFG of 7.5, the schedule is unmodified. Lower values produce softer, more diverse outputs, while higher values produce sharper, more deterministic results&mdash;faithfully representing the behavior of CFG in production diffusion systems.
+    </p>
+
+    <h3>4.4 Forward Diffusion</h3>
+
+    <p>
+        The forward diffusion mode reverses the process, progressively adding noise to the generated image. This demonstrates the noise addition process that training data undergoes during DDPM training. The blending weight transitions from &alpha; = 1 (clean image) to &alpha; = 0 (pure noise), visually showing how image structure is gradually destroyed.
+    </p>
+
+    <h3>4.5 Manual Noise Control</h3>
+
+    <p>
+        A manual noise slider allows users to freely explore any intermediate state along the diffusion trajectory without running the animation. This is particularly valuable for understanding the critical transition points where recognizable structure emerges from noise&mdash;typically occurring between 30&ndash;60% of the denoising process.
+    </p>
+
+    <!-- 5. User Interface Design -->
+    <h2>5. User Interface Design</h2>
+
+    <h3>5.1 Visual Design</h3>
+
+    <p>
+        The interface uses a dark theme with animated gradient background orbs, creating an immersive aesthetic inspired by AI art generation tools. The design system employs CSS custom properties for consistent theming:
+    </p>
+
+    <table>
+        <caption>Table 3: Visual design parameters</caption>
+        <tr>
+            <th>Element</th>
+            <th>Implementation</th>
+            <th>Purpose</th>
+        </tr>
+        <tr>
+            <td>Background</td>
+            <td>Dark gradient (#0f0c29 &rarr; #302b63 &rarr; #24243e)</td>
+            <td>Immersive dark environment for image focus</td>
+        </tr>
+        <tr>
+            <td>Animated Orbs</td>
+            <td>CSS keyframe animation on pseudo-elements</td>
+            <td>Ambient depth and visual interest</td>
+        </tr>
+        <tr>
+            <td>Animal Cards</td>
+            <td>CSS Grid with hover transforms and glow effects</td>
+            <td>Interactive selection interface</td>
+        </tr>
+        <tr>
+            <td>Progress Bar</td>
+            <td>CSS width transition with gradient fill</td>
+            <td>Real-time generation progress feedback</td>
+        </tr>
+        <tr>
+            <td>Toast Notifications</td>
+            <td>CSS animation (slide-in, fade-out)</td>
+            <td>Non-intrusive user feedback</td>
+        </tr>
+        <tr>
+            <td>Controls Panel</td>
+            <td>Glassmorphism with backdrop-filter blur</td>
+            <td>Parameter adjustment interface</td>
+        </tr>
+    </table>
+
+    <h3>5.2 Interactive Controls</h3>
+
+    <table>
+        <caption>Table 4: User-configurable parameters</caption>
+        <tr>
+            <th>Parameter</th>
+            <th>Control Type</th>
+            <th>Range</th>
+            <th>Default</th>
+            <th>Effect</th>
+        </tr>
+        <tr>
+            <td>Diffusion Steps</td>
+            <td>Range slider</td>
+            <td>5 &ndash; 50</td>
+            <td>20</td>
+            <td>Number of denoising iterations</td>
+        </tr>
+        <tr>
+            <td>CFG Scale</td>
+            <td>Range slider</td>
+            <td>1 &ndash; 20</td>
+            <td>7.5</td>
+            <td>Prompt adherence / sharpness</td>
+        </tr>
+        <tr>
+            <td>Manual Noise</td>
+            <td>Range slider</td>
+            <td>0% &ndash; 100%</td>
+            <td>0%</td>
+            <td>Explore intermediate diffusion states</td>
+        </tr>
+        <tr>
+            <td>Speed</td>
+            <td>Selector buttons</td>
+            <td>Slow / Normal / Fast</td>
+            <td>Normal</td>
+            <td>Animation frame delay</td>
+        </tr>
+    </table>
+
+    <h3>5.3 Timeline Carousel</h3>
+
+    <p>
+        During the diffusion process, the system captures canvas snapshots at each denoising step and displays them as thumbnail images in a horizontally scrollable carousel below the main canvas. This timeline provides:
+    </p>
+
+    <ul>
+        <li>A persistent visual record of the complete denoising trajectory.</li>
+        <li>The ability to compare early, middle, and late stages of generation side-by-side.</li>
+        <li>Visual evidence of how different parameter settings affect the generation path.</li>
+        <li>An intuitive representation of the iterative nature of diffusion models.</li>
+    </ul>
+
+    <h3>5.4 Responsive Layout</h3>
+
+    <table>
+        <caption>Table 5: Responsive breakpoints</caption>
+        <tr>
+            <th>Viewport</th>
+            <th>Width</th>
+            <th>Layout Adaptation</th>
+        </tr>
+        <tr>
+            <td>Desktop</td>
+            <td>&ge; 1024px</td>
+            <td>Full grid layout, large canvas, side-by-side controls</td>
+        </tr>
+        <tr>
+            <td>Tablet</td>
+            <td>768px &ndash; 1023px</td>
+            <td>Reduced grid columns, stacked controls</td>
+        </tr>
+        <tr>
+            <td>Mobile</td>
+            <td>&lt; 768px</td>
+            <td>Single column, compact cards, touch-optimized sliders</td>
+        </tr>
+    </table>
+
+    <!-- 6. Implementation Details -->
+    <h2>6. Implementation Details</h2>
+
+    <h3>6.1 Technology Stack</h3>
+
+    <table>
+        <caption>Table 6: Core technology stack</caption>
+        <tr>
+            <th>Layer</th>
+            <th>Technology</th>
+            <th>Purpose</th>
+        </tr>
+        <tr>
+            <td>Markup</td>
+            <td>HTML5</td>
+            <td>Document structure, semantic elements</td>
+        </tr>
+        <tr>
+            <td>Styling</td>
+            <td>CSS3</td>
+            <td>Animations, gradients, grid layout, glassmorphism, responsive design</td>
+        </tr>
+        <tr>
+            <td>Logic</td>
+            <td>Vanilla JavaScript (ES6+)</td>
+            <td>State machine, event handling, animation loop</td>
+        </tr>
+        <tr>
+            <td>Rendering</td>
+            <td>Canvas 2D API</td>
+            <td>Procedural animal illustration, noise generation, image blending</td>
+        </tr>
+        <tr>
+            <td>Image Processing</td>
+            <td>ImageData API</td>
+            <td>Pixel-level noise/image manipulation</td>
+        </tr>
+        <tr>
+            <td>Hosting</td>
+            <td>Vercel</td>
+            <td>Static deployment with edge CDN and CI/CD</td>
+        </tr>
+        <tr>
+            <td>Source Control</td>
+            <td>GitHub</td>
+            <td>Version control with automatic Vercel deployment</td>
+        </tr>
+    </table>
+
+    <h3>6.2 Zero-Dependency Architecture</h3>
+
+    <p>
+        The entire application&mdash;HTML structure, CSS styling, procedural rendering functions, diffusion simulation logic, and UI management&mdash;resides in a single <code>index.html</code> file with zero external dependencies. No npm packages, no build step, no bundler, no framework. This architecture provides:
+    </p>
+
+    <ul>
+        <li><strong>Instant deployment:</strong> Serve from any static host or open directly in a browser.</li>
+        <li><strong>Zero maintenance burden:</strong> No dependency updates, version conflicts, or supply chain risks.</li>
+        <li><strong>Maximum portability:</strong> Works identically across Vercel, Netlify, GitHub Pages, or local file system.</li>
+        <li><strong>Educational transparency:</strong> The entire codebase is inspectable in a single file, making it ideal for learning.</li>
+    </ul>
+
+    <h3>6.3 Animation Loop</h3>
+
+    <p>
+        The diffusion animation is driven by <code>setTimeout</code>-based frame scheduling rather than <code>requestAnimationFrame</code>. This design choice allows precise control over animation speed through the speed selector (slow: 500ms, normal: 200ms, fast: 50ms per frame) while maintaining consistent behavior across different display refresh rates. Each frame performs:
+    </p>
+
+    <ol>
+        <li>Calculate the current blending weight &alpha;<sub>t</sub> based on step count and cosine schedule.</li>
+        <li>Apply CFG scale modification to the blending weight.</li>
+        <li>Blend noise and target image pixel data on the canvas.</li>
+        <li>Capture a snapshot thumbnail for the timeline carousel.</li>
+        <li>Update the progress bar and step counter display.</li>
+        <li>Schedule the next frame or transition to COMPLETED state.</li>
+    </ol>
+
+    <h3>6.4 Canvas Rendering Pipeline</h3>
+
+    <p>
+        The procedural rendering pipeline for each animal follows a layered approach:
+    </p>
+
+    <div class="pipeline">
+        Clear Canvas &rarr; Draw Background Gradient &rarr; Draw Body Shape &rarr; Draw Limbs/Appendages &rarr; Draw Head &rarr; Draw Facial Features (Eyes, Nose, Mouth) &rarr; Draw Accessories (Whiskers, Ears, Tail) &rarr; Apply Highlights/Shadows
+    </div>
+
+    <p>
+        All drawing operations use the Canvas 2D context methods (<code>arc</code>, <code>ellipse</code>, <code>bezierCurveTo</code>, <code>quadraticCurveTo</code>, <code>fill</code>, <code>stroke</code>) without any external graphics libraries.
+    </p>
+
+    <!-- 7. Deployment -->
+    <h2>7. Deployment</h2>
+
+    <h3>7.1 Vercel Deployment</h3>
+
+    <p>
+        The project is deployed on Vercel with automatic deployment triggered by GitHub pushes. The zero-dependency architecture means no build step is required&mdash;Vercel serves the <code>index.html</code> file directly through its edge CDN, ensuring low-latency delivery globally.
+    </p>
+
+    <h3>7.2 Local Development</h3>
+
+    <pre>git clone https://github.com/romizone/diffusion-simulator.git
+cd diffusion-simulator
+npx serve .
+# Or: python3 -m http.server 3000
+# Or: open index.html (direct file access)</pre>
+
+    <p>
+        Due to the zero-dependency architecture, the application can be opened directly as a local file without a web server. All rendering uses the Canvas API which is fully supported in the <code>file://</code> protocol.
+    </p>
+
+    <!-- 8. Educational Value -->
+    <h2>8. Educational Value</h2>
+
+    <p>
+        The simulator serves as an educational bridge between the mathematical formulation of diffusion models and intuitive visual understanding. Key learning outcomes include:
+    </p>
+
+    <table>
+        <caption>Table 7: Educational objectives and simulator features</caption>
+        <tr>
+            <th>Learning Objective</th>
+            <th>Simulator Feature</th>
+            <th>Insight Gained</th>
+        </tr>
+        <tr>
+            <td>Understand reverse diffusion</td>
+            <td>Denoising animation</td>
+            <td>Images emerge gradually from noise through iterative refinement</td>
+        </tr>
+        <tr>
+            <td>Understand forward diffusion</td>
+            <td>Forward mode</td>
+            <td>Noise progressively destroys image structure</td>
+        </tr>
+        <tr>
+            <td>Role of step count</td>
+            <td>Steps slider</td>
+            <td>More steps = smoother transitions, diminishing returns beyond ~30</td>
+        </tr>
+        <tr>
+            <td>Role of CFG scale</td>
+            <td>CFG slider</td>
+            <td>Higher CFG = sharper but potentially over-saturated output</td>
+        </tr>
+        <tr>
+            <td>Noise-to-image transition</td>
+            <td>Manual noise slider</td>
+            <td>Structure emerges at ~30&ndash;60% denoising, not linearly</td>
+        </tr>
+        <tr>
+            <td>Generation trajectory</td>
+            <td>Timeline carousel</td>
+            <td>The path from noise to image is not uniform across steps</td>
+        </tr>
+    </table>
+
+    <!-- 9. Browser Compatibility -->
+    <h2>9. Browser Compatibility</h2>
+
+    <p>
+        The application relies on Canvas 2D API and modern CSS features (CSS Grid, custom properties, backdrop-filter). Compatibility across major browsers:
+    </p>
+
+    <table>
+        <caption>Table 8: Browser compatibility</caption>
+        <tr>
+            <th>Browser</th>
+            <th>Canvas 2D</th>
+            <th>CSS Grid</th>
+            <th>Backdrop Filter</th>
+            <th>Overall</th>
+        </tr>
+        <tr>
+            <td>Chrome 90+</td>
+            <td>Full</td>
+            <td>Full</td>
+            <td>Full</td>
+            <td>Full support</td>
+        </tr>
+        <tr>
+            <td>Edge 90+</td>
+            <td>Full</td>
+            <td>Full</td>
+            <td>Full</td>
+            <td>Full support</td>
+        </tr>
+        <tr>
+            <td>Safari 15+</td>
+            <td>Full</td>
+            <td>Full</td>
+            <td>Full</td>
+            <td>Full support</td>
+        </tr>
+        <tr>
+            <td>Firefox 103+</td>
+            <td>Full</td>
+            <td>Full</td>
+            <td>Full</td>
+            <td>Full support</td>
+        </tr>
+        <tr>
+            <td>Chrome (Android)</td>
+            <td>Full</td>
+            <td>Full</td>
+            <td>Full</td>
+            <td>Full support</td>
+        </tr>
+        <tr>
+            <td>Safari (iOS 15+)</td>
+            <td>Full</td>
+            <td>Full</td>
+            <td>Full</td>
+            <td>Full support</td>
+        </tr>
+    </table>
+
+    <!-- 10. Project Structure -->
+    <h2>10. Project Structure</h2>
+
+    <pre>diffusion-simulator/
+&#9500;&#9472;&#9472; index.html              # Complete application (single-file, all-in-one)
+&#9474;   &#9500;&#9472;&#9472; &lt;style&gt;             # CSS: dark theme, animations, responsive grid
+&#9474;   &#9500;&#9472;&#9472; &lt;body&gt;              # HTML: animal cards, canvas, controls, timeline
+&#9474;   &#9492;&#9472;&#9472; &lt;script&gt;            # JS: state machine, diffusion engine, procedural renderer
+&#9500;&#9472;&#9472; vercel.json             # Vercel deployment configuration
+&#9500;&#9472;&#9472; LICENSE                 # MIT License
+&#9492;&#9472;&#9472; README.md               # Documentation and usage guide</pre>
+
+    <!-- 11. Future Work -->
+    <h2>11. Future Work</h2>
+
+    <p>
+        The current release establishes a foundation for more advanced diffusion model education. Planned enhancements include:
+    </p>
+
+    <ul>
+        <li><strong>Noise Schedule Comparison:</strong> Side-by-side visualization of linear, cosine, and sigmoid noise schedules, demonstrating how schedule choice affects generation quality.</li>
+        <li><strong>Latent Space Visualization:</strong> A simplified 2D latent space view showing the denoising trajectory as a path from random noise to the target distribution.</li>
+        <li><strong>Custom Image Upload:</strong> Allow users to upload their own target images and observe the diffusion process on arbitrary content.</li>
+        <li><strong>Step-by-Step Mathematical View:</strong> An optional panel showing the mathematical operations (blending weights, noise levels) at each denoising step.</li>
+        <li><strong>Multi-Image Interpolation:</strong> Demonstrate latent space interpolation by blending between two animal targets during the denoising process.</li>
+        <li><strong>Sampler Comparison:</strong> Simulate different sampling strategies (DDPM, DDIM, Euler, DPM++) and compare their convergence behavior.</li>
+    </ul>
+
+    <!-- 12. Conclusion -->
+    <h2>12. Conclusion</h2>
+
+    <p>
+        AI Image Diffusion Simulator demonstrates that the core concepts of denoising diffusion probabilistic models can be made accessible through interactive browser-based visualization. By simulating the reverse diffusion process with configurable parameters&mdash;step count, CFG scale, and manual noise level&mdash;users develop intuitive understanding of how diffusion models transform noise into coherent images.
+    </p>
+
+    <p>
+        The procedural Canvas API rendering eliminates external image dependencies while providing visually engaging target content. The timeline carousel creates a persistent record of the generation trajectory, reinforcing the iterative nature of the diffusion process. The forward diffusion mode completes the conceptual picture by demonstrating the noise addition process.
+    </p>
+
+    <p>
+        Built as a single HTML file with zero external dependencies, the application is instantly deployable, fully transparent, and suitable for educational contexts ranging from introductory AI courses to self-directed learning. The zero-dependency architecture ensures long-term maintainability and eliminates the supply chain risks associated with npm-based projects.
+    </p>
+
+    <p>
+        The complete source code is available at <a href="https://github.com/romizone/diffusion-simulator">https://github.com/romizone/diffusion-simulator</a> and a live demo is accessible at <a href="https://diffussion.vercel.app/">https://diffussion.vercel.app/</a>.
+    </p>
+
+    <!-- References -->
+    <h2>References</h2>
+
+    <div class="references">
+        <ol>
+            <li>Ho, J., Jain, A., and Abbeel, P. (2020). Denoising Diffusion Probabilistic Models. <em>Advances in Neural Information Processing Systems (NeurIPS)</em>, 33, 6840&ndash;6851.</li>
+            <li>Ho, J. and Salimans, T. (2022). Classifier-Free Diffusion Guidance. <em>arXiv preprint arXiv:2207.12598</em>.</li>
+            <li>Rombach, R., Blattmann, A., Lorenz, D., Esser, P., and Ommer, B. (2022). High-Resolution Image Synthesis with Latent Diffusion Models. <em>Proceedings of the IEEE/CVF Conference on Computer Vision and Pattern Recognition (CVPR)</em>.</li>
+            <li>Song, J., Meng, C., and Ermon, S. (2021). Denoising Diffusion Implicit Models. <em>International Conference on Learning Representations (ICLR)</em>.</li>
+            <li>Dhariwal, P. and Nichol, A. (2021). Diffusion Models Beat GANs on Image Synthesis. <em>Advances in Neural Information Processing Systems (NeurIPS)</em>, 34.</li>
+            <li>Nichol, A. and Dhariwal, P. (2021). Improved Denoising Diffusion Probabilistic Models. <em>International Conference on Machine Learning (ICML)</em>.</li>
+            <li>Smilkov, D., Carter, S., Sculley, D., Vi&eacute;gas, F.B., and Wattenberg, M. (2017). Direct-Manipulation Visualization of Deep Networks. <em>ICML Visualization for Deep Learning Workshop</em>.</li>
+            <li>Wang, Z.J., Turko, R., Shaikh, O., Park, H., Das, N., Hohman, F., Kahng, M., and Chau, D.H.P. (2020). CNN Explainer: Learning Convolutional Neural Networks with Interactive Visualization. <em>IEEE Transactions on Visualization and Computer Graphics</em>.</li>
+            <li>Sohl-Dickstein, J., Weiss, E., Maheswaranathan, N., and Ganguli, S. (2015). Deep Unsupervised Learning using Nonequilibrium Thermodynamics. <em>International Conference on Machine Learning (ICML)</em>.</li>
+            <li>Ramesh, A., Dhariwal, P., Nichol, A., Chu, C., and Chen, M. (2022). Hierarchical Text-Conditional Image Generation with CLIP Latents. <em>arXiv preprint arXiv:2204.06125</em>.</li>
+        </ol>
+    </div>
+
+    <!-- Footer -->
+    <div class="paper-footer">
+        <p>AI Image Diffusion Simulator &mdash; Open Source &middot; MIT License &middot; <a href="https://github.com/romizone/diffusion-simulator">github.com/romizone/diffusion-simulator</a></p>
+    </div>
+
+</body>
+</html>

@@ -1,0 +1,111 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 400 280">
+  <defs>
+    <linearGradient id="bg" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#0f0c29"/>
+      <stop offset="50%" style="stop-color:#302b63"/>
+      <stop offset="100%" style="stop-color:#24243e"/>
+    </linearGradient>
+    <linearGradient id="glow1" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#a855f7;stop-opacity:0.6"/>
+      <stop offset="100%" style="stop-color:#6366f1;stop-opacity:0.3"/>
+    </linearGradient>
+    <linearGradient id="glow2" x1="0%" y1="0%" x2="100%" y2="0%">
+      <stop offset="0%" style="stop-color:#f472b6;stop-opacity:0.5"/>
+      <stop offset="100%" style="stop-color:#a855f7;stop-opacity:0.5"/>
+    </linearGradient>
+    <linearGradient id="arrow" x1="0%" y1="0%" x2="100%" y2="0%">
+      <stop offset="0%" style="stop-color:#818cf8"/>
+      <stop offset="100%" style="stop-color:#c084fc"/>
+    </linearGradient>
+  </defs>
+  <!-- Background -->
+  <rect width="400" height="280" fill="url(#bg)" rx="12"/>
+  <!-- Floating orbs -->
+  <circle cx="60" cy="50" r="35" fill="url(#glow1)" opacity="0.4"/>
+  <circle cx="340" cy="230" r="40" fill="url(#glow1)" opacity="0.3"/>
+  <circle cx="200" cy="30" r="20" fill="url(#glow2)" opacity="0.3"/>
+  <!-- Noise block (left) -->
+  <rect x="30" y="80" width="100" height="100" rx="10" fill="#1e1b4b" stroke="#4338ca" stroke-width="1.5"/>
+  <!-- Noise dots -->
+  <g fill="#6366f1" opacity="0.7">
+    <rect x="38" y="88" width="6" height="6" rx="1"/><rect x="50" y="92" width="4" height="4" rx="1"/>
+    <rect x="62" y="86" width="5" height="5" rx="1"/><rect x="76" y="90" width="7" height="3" rx="1"/>
+    <rect x="90" y="85" width="4" height="6" rx="1"/><rect x="102" y="88" width="5" height="5" rx="1"/>
+    <rect x="40" y="100" width="5" height="7" rx="1"/><rect x="55" y="104" width="6" height="4" rx="1"/>
+    <rect x="70" y="98" width="4" height="5" rx="1"/><rect x="85" y="102" width="5" height="6" rx="1"/>
+    <rect x="100" y="97" width="6" height="4" rx="1"/><rect x="112" y="100" width="4" height="5" rx="1"/>
+    <rect x="36" y="112" width="7" height="5" rx="1"/><rect x="48" y="116" width="5" height="6" rx="1"/>
+    <rect x="65" y="110" width="6" height="4" rx="1"/><rect x="78" y="114" width="4" height="7" rx="1"/>
+    <rect x="92" y="109" width="5" height="5" rx="1"/><rect x="108" y="112" width="6" height="6" rx="1"/>
+    <rect x="42" y="124" width="4" height="5" rx="1"/><rect x="56" y="128" width="7" height="4" rx="1"/>
+    <rect x="72" y="122" width="5" height="6" rx="1"/><rect x="86" y="126" width="6" height="5" rx="1"/>
+    <rect x="98" y="121" width="4" height="7" rx="1"/><rect x="110" y="124" width="5" height="4" rx="1"/>
+    <rect x="38" y="136" width="6" height="5" rx="1"/><rect x="52" y="140" width="4" height="6" rx="1"/>
+    <rect x="68" y="134" width="5" height="4" rx="1"/><rect x="82" y="138" width="7" height="5" rx="1"/>
+    <rect x="96" y="133" width="5" height="6" rx="1"/><rect x="108" y="136" width="6" height="5" rx="1"/>
+    <rect x="44" y="148" width="5" height="4" rx="1"/><rect x="58" y="152" width="6" height="5" rx="1"/>
+    <rect x="74" y="146" width="4" height="6" rx="1"/><rect x="88" y="150" width="5" height="5" rx="1"/>
+    <rect x="102" y="145" width="7" height="4" rx="1"/><rect x="114" y="148" width="4" height="6" rx="1"/>
+    <rect x="40" y="160" width="6" height="5" rx="1"/><rect x="54" y="164" width="5" height="4" rx="1"/>
+    <rect x="70" y="158" width="4" height="7" rx="1"/><rect x="84" y="162" width="6" height="5" rx="1"/>
+    <rect x="98" y="157" width="5" height="6" rx="1"/><rect x="112" y="160" width="4" height="4" rx="1"/>
+  </g>
+  <text x="80" y="195" text-anchor="middle" fill="#a5b4fc" font-family="sans-serif" font-size="11" font-weight="600">Random Noise</text>
+  <!-- Arrow -->
+  <line x1="145" y1="130" x2="155" y2="130" stroke="url(#arrow)" stroke-width="2.5" stroke-linecap="round"/>
+  <!-- Step blocks (middle) -->
+  <g>
+    <rect x="160" y="85" width="80" height="90" rx="8" fill="#1e1b4b" stroke="#7c3aed" stroke-width="1.2" opacity="0.9"/>
+    <!-- Denoising steps visualization -->
+    <rect x="170" y="95" width="60" height="8" rx="3" fill="#7c3aed" opacity="0.3"/>
+    <rect x="170" y="95" width="45" height="8" rx="3" fill="#7c3aed" opacity="0.6"/>
+    <rect x="170" y="108" width="60" height="8" rx="3" fill="#8b5cf6" opacity="0.3"/>
+    <rect x="170" y="108" width="35" height="8" rx="3" fill="#8b5cf6" opacity="0.7"/>
+    <rect x="170" y="121" width="60" height="8" rx="3" fill="#a78bfa" opacity="0.3"/>
+    <rect x="170" y="121" width="25" height="8" rx="3" fill="#a78bfa" opacity="0.8"/>
+    <rect x="170" y="134" width="60" height="8" rx="3" fill="#c4b5fd" opacity="0.3"/>
+    <rect x="170" y="134" width="15" height="8" rx="3" fill="#c4b5fd" opacity="0.9"/>
+    <rect x="170" y="147" width="60" height="8" rx="3" fill="#e9d5ff" opacity="0.3"/>
+    <rect x="170" y="147" width="8" height="8" rx="3" fill="#e9d5ff" opacity="1"/>
+    <text x="200" y="195" text-anchor="middle" fill="#c4b5fd" font-family="sans-serif" font-size="10" font-weight="600">Denoising</text>
+    <text x="200" y="208" text-anchor="middle" fill="#a78bfa" font-family="sans-serif" font-size="9">T=1000 &#8594; T=0</text>
+  </g>
+  <!-- Arrow -->
+  <line x1="245" y1="130" x2="260" y2="130" stroke="url(#arrow)" stroke-width="2.5" stroke-linecap="round"/>
+  <!-- Generated image (right) - cute animal silhouette -->
+  <rect x="265" y="80" width="105" height="100" rx="10" fill="#1e1b4b" stroke="#a855f7" stroke-width="1.5"/>
+  <!-- Simple cat face -->
+  <g transform="translate(317, 125)">
+    <!-- Ears -->
+    <polygon points="-22,-25 -12,-40 -5,-22" fill="#c084fc" opacity="0.8"/>
+    <polygon points="22,-25 12,-40 5,-22" fill="#c084fc" opacity="0.8"/>
+    <!-- Head -->
+    <ellipse cx="0" cy="-10" rx="22" ry="20" fill="#c084fc" opacity="0.7"/>
+    <!-- Eyes -->
+    <ellipse cx="-8" cy="-14" rx="4" ry="4.5" fill="#1e1b4b"/>
+    <ellipse cx="8" cy="-14" rx="4" ry="4.5" fill="#1e1b4b"/>
+    <circle cx="-7" cy="-15" r="1.5" fill="#e9d5ff"/>
+    <circle cx="9" cy="-15" r="1.5" fill="#e9d5ff"/>
+    <!-- Nose -->
+    <polygon points="0,-6 -3,-3 3,-3" fill="#f9a8d4"/>
+    <!-- Mouth -->
+    <path d="M-4,-2 Q0,3 4,-2" fill="none" stroke="#1e1b4b" stroke-width="1.2"/>
+    <!-- Whiskers -->
+    <line x1="-25" y1="-8" x2="-12" y2="-6" stroke="#e9d5ff" stroke-width="0.8" opacity="0.6"/>
+    <line x1="-24" y1="-3" x2="-12" y2="-3" stroke="#e9d5ff" stroke-width="0.8" opacity="0.6"/>
+    <line x1="25" y1="-8" x2="12" y2="-6" stroke="#e9d5ff" stroke-width="0.8" opacity="0.6"/>
+    <line x1="24" y1="-3" x2="12" y2="-3" stroke="#e9d5ff" stroke-width="0.8" opacity="0.6"/>
+  </g>
+  <text x="317" y="195" text-anchor="middle" fill="#e9d5ff" font-family="sans-serif" font-size="11" font-weight="600">Generated</text>
+  <!-- Title -->
+  <text x="200" y="35" text-anchor="middle" fill="#f8fafc" font-family="sans-serif" font-size="16" font-weight="700">AI Image Diffusion Simulator</text>
+  <text x="200" y="52" text-anchor="middle" fill="#a5b4fc" font-family="sans-serif" font-size="10">Interactive Denoising Visualization</text>
+  <!-- Bottom controls mockup -->
+  <rect x="60" y="235" width="280" height="25" rx="6" fill="#1e1b4b" stroke="#4338ca" stroke-width="1" opacity="0.7"/>
+  <text x="85" y="251" fill="#818cf8" font-family="sans-serif" font-size="9">Steps: 20</text>
+  <text x="155" y="251" fill="#818cf8" font-family="sans-serif" font-size="9">CFG: 7.5</text>
+  <text x="225" y="251" fill="#818cf8" font-family="sans-serif" font-size="9">Speed: Normal</text>
+  <!-- Progress bar -->
+  <rect x="60" y="265" width="280" height="4" rx="2" fill="#1e1b4b"/>
+  <rect x="60" y="265" width="200" height="4" rx="2" fill="url(#glow2)"/>
+</svg>
