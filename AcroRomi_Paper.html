@@ -1,0 +1,785 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AcroRomi: A Zero-Dependency Native PDF Editor for macOS Built with Swift and SwiftUI</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Times New Roman', Times, Georgia, serif;
+            line-height: 1.6;
+            color: #111;
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 60px 40px;
+            background: #fff;
+        }
+
+        /* Title Block */
+        .paper-title {
+            text-align: center;
+            margin-bottom: 30px;
+        }
+
+        .paper-title h1 {
+            font-size: 1.65em;
+            font-weight: 700;
+            line-height: 1.3;
+            margin-bottom: 18px;
+        }
+
+        .paper-title .authors {
+            font-size: 1.05em;
+            margin-bottom: 4px;
+        }
+
+        .paper-title .affiliation {
+            font-size: 0.95em;
+            color: #555;
+            font-style: italic;
+        }
+
+        .paper-title .email {
+            font-size: 0.9em;
+            color: #1a73e8;
+            margin-top: 4px;
+        }
+
+        .paper-title .date {
+            font-size: 0.9em;
+            color: #777;
+            margin-top: 10px;
+        }
+
+        /* Abstract */
+        .abstract {
+            background: #f9f9f9;
+            border-left: 4px solid #333;
+            padding: 18px 22px;
+            margin: 30px 0;
+        }
+
+        .abstract h2 {
+            font-size: 1em;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            margin-bottom: 8px;
+        }
+
+        .abstract p {
+            font-size: 0.95em;
+            color: #333;
+            text-align: justify;
+        }
+
+        /* Keywords */
+        .keywords {
+            font-size: 0.9em;
+            color: #555;
+            margin-bottom: 30px;
+        }
+
+        .keywords strong {
+            color: #333;
+        }
+
+        /* Sections */
+        h2 {
+            font-size: 1.2em;
+            font-weight: 700;
+            margin-top: 30px;
+            margin-bottom: 12px;
+            border-bottom: 1px solid #ddd;
+            padding-bottom: 4px;
+        }
+
+        h3 {
+            font-size: 1.05em;
+            font-weight: 700;
+            margin-top: 18px;
+            margin-bottom: 8px;
+        }
+
+        p {
+            text-align: justify;
+            margin-bottom: 12px;
+            font-size: 0.97em;
+        }
+
+        /* Tables */
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 16px 0;
+            font-size: 0.9em;
+        }
+
+        table th, table td {
+            border: 1px solid #ccc;
+            padding: 8px 12px;
+            text-align: left;
+        }
+
+        table th {
+            background: #f0f0f0;
+            font-weight: 700;
+        }
+
+        table caption {
+            font-size: 0.88em;
+            font-style: italic;
+            color: #555;
+            margin-bottom: 6px;
+            text-align: left;
+        }
+
+        /* Figures */
+        .figure {
+            text-align: center;
+            margin: 24px 0;
+        }
+
+        .figure img {
+            max-width: 100%;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+        }
+
+        .figure .caption {
+            font-size: 0.88em;
+            font-style: italic;
+            color: #555;
+            margin-top: 8px;
+        }
+
+        /* Code */
+        code {
+            font-family: 'Courier New', Courier, monospace;
+            background: #f4f4f4;
+            padding: 2px 5px;
+            border-radius: 3px;
+            font-size: 0.88em;
+        }
+
+        pre {
+            background: #f4f4f4;
+            padding: 14px 18px;
+            border-radius: 4px;
+            overflow-x: auto;
+            font-size: 0.85em;
+            margin: 12px 0;
+            border: 1px solid #e0e0e0;
+        }
+
+        /* Lists */
+        ul, ol {
+            margin: 10px 0 12px 24px;
+            font-size: 0.97em;
+        }
+
+        li {
+            margin-bottom: 4px;
+        }
+
+        /* Pipeline */
+        .pipeline {
+            background: #f7f9fc;
+            border: 1px solid #d4e2f7;
+            border-radius: 6px;
+            padding: 16px 20px;
+            text-align: center;
+            font-size: 0.95em;
+            color: #1a5276;
+            margin: 16px 0;
+            letter-spacing: 0.3px;
+        }
+
+        /* References */
+        .references {
+            font-size: 0.88em;
+        }
+
+        .references ol {
+            margin-left: 20px;
+        }
+
+        .references li {
+            margin-bottom: 8px;
+            color: #444;
+        }
+
+        /* Footer */
+        .paper-footer {
+            text-align: center;
+            font-size: 0.8em;
+            color: #aaa;
+            margin-top: 50px;
+            padding-top: 20px;
+            border-top: 1px solid #eee;
+        }
+
+        /* Print */
+        @media print {
+            body {
+                padding: 20px;
+            }
+        }
+
+        @media (max-width: 600px) {
+            body {
+                padding: 20px 15px;
+            }
+
+            .paper-title h1 {
+                font-size: 1.3em;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Title Block -->
+    <div class="paper-title">
+        <h1>AcroRomi: A Zero-Dependency Native PDF Editor for macOS Built with Swift and SwiftUI</h1>
+        <div class="authors">Romi Nur Ismanto</div>
+        <div class="affiliation">Jakarta AI Research Lab, Jakarta, Indonesia</div>
+        <div class="email">rominur@gmail.com</div>
+        <div class="date">March 2026</div>
+    </div>
+
+    <!-- Abstract -->
+    <div class="abstract">
+        <h2>Abstract</h2>
+        <p>
+            We present AcroRomi, a comprehensive native PDF editor for macOS built entirely with Swift 5.9+ and SwiftUI, relying exclusively on Apple&rsquo;s native frameworks with zero external dependencies. The application provides eleven core modules&mdash;PDF Viewer, Annotations, Text Editor, Converter, Page Organizer, Form Filler, E-Signatures, Security, Redaction, Document Comparison, and OCR&mdash;through a modular architecture organized into Core, UI, Features, and Models layers. AcroRomi leverages PDFKit for document rendering and annotation, the Vision framework with <code>VNRecognizeTextRequest</code> for on-device optical character recognition supporting 18+ languages, Core Graphics for rendering and image conversion, and WebKit&rsquo;s <code>WKWebView</code> for HTML-to-PDF conversion. The text editor implements a custom <code>EditablePDFView</code> subclass enabling click-to-edit functionality with 14 font families, while redaction uses an irreversible bitmap flattening approach for permanent sensitive data removal. Document comparison provides both LCS-based text diff and pixel-level visual comparison modes. The application is built with Swift Package Manager (no <code>.xcodeproj</code> required) and distributed as a native <code>.dmg</code> for macOS 14+ Sonoma. The complete source code is available under the MIT license.
+        </p>
+    </div>
+
+    <!-- Keywords -->
+    <div class="keywords">
+        <strong>Keywords:</strong> PDF editor, macOS, Swift, SwiftUI, PDFKit, Vision OCR, Core Graphics, annotations, redaction, document comparison, zero dependencies, native application
+    </div>
+
+    <!-- 1. Introduction -->
+    <h2>1. Introduction</h2>
+
+    <p>
+        PDF editing on macOS has long been constrained to a polarized ecosystem: Apple&rsquo;s built-in Preview provides basic annotation and page management but lacks advanced features such as text editing, form filling, OCR, and redaction, while professional tools like Adobe Acrobat Pro introduce substantial cost, large install footprints, and dependency on proprietary frameworks. Third-party alternatives often rely on cross-platform toolkits that sacrifice macOS-native feel or introduce external library dependencies that complicate distribution and maintenance.
+    </p>
+
+    <p>
+        AcroRomi addresses this gap by providing a feature-complete PDF editor built entirely on Apple&rsquo;s native framework stack. The zero-dependency philosophy means the application relies exclusively on PDFKit, Vision, Core Graphics, WebKit, AppKit, and SwiftUI&mdash;all shipped with macOS&mdash;eliminating version conflicts, supply chain risks, and the performance overhead of bridging to non-native libraries.
+    </p>
+
+    <p>
+        The key contributions of this work are:
+    </p>
+    <ul>
+        <li>A comprehensive PDF editing solution with eleven integrated modules covering viewing, annotation, text editing, conversion, page organization, form filling, electronic signatures, security, redaction, document comparison, and OCR.</li>
+        <li>A zero-dependency architecture relying exclusively on Apple&rsquo;s native frameworks, eliminating external library management and supply chain concerns.</li>
+        <li>A custom <code>EditablePDFView</code> subclass enabling click-to-edit text functionality within PDFKit&rsquo;s rendering pipeline.</li>
+        <li>An irreversible bitmap-based redaction system that permanently removes sensitive content through pixel-level flattening.</li>
+        <li>On-device OCR with 18+ language support using the Vision framework&rsquo;s machine learning pipeline, with intelligent page skipping for documents containing existing selectable text.</li>
+    </ul>
+
+    <!-- 2. Related Work -->
+    <h2>2. Related Work</h2>
+
+    <p>
+        The macOS PDF editing landscape spans several categories. Apple Preview, bundled with every Mac since OS X, provides PDF viewing, basic annotation (highlight, underline, shapes, signatures), and page reordering. However, it lacks text editing capabilities, form filling, OCR, redaction, and document comparison&mdash;features essential for professional document workflows.
+    </p>
+
+    <p>
+        Adobe Acrobat Pro DC remains the industry standard for PDF editing, offering comprehensive features including text editing, form creation, OCR (via Adobe Scan), redaction, and digital signatures. However, its subscription model ($22.99/month), large installation size (~1.2 GB), and reliance on Adobe&rsquo;s proprietary rendering engine make it inaccessible for many users and introduce significant resource overhead.
+    </p>
+
+    <p>
+        Open-source alternatives such as LibreOffice Draw can edit PDFs but treat them as vector drawings rather than structured documents, losing text fidelity. PDF Expert by Readdle provides a polished macOS experience but uses a proprietary rendering engine rather than PDFKit. Skim focuses on academic annotation workflows but lacks text editing and form capabilities.
+    </p>
+
+    <p>
+        AcroRomi occupies a unique position: it provides Acrobat-class functionality (text editing, OCR, redaction, form filling, document comparison) while maintaining a zero-dependency, native macOS architecture built entirely on SwiftUI and Apple frameworks. This combination of comprehensive features with architectural purity is, to our knowledge, unprecedented in the open-source macOS PDF editor space.
+    </p>
+
+    <!-- 3. System Architecture -->
+    <h2>3. System Architecture</h2>
+
+    <p>
+        AcroRomi follows a modular architecture organized into four layers: Core (document management and state), UI (views and layout), Features (module-specific functionality), and Models (data types and enumerations). This separation ensures that each of the eleven modules can be developed, tested, and maintained independently.
+    </p>
+
+    <h3>3.1 Project Structure</h3>
+
+    <pre>Sources/Acroromi/
+&#9500;&#9472;&#9472; Core/
+&#9474;   &#9500;&#9472;&#9472; PDFViewWrapper.swift      # NSViewRepresentable bridge to PDFKit
+&#9474;   &#9500;&#9472;&#9472; EditablePDFView.swift     # Custom PDFView subclass for text editing
+&#9474;   &#9500;&#9472;&#9472; DocumentState.swift       # @Observable document state management
+&#9474;   &#9500;&#9472;&#9472; PDFDocumentManager.swift  # Document lifecycle operations
+&#9474;   &#9492;&#9472;&#9472; Constants.swift           # App-wide constants
+&#9500;&#9472;&#9472; UI/
+&#9474;   &#9500;&#9472;&#9472; SidebarView.swift         # Navigation sidebar with module list
+&#9474;   &#9500;&#9472;&#9472; ThumbnailView.swift       # Page thumbnail strip
+&#9474;   &#9500;&#9472;&#9472; ToolbarView.swift         # Context-sensitive toolbar
+&#9474;   &#9500;&#9472;&#9472; StatusBarView.swift       # Document info and zoom control
+&#9474;   &#9500;&#9472;&#9472; SearchBarView.swift       # Text search with navigation
+&#9474;   &#9500;&#9472;&#9472; WelcomeView.swift         # Empty-state landing screen
+&#9474;   &#9492;&#9472;&#9472; Styles.swift              # Shared style definitions
+&#9500;&#9472;&#9472; Features/
+&#9474;   &#9500;&#9472;&#9472; Viewer/                   # PDF viewing and navigation
+&#9474;   &#9500;&#9472;&#9472; Annotations/              # Highlight, underline, notes, shapes
+&#9474;   &#9500;&#9472;&#9472; Editor/                   # Click-to-edit text editing
+&#9474;   &#9500;&#9472;&#9472; Converter/                # PDF &#8596; Image, HTML &#8594; PDF, PDF &#8594; Text
+&#9474;   &#9500;&#9472;&#9472; Organizer/                # Merge, split, rotate, reorder, extract
+&#9474;   &#9500;&#9472;&#9472; FormSign/                 # AcroForm detection and filling
+&#9474;   &#9500;&#9472;&#9472; ESignature/               # Electronic signature placement
+&#9474;   &#9500;&#9472;&#9472; Security/                 # Password protection and permissions
+&#9474;   &#9500;&#9472;&#9472; Redaction/                # Permanent content removal
+&#9474;   &#9500;&#9472;&#9472; Compare/                  # Text diff and visual comparison
+&#9474;   &#9492;&#9472;&#9472; OCR/                      # Vision-based text recognition
+&#9492;&#9472;&#9472; Models/
+    &#9492;&#9472;&#9472; ToolMode.swift            # Tool mode enumerations</pre>
+
+    <h3>3.2 State Management</h3>
+
+    <p>
+        The application uses Swift&rsquo;s <code>@Observable</code> macro (introduced in iOS 17/macOS 14) through the <code>AppState</code> class, which serves as the root state container. <code>DocumentState</code> manages per-document properties including the current <code>PDFDocument</code> reference, page index, zoom level, active tool mode, and unsaved changes flag. The <code>PDFViewWrapper</code> bridges SwiftUI&rsquo;s declarative layer to PDFKit&rsquo;s imperative <code>NSView</code>-based rendering through <code>NSViewRepresentable</code>, with a coordinator pattern handling delegate callbacks and user interaction events.
+    </p>
+
+    <h3>3.3 Entry Point and Layout</h3>
+
+    <p>
+        <code>AcroromiApp</code>, decorated with the <code>@main</code> attribute, initializes the SwiftUI application lifecycle. The primary <code>ContentView</code> uses a <code>NavigationSplitView</code> with a sidebar listing the eleven feature modules and a detail area hosting the active module&rsquo;s view alongside the PDF rendering surface. The toolbar, status bar, and thumbnail strip are layered around the central <code>PDFViewWrapper</code>.
+    </p>
+
+    <!-- 4. Core Modules -->
+    <h2>4. Core Modules</h2>
+
+    <h3>4.1 PDF Viewer</h3>
+
+    <p>
+        The viewer module wraps PDFKit&rsquo;s <code>PDFView</code> through <code>PDFViewWrapper</code>, providing zoom control (fit-to-page, fit-to-width, manual percentage), multi-page layout modes (single page, continuous, two-up), text search with result navigation, printing via the macOS print dialog, and keyboard shortcuts for navigation. The search implementation resolves an issue in v1.0 where search results were discarded rather than navigated to; v1.1.0 correctly scrolls to and highlights matched text selections.
+    </p>
+
+    <h3>4.2 Annotations</h3>
+
+    <p>
+        The annotation module supports six annotation types: highlight (with configurable color and opacity), underline, strikethrough, sticky notes (with text content), freehand drawing (with adjustable stroke width and color), and geometric shapes (rectangles, circles, lines, arrows). Annotations are stored as standard PDF annotation objects within the document, ensuring compatibility with other PDF readers. Color customization uses a native macOS color picker with preset palettes for common annotation colors.
+    </p>
+
+    <h3>4.3 Text Editor</h3>
+
+    <p>
+        Text editing is implemented through the custom <code>EditablePDFView</code> subclass, which intercepts mouse click events on text regions to present an editable overlay. The v1.1.0 release fixes a critical double coordinate conversion bug in click detection that caused the editor to activate at incorrect positions. The editor supports 14 font families: Helvetica, Times New Roman, Courier, Arial, Georgia, Verdana, Futura, Avenir, Menlo, Palatino, American Typewriter, Optima, Baskerville, and Didot. Font size, color, and weight controls are provided through a floating toolbar. A guard mechanism using an <code>isCommitting</code> flag prevents double-commit crashes during text save operations. Editor views are properly removed from the superview after fade-out animation to prevent memory leaks.
+    </p>
+
+    <h3>4.4 Converter</h3>
+
+    <p>
+        The converter module supports four transformation pipelines:
+    </p>
+
+    <div class="pipeline">
+        PDF &rarr; Images (PNG/JPEG per page) &nbsp;|&nbsp; Images &rarr; PDF &nbsp;|&nbsp; HTML &rarr; PDF (via WKWebView) &nbsp;|&nbsp; PDF &rarr; Text
+    </div>
+
+    <p>
+        PDF-to-image conversion uses Core Graphics to render each page at configurable DPI (72&ndash;600) into <code>CGImage</code> representations, then encodes to PNG or JPEG format. Image-to-PDF creates a new <code>PDFDocument</code> with each image as a full-page content. HTML-to-PDF leverages WebKit&rsquo;s <code>WKWebView</code> to load and render HTML content, then captures the rendered output as PDF pages. Text extraction walks the document&rsquo;s page tree, extracting text content via PDFKit&rsquo;s <code>string</code> property. The v1.1.0 release adds range validation to prevent crashes when converter operations encounter pages with unexpected content boundaries.
+    </p>
+
+    <h3>4.5 Page Organizer</h3>
+
+    <p>
+        The page organizer provides six operations: merge (combine multiple PDF files into one), split (extract page ranges into separate files), rotate (90&deg;/180&deg;/270&deg; with normalization to valid states), reorder (drag-and-drop page rearrangement), delete (remove selected pages), and extract (save selected pages as a new document). The v1.1.0 release converts the <code>totalPages</code> property from a stored value to a computed property, ensuring automatic updates after page insertion, deletion, or merge operations. Index validation guards were added to prevent out-of-bounds crashes during page operations.
+    </p>
+
+    <h3>4.6 Form Filler and Signatures</h3>
+
+    <p>
+        The form module auto-detects AcroForm fields (text fields, checkboxes, radio buttons, dropdown menus) within PDF documents and presents them in an editable interface. Users can fill form fields interactively with values persisted to the document. The signature sub-module supports two creation methods: drawn signatures (via a canvas-based drawing surface) and typed signatures (text rendered in a handwriting-style font). The v1.1.0 release fixes a rendering bug where drawn signatures appeared vertically flipped due to a coordinate system mismatch between the drawing canvas (origin top-left) and PDF coordinate space (origin bottom-left).
+    </p>
+
+    <h3>4.7 Electronic Signatures</h3>
+
+    <p>
+        The e-signature module extends basic signatures with placement tracking, allowing users to position signature fields at specific locations within documents. This module supports signature request workflows where document owners can designate signature locations for multiple signers.
+    </p>
+
+    <h3>4.8 Security</h3>
+
+    <p>
+        The security module implements PDF encryption with two password levels: user password (required to open the document) and owner password (required to modify permissions). Permission controls include print, copy, modify, annotation, form fill, and accessibility extraction flags. Encryption uses the PDF specification&rsquo;s standard security handler as implemented by PDFKit.
+    </p>
+
+    <h3>4.9 Redaction</h3>
+
+    <p>
+        Redaction in AcroRomi uses an irreversible bitmap flattening approach. When a region is marked for redaction, the system renders the page to a bitmap, fills the redaction area with a solid color (black by default), and replaces the original page content with the flattened bitmap. This ensures that the redacted content cannot be recovered by removing annotation layers or inspecting the PDF structure&mdash;the original vector text and graphics are permanently destroyed. The <code>ImageStampAnnotation</code> decoder was hardened in v1.1.0 to return <code>nil</code> instead of causing fatal errors when encountering malformed annotation data.
+    </p>
+
+    <h3>4.10 Document Comparison</h3>
+
+    <p>
+        The comparison module provides two analysis modes:
+    </p>
+
+    <ul>
+        <li><strong>Text Diff:</strong> Extracts text from both documents and applies a Longest Common Subsequence (LCS) algorithm to identify insertions, deletions, and modifications. Results are displayed in a side-by-side view with color-coded highlighting (green for additions, red for deletions, yellow for modifications).</li>
+        <li><strong>Visual Comparison:</strong> Renders both documents at matching resolutions and performs pixel-level comparison, highlighting regions where the visual output differs. This mode catches formatting changes, image replacements, and layout shifts that text-only comparison would miss.</li>
+    </ul>
+
+    <h3>4.11 OCR (Optical Character Recognition)</h3>
+
+    <p>
+        The OCR module uses Apple&rsquo;s Vision framework with <code>VNRecognizeTextRequest</code> for on-device text recognition. The system supports 18+ languages including English, Spanish, French, German, Italian, Portuguese, Chinese (Simplified and Traditional), Japanese, Korean, Arabic, Hindi, Thai, Vietnamese, Indonesian, Turkish, Polish, Dutch, and Swedish. An intelligent skipping mechanism detects pages that already contain selectable text and bypasses OCR processing for those pages, significantly reducing processing time for partially-digitized documents. The v1.1.0 release moves heavy Vision processing to background threads to prevent UI blocking during multi-page OCR operations.
+    </p>
+
+    <!-- 5. Critical Fixes in v1.1.0 -->
+    <h2>5. Stability Engineering (v1.1.0)</h2>
+
+    <p>
+        The v1.1.0 release focused extensively on stability, addressing 13 issues across Core, UI, and Feature modules. These fixes fall into four categories:
+    </p>
+
+    <h3>5.1 Memory Management</h3>
+
+    <p>
+        Editor views are now properly removed from the superview after fade-out animation completes. In v1.0, animated editor overlays remained in the view hierarchy after dismissal, accumulating memory allocations proportional to the number of edit sessions within a single document session.
+    </p>
+
+    <h3>5.2 Crash Prevention</h3>
+
+    <table>
+        <caption>Table 1: Crash fixes in v1.1.0</caption>
+        <tr>
+            <th>Issue</th>
+            <th>Root Cause</th>
+            <th>Fix</th>
+        </tr>
+        <tr>
+            <td>Text editor crash</td>
+            <td>Force-unwrap on <code>textContainer</code></td>
+            <td>Optional binding with guard</td>
+        </tr>
+        <tr>
+            <td>Double-commit crash</td>
+            <td>Concurrent save operations</td>
+            <td><code>isCommitting</code> flag guard</td>
+        </tr>
+        <tr>
+            <td>Page operation crash</td>
+            <td>Out-of-bounds page index</td>
+            <td>Index validation before access</td>
+        </tr>
+        <tr>
+            <td>Converter crash</td>
+            <td>Invalid range boundaries</td>
+            <td>Range clamping to valid bounds</td>
+        </tr>
+        <tr>
+            <td>Annotation decode crash</td>
+            <td>Malformed <code>ImageStampAnnotation</code></td>
+            <td>Failable initializer returning nil</td>
+        </tr>
+    </table>
+
+    <h3>5.3 Coordinate System Corrections</h3>
+
+    <p>
+        Two coordinate-related bugs were resolved: a double coordinate conversion in click detection (where screen coordinates were transformed twice through the PDFView&rsquo;s coordinate space, causing the text editor to activate at incorrect positions) and rotation normalization (ensuring values are clamped to valid states of 0&deg;, 90&deg;, 180&deg;, and 270&deg; regardless of accumulated rotation operations).
+    </p>
+
+    <h3>5.4 UI State Synchronization</h3>
+
+    <p>
+        The <code>PDFViewWrapper</code> coordinator was refactored to eliminate stale struct references that caused the SwiftUI layer to read outdated state. Sidebar icons now properly toggle between active and inactive states. The search functionality navigates to results rather than silently discarding them. The <code>totalPages</code> property was converted to a computed property to automatically reflect page count changes after organizer operations.
+    </p>
+
+    <!-- 6. Framework Integration -->
+    <h2>6. Framework Integration</h2>
+
+    <p>
+        AcroRomi&rsquo;s zero-dependency approach relies on deep integration with six Apple frameworks:
+    </p>
+
+    <table>
+        <caption>Table 2: Apple framework utilization</caption>
+        <tr>
+            <th>Framework</th>
+            <th>Usage</th>
+            <th>Key APIs</th>
+        </tr>
+        <tr>
+            <td>PDFKit</td>
+            <td>PDF rendering, annotation, form handling, page management</td>
+            <td><code>PDFView</code>, <code>PDFDocument</code>, <code>PDFAnnotation</code>, <code>PDFPage</code></td>
+        </tr>
+        <tr>
+            <td>Vision</td>
+            <td>On-device OCR with ML-based text recognition</td>
+            <td><code>VNRecognizeTextRequest</code>, <code>VNImageRequestHandler</code></td>
+        </tr>
+        <tr>
+            <td>Core Graphics</td>
+            <td>Page rendering, image conversion, bitmap operations</td>
+            <td><code>CGContext</code>, <code>CGImage</code>, <code>CGPDFDocument</code></td>
+        </tr>
+        <tr>
+            <td>WebKit</td>
+            <td>HTML-to-PDF conversion</td>
+            <td><code>WKWebView</code>, <code>createPDF(configuration:)</code></td>
+        </tr>
+        <tr>
+            <td>AppKit</td>
+            <td>Native macOS UI components, print dialog, color picker</td>
+            <td><code>NSView</code>, <code>NSPrintOperation</code>, <code>NSColorPanel</code></td>
+        </tr>
+        <tr>
+            <td>SwiftUI</td>
+            <td>Declarative UI, state management, layout</td>
+            <td><code>NavigationSplitView</code>, <code>@Observable</code>, <code>NSViewRepresentable</code></td>
+        </tr>
+    </table>
+
+    <p>
+        The <code>NSViewRepresentable</code> protocol serves as the critical bridge between SwiftUI&rsquo;s declarative paradigm and PDFKit&rsquo;s imperative <code>NSView</code> hierarchy. The <code>PDFViewWrapper</code> implements both <code>makeNSView</code> and <code>updateNSView</code> lifecycle methods, with a coordinator class handling <code>PDFViewDelegate</code> callbacks, gesture recognition, and user interaction events. This bridging pattern allows the application to leverage SwiftUI&rsquo;s modern layout system while retaining full access to PDFKit&rsquo;s mature rendering capabilities.
+    </p>
+
+    <!-- 7. Build and Distribution -->
+    <h2>7. Build and Distribution</h2>
+
+    <h3>7.1 Build System</h3>
+
+    <p>
+        AcroRomi uses Swift Package Manager (SPM) as its build system, eliminating the need for Xcode project files (<code>.xcodeproj</code>). The <code>Package.swift</code> manifest defines the executable target with source files organized under <code>Sources/Acroromi/</code>. Development builds are produced with <code>swift build</code>, while release distribution uses a custom <code>build-app.sh</code> script.
+    </p>
+
+    <h3>7.2 Distribution Pipeline</h3>
+
+    <div class="pipeline">
+        <code>swift build -c release</code> &rarr; <code>.app</code> bundle assembly &rarr; Info.plist injection &rarr; Icon generation &rarr; DMG creation (<code>hdiutil</code>)
+    </div>
+
+    <p>
+        The application icon is generated programmatically using Core Graphics, rendering a red penguin mascot (the AcroRomi logo) directly in Swift code rather than relying on external asset files. File associations for <code>.pdf</code> documents are defined in the generated <code>Info.plist</code>.
+    </p>
+
+    <table>
+        <caption>Table 3: Distribution artifacts</caption>
+        <tr>
+            <th>Format</th>
+            <th>File</th>
+            <th>Installation Method</th>
+        </tr>
+        <tr>
+            <td>.app</td>
+            <td>.build/Acroromi.app</td>
+            <td>Direct execution</td>
+        </tr>
+        <tr>
+            <td>.dmg</td>
+            <td>Acroromi.dmg</td>
+            <td>Drag to Applications</td>
+        </tr>
+    </table>
+
+    <!-- 8. System Requirements -->
+    <h2>8. System Requirements</h2>
+
+    <table>
+        <caption>Table 4: Runtime and development requirements</caption>
+        <tr>
+            <th>Requirement</th>
+            <th>Specification</th>
+        </tr>
+        <tr>
+            <td>Operating System</td>
+            <td>macOS 14.0 Sonoma or later</td>
+        </tr>
+        <tr>
+            <td>Architecture</td>
+            <td>Apple Silicon (M1/M2/M3/M4) and Intel x86_64</td>
+        </tr>
+        <tr>
+            <td>Swift (development)</td>
+            <td>5.9+</td>
+        </tr>
+        <tr>
+            <td>Xcode (development)</td>
+            <td>15+ Command Line Tools</td>
+        </tr>
+        <tr>
+            <td>External Dependencies</td>
+            <td>None (zero-dependency architecture)</td>
+        </tr>
+        <tr>
+            <td>Build System</td>
+            <td>Swift Package Manager</td>
+        </tr>
+    </table>
+
+    <!-- 9. Comparison -->
+    <h2>9. Feature Comparison</h2>
+
+    <table>
+        <caption>Table 5: Feature comparison with macOS PDF tools</caption>
+        <tr>
+            <th>Feature</th>
+            <th>Preview</th>
+            <th>Skim</th>
+            <th>Acrobat Pro</th>
+            <th>AcroRomi</th>
+        </tr>
+        <tr>
+            <td>PDF Viewing</td>
+            <td>&#10003;</td>
+            <td>&#10003;</td>
+            <td>&#10003;</td>
+            <td>&#10003;</td>
+        </tr>
+        <tr>
+            <td>Annotations</td>
+            <td>Basic</td>
+            <td>&#10003;</td>
+            <td>&#10003;</td>
+            <td>&#10003;</td>
+        </tr>
+        <tr>
+            <td>Text Editing</td>
+            <td>&#10007;</td>
+            <td>&#10007;</td>
+            <td>&#10003;</td>
+            <td>&#10003;</td>
+        </tr>
+        <tr>
+            <td>OCR</td>
+            <td>&#10007;</td>
+            <td>&#10007;</td>
+            <td>&#10003;</td>
+            <td>&#10003; (18+ lang)</td>
+        </tr>
+        <tr>
+            <td>Form Filling</td>
+            <td>&#10007;</td>
+            <td>&#10007;</td>
+            <td>&#10003;</td>
+            <td>&#10003;</td>
+        </tr>
+        <tr>
+            <td>Redaction</td>
+            <td>&#10007;</td>
+            <td>&#10007;</td>
+            <td>&#10003;</td>
+            <td>&#10003;</td>
+        </tr>
+        <tr>
+            <td>Doc Compare</td>
+            <td>&#10007;</td>
+            <td>&#10007;</td>
+            <td>&#10003;</td>
+            <td>&#10003;</td>
+        </tr>
+        <tr>
+            <td>Signatures</td>
+            <td>Basic</td>
+            <td>&#10007;</td>
+            <td>&#10003;</td>
+            <td>&#10003;</td>
+        </tr>
+        <tr>
+            <td>Format Conversion</td>
+            <td>Limited</td>
+            <td>&#10007;</td>
+            <td>&#10003;</td>
+            <td>&#10003;</td>
+        </tr>
+        <tr>
+            <td>Page Organization</td>
+            <td>Basic</td>
+            <td>&#10007;</td>
+            <td>&#10003;</td>
+            <td>&#10003;</td>
+        </tr>
+        <tr>
+            <td>Zero Dependencies</td>
+            <td>&#10003;</td>
+            <td>&#10007;</td>
+            <td>&#10007;</td>
+            <td>&#10003;</td>
+        </tr>
+        <tr>
+            <td>Open Source</td>
+            <td>&#10007;</td>
+            <td>&#10003;</td>
+            <td>&#10007;</td>
+            <td>&#10003;</td>
+        </tr>
+        <tr>
+            <td>Cost</td>
+            <td>Free</td>
+            <td>Free</td>
+            <td>$22.99/mo</td>
+            <td>Free</td>
+        </tr>
+    </table>
+
+    <!-- 10. Conclusion -->
+    <h2>10. Conclusion and Future Work</h2>
+
+    <p>
+        AcroRomi demonstrates that Apple&rsquo;s native framework stack&mdash;PDFKit, Vision, Core Graphics, WebKit, and SwiftUI&mdash;is sufficient to build a feature-complete PDF editor competitive with commercial offerings, without requiring any external dependencies. The modular architecture with eleven distinct feature modules organized across Core, UI, Features, and Models layers provides clear separation of concerns while the <code>@Observable</code> state management pattern ensures reactive UI updates across the application.
+    </p>
+
+    <p>
+        The v1.1.0 stability release, addressing 13 issues across memory management, crash prevention, coordinate correction, and UI synchronization, demonstrates the engineering rigor required for production-grade document editing software where data integrity and application reliability are paramount.
+    </p>
+
+    <p>
+        Future directions include:
+    </p>
+
+    <ul>
+        <li>PDF/A compliance for long-term archival document creation.</li>
+        <li>Digital signatures using Apple&rsquo;s CryptoKit for cryptographic document signing with certificate validation.</li>
+        <li>Batch processing for applying OCR, redaction, or conversion operations across multiple documents.</li>
+        <li>iCloud integration for document sync and collaboration.</li>
+        <li>Handwriting recognition combining Vision OCR with Apple Pencil input on iPad (via Catalyst or native iPadOS port).</li>
+        <li>Accessibility audit to ensure full VoiceOver compatibility across all eleven modules.</li>
+        <li>Apple Notarization for Gatekeeper-signed distribution outside the Mac App Store.</li>
+    </ul>
+
+    <p>
+        The complete source code is available at <a href="https://github.com/romizone/acroromi">https://github.com/romizone/acroromi</a> under the MIT license.
+    </p>
+
+    <!-- References -->
+    <h2>References</h2>
+
+    <div class="references">
+        <ol>
+            <li>Apple Inc. (2024). PDFKit Framework Reference. <em>Apple Developer Documentation</em>. https://developer.apple.com/documentation/pdfkit</li>
+            <li>Apple Inc. (2024). Vision Framework: Recognizing Text in Images. <em>Apple Developer Documentation</em>. https://developer.apple.com/documentation/vision/recognizing_text_in_images</li>
+            <li>Apple Inc. (2024). Core Graphics Framework Reference. <em>Apple Developer Documentation</em>. https://developer.apple.com/documentation/coregraphics</li>
+            <li>Apple Inc. (2024). WebKit Framework Reference. <em>Apple Developer Documentation</em>. https://developer.apple.com/documentation/webkit</li>
+            <li>Apple Inc. (2024). SwiftUI Framework Reference. <em>Apple Developer Documentation</em>. https://developer.apple.com/documentation/swiftui</li>
+            <li>Apple Inc. (2024). Swift Package Manager. <em>Swift.org Documentation</em>. https://www.swift.org/package-manager</li>
+            <li>Apple Inc. (2024). Human Interface Guidelines: macOS. <em>Apple Developer Documentation</em>. https://developer.apple.com/design/human-interface-guidelines/macos</li>
+            <li>Adobe Inc. (2024). PDF Reference, Seventh Edition (ISO 32000-2:2020). <em>Adobe PDF Specification</em>. https://www.adobe.com/devnet-docs/acroforms/FormsAPIReference.pdf</li>
+            <li>Apple Inc. (2023). Observation Framework: @Observable Macro. <em>Apple Developer Documentation</em>. https://developer.apple.com/documentation/observation</li>
+            <li>Hunt, J. W. &amp; McIlroy, M. D. (1976). An Algorithm for Differential File Comparison. <em>Computing Science Technical Report No. 41</em>, Bell Laboratories.</li>
+        </ol>
+    </div>
+
+    <!-- Footer -->
+    <div class="paper-footer">
+        <p>AcroRomi &mdash; Open Source &middot; MIT License &middot; <a href="https://github.com/romizone/acroromi">github.com/romizone/acroromi</a></p>
+    </div>
+
+</body>
+</html>
