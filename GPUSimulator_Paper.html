@@ -1,0 +1,780 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>GPU vs CPU vs TPU Simulator: An Interactive Web-Based Visualization of Heterogeneous Processor Performance for AI Workloads</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Times New Roman', Times, Georgia, serif;
+            line-height: 1.6;
+            color: #111;
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 60px 40px;
+            background: #fff;
+        }
+
+        /* Title Block */
+        .paper-title {
+            text-align: center;
+            margin-bottom: 30px;
+        }
+
+        .paper-title h1 {
+            font-size: 1.65em;
+            font-weight: 700;
+            line-height: 1.3;
+            margin-bottom: 18px;
+        }
+
+        .paper-title .authors {
+            font-size: 1.05em;
+            margin-bottom: 4px;
+        }
+
+        .paper-title .affiliation {
+            font-size: 0.95em;
+            color: #555;
+            font-style: italic;
+        }
+
+        .paper-title .email {
+            font-size: 0.9em;
+            color: #1a73e8;
+            margin-top: 4px;
+        }
+
+        .paper-title .date {
+            font-size: 0.9em;
+            color: #777;
+            margin-top: 10px;
+        }
+
+        /* Abstract */
+        .abstract {
+            background: #f9f9f9;
+            border-left: 4px solid #333;
+            padding: 18px 22px;
+            margin: 30px 0;
+        }
+
+        .abstract h2 {
+            font-size: 1em;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            margin-bottom: 8px;
+        }
+
+        .abstract p {
+            font-size: 0.95em;
+            color: #333;
+            text-align: justify;
+        }
+
+        /* Keywords */
+        .keywords {
+            font-size: 0.9em;
+            color: #555;
+            margin-bottom: 30px;
+        }
+
+        .keywords strong {
+            color: #333;
+        }
+
+        /* Sections */
+        h2 {
+            font-size: 1.2em;
+            font-weight: 700;
+            margin-top: 30px;
+            margin-bottom: 12px;
+            border-bottom: 1px solid #ddd;
+            padding-bottom: 4px;
+        }
+
+        h3 {
+            font-size: 1.05em;
+            font-weight: 700;
+            margin-top: 18px;
+            margin-bottom: 8px;
+        }
+
+        p {
+            text-align: justify;
+            margin-bottom: 12px;
+            font-size: 0.97em;
+        }
+
+        /* Tables */
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 16px 0;
+            font-size: 0.9em;
+        }
+
+        table th, table td {
+            border: 1px solid #ccc;
+            padding: 8px 12px;
+            text-align: left;
+        }
+
+        table th {
+            background: #f0f0f0;
+            font-weight: 700;
+        }
+
+        table caption {
+            font-size: 0.88em;
+            font-style: italic;
+            color: #555;
+            margin-bottom: 6px;
+            text-align: left;
+        }
+
+        /* Figures */
+        .figure {
+            text-align: center;
+            margin: 24px 0;
+        }
+
+        .figure img {
+            max-width: 100%;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+        }
+
+        .figure .caption {
+            font-size: 0.88em;
+            font-style: italic;
+            color: #555;
+            margin-top: 8px;
+        }
+
+        /* Code */
+        code {
+            font-family: 'Courier New', Courier, monospace;
+            background: #f4f4f4;
+            padding: 2px 5px;
+            border-radius: 3px;
+            font-size: 0.88em;
+        }
+
+        pre {
+            background: #f4f4f4;
+            padding: 14px 18px;
+            border-radius: 4px;
+            overflow-x: auto;
+            font-size: 0.85em;
+            margin: 12px 0;
+            border: 1px solid #e0e0e0;
+        }
+
+        /* Lists */
+        ul, ol {
+            margin: 10px 0 12px 24px;
+            font-size: 0.97em;
+        }
+
+        li {
+            margin-bottom: 4px;
+        }
+
+        /* Pipeline */
+        .pipeline {
+            background: #f7f9fc;
+            border: 1px solid #d4e2f7;
+            border-radius: 6px;
+            padding: 16px 20px;
+            text-align: center;
+            font-size: 0.95em;
+            color: #1a5276;
+            margin: 16px 0;
+            letter-spacing: 0.3px;
+        }
+
+        /* Math */
+        .math {
+            background: #fafafa;
+            border: 1px solid #e8e8e8;
+            border-radius: 4px;
+            padding: 12px 18px;
+            text-align: center;
+            font-family: 'Times New Roman', serif;
+            font-size: 1.05em;
+            margin: 14px 0;
+            font-style: italic;
+        }
+
+        /* References */
+        .references {
+            font-size: 0.88em;
+        }
+
+        .references ol {
+            margin-left: 20px;
+        }
+
+        .references li {
+            margin-bottom: 8px;
+            color: #444;
+        }
+
+        /* Footer */
+        .paper-footer {
+            text-align: center;
+            font-size: 0.8em;
+            color: #aaa;
+            margin-top: 50px;
+            padding-top: 20px;
+            border-top: 1px solid #eee;
+        }
+
+        /* Print */
+        @media print {
+            body {
+                padding: 20px;
+            }
+        }
+
+        @media (max-width: 600px) {
+            body {
+                padding: 20px 15px;
+            }
+
+            .paper-title h1 {
+                font-size: 1.3em;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Title Block -->
+    <div class="paper-title">
+        <h1>GPU vs CPU vs TPU Simulator: An Interactive Web-Based Visualization of Heterogeneous Processor Performance for AI Workloads</h1>
+        <div class="authors">Romi Nur Ismanto</div>
+        <div class="affiliation">Jakarta AI Research Lab, Jakarta, Indonesia</div>
+        <div class="email">rominur@gmail.com</div>
+        <div class="date">March 2026</div>
+    </div>
+
+    <!-- Abstract -->
+    <div class="abstract">
+        <h2>Abstract</h2>
+        <p>
+            We present an interactive web-based simulator that visualizes the performance characteristics of three heterogeneous processor architectures&mdash;Central Processing Units (CPUs), Graphics Processing Units (GPUs), and Tensor Processing Units (TPUs)&mdash;when executing representative AI and deep learning workloads. The simulator features a real-time processing race where three processor lanes compete to complete identical tasks, exposing fundamental architectural differences through animated core visualization grids, live performance metrics, and ASCII architecture diagrams. Users select from four workload types (matrix multiplication, CNN training, batch inference, NLP transformer operations), configure batch sizes and simulation speed, and observe how each processor's design philosophy translates to throughput differences. The system implements a tick-based simulation engine with stochastic jitter to produce realistic performance variance, color-coded processor dashboards with pulsing core animations, timestamped event logging, and ranked finish analysis with speedup calculations. Built as a single HTML file with zero external dependencies using vanilla JavaScript, CSS3 Grid/Flexbox, and interval-driven animation, the application is deployed on both GitHub Pages and Vercel. We describe the simulation model, processor abstraction layer, workload parameterization, and visualization architecture.
+        </p>
+    </div>
+
+    <!-- Keywords -->
+    <div class="keywords">
+        <strong>Keywords:</strong> GPU, CPU, TPU, heterogeneous computing, AI accelerators, performance simulation, CUDA cores, systolic array, matrix multiplication, CNN training, transformer inference, interactive visualization, educational tool, zero dependencies
+    </div>
+
+    <!-- 1. Introduction -->
+    <h2>1. Introduction</h2>
+
+    <p>
+        The rapid expansion of deep learning has driven the development of specialized hardware accelerators designed to handle the massive parallelism inherent in neural network computations. While CPUs remain the general-purpose backbone of computing, GPUs have become the de facto standard for training deep learning models, and TPUs represent Google's purpose-built approach to tensor operations. Understanding the architectural differences between these processors and their implications for AI workload performance is essential for practitioners making hardware selection decisions.
+    </p>
+
+    <p>
+        However, direct access to all three processor types for comparative benchmarking is impractical for most learners and practitioners. GPU clusters require significant investment, and TPU access is limited to Google Cloud Platform. Existing educational materials rely primarily on static benchmark tables, performance charts, and theoretical descriptions that fail to convey the dynamic nature of parallel processing.
+    </p>
+
+    <p>
+        GPU vs CPU vs TPU Simulator addresses this educational gap by providing a browser-based interactive tool that simulates the relative performance characteristics of all three processor types across representative AI workloads. Users observe a visual race between processors, examine animated core grids, and analyze real-time metrics&mdash;developing intuitive understanding of why certain architectures excel at specific workload patterns. The key contributions of this work are:
+    </p>
+
+    <ul>
+        <li>A real-time processing race visualization with three competing processor lanes, progress bars, and global elapsed timer that makes performance differences immediately visible and engaging.</li>
+        <li>Animated core visualization grids (16 cores for CPU, 256 for GPU, 64 for TPU) with pulsing effects during active processing, conveying the parallelism disparity between architectures.</li>
+        <li>Four configurable AI workloads (matrix multiplication, CNN training, batch inference, NLP transformer) with adjustable batch sizes, enabling users to explore how workload characteristics affect relative processor performance.</li>
+        <li>ASCII architecture diagrams illustrating internal processor structures (CPU cache hierarchy, GPU streaming multiprocessors with CUDA cores, TPU systolic array configuration).</li>
+        <li>A zero-dependency, single-file implementation deployed on both GitHub Pages and Vercel without any build tooling.</li>
+    </ul>
+
+    <!-- 2. Related Work -->
+    <h2>2. Related Work</h2>
+
+    <h3>2.1 Heterogeneous Computing Architectures</h3>
+
+    <p>
+        The divergence between CPU, GPU, and TPU architectures reflects fundamentally different design philosophies. CPUs optimize for single-thread performance with deep pipelines, branch prediction, out-of-order execution, and large cache hierarchies. GPUs sacrifice single-thread performance for massive parallelism, organizing thousands of simpler cores into streaming multiprocessors that execute identical instructions across data elements (SIMT model). TPUs take specialization further, implementing a systolic array architecture where processing elements are arranged in a grid and data flows between them in a pipelined fashion, optimizing specifically for matrix multiply-accumulate operations.
+    </p>
+
+    <p>
+        Jouppi et al. (2017) described the TPU architecture in detail, reporting 15&ndash;30x performance improvements over contemporary CPUs and GPUs for inference workloads. Subsequent TPU generations (v2, v3, v4) extended this advantage to training, with TPU v4 pods delivering 1.1 exaflops of peak performance. Our simulator abstracts these architectural differences into configurable processor models that produce performance ratios consistent with published benchmarks.
+    </p>
+
+    <h3>2.2 Performance Benchmarking Tools</h3>
+
+    <p>
+        MLPerf (Mattson et al., 2020) established standardized benchmarks for comparing ML hardware across training and inference tasks. However, MLPerf results are static tables requiring specialized hardware to reproduce. Tools like AI Benchmark (Ignatov et al., 2019) focus on mobile processors. Our simulator complements these by providing an interactive, visual experience that runs in any web browser without specialized hardware.
+    </p>
+
+    <h3>2.3 Educational Visualizations</h3>
+
+    <p>
+        Interactive visualizations have proven effective for teaching computing concepts. TensorFlow Playground demonstrates neural network training, CNN Explainer visualizes convolutional operations, and Transformer Explainer (our prior work) visualizes attention mechanisms. However, no comparable interactive tool exists for comparing hardware architectures in the context of AI workloads. Our work fills this gap with a processor-centric visualization.
+    </p>
+
+    <!-- 3. Processor Models -->
+    <h2>3. Processor Models</h2>
+
+    <p>
+        The simulator abstracts each processor type into a parameterized model that captures the essential performance characteristics without requiring cycle-accurate simulation. Each model is defined by its core count, clock frequency, parallelism factor, and workload-specific throughput scaling.
+    </p>
+
+    <h3>3.1 CPU Model</h3>
+
+    <table>
+        <caption>Table 1: CPU model specifications</caption>
+        <tr><th>Parameter</th><th>Value</th><th>Rationale</th></tr>
+        <tr><td>Core Count</td><td>8 cores / 16 threads</td><td>Representative high-end desktop CPU</td></tr>
+        <tr><td>Clock Frequency</td><td>5.0 GHz</td><td>Modern boost clock for single-thread performance</td></tr>
+        <tr><td>Cache Hierarchy</td><td>L1: 32KB, L2: 256KB, L3: 16MB</td><td>Standard multi-level cache architecture</td></tr>
+        <tr><td>Parallelism Model</td><td>MIMD (multi-thread)</td><td>Independent instruction streams per core</td></tr>
+        <tr><td>Strengths</td><td>Low latency, branch handling, sequential logic</td><td>Deep pipeline with branch prediction</td></tr>
+    </table>
+
+    <p>
+        The CPU model excels at workloads with complex control flow and data-dependent branching but is constrained by its limited thread count for massively parallel tensor operations. In the simulation, CPU processing speed reflects this by applying a parallelism penalty proportional to the workload's inherent parallelism.
+    </p>
+
+    <h3>3.2 GPU Model</h3>
+
+    <table>
+        <caption>Table 2: GPU model specifications</caption>
+        <tr><th>Parameter</th><th>Value</th><th>Rationale</th></tr>
+        <tr><td>CUDA Cores</td><td>4096</td><td>Representative high-end data center GPU</td></tr>
+        <tr><td>Clock Frequency</td><td>1.8 GHz</td><td>Lower per-core frequency, massive parallelism</td></tr>
+        <tr><td>Memory</td><td>24GB HBM2e</td><td>High-bandwidth memory for tensor throughput</td></tr>
+        <tr><td>Parallelism Model</td><td>SIMT (single instruction, multiple threads)</td><td>Thousands of threads executing identical kernels</td></tr>
+        <tr><td>Strengths</td><td>Massive parallelism, high memory bandwidth</td><td>Optimized for data-parallel operations</td></tr>
+    </table>
+
+    <p>
+        The GPU model achieves its performance advantage through massive parallelism&mdash;4096 CUDA cores executing the same instruction on different data elements simultaneously. The simulation models this by scaling GPU throughput proportionally to the data-parallel dimension of each workload, producing 10&ndash;50x speedups over CPU for suitable tasks.
+    </p>
+
+    <h3>3.3 TPU Model</h3>
+
+    <table>
+        <caption>Table 3: TPU model specifications</caption>
+        <tr><th>Parameter</th><th>Value</th><th>Rationale</th></tr>
+        <tr><td>Systolic Array</td><td>128 &times; 128</td><td>Matrix multiply unit with 16,384 multiply-accumulate units</td></tr>
+        <tr><td>Clock Frequency</td><td>940 MHz</td><td>Lower frequency, higher efficiency per operation</td></tr>
+        <tr><td>Memory</td><td>32GB HBM</td><td>Unified high-bandwidth memory</td></tr>
+        <tr><td>Parallelism Model</td><td>Systolic data flow</td><td>Data flows through processing elements in a pipeline</td></tr>
+        <tr><td>Strengths</td><td>Matrix operations, deterministic latency</td><td>Purpose-built for tensor computations</td></tr>
+    </table>
+
+    <p>
+        The TPU model represents the most specialized architecture, achieving peak efficiency for matrix multiply-accumulate operations through its systolic array. The 128&times;128 array processes 16,384 multiply-accumulate operations per cycle in a pipelined fashion. The simulation reflects this by giving TPU the highest throughput for matrix-heavy workloads while applying efficiency penalties for operations that don't map well to the systolic array structure.
+    </p>
+
+    <!-- 4. Workload Parameterization -->
+    <h2>4. Workload Parameterization</h2>
+
+    <p>
+        The simulator supports four representative AI workloads, each characterized by distinct computational patterns that exercise the three architectures differently.
+    </p>
+
+    <table>
+        <caption>Table 4: Supported workloads and their computational characteristics</caption>
+        <tr>
+            <th>Workload</th>
+            <th>Operation</th>
+            <th>Dominant Pattern</th>
+            <th>CPU Factor</th>
+            <th>GPU Factor</th>
+            <th>TPU Factor</th>
+        </tr>
+        <tr>
+            <td>Matrix Multiplication</td>
+            <td>1024 &times; 1024 GEMM</td>
+            <td>Dense linear algebra</td>
+            <td>1.0x</td>
+            <td>25x</td>
+            <td>45x</td>
+        </tr>
+        <tr>
+            <td>CNN Training</td>
+            <td>ResNet-50, 1 epoch</td>
+            <td>Conv2D + backprop</td>
+            <td>1.0x</td>
+            <td>30x</td>
+            <td>40x</td>
+        </tr>
+        <tr>
+            <td>Batch Inference</td>
+            <td>Image classification</td>
+            <td>Forward pass only</td>
+            <td>1.0x</td>
+            <td>20x</td>
+            <td>50x</td>
+        </tr>
+        <tr>
+            <td>NLP Transformer</td>
+            <td>BERT-Base forward</td>
+            <td>Attention + FFN</td>
+            <td>1.0x</td>
+            <td>22x</td>
+            <td>35x</td>
+        </tr>
+    </table>
+
+    <h3>4.1 Batch Size Scaling</h3>
+
+    <p>
+        Users configure batch sizes from 32 to 256. Larger batch sizes increase the total computation and amplify the parallelism advantage of GPU and TPU architectures. The simulation models this relationship:
+    </p>
+
+    <div class="math">
+        T<sub>processor</sub> = T<sub>base</sub> &times; (batch_size / 32) / speedup_factor<sub>processor</sub>
+    </div>
+
+    <p>
+        This formulation captures the reality that CPUs scale linearly with batch size (limited parallelism), GPUs scale sub-linearly (parallelism saturates at high batch sizes), and TPUs maintain near-linear throughput scaling due to the systolic array's efficient data flow.
+    </p>
+
+    <h3>4.2 Simulation Speed Control</h3>
+
+    <p>
+        A speed multiplier (adjustable via slider) scales the animation tick rate without affecting the relative performance ratios between processors. This allows users to observe the race dynamics at their preferred pace&mdash;slow for detailed analysis or fast for rapid comparison.
+    </p>
+
+    <!-- 5. Simulation Engine -->
+    <h2>5. Simulation Engine</h2>
+
+    <h3>5.1 Tick-Based Architecture</h3>
+
+    <p>
+        The simulation runs on a <code>setInterval</code>-driven tick system. Each tick advances all three processors by their respective throughput amounts, calculated from the processor model parameters and current workload configuration. The tick interval is set to 50ms, providing smooth visual updates at 20 frames per second.
+    </p>
+
+    <div class="pipeline">
+        Tick Event &rarr; Calculate Progress Increment (per processor) &rarr; Apply Stochastic Jitter &rarr; Update Progress Bars &rarr; Animate Core Grids &rarr; Update Metrics Display &rarr; Check Completion &rarr; Log Events
+    </div>
+
+    <h3>5.2 Stochastic Jitter Model</h3>
+
+    <p>
+        To prevent the simulation from appearing artificially deterministic, each processor's progress increment includes a random jitter component. The jitter is sampled from a uniform distribution scaled to &plusmn;15% of the base increment:
+    </p>
+
+    <div class="math">
+        &Delta;progress<sub>t</sub> = &Delta;base &times; (1 + jitter), where jitter ~ U(-0.15, 0.15)
+    </div>
+
+    <p>
+        This produces realistic variation in finish times across simulation runs while preserving the expected performance ordering. The jitter also creates visual dynamism in the progress bars, making the race more engaging.
+    </p>
+
+    <h3>5.3 Completion Detection and Ranking</h3>
+
+    <p>
+        When a processor's cumulative progress reaches 100%, the simulation records its finish timestamp and assigns a rank (1st, 2nd, 3rd) with corresponding medal badges. The global elapsed timer continues until all processors complete. After all finish, the system calculates speedup ratios relative to the slowest processor and displays a comprehensive results summary.
+    </p>
+
+    <!-- 6. Visualization Architecture -->
+    <h2>6. Visualization Architecture</h2>
+
+    <h3>6.1 Processing Race Display</h3>
+
+    <p>
+        The centerpiece of the simulator is the processing race&mdash;three horizontal progress bars representing CPU, GPU, and TPU advancing toward 100% completion. Each lane is color-coded (cyan for CPU, green for GPU, orange for TPU) and displays the processor name, current progress percentage, and status badge (IDLE, RUNNING, or FINISHED). A global elapsed timer above the lanes shows cumulative time in seconds.
+    </p>
+
+    <h3>6.2 Core Visualization Grids</h3>
+
+    <p>
+        Each processor card displays an animated grid representing its processing elements:
+    </p>
+
+    <table>
+        <caption>Table 5: Core visualization grid parameters</caption>
+        <tr><th>Processor</th><th>Grid Size</th><th>Visual Representation</th><th>Animation</th></tr>
+        <tr><td>CPU</td><td>4 &times; 4 (16 cores)</td><td>Large squares, widely spaced</td><td>Sequential pulsing, 1&ndash;2 active at a time</td></tr>
+        <tr><td>GPU</td><td>16 &times; 16 (256 cores)</td><td>Small dots, densely packed</td><td>Wave-pattern pulsing across grid</td></tr>
+        <tr><td>TPU</td><td>8 &times; 8 (64 units)</td><td>Medium squares, uniform grid</td><td>Diagonal sweep pattern (systolic flow)</td></tr>
+    </table>
+
+    <p>
+        The grid animations are designed to convey each architecture's parallelism model: CPU cores activate individually (limited parallelism), GPU cores activate in large waves (SIMT execution), and TPU units activate in diagonal sweeps (systolic data flow).
+    </p>
+
+    <h3>6.3 Architecture Diagrams</h3>
+
+    <p>
+        ASCII-style technical diagrams illustrate the internal structure of each processor, providing educational context for the performance differences:
+    </p>
+
+    <pre>CPU Architecture:
+&#9484;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9488;
+&#9474; Control Unit  &#9474; Branch Predictor &#9474;
+&#9474;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9532;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9508;
+&#9474; L1$ &#9474; L2$ &#9474;    L3 Cache     &#9474;
+&#9474;&#9472;&#9472;&#9472;&#9472;&#9532;&#9472;&#9472;&#9472;&#9472;&#9532;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9508;
+&#9474; Core0 &#9474; Core1 &#9474; Core2 &#9474; Core3 &#9474;
+&#9492;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9524;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9524;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9524;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9496;
+
+GPU Architecture:
+&#9484;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9488;
+&#9474; GPC0: SM0 SM1 SM2 SM3     &#9474;
+&#9474; GPC1: SM4 SM5 SM6 SM7     &#9474;
+&#9474; Each SM: 128 CUDA Cores    &#9474;
+&#9474;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9508;
+&#9474; HBM2e Memory Controller    &#9474;
+&#9492;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9496;
+
+TPU Architecture:
+&#9484;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9488;
+&#9474;   128x128 Systolic Array   &#9474;
+&#9474;   [PE][PE][PE]...[PE]      &#9474;
+&#9474;   [PE][PE][PE]...[PE]      &#9474;
+&#9474;   Matrix Multiply Unit     &#9474;
+&#9474;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9508;
+&#9474;   Unified HBM Controller   &#9474;
+&#9492;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9496;</pre>
+
+    <h3>6.4 Real-Time Metrics Dashboard</h3>
+
+    <p>
+        Each processor card displays live metrics updated on every simulation tick:
+    </p>
+
+    <table>
+        <caption>Table 6: Real-time metrics displayed per processor</caption>
+        <tr><th>Metric</th><th>Description</th><th>Update Frequency</th></tr>
+        <tr><td>Operations/Second</td><td>Simulated throughput based on processor model</td><td>Every tick (50ms)</td></tr>
+        <tr><td>Tasks Completed</td><td>Cumulative count of completed work units</td><td>On completion of each unit</td></tr>
+        <tr><td>Throughput</td><td>Data processed per second (GB/s or TFLOPS)</td><td>Every tick</td></tr>
+        <tr><td>Start Time</td><td>Timestamp when processing began</td><td>Once at start</td></tr>
+        <tr><td>Elapsed Time</td><td>Running duration since start</td><td>Every tick</td></tr>
+        <tr><td>Finish Time</td><td>Timestamp when processing completed</td><td>Once at completion</td></tr>
+        <tr><td>Progress</td><td>Percentage complete with animated bar</td><td>Every tick</td></tr>
+    </table>
+
+    <h3>6.5 Event Log Console</h3>
+
+    <p>
+        A scrollable console at the bottom of the interface displays timestamped log entries tracking simulation events. Events include processor initialization, workload assignment, milestone completions (25%, 50%, 75%), finish events with timing data, and final rankings with speedup calculations. The log provides a textual record complementing the visual race display.
+    </p>
+
+    <!-- 7. Results and Analysis Display -->
+    <h2>7. Results and Analysis Display</h2>
+
+    <p>
+        Upon completion of all three processors, the simulator presents a comprehensive results panel:
+    </p>
+
+    <ul>
+        <li><strong>Ranked Finish Order:</strong> Processors ordered by completion time with medal badges (&#129351; 1st, &#129352; 2nd, &#129353; 3rd).</li>
+        <li><strong>Time Comparison:</strong> Absolute completion times for each processor with calculated speedup multipliers relative to the slowest (CPU).</li>
+        <li><strong>Performance Bars:</strong> Horizontal bars showing relative execution times, visually encoding the magnitude of performance differences.</li>
+        <li><strong>Timestamp Logs:</strong> Complete chronological record of all processor events from initialization to completion.</li>
+    </ul>
+
+    <p>
+        The results display reinforces the quantitative learning by presenting multiple representations of the same performance data&mdash;numerical, visual, and chronological.
+    </p>
+
+    <!-- 8. User Interface Design -->
+    <h2>8. User Interface Design</h2>
+
+    <h3>8.1 Visual Design System</h3>
+
+    <table>
+        <caption>Table 7: Color-coded processor theming</caption>
+        <tr><th>Processor</th><th>Primary Color</th><th>Background Tint</th><th>Accent</th></tr>
+        <tr><td>CPU</td><td>Cyan (#06b6d4)</td><td>#0e2433</td><td>#22d3ee</td></tr>
+        <tr><td>GPU</td><td>Green (#22c55e)</td><td>#0e2418</td><td>#4ade80</td></tr>
+        <tr><td>TPU</td><td>Orange (#f97316)</td><td>#241509</td><td>#fb923c</td></tr>
+    </table>
+
+    <p>
+        The dark theme with processor-specific color coding creates immediate visual association between each lane and its processor type. The color scheme is consistent across progress bars, core grids, status badges, architecture diagrams, and results displays.
+    </p>
+
+    <h3>8.2 Interactive Controls</h3>
+
+    <table>
+        <caption>Table 8: User-configurable simulation parameters</caption>
+        <tr><th>Control</th><th>Type</th><th>Options</th><th>Default</th></tr>
+        <tr><td>Workload Type</td><td>Dropdown</td><td>Matrix Mul / CNN Training / Batch Inference / NLP Transformer</td><td>Matrix Multiplication</td></tr>
+        <tr><td>Batch Size</td><td>Dropdown</td><td>32 / 64 / 128 / 256</td><td>64</td></tr>
+        <tr><td>Simulation Speed</td><td>Range slider</td><td>0.5x &ndash; 3x</td><td>1x</td></tr>
+        <tr><td>Start / Reset</td><td>Buttons</td><td>&mdash;</td><td>&mdash;</td></tr>
+    </table>
+
+    <h3>8.3 Responsive Layout</h3>
+
+    <p>
+        The interface uses CSS Grid and Flexbox to adapt across viewport sizes. On desktop, processor cards are displayed in a three-column layout for side-by-side comparison. On tablet, the layout transitions to a stacked arrangement with preserved race lanes. On mobile, all elements stack vertically with touch-optimized controls.
+    </p>
+
+    <!-- 9. Deployment -->
+    <h2>9. Deployment</h2>
+
+    <h3>9.1 Dual-Platform Deployment</h3>
+
+    <p>
+        The project is deployed on two platforms simultaneously, demonstrating the portability of the zero-dependency architecture:
+    </p>
+
+    <table>
+        <caption>Table 9: Deployment platforms</caption>
+        <tr><th>Platform</th><th>URL</th><th>Deployment Method</th><th>Status</th></tr>
+        <tr><td>GitHub Pages</td><td><a href="https://romizone.github.io/gpu-cpu-tpu-simulator/">romizone.github.io/gpu-cpu-tpu-simulator</a></td><td>Automatic on push to main</td><td>Completed</td></tr>
+        <tr><td>Vercel</td><td><a href="https://gpu-cpu-tpu-simulator.vercel.app">gpu-cpu-tpu-simulator.vercel.app</a></td><td>Automatic on push to main</td><td>Completed</td></tr>
+    </table>
+
+    <p>
+        Both deployments serve the identical <code>index.html</code> file with no build step, transpilation, or bundling required. The zero-dependency architecture ensures identical behavior across both CDN networks.
+    </p>
+
+    <h3>9.2 Local Development</h3>
+
+    <pre>git clone https://github.com/romizone/gpu-cpu-tpu-simulator.git
+cd gpu-cpu-tpu-simulator
+npx serve .
+# Or: python3 -m http.server 3000
+# Or: open index.html (direct file access)</pre>
+
+    <!-- 10. Implementation Details -->
+    <h2>10. Implementation Details</h2>
+
+    <h3>10.1 Technology Stack</h3>
+
+    <table>
+        <caption>Table 10: Core technology stack</caption>
+        <tr><th>Layer</th><th>Technology</th><th>Purpose</th></tr>
+        <tr><td>Markup</td><td>HTML5</td><td>Semantic structure, accessibility</td></tr>
+        <tr><td>Styling</td><td>CSS3</td><td>Grid/Flexbox layout, animations, responsive design, dark theme</td></tr>
+        <tr><td>Logic</td><td>Vanilla JavaScript (ES6+)</td><td>Simulation engine, event handling, DOM manipulation</td></tr>
+        <tr><td>Animation</td><td>setInterval + CSS transitions</td><td>Tick-based progress updates, core grid pulsing</td></tr>
+        <tr><td>Hosting</td><td>GitHub Pages + Vercel</td><td>Dual-platform static deployment with CDN</td></tr>
+        <tr><td>Source Control</td><td>GitHub</td><td>Version control with automatic deployment triggers</td></tr>
+    </table>
+
+    <h3>10.2 Zero-Dependency Architecture</h3>
+
+    <p>
+        The entire application resides in a single <code>index.html</code> file containing HTML structure, CSS styles, and JavaScript logic. No npm packages, frameworks, build tools, or external CDN references are used. This architecture provides:
+    </p>
+
+    <ul>
+        <li><strong>Instant deployment:</strong> Serve from any static host or open directly from the file system.</li>
+        <li><strong>Zero maintenance burden:</strong> No dependency updates, security patches, or version conflicts.</li>
+        <li><strong>Maximum portability:</strong> Works identically across GitHub Pages, Vercel, Netlify, or local file access.</li>
+        <li><strong>Educational transparency:</strong> The complete codebase is inspectable in a single file.</li>
+    </ul>
+
+    <h3>10.3 Project Structure</h3>
+
+    <pre>gpu-cpu-tpu-simulator/
+&#9500;&#9472;&#9472; index.html              # Complete application (single-file, all-in-one)
+&#9474;   &#9500;&#9472;&#9472; &lt;style&gt;             # CSS: dark theme, processor colors, animations, responsive
+&#9474;   &#9500;&#9472;&#9472; &lt;body&gt;              # HTML: race lanes, processor cards, controls, results
+&#9474;   &#9492;&#9472;&#9472; &lt;script&gt;            # JS: simulation engine, tick loop, core animations, logging
+&#9500;&#9472;&#9472; LICENSE                 # MIT License
+&#9492;&#9472;&#9472; README.md               # Documentation and usage guide</pre>
+
+    <!-- 11. Educational Value -->
+    <h2>11. Educational Value</h2>
+
+    <p>
+        The simulator serves as an educational bridge between theoretical hardware architecture knowledge and practical performance intuition. Key learning outcomes include:
+    </p>
+
+    <table>
+        <caption>Table 11: Educational objectives and simulator features</caption>
+        <tr><th>Learning Objective</th><th>Simulator Feature</th><th>Insight Gained</th></tr>
+        <tr><td>Parallelism disparity</td><td>Core visualization grids</td><td>GPU has 256x more cores than CPU; quantity vs. quality trade-off</td></tr>
+        <tr><td>Workload-architecture fit</td><td>Workload selector</td><td>TPU dominates matrix ops; GPU excels at training; CPU handles sequential logic</td></tr>
+        <tr><td>Batch size scaling</td><td>Batch size control</td><td>Larger batches amplify GPU/TPU advantage over CPU</td></tr>
+        <tr><td>Systolic array concept</td><td>TPU architecture diagram</td><td>Data flows through processing elements in a pipelined grid</td></tr>
+        <tr><td>Performance magnitude</td><td>Processing race</td><td>GPU/TPU finish 20&ndash;50x faster than CPU for parallel workloads</td></tr>
+        <tr><td>Real-world variance</td><td>Stochastic jitter</td><td>Performance is not perfectly deterministic; variance exists in real hardware</td></tr>
+    </table>
+
+    <!-- 12. Browser Compatibility -->
+    <h2>12. Browser Compatibility</h2>
+
+    <table>
+        <caption>Table 12: Browser compatibility</caption>
+        <tr><th>Browser</th><th>CSS Grid</th><th>CSS Animations</th><th>ES6+ JavaScript</th><th>Overall</th></tr>
+        <tr><td>Chrome 90+</td><td>Full</td><td>Full</td><td>Full</td><td>Full support</td></tr>
+        <tr><td>Edge 90+</td><td>Full</td><td>Full</td><td>Full</td><td>Full support</td></tr>
+        <tr><td>Safari 15+</td><td>Full</td><td>Full</td><td>Full</td><td>Full support</td></tr>
+        <tr><td>Firefox 103+</td><td>Full</td><td>Full</td><td>Full</td><td>Full support</td></tr>
+        <tr><td>Chrome (Android)</td><td>Full</td><td>Full</td><td>Full</td><td>Full support</td></tr>
+        <tr><td>Safari (iOS 15+)</td><td>Full</td><td>Full</td><td>Full</td><td>Full support</td></tr>
+    </table>
+
+    <!-- 13. Future Work -->
+    <h2>13. Future Work</h2>
+
+    <ul>
+        <li><strong>Custom Workload Builder:</strong> Allow users to define custom workloads by specifying operation mix (percentage matrix multiply, convolution, attention, sequential), enabling exploration of how workload composition affects relative processor performance.</li>
+        <li><strong>Multi-GPU/TPU Scaling:</strong> Simulate data-parallel and model-parallel scaling across 2, 4, and 8 accelerators, demonstrating Amdahl's law and communication overhead in distributed training.</li>
+        <li><strong>Power Efficiency Mode:</strong> Add performance-per-watt metrics alongside raw throughput, illustrating the energy efficiency advantages of specialized hardware.</li>
+        <li><strong>Historical Architecture Timeline:</strong> Allow users to select hardware generations (e.g., K80 vs V100 vs A100 vs H100) and observe how each generation improved AI workload performance.</li>
+        <li><strong>Memory Bandwidth Visualization:</strong> Add memory bandwidth utilization as a visible bottleneck, showing when workloads are compute-bound vs. memory-bound on each architecture.</li>
+        <li><strong>NPU/Neural Engine Support:</strong> Add Apple Neural Engine and Qualcomm Hexagon NPU models to cover edge AI processor comparisons.</li>
+    </ul>
+
+    <!-- 14. Conclusion -->
+    <h2>14. Conclusion</h2>
+
+    <p>
+        GPU vs CPU vs TPU Simulator demonstrates that the fundamental performance characteristics of heterogeneous processor architectures can be made accessible through interactive browser-based visualization. By staging a visual race between three processors across representative AI workloads, users develop intuitive understanding of why GPUs and TPUs dramatically outperform CPUs for data-parallel tensor operations, and how workload characteristics influence the relative advantage of each architecture.
+    </p>
+
+    <p>
+        The animated core visualization grids convey the parallelism disparity between architectures more effectively than static diagrams or benchmark tables. The configurable workload selection and batch size controls enable users to explore the workload-architecture fit landscape, discovering that TPUs excel at matrix-heavy inference, GPUs dominate training workloads, and CPUs remain competitive only for sequential or control-flow-heavy operations.
+    </p>
+
+    <p>
+        Built as a single HTML file with zero external dependencies and deployed on both GitHub Pages and Vercel, the application is instantly accessible, fully transparent, and suitable for educational contexts ranging from computer architecture courses to AI practitioner workshops. The dual-platform deployment demonstrates the portability benefits of dependency-free web development.
+    </p>
+
+    <p>
+        The complete source code is available at <a href="https://github.com/romizone/gpu-cpu-tpu-simulator">https://github.com/romizone/gpu-cpu-tpu-simulator</a> and live demos are accessible at <a href="https://romizone.github.io/gpu-cpu-tpu-simulator/">GitHub Pages</a> and <a href="https://gpu-cpu-tpu-simulator.vercel.app">Vercel</a>.
+    </p>
+
+    <!-- References -->
+    <h2>References</h2>
+
+    <div class="references">
+        <ol>
+            <li>Jouppi, N.P., Young, C., Patil, N., et al. (2017). In-Datacenter Performance Analysis of a Tensor Processing Unit. <em>Proceedings of the 44th Annual International Symposium on Computer Architecture (ISCA)</em>, 1&ndash;12.</li>
+            <li>Mattson, P., Cheng, C., Diamos, G., et al. (2020). MLPerf Training Benchmark. <em>Proceedings of Machine Learning and Systems (MLSys)</em>, 2, 336&ndash;349.</li>
+            <li>Ignatov, A., Timofte, R., Chou, W., et al. (2019). AI Benchmark: Running Deep Neural Networks on Android Smartphones. <em>Proceedings of the European Conference on Computer Vision (ECCV) Workshops</em>.</li>
+            <li>Hennessy, J.L. and Patterson, D.A. (2019). <em>Computer Architecture: A Quantitative Approach</em>. 6th Edition. Morgan Kaufmann.</li>
+            <li>NVIDIA Corporation (2020). NVIDIA A100 Tensor Core GPU Architecture. <em>NVIDIA Whitepaper</em>.</li>
+            <li>Jouppi, N.P., Yoon, D.H., Ashcraft, M., et al. (2021). Ten Lessons from Three Generations of Tensor Processing Units. <em>Proceedings of the 48th Annual International Symposium on Computer Architecture (ISCA)</em>.</li>
+            <li>He, K., Zhang, X., Ren, S., and Sun, J. (2016). Deep Residual Learning for Image Recognition. <em>Proceedings of the IEEE Conference on Computer Vision and Pattern Recognition (CVPR)</em>.</li>
+            <li>Devlin, J., Chang, M.W., Lee, K., and Toutanova, K. (2019). BERT: Pre-training of Deep Bidirectional Transformers for Language Understanding. <em>Proceedings of NAACL-HLT</em>.</li>
+            <li>Vaswani, A., Shazeer, N., Parmar, N., et al. (2017). Attention Is All You Need. <em>Advances in Neural Information Processing Systems (NeurIPS)</em>, 30.</li>
+            <li>Smilkov, D., Carter, S., Sculley, D., Vi&eacute;gas, F.B., and Wattenberg, M. (2017). Direct-Manipulation Visualization of Deep Networks. <em>ICML Visualization for Deep Learning Workshop</em>.</li>
+        </ol>
+    </div>
+
+    <!-- Footer -->
+    <div class="paper-footer">
+        <p>GPU vs CPU vs TPU Simulator &mdash; Open Source &middot; MIT License &middot; <a href="https://github.com/romizone/gpu-cpu-tpu-simulator">github.com/romizone/gpu-cpu-tpu-simulator</a></p>
+    </div>
+
+</body>
+</html>

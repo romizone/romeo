@@ -604,7 +604,34 @@
             </div>
             <div class="projects-grid">
 
-                <!-- 1. AI Image Diffusion Simulator -->
+                <!-- 1. GPU vs CPU vs TPU Simulator -->
+                <div class="project-card">
+                    <div class="project-thumb">
+                        <img src="GPUSimulator.svg" alt="GPU vs CPU vs TPU Simulator" loading="lazy">
+                    </div>
+                    <div class="project-body">
+                        <h3>&#128308; GPU vs CPU vs TPU Simulator</h3>
+                        <p>Interactive web-based simulator that visually demonstrates <strong>performance differences between CPU, GPU, and TPU</strong> when handling AI and deep learning workloads. Features a real-time <strong>processing race</strong> with three horizontal progress bars competing to complete identical tasks, supporting 4 workload types: <strong>Matrix Multiplication (1024&times;1024)</strong>, <strong>CNN Training (ResNet-50)</strong>, <strong>Batch Inference</strong>, and <strong>NLP Transformer (BERT-Base)</strong>. Includes detailed processor cards with <strong>animated core visualization grids</strong> (16 cores for CPU, 256 for GPU, 64 for TPU), real-time metrics (ops/sec, throughput, timestamps), ASCII <strong>architecture diagrams</strong> showing internal structures (CPU cache hierarchy, GPU CUDA streaming multiprocessors, TPU systolic array), adjustable batch size (32&ndash;256) and speed multiplier, ranked finish results with medal badges and speedup analysis, plus a scrollable event log console &mdash; <strong>zero dependencies, pure vanilla JavaScript.</strong></p>
+                        <div class="badges">
+                            <span class="badge">HTML5</span>
+                            <span class="badge">CSS3</span>
+                            <span class="badge">JavaScript</span>
+                            <span class="badge">GPU Computing</span>
+                            <span class="badge">TPU Systolic Array</span>
+                            <span class="badge">AI Workloads</span>
+                            <span class="badge">Zero Dependencies</span>
+                            <span class="badge">MIT License</span>
+                        </div>
+                        <div class="project-actions">
+                            <a href="https://github.com/romizone/gpu-cpu-tpu-simulator" class="btn-github">&#128187; GitHub</a>
+                            <a href="https://romizone.github.io/gpu-cpu-tpu-simulator/" class="btn-demo">&#127760; Live Demo</a>
+                            <a href="https://romeo-nu.vercel.app/GPUSimulator_Paper.html" class="btn-paper">&#128196; Paper</a>
+                        </div>
+                        <div class="deploy-date">Deployed: 14 March 2026</div>
+                    </div>
+                </div>
+
+                <!-- 2. AI Image Diffusion Simulator -->
                 <div class="project-card">
                     <div class="project-thumb">
                         <img src="DiffusionSimulator.svg" alt="AI Image Diffusion Simulator" loading="lazy">
