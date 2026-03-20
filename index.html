@@ -12,8 +12,8 @@
     <meta property="og:type" content="website">
     <meta property="og:title" content="Romi Nur Ismanto — AI Engineer & Researcher">
     <meta property="og:description" content="Building agentic AI systems, deep learning models, LLM fine-tuning, RAG pipelines, and intelligent automation solutions.">
-    <meta property="og:image" content="https://romeo-nu.vercel.app/Foto.jpeg">
-    <meta property="og:url" content="https://romeo-nu.vercel.app">
+    <meta property="og:image" content="https://rominur.com/Foto.jpeg">
+    <meta property="og:url" content="https://rominur.com">
     <meta property="og:site_name" content="Romi Nur Ismanto">
 
     <!-- Twitter Card -->
@@ -21,7 +21,7 @@
     <meta name="twitter:site" content="@romeografic">
     <meta name="twitter:title" content="Romi Nur Ismanto — AI Engineer & Researcher">
     <meta name="twitter:description" content="Building agentic AI systems, deep learning models, LLM fine-tuning, RAG pipelines, and intelligent automation solutions.">
-    <meta name="twitter:image" content="https://romeo-nu.vercel.app/Foto.jpeg">
+    <meta name="twitter:image" content="https://rominur.com/Foto.jpeg">
 
     <!-- Canonical & Sitemap -->
     <link rel="canonical" href="https://rominur.com/">
@@ -50,6 +50,24 @@
         }
 
         * { margin: 0; padding: 0; box-sizing: border-box; }
+
+        .skip-nav {
+            position: absolute;
+            top: -100%;
+            left: 16px;
+            padding: 8px 16px;
+            background: var(--text-primary);
+            color: #111827;
+            border-radius: 0 0 8px 8px;
+            font-weight: 600;
+            font-size: 0.88em;
+            z-index: 100;
+            text-decoration: none;
+            transition: top 0.2s;
+        }
+        .skip-nav:focus {
+            top: 0;
+        }
 
         body {
             font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
@@ -265,21 +283,9 @@
         .project-card:hover::before {
             opacity: 1;
         }
-        .project-card:nth-child(1)::before { background: linear-gradient(180deg, #111827, #374151); }
-        .project-card:nth-child(2)::before { background: linear-gradient(180deg, #1f2937, #4b5563); }
-        .project-card:nth-child(3)::before { background: linear-gradient(180deg, #374151, #6b7280); }
-        .project-card:nth-child(4)::before { background: linear-gradient(180deg, #111827, #374151); }
-        .project-card:nth-child(5)::before { background: linear-gradient(180deg, #1f2937, #4b5563); }
-        .project-card:nth-child(6)::before { background: linear-gradient(180deg, #374151, #6b7280); }
-        .project-card:nth-child(7)::before { background: linear-gradient(180deg, #111827, #374151); }
-        .project-card:nth-child(8)::before { background: linear-gradient(180deg, #1f2937, #4b5563); }
-        .project-card:nth-child(9)::before { background: linear-gradient(180deg, #374151, #6b7280); }
-        .project-card:nth-child(10)::before { background: linear-gradient(180deg, #111827, #374151); }
-        .project-card:nth-child(11)::before { background: linear-gradient(180deg, #1f2937, #4b5563); }
-        .project-card:nth-child(12)::before { background: linear-gradient(180deg, #374151, #6b7280); }
-        .project-card:nth-child(13)::before { background: linear-gradient(180deg, #111827, #374151); }
-        .project-card:nth-child(14)::before { background: linear-gradient(180deg, #1f2937, #4b5563); }
-        .project-card:nth-child(15)::before { background: linear-gradient(180deg, #374151, #6b7280); }
+        .project-card:nth-child(3n+1)::before { background: linear-gradient(180deg, #111827, #374151); }
+        .project-card:nth-child(3n+2)::before { background: linear-gradient(180deg, #1f2937, #4b5563); }
+        .project-card:nth-child(3n)::before { background: linear-gradient(180deg, #374151, #6b7280); }
 
         .project-thumb {
             flex-shrink: 0;
@@ -570,39 +576,41 @@
 </head>
 <body>
 
+    <a href="#main-content" class="skip-nav">Skip to content</a>
+
     <!-- ===== HERO ===== -->
-    <div class="hero">
+    <header class="hero" role="banner">
         <div class="hero-inner">
             <div class="avatar-wrap">
-                <img src="Foto.jpeg" alt="Romi Nur Ismanto">
+                <img src="Foto.jpeg" alt="Romi Nur Ismanto — AI Engineer & Researcher" width="160" height="160">
             </div>
             <h1>Romi Nur Ismanto</h1>
-            <div class="tagline">
+            <p class="tagline">
                 <em>I like to train my agentic AI agent on large datasets with inference speed</em><br>
                 <strong>AI-powered tools</strong> <em>from Node JS roots to web frontiers.</em><br>
                 <em>Every commit lands on GitHub for you to fork &amp; remix.</em>
-            </div>
-            <div class="social-links">
+            </p>
+            <nav class="social-links" aria-label="Social links">
                 <a href="https://jekardah.com"><span class="link-emoji">&#127961;</span> Jekardah</a>
                 <a href="https://x.com/romeografic"><span class="link-emoji">&#120143;</span> Twitter / X</a>
                 <a href="https://github.com/romizone"><span class="link-emoji">&#9901;</span> GitHub</a>
                 <a href="https://huggingface.co/romizone"><span class="link-emoji">&#129303;</span> Hugging Face</a>
                 <a href="https://www.padelfip.com/player/romi-nur-ismanto/"><span class="link-emoji">&#127955;</span> Padel FIP</a>
                 <a href="mailto:rominur@gmail.com"><span class="link-emoji">&#9993;</span> Email</a>
-            </div>
+            </nav>
         </div>
-    </div>
+    </header>
 
     <!-- ===== BIO ===== -->
-    <div class="container">
-        <div class="section">
+    <main id="main-content" class="container">
+        <section class="section">
             <div class="bio-text">
                 Jakarta AI Research Lab. Passionate about building agentic AI systems, training deep learning models, and exploring the frontier of generative AI, large language models (LLM), retrieval-augmented generation (RAG), computer vision AI, LiDAR sensing, and speech-to-text systems. With nearly two decades of background in IT infrastructure, network security, and remote operations, now channeling that experience into AI research, AI engineering, LLM fine-tuning, RAG pipelines, vision AI, and developing intelligent automation solutions.
             </div>
-        </div>
+        </section>
 
         <!-- ===== PROJECTS ===== -->
-        <div class="section">
+        <section class="section">
             <div class="section-header">
                 <div class="section-icon blue">&#128736;</div>
                 <h2>Featured AI Working Projects</h2>
@@ -630,7 +638,7 @@
                         <div class="project-actions">
                             <a href="https://github.com/romizone/gpu-cpu-tpu-simulator" class="btn-github">&#128187; GitHub</a>
                             <a href="https://romizone.github.io/gpu-cpu-tpu-simulator/" class="btn-demo">&#127760; Live Demo</a>
-                            <a href="https://romeo-nu.vercel.app/GPUSimulator_Paper.html" class="btn-paper">&#128196; Paper</a>
+                            <a href="https://rominur.com/GPUSimulator_Paper.html" class="btn-paper">&#128196; Paper</a>
                         </div>
                         <div class="deploy-date">Deployed: 14 March 2026</div>
                     </div>
@@ -656,7 +664,7 @@
                         <div class="project-actions">
                             <a href="https://github.com/romizone/diffusion-simulator" class="btn-github">&#128187; GitHub</a>
                             <a href="https://diffussion.vercel.app/" class="btn-demo">&#127760; Live Demo</a>
-                            <a href="https://romeo-nu.vercel.app/DiffusionSimulator_Paper.html" class="btn-paper">&#128196; Paper</a>
+                            <a href="https://rominur.com/DiffusionSimulator_Paper.html" class="btn-paper">&#128196; Paper</a>
                         </div>
                         <div class="deploy-date">Deployed: 7 March 2026</div>
                     </div>
@@ -683,7 +691,7 @@
                         <div class="project-actions">
                             <a href="https://github.com/romizone/ai-news-presenter" class="btn-github">&#128187; GitHub</a>
                             <a href="https://files-navy-three.vercel.app" class="btn-demo">&#127760; Live Demo</a>
-                            <a href="https://romeo-nu.vercel.app/AINewsPresenter_Paper.html" class="btn-paper">&#128196; Paper</a>
+                            <a href="https://rominur.com/AINewsPresenter_Paper.html" class="btn-paper">&#128196; Paper</a>
                         </div>
                         <div class="deploy-date">Deployed: 28 February 2026</div>
                     </div>
@@ -709,7 +717,7 @@
                         <div class="project-actions">
                             <a href="https://github.com/romizone/RAGSOP" class="btn-github">&#128187; GitHub</a>
                             <a href="https://huggingface.co/spaces/romizone/RAG-SOP" class="btn-demo">&#127760; Live Demo</a>
-                            <a href="https://romeo-nu.vercel.app/RAGSOP_Paper.html" class="btn-paper">&#128196; Paper</a>
+                            <a href="https://rominur.com/RAGSOP_Paper.html" class="btn-paper">&#128196; Paper</a>
                         </div>
                         <div class="deploy-date">Deployed: 28 February 2026</div>
                     </div>
@@ -735,7 +743,7 @@
                         <div class="project-actions">
                             <a href="https://github.com/romizone/lecun1989-cnn" class="btn-github">&#128187; GitHub</a>
                             <a href="https://lecun1989-cnn.vercel.app" class="btn-demo">&#127760; Live Demo</a>
-                            <a href="https://romeo-nu.vercel.app/LeCun1989CNN_Paper.html" class="btn-paper">&#128196; Paper</a>
+                            <a href="https://rominur.com/LeCun1989CNN_Paper.html" class="btn-paper">&#128196; Paper</a>
                         </div>
                         <div class="deploy-date">Deployed: 22 February 2026</div>
                     </div>
@@ -760,7 +768,7 @@
                         <div class="project-actions">
                             <a href="https://github.com/romizone/web40" class="btn-github">&#128187; GitHub</a>
                             <a href="https://web40.vercel.app" class="btn-demo">&#127760; Live Demo</a>
-                            <a href="https://romeo-nu.vercel.app/Web40_Paper.html" class="btn-paper">&#128196; Paper</a>
+                            <a href="https://rominur.com/Web40_Paper.html" class="btn-paper">&#128196; Paper</a>
                         </div>
                         <div class="deploy-date">Deployed: 18 February 2026</div>
                     </div>
@@ -786,7 +794,7 @@
                         <div class="project-actions">
                             <a href="https://github.com/romizone/optimus" class="btn-github">&#128187; GitHub</a>
                             <a href="https://optimus-azure.vercel.app/optimus-city-simulation.html" class="btn-demo">&#127760; Live Demo</a>
-                            <a href="https://romeo-nu.vercel.app/OptimusPerceptron_Paper.html" class="btn-paper">&#128196; Paper</a>
+                            <a href="https://rominur.com/OptimusPerceptron_Paper.html" class="btn-paper">&#128196; Paper</a>
                         </div>
                         <div class="deploy-date">Deployed: 17 February 2026</div>
                     </div>
@@ -810,7 +818,7 @@
                         <div class="project-actions">
                             <a href="https://github.com/romizone/transcribeAI" class="btn-github">&#128187; GitHub</a>
                             <a href="https://huggingface.co/spaces/romizone/TranscribeAI" class="btn-demo">&#127760; Live Demo</a>
-                            <a href="https://romeo-nu.vercel.app/TranscribeAI_Paper.html" class="btn-paper">&#128196; Paper</a>
+                            <a href="https://rominur.com/TranscribeAI_Paper.html" class="btn-paper">&#128196; Paper</a>
                         </div>
                     </div>
                 </div>
@@ -835,7 +843,7 @@
                         <div class="project-actions">
                             <a href="https://github.com/romizone/PDFtoword" class="btn-github">&#128187; GitHub</a>
                             <a href="https://huggingface.co/spaces/romizone/ai-pdf-tools" class="btn-demo">&#127760; Live Demo</a>
-                            <a href="https://romeo-nu.vercel.app/PDFTools_Paper.html" class="btn-paper">&#128196; Paper</a>
+                            <a href="https://rominur.com/PDFTools_Paper.html" class="btn-paper">&#128196; Paper</a>
                         </div>
                     </div>
                 </div>
@@ -859,7 +867,7 @@
                         <div class="project-actions">
                             <a href="https://github.com/romizone/teslaway" class="btn-github">&#128187; GitHub</a>
                             <a href="https://teslaway.vercel.app" class="btn-demo">&#127760; Live Demo</a>
-                            <a href="https://romeo-nu.vercel.app/TeslaWay_Paper.html" class="btn-paper">&#128196; Paper</a>
+                            <a href="https://rominur.com/TeslaWay_Paper.html" class="btn-paper">&#128196; Paper</a>
                         </div>
                     </div>
                 </div>
@@ -883,7 +891,7 @@
                         <div class="project-actions">
                             <a href="https://github.com/romizone/knight-chess" class="btn-github">&#128187; GitHub</a>
                             <a href="https://knight-chess.vercel.app" class="btn-demo">&#127760; Live Demo</a>
-                            <a href="https://romeo-nu.vercel.app/KnightChess_Paper.html" class="btn-paper">&#128196; Paper</a>
+                            <a href="https://rominur.com/KnightChess_Paper.html" class="btn-paper">&#128196; Paper</a>
                         </div>
                     </div>
                 </div>
@@ -906,7 +914,7 @@
                         <div class="project-actions">
                             <a href="https://github.com/romizone/simulasillm" class="btn-github">&#128187; GitHub</a>
                             <a href="https://simulasillm.vercel.app" class="btn-demo">&#127760; Live Demo</a>
-                            <a href="https://romeo-nu.vercel.app/SimulasiLLM_Paper.html" class="btn-paper">&#128196; Paper</a>
+                            <a href="https://rominur.com/SimulasiLLM_Paper.html" class="btn-paper">&#128196; Paper</a>
                         </div>
                     </div>
                 </div>
@@ -930,7 +938,7 @@
                         <div class="project-actions">
                             <a href="https://github.com/romizone/pytorch" class="btn-github">&#128187; GitHub</a>
                             <a href="https://pytorch-ecru.vercel.app" class="btn-demo">&#127760; Live Demo</a>
-                            <a href="https://romeo-nu.vercel.app/PyTorch_Paper.html" class="btn-paper">&#128196; Paper</a>
+                            <a href="https://rominur.com/PyTorch_Paper.html" class="btn-paper">&#128196; Paper</a>
                         </div>
                     </div>
                 </div>
@@ -955,7 +963,7 @@
                         <div class="project-actions">
                             <a href="https://github.com/romizone/chatbot-next" class="btn-github">&#128187; GitHub</a>
                             <a href="https://huggingface.co/spaces/romizone/open-chatbot" class="btn-demo">&#127760; Live Demo</a>
-                            <a href="https://romeo-nu.vercel.app/OpenChatbot_Paper.html" class="btn-paper">&#128196; Paper</a>
+                            <a href="https://rominur.com/OpenChatbot_Paper.html" class="btn-paper">&#128196; Paper</a>
                         </div>
                     </div>
                 </div>
@@ -980,7 +988,7 @@
                         <div class="project-actions">
                             <a href="https://github.com/romizone/WinRA" class="btn-github">&#128187; GitHub</a>
                             <a href="https://github.com/romizone/WinRA/releases/download/v1.0/WinRA.dmg" class="btn-demo">&#127760; Download .dmg</a>
-                            <a href="https://romeo-nu.vercel.app/WinRA_Paper.html" class="btn-paper">&#128196; Paper</a>
+                            <a href="https://rominur.com/WinRA_Paper.html" class="btn-paper">&#128196; Paper</a>
                         </div>
                         <div class="deploy-date">Deployed: 22 February 2026</div>
                     </div>
@@ -1006,17 +1014,17 @@
                         <div class="project-actions">
                             <a href="https://github.com/romizone/acroromi" class="btn-github">&#128187; GitHub</a>
                             <a href="https://github.com/romizone/acroromi/releases/download/v1.1.0/Acroromi.dmg" class="btn-demo">&#127760; Download .dmg</a>
-                            <a href="https://romeo-nu.vercel.app/AcroRomi_Paper.html" class="btn-paper">&#128196; Paper</a>
+                            <a href="https://rominur.com/AcroRomi_Paper.html" class="btn-paper">&#128196; Paper</a>
                         </div>
                         <div class="deploy-date">Deployed: 9 March 2026</div>
                     </div>
                 </div>
 
             </div>
-        </div>
+        </section>
 
         <!-- ===== LATEST RESEARCH ===== -->
-        <div class="section">
+        <section class="section">
             <div class="section-header">
                 <div class="section-icon green">&#128300;</div>
                 <h2>Latest Research</h2>
@@ -1136,10 +1144,58 @@
                 </div>
 
             </div>
-        </div>
+        </section>
+
+        <!-- ===== BOOKS & STUDY GUIDES ===== -->
+        <section class="section">
+            <div class="section-header">
+                <div class="section-icon rose">&#128218;</div>
+                <h2>Books &amp; Study Guides</h2>
+            </div>
+            <div class="projects-grid">
+
+                <div class="project-card">
+                    <div class="project-body">
+                        <h3>&#128214; SDLC Vibe Coding Handbook</h3>
+                        <p>The complete guide to building software with AI &mdash; from requirements to maintenance. A practitioner&rsquo;s framework synthesizing research from IBM, NIST, OWASP, METR, Anthropic, Google Cloud, AWS, GitHub, and the global developer community. Covers the full AI-native SDLC across 20+ chapters: origin of vibe coding, brain dump to structured vision, PRD templates, CLAUDE.md configuration, user stories, tech stack selection, database schema design (ERD &amp; Prisma), API design &amp; security, state management, UI wireframes, prompt engineering deep dive, and live coding sessions building Task CRUD, Kanban Board UI, Time Tracker, and Weekly Reports. All code examples use the TaskFlow case study &mdash; a project management tool for small teams.</p>
+                        <div class="badges">
+                            <span class="badge">Handbook</span>
+                            <span class="badge">SDLC</span>
+                            <span class="badge">Vibe Coding</span>
+                            <span class="badge">AI Development</span>
+                            <span class="badge">110 Pages</span>
+                            <span class="badge">2026 Edition</span>
+                        </div>
+                        <div class="project-actions">
+                            <a href="https://rominur.com/Vibe-Coding-Handbook-SDLC-2026.pdf" class="btn-paper">&#128196; Download PDF</a>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="project-card">
+                    <div class="project-body">
+                        <h3>&#129417; Claude Architect Handbook</h3>
+                        <p>Unofficial independent study guide for mastering Agentic Architecture, Tool Design, MCP &amp; Prompt Engineering for Anthropic&rsquo;s Claude Platform. Comprehensive preparation covering all 5 exam domains in detail across 10 parts and 48 chapters: Agentic Architecture &amp; Orchestration (27%), Tool Design &amp; MCP Integration (18%), Claude Code Configuration &amp; Workflows (20%), Prompt Engineering &amp; Structured Output (20%), and Context Management &amp; Reliability (15%). Includes 80+ practice questions, 6 detailed scenario walkthroughs (Customer Support, Code Generation, Multi-Agent Research, CI/CD Integration), decision trees, anti-pattern catalog, comparison tables, flashcard summaries, and 3 bonus worked examples building complete systems from scratch.</p>
+                        <div class="badges">
+                            <span class="badge">Study Guide</span>
+                            <span class="badge">Claude Platform</span>
+                            <span class="badge">Agentic AI</span>
+                            <span class="badge">MCP</span>
+                            <span class="badge">Prompt Engineering</span>
+                            <span class="badge">135 Pages</span>
+                        </div>
+                        <div class="project-actions">
+                            <a href="https://claude.jekardah.com/" class="btn-demo">&#127760; Practice Exam</a>
+                            <a href="https://rominur.com/Claude-Code-Architect-Handbook-2026.pdf" class="btn-paper">&#128196; Download PDF</a>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </section>
 
         <!-- ===== EXPERIENCE ===== -->
-        <div class="section">
+        <section class="section">
             <div class="section-header">
                 <div class="section-icon purple">&#128640;</div>
                 <h2>Professional Experience</h2>
@@ -1203,10 +1259,10 @@
                 </div>
 
             </div>
-        </div>
+        </section>
 
         <!-- ===== EDUCATION ===== -->
-        <div class="section">
+        <section class="section">
             <div class="section-header">
                 <div class="section-icon green">&#127891;</div>
                 <h2>Education</h2>
@@ -1227,10 +1283,10 @@
                     <div class="school">Universitas Gadjah Mada, Yogyakarta &middot; 2004</div>
                 </div>
             </div>
-        </div>
+        </section>
 
         <!-- ===== CERTIFICATIONS ===== -->
-        <div class="section">
+        <section class="section">
             <div class="section-header">
                 <div class="section-icon amber">&#127942;</div>
                 <h2>Certifications</h2>
@@ -1244,14 +1300,14 @@
                 <div class="cert-item"><div class="cert-check">&#10003;</div> Generative AI &mdash; DeepLearning.AI</div>
                 <div class="cert-item"><div class="cert-check">&#10003;</div> Agentic AI &mdash; DeepLearning.AI</div>
             </div>
-        </div>
+        </section>
 
-    </div>
+    </main>
 
     <!-- ===== FOOTER ===== -->
-    <div class="site-footer">
+    <footer class="site-footer" role="contentinfo">
         <p>0 frameworks were used to make this website. Just pure HTML and CSS. <span class="heart">&#10084;</span></p>
-    </div>
+    </footer>
 
 </body>
 </html>
