@@ -124,5 +124,5 @@
   </g>
 
   <!-- Bottom label -->
-  <text x="400" y="470" text-anchor="middle" font-family="'JetBrains Mono', monospace" font-size="10" fill="#6b7280" letter-spacing="2">WEB AUDIO API &bull; SPEECH SYNTHESIS &bull; ZERO DEPENDENCIES</text>
+  <text x="400" y="470" text-anchor="middle" font-family="'JetBrains Mono', monospace" font-size="10" fill="#6b7280" letter-spacing="2">WEB AUDIO API &#x2022; SPEECH SYNTHESIS &#x2022; ZERO DEPENDENCIES</text>
 </svg>
