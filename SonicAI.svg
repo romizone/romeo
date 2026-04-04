@@ -5,30 +5,11 @@
       <stop offset="50%" style="stop-color:#111827"/>
       <stop offset="100%" style="stop-color:#0a0e1a"/>
     </linearGradient>
-    <linearGradient id="purple1" x1="0%" y1="0%" x2="100%" y2="100%">
-      <stop offset="0%" style="stop-color:#8b5cf6"/>
-      <stop offset="100%" style="stop-color:#6d28d9"/>
-    </linearGradient>
-    <linearGradient id="cyan1" x1="0%" y1="0%" x2="100%" y2="100%">
-      <stop offset="0%" style="stop-color:#06b6d4"/>
-      <stop offset="100%" style="stop-color:#0891b2"/>
-    </linearGradient>
-    <linearGradient id="pink1" x1="0%" y1="0%" x2="100%" y2="100%">
-      <stop offset="0%" style="stop-color:#ec4899"/>
-      <stop offset="100%" style="stop-color:#db2777"/>
-    </linearGradient>
     <linearGradient id="barGrad" x1="0%" y1="100%" x2="0%" y2="0%">
       <stop offset="0%" style="stop-color:#8b5cf6"/>
       <stop offset="50%" style="stop-color:#06b6d4"/>
       <stop offset="100%" style="stop-color:#ec4899"/>
     </linearGradient>
-    <filter id="glow">
-      <feGaussianBlur stdDeviation="3" result="blur"/>
-      <feMerge>
-        <feMergeNode in="blur"/>
-        <feMergeNode in="SourceGraphic"/>
-      </feMerge>
-    </filter>
   </defs>
 
   <!-- Background -->
@@ -49,8 +30,25 @@
   <circle cx="200" cy="250" r="180" fill="#8b5cf6" opacity="0.04"/>
   <circle cx="600" cy="250" r="180" fill="#06b6d4" opacity="0.04"/>
 
-  <!-- Frequency spectrum bars (center) -->
-  <g transform="translate(160, 350)" filter="url(#glow)">
+  <!-- Speaker icon -->
+  <g transform="translate(80, 200)" opacity="0.15">
+    <rect x="0" y="10" width="20" height="30" rx="2" fill="#8b5cf6"/>
+    <polygon points="20,10 45,-10 45,60 20,40" fill="#8b5cf6"/>
+    <path d="M55,5 Q75,25 55,45" stroke="#06b6d4" stroke-width="3" fill="none"/>
+    <path d="M60,-5 Q90,25 60,55" stroke="#06b6d4" stroke-width="2.5" fill="none"/>
+    <path d="M65,-15 Q105,25 65,65" stroke="#06b6d4" stroke-width="2" fill="none"/>
+  </g>
+
+  <!-- Waveform lines -->
+  <path d="M50,250 Q100,220 150,250 T250,250 T350,250 T450,250 T550,250 T650,250 T750,250" stroke="#8b5cf6" stroke-width="1.5" fill="none" opacity="0.15"/>
+  <path d="M50,260 Q120,230 200,260 T360,260 T520,260 T680,260 T800,260" stroke="#06b6d4" stroke-width="1" fill="none" opacity="0.1"/>
+
+  <!-- Title text -->
+  <text x="400" y="60" text-anchor="middle" font-family="Inter, sans-serif" font-size="42" font-weight="900" fill="#f9fafb" letter-spacing="-1">SonicAI</text>
+  <text x="400" y="88" text-anchor="middle" font-family="Inter, sans-serif" font-size="14" font-weight="500" fill="#9ca3af" letter-spacing="4">TEXT-TO-SONG GENERATOR</text>
+
+  <!-- Frequency spectrum bars -->
+  <g transform="translate(160, 350)">
     <rect x="0" y="-60" width="12" height="60" rx="3" fill="url(#barGrad)" opacity="0.9"/>
     <rect x="18" y="-95" width="12" height="95" rx="3" fill="url(#barGrad)" opacity="0.85"/>
     <rect x="36" y="-140" width="12" height="140" rx="3" fill="url(#barGrad)" opacity="0.9"/>
@@ -80,49 +78,28 @@
     <rect x="468" y="-50" width="12" height="50" rx="3" fill="url(#barGrad)" opacity="0.6"/>
   </g>
 
-  <!-- Music note symbols -->
-  <g filter="url(#glow)">
-    <text x="100" y="120" font-family="serif" font-size="48" fill="#8b5cf6" opacity="0.3">&#9835;</text>
-    <text x="680" y="140" font-family="serif" font-size="36" fill="#06b6d4" opacity="0.25">&#9834;</text>
-    <text x="720" y="400" font-family="serif" font-size="42" fill="#ec4899" opacity="0.2">&#9833;</text>
-    <text x="60" y="380" font-family="serif" font-size="30" fill="#8b5cf6" opacity="0.2">&#9839;</text>
-  </g>
-
-  <!-- Speaker/audio icon -->
-  <g transform="translate(80, 200)" opacity="0.15">
-    <rect x="0" y="10" width="20" height="30" rx="2" fill="#8b5cf6"/>
-    <polygon points="20,10 45,-10 45,60 20,40" fill="#8b5cf6"/>
-    <path d="M55,5 Q75,25 55,45" stroke="#06b6d4" stroke-width="3" fill="none"/>
-    <path d="M60,-5 Q90,25 60,55" stroke="#06b6d4" stroke-width="2.5" fill="none"/>
-    <path d="M65,-15 Q105,25 65,65" stroke="#06b6d4" stroke-width="2" fill="none"/>
-  </g>
-
-  <!-- Waveform line -->
-  <path d="M50,250 Q100,220 150,250 T250,250 T350,250 T450,250 T550,250 T650,250 T750,250"
-        stroke="#8b5cf6" stroke-width="1.5" fill="none" opacity="0.15"/>
-  <path d="M50,260 Q120,230 200,260 T360,260 T520,260 T680,260 T800,260"
-        stroke="#06b6d4" stroke-width="1" fill="none" opacity="0.1"/>
-
-  <!-- Title text -->
-  <text x="400" y="60" text-anchor="middle" font-family="'Inter', sans-serif" font-size="42" font-weight="900" fill="#f9fafb" letter-spacing="-1">SonicAI</text>
-  <text x="400" y="88" text-anchor="middle" font-family="'Inter', sans-serif" font-size="14" font-weight="500" fill="#9ca3af" letter-spacing="4">TEXT-TO-SONG GENERATOR</text>
+  <!-- Music notes (plain, no filter) -->
+  <text x="100" y="120" font-family="serif" font-size="48" fill="#8b5cf6" opacity="0.3">&#x266B;</text>
+  <text x="680" y="140" font-family="serif" font-size="36" fill="#06b6d4" opacity="0.25">&#x266A;</text>
+  <text x="720" y="400" font-family="serif" font-size="42" fill="#ec4899" opacity="0.2">&#x266D;</text>
+  <text x="60" y="380" font-family="serif" font-size="30" fill="#8b5cf6" opacity="0.2">&#x266F;</text>
 
   <!-- Genre pills -->
   <g transform="translate(175, 410)">
     <rect x="0" y="0" width="60" height="24" rx="12" fill="#8b5cf6" opacity="0.2" stroke="#8b5cf6" stroke-width="0.5"/>
-    <text x="30" y="16" text-anchor="middle" font-family="'JetBrains Mono', monospace" font-size="9" fill="#c4b5fd">Pop</text>
+    <text x="30" y="16" text-anchor="middle" font-family="monospace" font-size="9" fill="#c4b5fd">Pop</text>
     <rect x="70" y="0" width="60" height="24" rx="12" fill="#06b6d4" opacity="0.2" stroke="#06b6d4" stroke-width="0.5"/>
-    <text x="100" y="16" text-anchor="middle" font-family="'JetBrains Mono', monospace" font-size="9" fill="#67e8f9">Rock</text>
+    <text x="100" y="16" text-anchor="middle" font-family="monospace" font-size="9" fill="#67e8f9">Rock</text>
     <rect x="140" y="0" width="60" height="24" rx="12" fill="#ec4899" opacity="0.2" stroke="#ec4899" stroke-width="0.5"/>
-    <text x="170" y="16" text-anchor="middle" font-family="'JetBrains Mono', monospace" font-size="9" fill="#f9a8d4">Jazz</text>
+    <text x="170" y="16" text-anchor="middle" font-family="monospace" font-size="9" fill="#f9a8d4">Jazz</text>
     <rect x="210" y="0" width="80" height="24" rx="12" fill="#8b5cf6" opacity="0.2" stroke="#8b5cf6" stroke-width="0.5"/>
-    <text x="250" y="16" text-anchor="middle" font-family="'JetBrains Mono', monospace" font-size="9" fill="#c4b5fd">Electronic</text>
+    <text x="250" y="16" text-anchor="middle" font-family="monospace" font-size="9" fill="#c4b5fd">Electronic</text>
     <rect x="300" y="0" width="72" height="24" rx="12" fill="#06b6d4" opacity="0.2" stroke="#06b6d4" stroke-width="0.5"/>
-    <text x="336" y="16" text-anchor="middle" font-family="'JetBrains Mono', monospace" font-size="9" fill="#67e8f9">Classical</text>
+    <text x="336" y="16" text-anchor="middle" font-family="monospace" font-size="9" fill="#67e8f9">Classical</text>
     <rect x="382" y="0" width="60" height="24" rx="12" fill="#ec4899" opacity="0.2" stroke="#ec4899" stroke-width="0.5"/>
-    <text x="412" y="16" text-anchor="middle" font-family="'JetBrains Mono', monospace" font-size="9" fill="#f9a8d4">Lo-fi</text>
+    <text x="412" y="16" text-anchor="middle" font-family="monospace" font-size="9" fill="#f9a8d4">Lo-fi</text>
   </g>
 
   <!-- Bottom label -->
-  <text x="400" y="470" text-anchor="middle" font-family="'JetBrains Mono', monospace" font-size="10" fill="#6b7280" letter-spacing="2">WEB AUDIO API &#x2022; SPEECH SYNTHESIS &#x2022; ZERO DEPENDENCIES</text>
+  <text x="400" y="470" text-anchor="middle" font-family="monospace" font-size="10" fill="#6b7280" letter-spacing="2">WEB AUDIO API &#x2022; SPEECH SYNTHESIS &#x2022; ZERO DEPENDENCIES</text>
 </svg>
