@@ -1,0 +1,205 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Transkrip: A Privacy-First Cross-Platform Desktop Application for Local AI-Powered Audio and Video Transcription</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body {
+            font-family: 'Times New Roman', Times, Georgia, serif;
+            line-height: 1.6;
+            color: #111;
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 60px 40px;
+            background: #fff;
+        }
+        .paper-title { text-align: center; margin-bottom: 30px; }
+        .paper-title h1 { font-size: 1.65em; font-weight: 700; line-height: 1.3; margin-bottom: 18px; }
+        .paper-title .authors { font-size: 1.05em; margin-bottom: 4px; }
+        .paper-title .affiliation { font-size: 0.95em; color: #555; font-style: italic; }
+        .paper-title .email { font-size: 0.9em; color: #1a73e8; margin-top: 4px; }
+        .paper-title .date { font-size: 0.9em; color: #777; margin-top: 10px; }
+        .abstract { background: #f9f9f9; border-left: 4px solid #333; padding: 18px 22px; margin: 30px 0; }
+        .abstract h2 { font-size: 1em; text-transform: uppercase; letter-spacing: 1px; margin-bottom: 8px; border: none; padding: 0; }
+        .abstract p { font-size: 0.95em; color: #333; text-align: justify; }
+        .keywords { font-size: 0.9em; color: #555; margin-bottom: 30px; }
+        .keywords strong { color: #333; }
+        h2 { font-size: 1.2em; font-weight: 700; margin-top: 30px; margin-bottom: 12px; border-bottom: 1px solid #ddd; padding-bottom: 4px; }
+        h3 { font-size: 1.05em; font-weight: 700; margin-top: 18px; margin-bottom: 8px; }
+        p { text-align: justify; margin-bottom: 12px; font-size: 0.97em; }
+        table { width: 100%; border-collapse: collapse; margin: 16px 0; font-size: 0.9em; }
+        table th, table td { border: 1px solid #ccc; padding: 8px 12px; text-align: left; }
+        table th { background: #f0f0f0; font-weight: 700; }
+        table caption { font-size: 0.88em; font-style: italic; color: #555; margin-bottom: 6px; text-align: left; }
+        code { font-family: 'Courier New', Courier, monospace; background: #f4f4f4; padding: 2px 5px; border-radius: 3px; font-size: 0.88em; }
+        pre { background: #f4f4f4; padding: 14px 18px; border-radius: 4px; overflow-x: auto; font-size: 0.85em; margin: 12px 0; border: 1px solid #e0e0e0; }
+        ul, ol { margin: 10px 0 12px 24px; font-size: 0.97em; }
+        li { margin-bottom: 4px; }
+        .pipeline { background: #f7f9fc; border: 1px solid #d4e2f7; border-radius: 6px; padding: 16px 20px; text-align: center; font-size: 0.95em; color: #1a5276; margin: 16px 0; letter-spacing: 0.3px; }
+        .references { font-size: 0.88em; }
+        .references ol { margin-left: 20px; }
+        .references li { margin-bottom: 8px; color: #444; }
+        .paper-footer { text-align: center; font-size: 0.8em; color: #aaa; margin-top: 50px; padding-top: 20px; border-top: 1px solid #eee; }
+        @media print { body { padding: 20px; } }
+        @media (max-width: 600px) { body { padding: 20px 15px; } .paper-title h1 { font-size: 1.3em; } }
+    </style>
+</head>
+<body>
+
+    <div class="paper-title">
+        <h1>Transkrip: A Privacy-First Cross-Platform Desktop Application for Local AI-Powered Audio and Video Transcription</h1>
+        <div class="authors">Romi Nur Ismanto</div>
+        <div class="affiliation">Independent AI Research Lab, Jakarta, Indonesia</div>
+        <div class="email">rominur@gmail.com</div>
+        <div class="date">April 2026</div>
+    </div>
+
+    <div class="abstract">
+        <h2>Abstract</h2>
+        <p>
+            We present <strong>Transkrip</strong>, an open-source cross-platform desktop application for local, privacy-first transcription of audio and video files. Transkrip combines a modern Electron-based shell with a React&nbsp;19 / TypeScript&nbsp;6 renderer and integrates <code>whisper.cpp</code> as its on-device automatic speech recognition (ASR) engine. By performing every stage of the pipeline &mdash; file ingestion, format conversion, speech recognition, and document export &mdash; entirely on the user's own machine, Transkrip eliminates the privacy, cost, and connectivity concerns that typically accompany cloud-based transcription services. The application supports common audio and video containers (MP3, WAV, M4A, MP4, MOV), provides a persistent local history backed by SQLite via <code>better-sqlite3</code>, and exports results to <code>.txt</code>, <code>.docx</code>, and <code>.pdf</code>. We describe the motivation, system architecture, technology choices, and practical deployment considerations that enable Transkrip to deliver a native desktop experience on macOS, Windows, and Linux while retaining a strict no-cloud guarantee.
+        </p>
+    </div>
+
+    <div class="keywords">
+        <strong>Keywords:</strong> automatic speech recognition, Whisper, whisper.cpp, Electron, React, TypeScript, privacy-preserving AI, offline transcription, desktop application, ffmpeg
+    </div>
+
+    <h2>1. Introduction</h2>
+    <p>
+        Modern automatic speech recognition systems, driven by large transformer-based models, have achieved near human-level accuracy across dozens of languages. Yet the vast majority of production transcription workflows remain tied to cloud APIs, requiring users to upload potentially sensitive audio to remote servers in exchange for convenience. For journalists protecting sources, researchers handling interview recordings, medical or legal professionals working with confidential material, and enterprises with data-residency obligations, cloud-based transcription is often unacceptable.
+    </p>
+    <p>
+        <strong>Transkrip</strong> addresses this gap with a polished, cross-platform desktop application that performs every stage of transcription locally. Built on Electron&nbsp;41 with a React&nbsp;19 and Tailwind&nbsp;CSS&nbsp;4 interface, Transkrip wraps the highly optimized <code>whisper.cpp</code> engine into a friendly user experience that requires no cloud accounts, no API keys, and &mdash; after an initial model download &mdash; no network connectivity at all.
+    </p>
+    <p>The primary contributions of this work are:</p>
+    <ul>
+        <li>A production-ready desktop application that makes local Whisper inference accessible to non-technical users through a modern drag-and-drop interface.</li>
+        <li>A layered architecture separating the React renderer from the Electron main process via IPC, enabling strict privilege separation around filesystem and subprocess access.</li>
+        <li>A lightweight persistent history backed by SQLite (<code>better-sqlite3</code>), allowing users to browse and re-export previously transcribed sessions.</li>
+        <li>A multi-format export pipeline producing <code>.txt</code>, <code>.docx</code>, and <code>.pdf</code> documents without any server-side rendering.</li>
+    </ul>
+
+    <h2>2. Related Work</h2>
+    <p>
+        OpenAI's Whisper (Radford et&nbsp;al., 2022) established a robust multilingual ASR baseline by training on 680,000&nbsp;hours of weakly supervised audio. Several derivative projects have optimized Whisper for local inference: <code>faster-whisper</code> (Guillaumie, 2023) rebuilds the model on top of CTranslate2 for efficient CPU execution, <code>mlx-whisper</code> (Apple MLX Team, 2024) exploits Apple Silicon GPUs via the MLX framework, and <code>whisper.cpp</code> (Gerganov, 2022) provides a dependency-light C/C++ port that runs efficiently across desktop platforms using integer quantization and SIMD acceleration.
+    </p>
+    <p>
+        Prior offline transcription tools either target power users through command-line interfaces or ship as heavy Python applications with complex dependency chains. Transkrip differs by providing a first-class native desktop UX on top of <code>whisper.cpp</code>, coupled with a modern web technology renderer &mdash; trading the Python ecosystem's flexibility for smaller footprint, faster startup, and easier installation for end users.
+    </p>
+
+    <h2>3. System Architecture</h2>
+    <p>
+        Transkrip adopts the standard Electron two-process model. The <strong>renderer process</strong> hosts the React application and handles all user interactions, while the <strong>main process</strong> manages file system access, spawns the ASR subprocess, and owns the SQLite database. A preload script exposes a narrow, typed IPC surface between the two, following the principle of least privilege.
+    </p>
+
+    <div class="pipeline">
+        Upload &rarr; ffmpeg Normalization &rarr; whisper.cpp Inference &rarr; Segment Assembly &rarr; Export (TXT / DOCX / PDF)
+    </div>
+
+    <h3>3.1 Process Separation</h3>
+    <table>
+        <caption>Table 1: Responsibilities of the Electron main and renderer processes</caption>
+        <tr><th>Process</th><th>Responsibilities</th><th>Key Modules</th></tr>
+        <tr><td>Renderer (React&nbsp;19 / TS)</td><td>UI, drag-and-drop, settings, history view, progress updates</td><td><code>UploadZone</code>, <code>Settings</code>, <code>HistoryList</code></td></tr>
+        <tr><td>Preload</td><td>Typed IPC bridge, sandboxed API exposure</td><td><code>preload.ts</code></td></tr>
+        <tr><td>Main (Electron&nbsp;41)</td><td>File I/O, subprocess management, DB, lifecycle</td><td><code>main.ts</code>, <code>whisper.ts</code>, <code>database.ts</code></td></tr>
+    </table>
+
+    <h3>3.2 Processing Pipeline</h3>
+    <p><strong>Stage 1 &mdash; Ingestion:</strong> Users drop audio or video files into the upload zone. Supported containers include MP3, WAV, M4A, MP4, and MOV. The renderer forwards file paths through IPC to the main process.</p>
+    <p><strong>Stage 2 &mdash; Normalization:</strong> The main process invokes <code>ffmpeg</code> as a subprocess to decode the input and resample it to 16&nbsp;kHz mono PCM, the canonical format expected by <code>whisper.cpp</code>.</p>
+    <p><strong>Stage 3 &mdash; Inference:</strong> A <code>whisper.cpp</code> child process runs the selected model against the normalized audio, streaming progress updates back over stdout. The renderer receives these events via IPC and updates the progress UI in real time.</p>
+    <p><strong>Stage 4 &mdash; Segment Assembly:</strong> Timestamped segments produced by Whisper are concatenated into a single document. Metadata (language, model size, duration, source filename) is captured alongside the transcript.</p>
+    <p><strong>Stage 5 &mdash; Persistence and Export:</strong> The completed session is persisted to SQLite via <code>better-sqlite3</code>. Users can then export to <code>.txt</code> (plain text), <code>.docx</code> (via the <code>docx</code> library), or <code>.pdf</code> (via <code>jspdf</code>), all generated locally without any server round-trip.</p>
+
+    <h2>4. Technology Stack</h2>
+    <table>
+        <caption>Table 2: Core technology stack of Transkrip</caption>
+        <tr><th>Layer</th><th>Technology</th><th>Role</th></tr>
+        <tr><td>Desktop shell</td><td>Electron&nbsp;41</td><td>Cross-platform native window, process model, packaging</td></tr>
+        <tr><td>Renderer framework</td><td>React&nbsp;19, TypeScript&nbsp;6</td><td>Component model, type safety</td></tr>
+        <tr><td>Build tooling</td><td>Vite&nbsp;8</td><td>Dev server, bundling, HMR</td></tr>
+        <tr><td>Styling</td><td>Tailwind&nbsp;CSS&nbsp;4</td><td>Utility-first responsive UI</td></tr>
+        <tr><td>ASR engine</td><td>whisper.cpp</td><td>On-device Whisper inference</td></tr>
+        <tr><td>Audio normalization</td><td>ffmpeg</td><td>Decoding and 16&nbsp;kHz PCM conversion</td></tr>
+        <tr><td>Persistence</td><td>better-sqlite3</td><td>Local history database</td></tr>
+        <tr><td>Document export</td><td>docx, jspdf, file-saver</td><td>TXT / DOCX / PDF generation</td></tr>
+        <tr><td>Packaging</td><td>electron-builder</td><td>Installers for macOS, Windows, Linux</td></tr>
+    </table>
+
+    <h2>5. Installation and Distribution</h2>
+    <p>
+        Transkrip is distributed through GitHub Releases as pre-built installers for macOS, Windows, and Linux. System dependencies (<code>ffmpeg</code> and <code>whisper.cpp</code>) are installed via the platform's standard package manager. On macOS, for example:
+    </p>
+    <pre>brew install ffmpeg
+brew install whisper-cpp</pre>
+    <p>
+        Once the dependencies are present, installing Transkrip is a single-click operation. On first launch, the application verifies the presence of the required binaries and guides the user through any missing steps.
+    </p>
+
+    <h2>6. Privacy and Security Considerations</h2>
+    <p>Transkrip was designed from the ground up with privacy as a non-negotiable property. Specifically, the system guarantees:</p>
+    <ul>
+        <li><strong>Zero audio egress:</strong> Audio and video files never leave the user's device. No network request is made during transcription.</li>
+        <li><strong>No accounts, no telemetry:</strong> The application requires no sign-up, no API keys, and ships without analytics.</li>
+        <li><strong>Strict process separation:</strong> The renderer has no direct access to the filesystem or subprocess APIs; all privileged operations go through an audited IPC surface.</li>
+        <li><strong>Open-source auditability:</strong> The full source code is published on GitHub under an open license, enabling independent security review.</li>
+        <li><strong>Air-gapped capability:</strong> After initial dependency installation, Transkrip can run on a fully offline machine.</li>
+    </ul>
+    <p>These properties make Transkrip appropriate for legal transcription, medical dictation, confidential interviews, and any scenario where audio content is subject to confidentiality or regulatory constraints.</p>
+
+    <h2>7. Platform Compatibility</h2>
+    <ul>
+        <li><strong>macOS (Apple Silicon and Intel):</strong> Native support via Electron builds; <code>whisper.cpp</code> leverages Accelerate and ARM NEON on Apple Silicon for fast inference.</li>
+        <li><strong>Windows:</strong> NSIS-based installer, with <code>whisper.cpp</code> running on CPU with AVX acceleration.</li>
+        <li><strong>Linux:</strong> AppImage and <code>.deb</code> packages, compatible with most modern distributions.</li>
+    </ul>
+
+    <h2>8. Use Cases</h2>
+    <p>Transkrip is well suited to a variety of professional workflows:</p>
+    <ul>
+        <li><strong>Journalism:</strong> Transcribing source interviews without exposing confidential recordings to third parties.</li>
+        <li><strong>Research:</strong> Converting qualitative interview audio into analyzable text for thematic coding.</li>
+        <li><strong>Content creation:</strong> Generating subtitles or blog transcripts from podcast and video content.</li>
+        <li><strong>Enterprise:</strong> Handling internal meetings, board calls, and confidential discussions on-premises.</li>
+        <li><strong>Personal archives:</strong> Transcribing family recordings, lectures, or voice memos for searchable long-term storage.</li>
+    </ul>
+
+    <h2>9. Conclusion and Future Work</h2>
+    <p>
+        Transkrip demonstrates that privacy-first, production-quality transcription can be packaged as a polished desktop application accessible to non-technical users. By combining Electron, React, TypeScript, and <code>whisper.cpp</code>, the project delivers a zero-cloud workflow without sacrificing the ergonomics users expect from modern software.
+    </p>
+    <p>Planned future directions include:</p>
+    <ul>
+        <li>Integrated speaker diarization using lightweight embedding-based clustering.</li>
+        <li>Real-time streaming transcription from the system microphone.</li>
+        <li>Automatic language detection and per-segment language switching.</li>
+        <li>GPU acceleration on Windows and Linux via CUDA and Vulkan backends of <code>whisper.cpp</code>.</li>
+        <li>Batch processing and command-line hooks for power users.</li>
+    </ul>
+    <p>
+        The source code is available at <a href="https://github.com/romizone/transkrip">https://github.com/romizone/transkrip</a>, and pre-built installers are published at <a href="https://github.com/romizone/transkrip/releases/tag/v1.0.0">github.com/romizone/transkrip/releases/tag/v1.0.0</a>.
+    </p>
+
+    <h2>References</h2>
+    <div class="references">
+        <ol>
+            <li>Radford, A., Kim, J.W., Xu, T., Brockman, G., McLeavey, C., &amp; Sutskever, I. (2022). Robust Speech Recognition via Large-Scale Weak Supervision. <em>arXiv preprint arXiv:2212.04356</em>.</li>
+            <li>Gerganov, G. (2022). whisper.cpp: Port of OpenAI's Whisper model in C/C++. <em>GitHub Repository</em>. https://github.com/ggerganov/whisper.cpp</li>
+            <li>Guillaumie, G. (2023). faster-whisper: Faster Whisper transcription with CTranslate2. <em>GitHub Repository</em>. https://github.com/SYSTRAN/faster-whisper</li>
+            <li>Apple MLX Team (2024). mlx-whisper: Whisper inference on Apple Silicon using MLX. <em>GitHub Repository</em>. https://github.com/ml-explore/mlx-examples</li>
+            <li>Electron Maintainers (2024). Electron: Build cross-platform desktop apps with JavaScript, HTML, and CSS. <em>GitHub Repository</em>. https://github.com/electron/electron</li>
+            <li>FFmpeg Developers (2024). FFmpeg: A complete, cross-platform solution to record, convert and stream audio and video. https://ffmpeg.org</li>
+            <li>Meta Open Source (2024). React 19. <em>React Documentation</em>. https://react.dev</li>
+        </ol>
+    </div>
+
+    <div class="paper-footer">
+        <p>Transkrip &mdash; Open Source &middot; <a href="https://github.com/romizone/transkrip">github.com/romizone/transkrip</a> &middot; <a href="https://github.com/romizone/transkrip/releases/tag/v1.0.0">Download v1.0.0</a></p>
+    </div>
+
+</body>
+</html>
