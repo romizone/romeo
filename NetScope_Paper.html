@@ -1,0 +1,306 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>NetScope: A Native macOS Network Scanner Built with Swift and SwiftUI</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body {
+            font-family: 'Times New Roman', Times, Georgia, serif;
+            line-height: 1.6;
+            color: #111;
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 60px 40px;
+            background: #fff;
+        }
+        .paper-title { text-align: center; margin-bottom: 30px; }
+        .paper-title h1 { font-size: 1.65em; font-weight: 700; line-height: 1.3; margin-bottom: 18px; }
+        .paper-title .authors { font-size: 1.05em; margin-bottom: 4px; }
+        .paper-title .affiliation { font-size: 0.95em; color: #555; font-style: italic; }
+        .paper-title .email { font-size: 0.9em; color: #1a73e8; margin-top: 4px; }
+        .paper-title .date { font-size: 0.9em; color: #777; margin-top: 10px; }
+        .abstract { background: #f9f9f9; border-left: 4px solid #333; padding: 18px 22px; margin: 30px 0; }
+        .abstract h2 { font-size: 1em; text-transform: uppercase; letter-spacing: 1px; margin-bottom: 8px; border: none; padding: 0; }
+        .abstract p { font-size: 0.95em; color: #333; text-align: justify; }
+        .keywords { font-size: 0.9em; color: #555; margin-bottom: 30px; }
+        .keywords strong { color: #333; }
+        h2 { font-size: 1.2em; font-weight: 700; margin-top: 30px; margin-bottom: 12px; border-bottom: 1px solid #ddd; padding-bottom: 4px; }
+        h3 { font-size: 1.05em; font-weight: 700; margin-top: 18px; margin-bottom: 8px; }
+        p { text-align: justify; margin-bottom: 12px; font-size: 0.97em; }
+        table { width: 100%; border-collapse: collapse; margin: 16px 0; font-size: 0.9em; }
+        table th, table td { border: 1px solid #ccc; padding: 8px 12px; text-align: left; }
+        table th { background: #f0f0f0; font-weight: 700; }
+        table caption { font-size: 0.88em; font-style: italic; color: #555; margin-bottom: 6px; text-align: left; }
+        code { font-family: 'Courier New', Courier, monospace; background: #f4f4f4; padding: 2px 5px; border-radius: 3px; font-size: 0.88em; }
+        pre { background: #f4f4f4; padding: 14px 18px; border-radius: 4px; overflow-x: auto; font-size: 0.85em; margin: 12px 0; border: 1px solid #e0e0e0; }
+        ul, ol { margin: 10px 0 12px 24px; font-size: 0.97em; }
+        li { margin-bottom: 4px; }
+        .pipeline { background: #f7f9fc; border: 1px solid #d4e2f7; border-radius: 6px; padding: 16px 20px; text-align: center; font-size: 0.95em; color: #1a5276; margin: 16px 0; letter-spacing: 0.3px; }
+        .references { font-size: 0.88em; }
+        .references ol { margin-left: 20px; }
+        .references li { margin-bottom: 8px; color: #444; }
+        .paper-footer { text-align: center; font-size: 0.8em; color: #aaa; margin-top: 50px; padding-top: 20px; border-top: 1px solid #eee; }
+        @media print { body { padding: 20px; } }
+        @media (max-width: 600px) { body { padding: 20px 15px; } .paper-title h1 { font-size: 1.3em; } }
+    </style>
+</head>
+<body>
+
+    <div class="paper-title">
+        <h1>NetScope: A Native macOS Network Scanner Built with Swift and SwiftUI</h1>
+        <div class="authors">Romi Nur Ismanto</div>
+        <div class="affiliation">Independent AI Research Lab, Jakarta, Indonesia</div>
+        <div class="email">rominur@gmail.com</div>
+        <div class="date">April 2026</div>
+    </div>
+
+    <div class="abstract">
+        <h2>Abstract</h2>
+        <p>
+            We present <strong>NetScope</strong>, a native macOS network scanner built from the ground up with Swift&nbsp;5.9 and SwiftUI. Unlike Electron-wrapped or web-based alternatives, NetScope leverages Apple&rsquo;s Network.framework, CoreWLAN, BSD sockets, and SystemConfiguration to deliver high-performance network discovery, TCP port scanning, ICMP diagnostics, continuous monitoring, and multi-format reporting &mdash; all within a privacy-respecting, sandboxed application. The tool integrates six modules (My Device, Discovery, Port Scanner, Ping &amp; Traceroute, Monitor, Reports) into a NavigationSplitView three-column interface with SwiftData persistence, Swift Charts visualization, and XPC-based privileged helper for raw socket operations. NetScope supports macOS&nbsp;14+ (Sonoma) on both Apple Silicon and Intel architectures, requires no external dependencies, collects no telemetry, and operates entirely offline after installation. Distributed as a native <code>.dmg</code> under the MIT license.
+        </p>
+    </div>
+
+    <div class="keywords">
+        <strong>Keywords:</strong> network scanner, macOS, Swift, SwiftUI, Network.framework, port scanning, ICMP, device discovery, Bonjour, mDNS, network monitoring, privacy
+    </div>
+
+    <h2>1. Introduction</h2>
+    <p>
+        Network scanning and device discovery are fundamental tasks for system administrators, security professionals, and developers managing local infrastructure. While command-line tools such as <code>nmap</code>, <code>arp-scan</code>, and <code>ping</code> remain powerful, they require terminal proficiency and often lack visual feedback for non-technical stakeholders. Existing GUI alternatives on macOS frequently rely on Electron wrappers, introducing significant memory overhead and non-native user experiences.
+    </p>
+    <p>
+        <strong>NetScope</strong> addresses this gap by providing a fully native macOS application built exclusively with Swift and SwiftUI. By leveraging Apple&rsquo;s first-party frameworks &mdash; Network.framework for TCP/UDP connections, CoreWLAN for wireless metadata, SystemConfiguration for network interface enumeration, and BSD sockets via an XPC privileged helper for ICMP operations &mdash; NetScope achieves performance characteristics unattainable by cross-platform wrappers while maintaining the visual polish and accessibility standards expected of macOS applications.
+    </p>
+    <p>The primary contributions of this work are:</p>
+    <ul>
+        <li>A six-module native network scanner delivering device discovery, port scanning, diagnostics, monitoring, and reporting in a single cohesive application.</li>
+        <li>A layered MVVM architecture with Actor-based concurrency ensuring thread-safe network operations without data races.</li>
+        <li>XPC-based privilege separation enabling raw ICMP socket access while maintaining App Sandbox security.</li>
+        <li>Zero-dependency, zero-telemetry design prioritizing user privacy and offline operation.</li>
+        <li>Bilingual localization (English and Indonesian) with full keyboard accessibility.</li>
+    </ul>
+
+    <h2>2. System Architecture</h2>
+    <p>
+        NetScope follows a layered MVVM (Model-View-ViewModel) architecture that cleanly separates concerns across five distinct layers:
+    </p>
+
+    <div class="pipeline">
+        SwiftUI Views &rarr; @MainActor ViewModels &rarr; Actor Services &rarr; Network Layer &rarr; SwiftData Persistence
+    </div>
+
+    <h3>2.1 Presentation Layer</h3>
+    <p>
+        The UI is built entirely with SwiftUI, utilizing <code>NavigationSplitView</code> for a three-column layout: sidebar navigation, device/result list, and detail inspector. Each module occupies its own view hierarchy, enabling independent state management and lazy loading. The dark-mode-first design adapts automatically to system appearance settings.
+    </p>
+
+    <h3>2.2 ViewModel Layer</h3>
+    <p>
+        ViewModels are annotated with <code>@MainActor</code> and conform to <code>ObservableObject</code>, publishing state changes to SwiftUI views via <code>@Published</code> properties. Each module has a dedicated ViewModel that orchestrates its service layer interactions and manages UI state (loading indicators, error presentation, result sorting).
+    </p>
+
+    <h3>2.3 Service Layer</h3>
+    <p>
+        Network operations are encapsulated in Swift Actors, ensuring thread-safe concurrent access without explicit locking. Services expose <code>AsyncStream</code> interfaces for real-time result streaming &mdash; enabling the UI to display discovered devices and scan results as they arrive rather than waiting for batch completion.
+    </p>
+
+    <h3>2.4 Network Layer</h3>
+    <p>
+        The network layer integrates multiple Apple frameworks:
+    </p>
+    <table>
+        <caption>Table 1: Framework Integration</caption>
+        <tr><th>Framework</th><th>Purpose</th><th>Module</th></tr>
+        <tr><td>Network.framework</td><td>TCP connections, TLS inspection, NWBrowser</td><td>Discovery, Port Scanner</td></tr>
+        <tr><td>CoreWLAN</td><td>Wi-Fi SSID, BSSID, channel, RSSI</td><td>My Device</td></tr>
+        <tr><td>SystemConfiguration</td><td>Interface enumeration, gateway detection</td><td>My Device, Discovery</td></tr>
+        <tr><td>BSD Sockets (via XPC)</td><td>Raw ICMP packets for ping/traceroute</td><td>Ping &amp; Traceroute</td></tr>
+        <tr><td>dnssd / NWBrowser</td><td>Bonjour/mDNS service browsing</td><td>Discovery</td></tr>
+    </table>
+
+    <h3>2.5 Persistence Layer</h3>
+    <p>
+        SwiftData provides local persistence for scan history, device profiles, monitoring events, and user preferences. The schema supports versioned migrations, ensuring data integrity across application updates. All data remains on-device with no cloud synchronization.
+    </p>
+
+    <h2>3. Module Descriptions</h2>
+
+    <h3>3.1 My Device</h3>
+    <p>
+        Displays comprehensive local system information: all network interfaces (en0, en1, utun*, bridge*) with IPv4/IPv6 addresses, subnet masks, and MAC addresses; default gateway and DNS servers; Wi-Fi details (SSID, BSSID, channel, band, RSSI, noise, PHY mode); and system metadata (hostname, macOS version, hardware model, uptime). Data is refreshed on-demand or automatically when network configuration changes via SCDynamicStore notifications.
+    </p>
+
+    <h3>3.2 Discovery</h3>
+    <p>
+        Network-wide device scanning combines three complementary techniques:
+    </p>
+    <ul>
+        <li><strong>TCP Knock Scan:</strong> Rapid connection attempts to common ports (22, 80, 443, 445, 548, 3389, 5000, 8080) across the local subnet, using concurrent <code>NWConnection</code> instances with short timeouts.</li>
+        <li><strong>ARP Table Reading:</strong> Parsing the system ARP cache via <code>sysctl</code> to identify recently-seen MAC addresses and their IP mappings.</li>
+        <li><strong>Bonjour/mDNS Browsing:</strong> Enumerating 14+ service types (_http._tcp, _ssh._tcp, _smb._tcp, _airplay._tcp, _printer._tcp, etc.) to discover advertised services.</li>
+    </ul>
+    <p>
+        Discovered devices are enriched with OUI vendor lookup (IEEE MA-L database), reverse DNS resolution, and fingerprinting heuristics based on open ports and service advertisements. Results are displayed in a sortable, filterable table with device type icons.
+    </p>
+
+    <h3>3.3 Port Scanner</h3>
+    <p>
+        TCP connection scanning with configurable port ranges: Top 100, Top 1000 (IANA), or custom ranges. The scanner utilizes over 100 concurrent <code>NWConnection</code> probes with adaptive timeout scaling. For open ports, NetScope performs:
+    </p>
+    <ul>
+        <li><strong>Banner Grabbing:</strong> Reading initial service responses to identify software versions.</li>
+        <li><strong>HTTP Header Extraction:</strong> Sending minimal GET requests to web ports for server identification.</li>
+        <li><strong>TLS Certificate Inspection:</strong> Extracting certificate subject, issuer, validity dates, and SANs for HTTPS ports.</li>
+    </ul>
+
+    <h3>3.4 Ping &amp; Traceroute</h3>
+    <p>
+        ICMP echo request/reply via the XPC privileged helper, which holds the necessary raw socket entitlements. Features include configurable packet count, payload size, interval, and TTL. Traceroute implements incremental TTL probing with three probes per hop, displaying RTT statistics and intermediate router addresses. The DNS query tool supports A, AAAA, MX, NS, CNAME, TXT, and SRV record types using <code>dnssd</code> APIs.
+    </p>
+
+    <h3>3.5 Monitor</h3>
+    <p>
+        Continuous device polling with configurable intervals (default 30 seconds). Tracks device reachability state transitions (online/offline) and triggers macOS notifications via <code>UserNotifications</code> framework. Maintains a 24-hour rolling event history with Swift Charts visualization showing availability timelines. Supports threshold-based alerts for latency degradation and packet loss.
+    </p>
+
+    <h3>3.6 Reports</h3>
+    <p>
+        Multi-format export engine supporting:
+    </p>
+    <table>
+        <caption>Table 2: Export Formats</caption>
+        <tr><th>Format</th><th>Implementation</th><th>Use Case</th></tr>
+        <tr><td>CSV</td><td>Native String formatting</td><td>Spreadsheet analysis</td></tr>
+        <tr><td>JSON</td><td>Codable + JSONEncoder</td><td>API integration, archival</td></tr>
+        <tr><td>HTML</td><td>Template-based rendering</td><td>Browser viewing, email</td></tr>
+        <tr><td>PDF</td><td>Core Graphics + PDFKit</td><td>Professional reports, printing</td></tr>
+    </table>
+    <p>
+        Reports include scan metadata (timestamp, duration, scope), device summaries, port details, and latency statistics. The print functionality integrates with macOS system print dialog for direct printer output.
+    </p>
+
+    <h2>4. Security Architecture</h2>
+    <p>
+        NetScope implements defense-in-depth security:
+    </p>
+    <ul>
+        <li><strong>App Sandbox:</strong> Enabled with minimal entitlements (network client, network server for listening during scans).</li>
+        <li><strong>XPC Privilege Separation:</strong> Raw socket operations (ICMP) are isolated in a privileged helper installed via <code>SMJobBless</code>. The main application communicates with the helper through a validated XPC connection with code signing requirements.</li>
+        <li><strong>Code Signing Validation:</strong> Both the main app and XPC helper validate each other&rsquo;s code signing identity before establishing communication.</li>
+        <li><strong>No Telemetry:</strong> Zero network communication beyond the user-initiated scan operations. No analytics, crash reporting, or update checks.</li>
+        <li><strong>Local-Only Storage:</strong> All data persists exclusively in the application&rsquo;s sandboxed container via SwiftData.</li>
+    </ul>
+
+    <h2>5. Concurrency Model</h2>
+    <p>
+        NetScope leverages Swift&rsquo;s structured concurrency throughout:
+    </p>
+    <ul>
+        <li><strong>TaskGroup:</strong> Manages concurrent port scanning probes with bounded parallelism (max 100 concurrent connections).</li>
+        <li><strong>AsyncStream:</strong> Delivers real-time scan results from service actors to ViewModels without polling.</li>
+        <li><strong>Actor Isolation:</strong> Service-layer actors guarantee thread-safe state mutation without locks or dispatch queues.</li>
+        <li><strong>Task Cancellation:</strong> Cooperative cancellation propagates through the task hierarchy when users stop scans or navigate away.</li>
+        <li><strong>MainActor:</strong> UI state mutations are guaranteed to occur on the main thread via ViewModel annotations.</li>
+    </ul>
+
+    <h2>6. Technology Stack</h2>
+    <table>
+        <caption>Table 3: Complete Technology Stack</caption>
+        <tr><th>Layer</th><th>Technology</th><th>Version</th></tr>
+        <tr><td>Language</td><td>Swift</td><td>5.9</td></tr>
+        <tr><td>UI Framework</td><td>SwiftUI</td><td>macOS 14+</td></tr>
+        <tr><td>Persistence</td><td>SwiftData</td><td>1.0</td></tr>
+        <tr><td>Visualization</td><td>Swift Charts</td><td>1.0</td></tr>
+        <tr><td>Networking</td><td>Network.framework</td><td>macOS 14+</td></tr>
+        <tr><td>Wireless</td><td>CoreWLAN</td><td>macOS 14+</td></tr>
+        <tr><td>Configuration</td><td>SystemConfiguration</td><td>macOS 14+</td></tr>
+        <tr><td>Privileged Ops</td><td>XPC + SMJobBless</td><td>macOS 14+</td></tr>
+        <tr><td>Build System</td><td>XcodeGen</td><td>2.38+</td></tr>
+        <tr><td>Localization</td><td>String Catalogs</td><td>Xcode 15+</td></tr>
+    </table>
+
+    <h2>7. Build and Distribution</h2>
+    <p>
+        The project uses XcodeGen with a declarative <code>project.yml</code> configuration, eliminating Xcode project file merge conflicts in version control. The build pipeline produces a universal binary (arm64 + x86_64) distributed as a signed <code>.dmg</code> disk image. Installation follows the standard macOS drag-to-Applications pattern.
+    </p>
+    <p>
+        System requirements are minimal: macOS 14.0 (Sonoma) or later. The application consumes approximately 15&ndash;25 MB of RAM at idle and scales linearly with active scan scope. No external runtime dependencies are required &mdash; all functionality ships within the application bundle.
+    </p>
+
+    <h2>8. Keyboard Accessibility</h2>
+    <p>
+        NetScope provides comprehensive keyboard shortcuts for all major operations:
+    </p>
+    <table>
+        <caption>Table 4: Keyboard Shortcuts</caption>
+        <tr><th>Shortcut</th><th>Action</th></tr>
+        <tr><td>Cmd+1 through Cmd+6</td><td>Switch between modules</td></tr>
+        <tr><td>Cmd+R</td><td>Start/refresh scan</td></tr>
+        <tr><td>Cmd+.</td><td>Stop current operation</td></tr>
+        <tr><td>Cmd+E</td><td>Export results</td></tr>
+        <tr><td>Cmd+F</td><td>Filter/search results</td></tr>
+        <tr><td>Cmd+,</td><td>Preferences</td></tr>
+    </table>
+
+    <h2>9. Comparison with Existing Tools</h2>
+    <table>
+        <caption>Table 5: Comparison with Alternative Network Scanners</caption>
+        <tr><th>Feature</th><th>NetScope</th><th>nmap (CLI)</th><th>Angry IP Scanner</th><th>LanScan</th></tr>
+        <tr><td>Native macOS UI</td><td>Yes (SwiftUI)</td><td>No (Terminal)</td><td>No (Java)</td><td>Yes (AppKit)</td></tr>
+        <tr><td>Zero Dependencies</td><td>Yes</td><td>No (libpcap)</td><td>No (JRE)</td><td>Yes</td></tr>
+        <tr><td>Port Scanning</td><td>Yes + TLS inspect</td><td>Yes (advanced)</td><td>Basic</td><td>No</td></tr>
+        <tr><td>Continuous Monitor</td><td>Yes (alerts)</td><td>No</td><td>No</td><td>No</td></tr>
+        <tr><td>Report Export</td><td>CSV/JSON/HTML/PDF</td><td>XML/text</td><td>CSV/TXT</td><td>CSV</td></tr>
+        <tr><td>ICMP Ping/Trace</td><td>Yes</td><td>Yes</td><td>Yes (ping only)</td><td>No</td></tr>
+        <tr><td>Privacy (No Telemetry)</td><td>Yes</td><td>Yes</td><td>No (updates)</td><td>Unknown</td></tr>
+        <tr><td>App Sandbox</td><td>Yes</td><td>N/A</td><td>No</td><td>Yes</td></tr>
+        <tr><td>Localization</td><td>EN + ID</td><td>EN only</td><td>Multi</td><td>EN only</td></tr>
+    </table>
+
+    <h2>10. Future Work</h2>
+    <p>
+        Several enhancements are planned for subsequent releases:
+    </p>
+    <ul>
+        <li><strong>Network Topology Mapping:</strong> Visual graph rendering of discovered devices and their interconnections using SpriteKit or SceneKit.</li>
+        <li><strong>Vulnerability Scanning:</strong> Integration of CVE database lookups based on detected service banners and versions.</li>
+        <li><strong>Scheduled Scans:</strong> Background scan scheduling with LaunchAgent integration for periodic network auditing.</li>
+        <li><strong>SNMP Support:</strong> Device interrogation via SNMP v2c/v3 for enhanced hardware and configuration discovery.</li>
+        <li><strong>Wi-Fi Analysis:</strong> Channel utilization mapping, signal strength heatmaps, and interference detection.</li>
+        <li><strong>Diff Reports:</strong> Comparison between scan snapshots to detect network topology changes over time.</li>
+    </ul>
+
+    <h2>11. Conclusion</h2>
+    <p>
+        NetScope demonstrates that native macOS development with Swift and SwiftUI can deliver professional-grade network analysis tools without sacrificing performance for cross-platform compatibility. By leveraging Apple&rsquo;s Network.framework, structured concurrency, and XPC privilege separation, NetScope achieves the responsiveness of command-line tools with the accessibility of a modern graphical interface. The zero-dependency, zero-telemetry architecture ensures that network professionals can trust the tool with sensitive infrastructure data while maintaining full App Sandbox security guarantees.
+    </p>
+    <p>
+        The application is open-source under the MIT license, inviting community contributions for additional protocol support, platform-specific optimizations, and localization expansions.
+    </p>
+
+    <h2>References</h2>
+    <div class="references">
+        <ol>
+            <li>Apple Inc. "Network.framework Documentation." Apple Developer, 2024. https://developer.apple.com/documentation/network</li>
+            <li>Apple Inc. "SwiftUI Overview." Apple Developer, 2024. https://developer.apple.com/xcode/swiftui/</li>
+            <li>Apple Inc. "SwiftData Documentation." Apple Developer, 2024. https://developer.apple.com/documentation/swiftdata</li>
+            <li>Apple Inc. "Daemons and Services Programming Guide &mdash; XPC." Apple Developer, 2023.</li>
+            <li>Lyon, G. F. "Nmap Network Scanning: The Official Nmap Project Guide." Nmap Project, 2009.</li>
+            <li>IEEE Standards Association. "IEEE MA-L Public Listing (OUI Database)." https://standards-oui.ieee.org/</li>
+            <li>Apple Inc. "CoreWLAN Framework." Apple Developer, 2024. https://developer.apple.com/documentation/corewlan</li>
+            <li>Stevens, W. R. "UNIX Network Programming, Volume 1: The Sockets Networking API." Addison-Wesley, 2003.</li>
+            <li>Apple Inc. "Swift Concurrency: Actors." The Swift Programming Language, 2024.</li>
+            <li>Postel, J. "Internet Control Message Protocol." RFC 792, IETF, 1981.</li>
+        </ol>
+    </div>
+
+    <div class="paper-footer">
+        <p>&copy; 2026 Romi Nur Ismanto. Released under MIT License.</p>
+        <p>GitHub: <a href="https://github.com/romizone/netscope">github.com/romizone/netscope</a></p>
+    </div>
+
+</body>
+</html>
