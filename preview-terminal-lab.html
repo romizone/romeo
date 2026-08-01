@@ -1,0 +1,1157 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Preview: Research Lab / Terminal — Romi Nur Ismanto</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:ital,wght@0,400;0,500;0,600;0,700;1,400&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
+<style>
+/* ============================================================
+   RESEARCH LAB / TERMINAL — design tokens
+   ============================================================ */
+:root{
+  --bg:          #0a0e14;
+  --bg-panel:    #0d1320;
+  --bg-panel-2:  #101724;
+  --bg-inset:    #080b10;
+  --line:        #1a2333;
+  --line-strong: #253044;
+  --text:        #c6d1df;
+  --text-bright: #eef3f9;
+  --dim:         #71809a;
+  --faint:       #49546b;
+  --accent:      #00e5a0;
+  --accent-dim:  rgba(0,229,160,.55);
+  --accent-line: rgba(0,229,160,.32);
+  --accent-soft: rgba(0,229,160,.07);
+  --mono:        'JetBrains Mono', ui-monospace, 'SF Mono', Menlo, monospace;
+  --sans:        'Inter', system-ui, -apple-system, sans-serif;
+  --maxw:        1180px;
+  --s1: .25rem;  /* 4  */
+  --s2: .5rem;   /* 8  */
+  --s3: .75rem;  /* 12 */
+  --s4: 1rem;    /* 16 */
+  --s5: 1.5rem;  /* 24 */
+  --s6: 2rem;    /* 32 */
+  --s7: 3rem;    /* 48 */
+  --s8: 4.5rem;  /* 72 */
+}
+
+*,*::before,*::after{ box-sizing:border-box; margin:0; padding:0 }
+
+html{ color-scheme:dark }
+@media (prefers-reduced-motion: no-preference){
+  html{ scroll-behavior:smooth }
+}
+
+body{
+  background-color:var(--bg);
+  /* lab-grid texture: faint 1px rule lines */
+  background-image:
+    linear-gradient(rgba(125,145,180,.040) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(125,145,180,.040) 1px, transparent 1px);
+  background-size:34px 34px;
+  color:var(--text);
+  font-family:var(--sans);
+  font-size:.9375rem;
+  line-height:1.65;
+  overflow-x:clip;
+  -webkit-font-smoothing:antialiased;
+}
+
+::selection{ background:var(--accent); color:#04120c }
+
+img{ max-width:100%; height:auto; display:block }
+
+a{ color:var(--text); text-decoration:none }
+:focus-visible{
+  outline:2px solid var(--accent);
+  outline-offset:3px;
+  border-radius:1px;
+}
+
+.sr-only{
+  position:absolute; width:1px; height:1px; padding:0; margin:-1px;
+  overflow:hidden; clip:rect(0 0 0 0); white-space:nowrap; border:0;
+}
+
+/* ---- skip nav ---- */
+.skip-nav{
+  position:absolute; left:var(--s4); top:-4rem; z-index:200;
+  font-family:var(--mono); font-size:.75rem;
+  background:var(--accent); color:#04120c; font-weight:700;
+  padding:.6rem 1rem; transition:top .15s ease;
+}
+.skip-nav:focus{ top:var(--s3) }
+
+/* ============================================================
+   TOP BAR
+   ============================================================ */
+.topbar{
+  position:sticky; top:0; z-index:100;
+  border-bottom:1px solid var(--line);
+  background:rgba(10,14,20,.88);
+  backdrop-filter:blur(8px);
+  -webkit-backdrop-filter:blur(8px);
+}
+.topbar-inner{
+  max-width:var(--maxw); margin:0 auto;
+  padding:.65rem var(--s4);
+  display:flex; align-items:center; justify-content:space-between;
+  gap:var(--s4); flex-wrap:wrap;
+}
+.topbar-id{
+  font-family:var(--mono); font-size:.8rem; font-weight:500;
+  color:var(--accent); white-space:nowrap; letter-spacing:.02em;
+}
+.topbar-id .tilde{ color:var(--dim) }
+.topbar nav ul{
+  list-style:none; display:flex; flex-wrap:wrap;
+  gap:.25rem .9rem;
+}
+.topbar nav a{
+  font-family:var(--mono); font-size:.7rem; color:var(--dim);
+  letter-spacing:.03em; padding:.25rem .1rem;
+  transition:color .15s ease;
+}
+.topbar nav a::before{ content:"./"; color:var(--faint) }
+.topbar nav a:hover{ color:var(--accent) }
+
+/* ============================================================
+   LAYOUT
+   ============================================================ */
+.wrap{ max-width:var(--maxw); margin:0 auto; padding:0 var(--s4) }
+section{ scroll-margin-top:4.5rem; padding-top:var(--s8) }
+
+/* ---- section headers: shell-prompt convention ---- */
+.sec-head{
+  display:flex; align-items:baseline; gap:var(--s4);
+  border-bottom:1px solid var(--line);
+  padding-bottom:var(--s3); margin-bottom:var(--s6);
+  flex-wrap:wrap;
+}
+.sec-idx{
+  font-family:var(--mono); font-size:.75rem; font-weight:500;
+  color:var(--accent); letter-spacing:.05em;
+}
+.sec-head h2{
+  font-family:var(--mono); font-size:clamp(.95rem, 1.4vw, 1.15rem);
+  font-weight:500; color:var(--text-bright); letter-spacing:.01em;
+}
+.sec-head h2 .ps{ color:var(--accent); margin-right:.55em }
+.sec-head h2 .flag{ color:var(--dim); font-weight:400 }
+.sec-note{
+  font-family:var(--mono); font-size:.7rem; color:var(--faint);
+  margin-left:auto; letter-spacing:.03em;
+}
+
+/* ============================================================
+   HERO — a terminal session
+   ============================================================ */
+.hero{ padding-top:var(--s7) }
+.term{
+  border:1px solid var(--line-strong);
+  background:var(--bg-panel);
+  box-shadow:0 24px 60px -30px rgba(0,0,0,.8);
+}
+.term-bar{
+  display:flex; align-items:center; gap:var(--s3);
+  border-bottom:1px solid var(--line);
+  padding:.6rem var(--s4);
+  background:var(--bg-panel-2);
+}
+.term-dots{ display:flex; gap:.45rem }
+.term-dots span{
+  width:10px; height:10px; border-radius:50%;
+  background:var(--line-strong); border:1px solid var(--line-strong);
+}
+.term-dots span:first-child{
+  background:var(--accent-soft); border-color:var(--accent-dim);
+}
+.term-title{
+  font-family:var(--mono); font-size:.7rem; color:var(--dim);
+  letter-spacing:.04em; margin:0 auto;
+  overflow:hidden; text-overflow:ellipsis; white-space:nowrap;
+}
+.term-body{
+  display:grid; grid-template-columns:1fr;
+  gap:var(--s6); padding:var(--s5) var(--s4) var(--s6);
+}
+
+.p-line{
+  font-family:var(--mono); font-size:.8rem; color:var(--dim);
+  margin-bottom:var(--s3); letter-spacing:.02em;
+}
+.p-line .host{ color:var(--accent) }
+.p-line .path{ color:var(--faint) }
+.p-line .cmd{ color:var(--text-bright) }
+
+.hero h1{
+  font-family:var(--mono); font-weight:700;
+  font-size:clamp(1.9rem, 5.4vw, 3.15rem);
+  line-height:1.08; letter-spacing:-.02em;
+  color:var(--text-bright);
+  margin:.4rem 0 var(--s4);
+}
+.hero h1 .h1-mark{ color:var(--accent) }
+
+.tagline{
+  font-size:clamp(.95rem, 1.5vw, 1.05rem);
+  color:var(--text); max-width:56ch;
+  margin-bottom:var(--s5); line-height:1.75;
+}
+.tagline strong{ color:var(--text-bright); font-weight:600 }
+.tagline em{ color:var(--dim); font-style:italic }
+
+/* blinking cursor */
+.cursor{
+  display:inline-block; width:.55em; height:1.05em;
+  background:var(--accent); vertical-align:text-bottom;
+  margin-left:.1em;
+}
+@media (prefers-reduced-motion: no-preference){
+  .cursor{ animation:blink 1.1s steps(1,end) infinite }
+  @keyframes blink{ 0%,100%{opacity:1} 50%{opacity:0} }
+}
+
+/* social chips */
+.socials{
+  list-style:none; display:flex; flex-wrap:wrap;
+  gap:var(--s2); margin-bottom:var(--s4);
+}
+.socials a{
+  display:inline-block;
+  font-family:var(--mono); font-size:.72rem; letter-spacing:.02em;
+  color:var(--text); border:1px solid var(--line-strong);
+  padding:.5rem .85rem; background:var(--bg-inset);
+  transition:border-color .15s ease, color .15s ease;
+}
+.socials a:hover{ border-color:var(--accent-line); color:var(--accent) }
+
+/* avatar */
+.avatar-col{ justify-self:center; align-self:start; text-align:center }
+.avatar-frame{
+  position:relative; display:inline-block;
+  padding:var(--s3); border:1px solid var(--line-strong);
+  background:var(--bg-inset);
+}
+.avatar-frame .cnr{
+  position:absolute; width:14px; height:14px; pointer-events:none;
+}
+.avatar-frame .tl{ top:-1px; left:-1px; border-top:1px solid var(--accent); border-left:1px solid var(--accent) }
+.avatar-frame .tr{ top:-1px; right:-1px; border-top:1px solid var(--accent); border-right:1px solid var(--accent) }
+.avatar-frame .bl{ bottom:-1px; left:-1px; border-bottom:1px solid var(--accent); border-left:1px solid var(--accent) }
+.avatar-frame .br{ bottom:-1px; right:-1px; border-bottom:1px solid var(--accent); border-right:1px solid var(--accent) }
+.avatar-frame img{
+  width:200px; height:auto;
+  filter:saturate(.85) contrast(1.03);
+}
+.avatar-cap{
+  font-family:var(--mono); font-size:.65rem; color:var(--faint);
+  margin-top:var(--s2); letter-spacing:.04em;
+}
+
+/* stats strip */
+.stats{
+  display:grid; grid-template-columns:repeat(2,1fr);
+  border:1px solid var(--line); border-top:0;
+  background:var(--line); gap:1px;
+}
+.stat{
+  background:var(--bg); padding:var(--s4) var(--s4);
+  display:flex; flex-direction:column; gap:.15rem;
+}
+.stat b{
+  font-family:var(--mono); font-weight:700;
+  font-size:1.35rem; color:var(--accent); letter-spacing:.01em;
+}
+.stat span{
+  font-family:var(--mono); font-size:.65rem; color:var(--dim);
+  text-transform:uppercase; letter-spacing:.14em;
+}
+
+/* ============================================================
+   BIO
+   ============================================================ */
+.bio-grid{ display:grid; grid-template-columns:1fr; gap:var(--s5) }
+.bio-kv{
+  font-family:var(--mono); font-size:.76rem; line-height:2.05;
+  border:1px solid var(--line); background:var(--bg-panel);
+  padding:var(--s4) var(--s5);
+  color:var(--dim); align-self:start;
+}
+.bio-kv dt{
+  float:left; clear:left; width:8.5em; color:var(--faint);
+  letter-spacing:.06em;
+}
+.bio-kv dd{ margin-left:9.5em; color:var(--text) }
+.bio-kv dd .k{ color:var(--accent) }
+.bio-text p{ max-width:68ch; margin-bottom:var(--s4) }
+.bio-text p:last-child{ margin-bottom:0 }
+.bio-text .lead{ color:var(--text-bright); font-size:1.02rem }
+
+/* ============================================================
+   FEATURED PROJECTS — instrument cards on a hairline grid
+   ============================================================ */
+.proj-grid{
+  display:grid; grid-template-columns:1fr;
+  gap:1px; background:var(--line);
+  border:1px solid var(--line);
+}
+.proj{
+  background:var(--bg-panel);
+  display:flex; flex-direction:column;
+  transition:background-color .18s ease;
+}
+.proj:hover{ background:var(--bg-panel-2) }
+
+.proj-top{
+  display:flex; align-items:baseline; justify-content:space-between;
+  gap:var(--s3); padding:var(--s4) var(--s4) var(--s3);
+}
+.proj-num{
+  font-family:var(--mono); font-size:.78rem; font-weight:700;
+  color:var(--accent); letter-spacing:.05em;
+}
+.proj-date{
+  font-family:var(--mono); font-size:.66rem; color:var(--faint);
+  letter-spacing:.03em; text-align:right;
+}
+.proj-thumb{
+  aspect-ratio:16/10; overflow:hidden;
+  border-top:1px solid var(--line); border-bottom:1px solid var(--line);
+  background:var(--bg-inset);
+}
+.proj-thumb img{
+  width:100%; height:100%; object-fit:cover;
+  transition:transform .3s ease;
+}
+@media (prefers-reduced-motion: no-preference){
+  .proj:hover .proj-thumb img{ transform:scale(1.025) }
+}
+.proj-body{
+  padding:var(--s4) var(--s4) var(--s5);
+  display:flex; flex-direction:column; gap:var(--s3); flex:1;
+}
+.proj h3{
+  font-family:var(--sans); font-size:1.02rem; font-weight:600;
+  color:var(--text-bright); line-height:1.4; letter-spacing:-.01em;
+}
+.proj p{ font-size:.85rem; color:var(--text); line-height:1.66 }
+.badges{
+  list-style:none; display:flex; flex-wrap:wrap; gap:.35rem;
+}
+.badges li{
+  font-family:var(--mono); font-size:.63rem; color:var(--dim);
+  letter-spacing:.03em;
+  border:1px solid var(--line); padding:.2rem .5rem;
+  background:rgba(255,255,255,.014);
+}
+.actions{
+  display:flex; flex-wrap:wrap; gap:var(--s2);
+  margin-top:auto; padding-top:var(--s2);
+}
+.act{
+  font-family:var(--mono); font-size:.7rem; letter-spacing:.02em;
+  border:1px solid var(--line-strong); padding:.5rem .8rem;
+  color:var(--text); background:var(--bg-inset);
+  transition:border-color .15s ease, color .15s ease, background-color .15s ease;
+}
+.act:hover{ border-color:var(--accent-line); color:var(--accent) }
+.act-demo{ border-color:var(--accent-line); color:var(--accent) }
+.act-demo:hover{ background:var(--accent-soft) }
+.act-paper{ color:var(--dim) }
+
+/* ============================================================
+   PROJECT ARCHIVE — dense index [09]–[33]
+   ============================================================ */
+.arch{ border:1px solid var(--line); background:var(--bg-panel) }
+.arch-row{
+  display:grid; grid-template-columns:3.4rem 1fr;
+  gap:var(--s3); align-items:baseline;
+  padding:.7rem var(--s4);
+  border-top:1px solid var(--line);
+  transition:background-color .15s ease;
+}
+.arch-row:first-child{ border-top:0 }
+.arch-row:hover{ background:var(--accent-soft) }
+.arch-num{
+  font-family:var(--mono); font-size:.72rem; color:var(--faint);
+  letter-spacing:.05em;
+}
+.arch-row:hover .arch-num{ color:var(--accent) }
+.arch-row .arch-tags{ grid-column:2 } /* mobile: tags sit under the title */
+.arch-title{
+  font-size:.87rem; font-weight:500; color:var(--text-bright);
+  line-height:1.45;
+}
+.arch-tags{
+  font-family:var(--mono); font-size:.63rem; color:var(--faint);
+  letter-spacing:.02em;
+}
+
+/* ============================================================
+   RESEARCH — file listing
+   ============================================================ */
+.research{ border:1px solid var(--line); background:var(--bg-panel) }
+.res-row{
+  display:grid; grid-template-columns:3.4rem 1fr;
+  gap:var(--s3); padding:var(--s4);
+  border-top:1px solid var(--line);
+}
+.res-row:first-child{ border-top:0 }
+.res-num{
+  font-family:var(--mono); font-size:.72rem; color:var(--accent);
+  letter-spacing:.05em; padding-top:.2rem;
+}
+.res-row h3{
+  font-size:.95rem; font-weight:600; line-height:1.45;
+  margin-bottom:.3rem;
+}
+.res-row h3 a{
+  color:var(--text-bright);
+  border-bottom:1px solid transparent;
+  transition:color .15s ease, border-color .15s ease;
+}
+.res-row h3 a:hover{ color:var(--accent); border-color:var(--accent-line) }
+.res-row p{ font-size:.83rem; color:var(--text); max-width:78ch; margin-bottom:.4rem }
+.res-href{
+  font-family:var(--mono); font-size:.66rem; color:var(--faint);
+  letter-spacing:.03em; word-break:break-all;
+}
+.res-href .arrow{ color:var(--accent-dim) }
+
+/* ============================================================
+   BOOKS
+   ============================================================ */
+.books-grid{
+  display:grid; grid-template-columns:1fr;
+  gap:1px; background:var(--line); border:1px solid var(--line);
+}
+.book{
+  background:var(--bg-panel); padding:var(--s5) var(--s4);
+  display:flex; flex-direction:column; gap:var(--s3);
+  transition:background-color .18s ease;
+}
+.book:hover{ background:var(--bg-panel-2) }
+.book-vol{
+  font-family:var(--mono); font-size:.66rem; color:var(--faint);
+  letter-spacing:.1em;
+}
+.book h3{
+  font-size:.98rem; font-weight:600; color:var(--text-bright);
+  line-height:1.4;
+}
+.book p{ font-size:.83rem; color:var(--text); flex:1 }
+.book-links{ display:flex; flex-wrap:wrap; gap:var(--s2) }
+
+/* ============================================================
+   EXPERIENCE — git log
+   ============================================================ */
+.gitlog{
+  list-style:none;
+  border-left:1px solid var(--line-strong);
+  margin-left:.55rem;
+}
+.commit{ position:relative; padding:0 0 var(--s6) var(--s5) }
+.commit:last-child{ padding-bottom:var(--s2) }
+.commit::before{
+  content:""; position:absolute; left:-5px; top:.5rem;
+  width:9px; height:9px; border-radius:50%;
+  background:var(--bg); border:1px solid var(--accent-dim);
+}
+.commit:first-child::before{ background:var(--accent); border-color:var(--accent) }
+.commit-meta{
+  font-family:var(--mono); font-size:.74rem;
+  color:var(--dim); letter-spacing:.03em;
+  display:flex; flex-wrap:wrap; gap:.3rem .7rem; align-items:baseline;
+  margin-bottom:.3rem;
+}
+.commit-year{ color:var(--accent); font-weight:700 }
+.commit-ref{ color:var(--faint) }
+.commit h3{
+  font-size:.97rem; font-weight:600; color:var(--text-bright);
+  margin-bottom:.35rem; line-height:1.45;
+}
+.commit p{ font-size:.85rem; color:var(--text); max-width:76ch }
+
+/* ============================================================
+   EDUCATION + CERTIFICATIONS
+   ============================================================ */
+.edu-grid{
+  display:grid; grid-template-columns:1fr;
+  gap:1px; background:var(--line); border:1px solid var(--line);
+}
+.edu{
+  background:var(--bg-panel); padding:var(--s5) var(--s4);
+  display:flex; gap:var(--s4); align-items:center;
+}
+.edu-logo{
+  flex:0 0 auto; width:64px; height:64px;
+  display:grid; place-items:center;
+  border:1px solid var(--line-strong); background:#fff;
+  padding:8px;
+}
+.edu-logo img{ width:100%; height:100%; object-fit:contain }
+.edu h3{
+  font-size:.97rem; font-weight:600; color:var(--text-bright);
+  line-height:1.4; margin-bottom:.2rem;
+}
+.edu-meta{
+  font-family:var(--mono); font-size:.7rem; color:var(--dim);
+  letter-spacing:.03em;
+}
+.edu-meta .yr{ color:var(--accent) }
+
+.certs{
+  list-style:none;
+  display:grid; grid-template-columns:1fr;
+  gap:1px; background:var(--line); border:1px solid var(--line);
+}
+.certs li{
+  background:var(--bg-panel);
+  font-family:var(--mono); font-size:.76rem; letter-spacing:.02em;
+  color:var(--text); padding:.85rem var(--s4);
+  display:flex; gap:var(--s3); align-items:baseline;
+  transition:background-color .15s ease;
+}
+.certs li:hover{ background:var(--bg-panel-2) }
+.certs .tick{ color:var(--accent); font-weight:700 }
+.certs .issuer{ color:var(--faint); margin-left:auto; font-size:.66rem; text-align:right }
+
+/* ============================================================
+   FOOTER
+   ============================================================ */
+footer{
+  margin-top:var(--s8); border-top:1px solid var(--line);
+  background:var(--bg-inset);
+}
+.foot-inner{
+  max-width:var(--maxw); margin:0 auto;
+  padding:var(--s6) var(--s4) var(--s7);
+  font-family:var(--mono); font-size:.74rem; color:var(--dim);
+}
+.foot-inner .p-line{ margin-bottom:var(--s2) }
+.foot-exit{ color:var(--faint); margin-bottom:var(--s4) }
+.foot-row{
+  display:flex; flex-wrap:wrap; gap:var(--s2) var(--s4);
+  align-items:baseline; justify-content:space-between;
+  border-top:1px solid var(--line); padding-top:var(--s4);
+}
+.foot-row a{ color:var(--dim); transition:color .15s ease }
+.foot-row a:hover{ color:var(--accent) }
+.foot-copy{ color:var(--text) }
+
+/* ============================================================
+   BREAKPOINTS
+   ============================================================ */
+@media (min-width: 640px){
+  .stats{ grid-template-columns:repeat(4,1fr) }
+  .certs{ grid-template-columns:1fr 1fr }
+  .arch-row{ grid-template-columns:3.4rem 1fr auto }
+  .arch-row .arch-tags{ grid-column:auto; text-align:right }
+}
+@media (min-width: 768px){
+  .wrap{ padding:0 var(--s5) }
+  .term-body{ grid-template-columns:1fr auto; padding:var(--s6) var(--s6) var(--s7) }
+  .avatar-col{ order:2 }
+  .books-grid{ grid-template-columns:1fr 1fr }
+  .edu-grid{ grid-template-columns:1fr 1fr }
+  .bio-grid{ grid-template-columns:minmax(0,1fr) 21rem; align-items:start }
+  .bio-kv{ order:2 }
+}
+@media (min-width: 960px){
+  .proj-grid{ grid-template-columns:1fr 1fr }
+  .avatar-frame img{ width:230px }
+}
+@media (min-width: 1100px){
+  .books-grid{ grid-template-columns:1fr 1fr 1fr }
+}
+
+/* under reduced motion: kill every transition & transform */
+@media (prefers-reduced-motion: reduce){
+  *,*::before,*::after{
+    animation-duration:.001s !important;
+    animation-iteration-count:1 !important;
+    transition-duration:.001s !important;
+  }
+}
+
+@media print{
+  body{ background:#fff; color:#000 }
+}
+</style>
+</head>
+<body>
+
+<a class="skip-nav" href="#main">skip to content --main</a>
+
+<header class="topbar">
+  <div class="topbar-inner">
+    <p class="topbar-id">romi@lab<span class="tilde">:~/portfolio</span>$</p>
+    <nav aria-label="Section navigation">
+      <ul>
+        <li><a href="#bio">bio</a></li>
+        <li><a href="#projects">projects</a></li>
+        <li><a href="#archive">archive</a></li>
+        <li><a href="#research">research</a></li>
+        <li><a href="#books">books</a></li>
+        <li><a href="#log">log</a></li>
+        <li><a href="#education">edu</a></li>
+        <li><a href="#certifications">certs</a></li>
+      </ul>
+    </nav>
+  </div>
+</header>
+
+<main id="main">
+<div class="wrap">
+
+  <!-- ==================== HERO ==================== -->
+  <section class="hero" aria-label="Introduction">
+    <div class="term">
+      <div class="term-bar">
+        <div class="term-dots" aria-hidden="true"><span></span><span></span><span></span></div>
+        <p class="term-title">romi@lab: ~/portfolio &mdash; zsh &mdash; 118&times;42</p>
+      </div>
+      <div class="term-body">
+        <div>
+          <p class="p-line"><span class="host">romi@lab</span><span class="path">:~/portfolio</span>$ <span class="cmd">whoami</span></p>
+          <h1><span class="h1-mark" aria-hidden="true">&gt;</span> Romi Nur Ismanto</h1>
+          <p class="tagline"><em>I like to train my agentic AI agent on large datasets with inference speed</em><br>
+          <strong>AI-powered tools</strong> <em>from Node JS roots to web frontiers.</em><br>
+          <em>Every commit lands on GitHub for you to fork &amp; remix.</em></p>
+
+          <p class="p-line"><span class="host">romi@lab</span><span class="path">:~/portfolio</span>$ <span class="cmd">ls socials/</span></p>
+          <ul class="socials">
+            <li><a href="https://jekardah.com">&#127961; Jekardah</a></li>
+            <li><a href="https://x.com/romeografic">&#120143; Twitter / X</a></li>
+            <li><a href="https://github.com/romizone">&#9901; GitHub</a></li>
+            <li><a href="https://huggingface.co/romizone">&#129303; Hugging Face</a></li>
+            <li><a href="https://www.padelfip.com/player/romi-nur-ismanto/">&#127955; Padel FIP</a></li>
+            <li><a href="mailto:rominur@gmail.com">&#9993; Email</a></li>
+          </ul>
+
+          <p class="p-line" aria-hidden="true"><span class="host">romi@lab</span><span class="path">:~/portfolio</span>$ <span class="cursor"></span></p>
+        </div>
+
+        <div class="avatar-col">
+          <div class="avatar-frame">
+            <span class="cnr tl" aria-hidden="true"></span><span class="cnr tr" aria-hidden="true"></span>
+            <span class="cnr bl" aria-hidden="true"></span><span class="cnr br" aria-hidden="true"></span>
+            <img src="Foto.jpeg" alt="Portrait photograph of Romi Nur Ismanto" width="220" height="325">
+          </div>
+          <p class="avatar-cap">Foto.jpeg &middot; 2138&times;3161 &middot; rgb</p>
+        </div>
+      </div>
+    </div>
+
+    <div class="stats" role="list" aria-label="Key numbers">
+      <div class="stat" role="listitem"><b>33</b><span>projects shipped</span></div>
+      <div class="stat" role="listitem"><b>07</b><span>research artifacts</span></div>
+      <div class="stat" role="listitem"><b>06</b><span>books &amp; guides</span></div>
+      <div class="stat" role="listitem"><b>2004&rarr;26</b><span>experience log</span></div>
+    </div>
+  </section>
+
+  <!-- ==================== BIO ==================== -->
+  <section id="bio" aria-labelledby="bio-h">
+    <header class="sec-head">
+      <span class="sec-idx">[01]</span>
+      <h2 id="bio-h"><span aria-hidden="true"><span class="ps">$</span>cat bio.txt <span class="flag">--plain</span></span><span class="sr-only">Bio</span></h2>
+      <span class="sec-note"># plain text, no embellishment</span>
+    </header>
+    <div class="bio-grid">
+      <div class="bio-text">
+        <p class="lead">Engineer and researcher building AI-powered tools in the open &mdash; from Node JS roots to web frontiers, with every commit landing on GitHub to fork &amp; remix.</p>
+        <p>The log runs from 2004 to today: authentication systems with one-time passwords and MD5 hashing, enterprise firewalls and IDS/IPS for banking environments, 24/7 monitoring of 20,000+ ATMs and 200,000+ EDCs, AES-based front-end obfuscation, and nationwide VSAT, terrestrial, and cellular network operations for thousands of remote banking units across Indonesia.</p>
+        <p>Current focus: building and training neural networks with PyTorch, designing autonomous agents capable of multi-step reasoning, tool use, and self-correction, and multi-vector embeddings for image retrieval and semantic search &mdash; alongside guardrails and safety layers for reliable production deployment. Output so far: 33 open-source projects, 7 research artifacts, and 6 books &amp; study guides.</p>
+      </div>
+      <dl class="bio-kv">
+        <dt>name</dt><dd>Romi Nur Ismanto</dd>
+        <dt>focus</dt><dd><span class="k">agentic-ai</span> &middot; deep-learning</dd>
+        <dt>stack</dt><dd>pytorch &middot; swift &middot; node &middot; mcp</dd>
+        <dt>edu</dt><dd>M.Eng UI &rsquo;17 &middot; B.Eng UGM &rsquo;04</dd>
+        <dt>certs</dt><dd>7 verified</dd>
+        <dt>license</dt><dd>MIT, mostly</dd>
+        <dt>status</dt><dd><span class="k">&#9679; training</span></dd>
+      </dl>
+    </div>
+  </section>
+
+  <!-- ==================== FEATURED PROJECTS ==================== -->
+  <section id="projects" aria-labelledby="proj-h">
+    <header class="sec-head">
+      <span class="sec-idx">[02]</span>
+      <h2 id="proj-h"><span aria-hidden="true"><span class="ps">$</span>featured-projects <span class="flag">--all</span></span><span class="sr-only">Featured AI Working Projects</span></h2>
+      <span class="sec-note"># 8 of 33 &mdash; full spec</span>
+    </header>
+
+    <div class="proj-grid">
+
+      <!-- [01] OpenRomeo -->
+      <article class="proj">
+        <div class="proj-top">
+          <span class="proj-num">[01]</span>
+          <span class="proj-date">// Released: 25 July 2026</span>
+        </div>
+        <div class="proj-thumb">
+          <img src="OpenRomeo.svg" alt="OpenRomeo project thumbnail: desktop AI coworker interface illustration" width="400" height="300">
+        </div>
+        <div class="proj-body">
+          <h3>&#129302; OpenRomeo &mdash; AI Coworker on Your Desktop</h3>
+          <p>A cross-platform desktop AI coworker that delivers finished work, not just chat &mdash; polished documents, updated spreadsheets, triaged inboxes, and Slack replies that land as real files in your workspace. A supercharged fork of OpenWorker, rebuilt around the latest frontier models: GPT&#8209;5.6, Claude Fable 5 &amp; Sonnet 5, Gemini 3.6, Kimi K3, MiniMax M3, DeepSeek V4, GLM&#8209;5.2, and Grok 4.5 &mdash; with vision enabled on the multimodal flagships, or fully local inference via Ollama. Ships the Claude Desktop-standard builtin document skills (docx, pptx, xlsx, pdf)&hellip;</p>
+          <ul class="badges">
+            <li>Tauri</li><li>Python</li><li>TypeScript</li><li>MCP</li><li>Agentic AI</li><li>Multi-Model</li><li>Local-First</li><li>macOS &amp; Windows</li><li>MIT License</li>
+          </ul>
+          <div class="actions">
+            <a class="act" href="https://github.com/romizone/OpenRomeo">&#128187; GitHub</a>
+            <a class="act act-demo" href="https://github.com/romizone/OpenRomeo/releases/tag/v1.0.2">&#11015;&#65039; Download v1.0.2</a>
+          </div>
+        </div>
+      </article>
+
+      <!-- [02] NetScope -->
+      <article class="proj">
+        <div class="proj-top">
+          <span class="proj-num">[02]</span>
+          <span class="proj-date">// Released: 11 April 2026</span>
+        </div>
+        <div class="proj-thumb">
+          <img src="NetScope.svg" alt="NetScope project thumbnail: macOS network scanner interface illustration" width="400" height="300">
+        </div>
+        <div class="proj-body">
+          <h3>&#128225; NetScope &mdash; Native macOS Network Scanner</h3>
+          <p>A native macOS network scanner built from the ground up with Swift 5.9 and SwiftUI. Features six integrated modules: My Device (local system &amp; interface info), Discovery (TCP knock scan, ARP resolution, 14+ Bonjour service types, OUI vendor lookup), Port Scanner (Top 100/1000/custom ranges with 100+ concurrent probes, banner grabbing, TLS certificate inspection), Ping &amp; Traceroute (ICMP diagnostics, A/AAAA/MX/NS/CNAME/TXT/SRV DNS queries), Monitor (configurable polling with real-time alerts &amp; 24-hour event history via Swift Charts), and Reports (CSV/JSON/HTML/PDF export).</p>
+          <ul class="badges">
+            <li>Swift</li><li>SwiftUI</li><li>Network.framework</li><li>CoreWLAN</li><li>SwiftData</li><li>XPC</li><li>macOS Native</li><li>MIT License</li>
+          </ul>
+          <div class="actions">
+            <a class="act" href="https://github.com/romizone/netscope">&#128187; GitHub</a>
+            <a class="act act-demo" href="https://github.com/romizone/netscope/releases/tag/v1.0.0">&#11015;&#65039; Download v1.0.0</a>
+            <a class="act act-paper" href="NetScope_Paper.html">&#128196; Paper</a>
+          </div>
+        </div>
+      </article>
+
+      <!-- [03] Transkrip -->
+      <article class="proj">
+        <div class="proj-top">
+          <span class="proj-num">[03]</span>
+          <span class="proj-date">// Released: 9 April 2026</span>
+        </div>
+        <div class="proj-thumb">
+          <img src="Transkrip.svg" alt="Transkrip project thumbnail: local audio and video transcription app illustration" width="400" height="280">
+        </div>
+        <div class="proj-body">
+          <h3>&#127897;&#65039; Transkrip &mdash; Local AI Audio &amp; Video Transcription</h3>
+          <p>Privacy-first cross-platform desktop application that transcribes audio and video files entirely on-device &mdash; no cloud, no uploads, no data leaks. Built with Electron 41, React 19, TypeScript 6, Vite 8, and Tailwind CSS 4, Transkrip wraps the highly optimized whisper.cpp engine behind a polished drag-and-drop UI. Supports common audio/video containers (MP3, WAV, M4A, MP4, MOV), multilingual transcription via Whisper models, and rich export options to .txt, .docx, and .pdf. Features a persistent local transcription history powered by SQLite (better-sqlite3)&hellip;</p>
+          <ul class="badges">
+            <li>Electron 41</li><li>React 19</li><li>TypeScript 6</li><li>Vite 8</li><li>Tailwind CSS 4</li><li>whisper.cpp</li><li>SQLite</li><li>Privacy-First</li><li>MIT License</li>
+          </ul>
+          <div class="actions">
+            <a class="act" href="https://github.com/romizone/transkrip">&#128187; GitHub</a>
+            <a class="act act-demo" href="https://github.com/romizone/transkrip/releases/tag/v1.0.0">&#11015;&#65039; Download v1.0.0</a>
+            <a class="act act-paper" href="Transkrip_Paper.html">&#128196; Paper</a>
+          </div>
+        </div>
+      </article>
+
+      <!-- [04] SonicAI -->
+      <article class="proj">
+        <div class="proj-top">
+          <span class="proj-num">[04]</span>
+          <span class="proj-date">// Deployed: 4 April 2026</span>
+        </div>
+        <div class="proj-thumb">
+          <img src="SonicAI.svg" alt="SonicAI project thumbnail: text-to-song generator with waveform illustration" width="400" height="300">
+        </div>
+        <div class="proj-body">
+          <h3>&#127925; SonicAI &mdash; AI Text-to-Song Generator</h3>
+          <p>Browser-based AI text-to-song generator that transforms written lyrics into complete musical compositions entirely on the client-side. Features a character-to-note mapping algorithm that converts text into melodies, with multi-layer instrument synthesis (melody, chords, bass, drums) and a dual vocal engine combining formant synthesis with Speech Synthesis API. Supports 6 music genres (Pop, Rock, Jazz, Electronic, Classical, Lo-fi) each with unique scales and chord progressions. Includes real-time 80-bar frequency spectrum visualizer, tempo adjustment (60&ndash;180 BPM), key selection&hellip;</p>
+          <ul class="badges">
+            <li>HTML5</li><li>CSS3</li><li>JavaScript</li><li>Web Audio API</li><li>Speech Synthesis</li><li>Formant Synthesis</li><li>Zero Dependencies</li><li>MIT License</li>
+          </ul>
+          <div class="actions">
+            <a class="act" href="https://github.com/romizone/sonic-ai">&#128187; GitHub</a>
+            <a class="act act-demo" href="https://sonic-ai-dun.vercel.app">&#127760; Live Demo</a>
+            <a class="act act-paper" href="SonicAI_Paper.pdf">&#128196; Paper</a>
+          </div>
+        </div>
+      </article>
+
+      <!-- [05] GPU vs CPU vs TPU -->
+      <article class="proj">
+        <div class="proj-top">
+          <span class="proj-num">[05]</span>
+          <span class="proj-date">// Deployed: 14 March 2026</span>
+        </div>
+        <div class="proj-thumb">
+          <img src="GPUSimulator.svg" alt="GPU vs CPU vs TPU Simulator thumbnail: processor race visualization illustration" width="400" height="280">
+        </div>
+        <div class="proj-body">
+          <h3>&#128308; GPU vs CPU vs TPU Simulator</h3>
+          <p>Interactive web-based simulator that visually demonstrates performance differences between CPU, GPU, and TPU when handling AI and deep learning workloads. Features a real-time processing race with three horizontal progress bars competing to complete identical tasks, supporting 4 workload types: Matrix Multiplication (1024&times;1024), CNN Training (ResNet-50), Batch Inference, and NLP Transformer (BERT-Base). Includes detailed processor cards with animated core visualization grids (16 cores for CPU, 256 for GPU, 64 for TPU), real-time metrics (ops/sec, throughput, timestamps)&hellip;</p>
+          <ul class="badges">
+            <li>HTML5</li><li>CSS3</li><li>JavaScript</li><li>GPU Computing</li><li>TPU Systolic Array</li><li>AI Workloads</li><li>Zero Dependencies</li><li>MIT License</li>
+          </ul>
+          <div class="actions">
+            <a class="act" href="https://github.com/romizone/gpu-cpu-tpu-simulator">&#128187; GitHub</a>
+            <a class="act act-demo" href="https://romizone.github.io/gpu-cpu-tpu-simulator/">&#127760; Live Demo</a>
+            <a class="act act-paper" href="https://rominur.com/GPUSimulator_Paper.html">&#128196; Paper</a>
+          </div>
+        </div>
+      </article>
+
+      <!-- [06] Diffusion Simulator -->
+      <article class="proj">
+        <div class="proj-top">
+          <span class="proj-num">[06]</span>
+          <span class="proj-date">// Deployed: 7 March 2026</span>
+        </div>
+        <div class="proj-thumb">
+          <img src="DiffusionSimulator.svg" alt="AI Image Diffusion Simulator thumbnail: noise-to-image denoising illustration" width="400" height="280">
+        </div>
+        <div class="proj-body">
+          <h3>&#127912; AI Image Diffusion Simulator</h3>
+          <p>Interactive educational tool that visualizes how diffusion models generate images through a simulated denoising process. Select from 10 adorable animals (cat, dog, bunny, panda, fox, penguin, hamster, owl, koala, duck) and watch as random noise transforms into coherent illustrations via reverse diffusion. Features adjustable diffusion steps, Classifier-Free Guidance (CFG) scale slider controlling prompt adherence, manual noise slider for exploring intermediate states, and speed selector (slow/normal/fast). Includes real-time progress bar with step counter&hellip;</p>
+          <ul class="badges">
+            <li>JavaScript</li><li>Canvas API</li><li>Diffusion Model</li><li>Denoising</li><li>CFG Scale</li><li>Zero Dependencies</li><li>MIT License</li>
+          </ul>
+          <div class="actions">
+            <a class="act" href="https://github.com/romizone/diffusion-simulator">&#128187; GitHub</a>
+            <a class="act act-demo" href="https://diffussion.vercel.app/">&#127760; Live Demo</a>
+            <a class="act act-paper" href="https://rominur.com/DiffusionSimulator_Paper.html">&#128196; Paper</a>
+          </div>
+        </div>
+      </article>
+
+      <!-- [07] AI News Presenter -->
+      <article class="proj">
+        <div class="proj-top">
+          <span class="proj-num">[07]</span>
+          <span class="proj-date">// Deployed: 28 February 2026</span>
+        </div>
+        <div class="proj-thumb">
+          <img src="AINewsPresenter.svg" alt="AI News Presenter Simulator thumbnail: animated virtual news anchor illustration" width="800" height="500">
+        </div>
+        <div class="proj-body">
+          <h3>&#127908; AI News Presenter Simulator</h3>
+          <p>Virtual news anchor simulator powered by Text-to-Speech with professional animated SVG avatar. Features lip-sync mouth animation, automatic eye blink, breathing animation, and intensified avatar glow during broadcast. Bilingual support for Bahasa Indonesia and English using Web Speech API with adjustable speech rate (0.5x&ndash;2x) and pitch control. Delivers a full TV studio experience with running BREAKING news ticker, blinking LIVE badge, real-time clock, SVG news desk, audio equalizer animation, and glassmorphism UI effects. Includes real-time subtitle with word highlighting&hellip;</p>
+          <ul class="badges">
+            <li>HTML5</li><li>CSS3</li><li>JavaScript</li><li>Web Speech API</li><li>SVG Animation</li><li>Bilingual TTS</li><li>Zero Dependencies</li><li>MIT License</li>
+          </ul>
+          <div class="actions">
+            <a class="act" href="https://github.com/romizone/ai-news-presenter">&#128187; GitHub</a>
+            <a class="act act-demo" href="https://files-navy-three.vercel.app">&#127760; Live Demo</a>
+            <a class="act act-paper" href="https://rominur.com/AINewsPresenter_Paper.html">&#128196; Paper</a>
+          </div>
+        </div>
+      </article>
+
+      <!-- [08] RAG SOP Assistant -->
+      <article class="proj">
+        <div class="proj-top">
+          <span class="proj-num">[08]</span>
+          <span class="proj-date">// Deployed: 28 February 2026</span>
+        </div>
+        <div class="proj-thumb">
+          <img src="RAGSOP.svg" alt="RAG SOP Assistant thumbnail: retrieval-augmented generation pipeline illustration" width="800" height="500">
+        </div>
+        <div class="proj-body">
+          <h3>&#128218; RAG SOP Assistant</h3>
+          <p>AI-powered Q&amp;A system that transforms corporate Standard Operating Procedure (SOP) documents into a dynamic, conversational knowledge base using Retrieval-Augmented Generation (RAG). Employees ask natural language questions and receive accurate, source-attributed answers grounded in official SOP documents. Features intelligent sentence-boundary-aware text chunking (~500 chars with 100 overlap), 384-dimensional multilingual semantic embeddings via E5-Small, ChromaDB vector storage with cosine similarity search (Top-5 retrieval), and DeepSeek-V3 for context-grounded answer generation.</p>
+          <ul class="badges">
+            <li>Python</li><li>RAG</li><li>ChromaDB</li><li>E5 Embeddings</li><li>DeepSeek</li><li>Gradio</li><li>Sentence-Transformers</li>
+          </ul>
+          <div class="actions">
+            <a class="act" href="https://github.com/romizone/RAGSOP">&#128187; GitHub</a>
+            <a class="act act-demo" href="https://huggingface.co/spaces/romizone/RAG-SOP">&#127760; Live Demo</a>
+            <a class="act act-paper" href="https://rominur.com/RAGSOP_Paper.html">&#128196; Paper</a>
+          </div>
+        </div>
+      </article>
+
+    </div>
+  </section>
+
+  <!-- ==================== PROJECT ARCHIVE ==================== -->
+  <section id="archive" aria-labelledby="arch-h">
+    <header class="sec-head">
+      <span class="sec-idx">[03]</span>
+      <h2 id="arch-h"><span aria-hidden="true"><span class="ps">$</span>ls projects/ <span class="flag">--archive</span></span><span class="sr-only">More Projects</span></h2>
+      <span class="sec-note"># 25 entries &middot; [09]&ndash;[33]</span>
+    </header>
+
+    <div class="arch">
+      <div class="arch-row"><span class="arch-num">[09]</span><span class="arch-title">&#129504; LeCun 1989 CNN Reproduction</span><span class="arch-tags">Node.js &middot; CNN &middot; MNIST &middot; Backpropagation</span></div>
+      <div class="arch-row"><span class="arch-num">[10]</span><span class="arch-title">&#129302; Web 4.0 &mdash; Autonomous AI Living World</span><span class="arch-tags">JavaScript &middot; HTML5 Canvas &middot; Agentic AI &middot; Crypto Simulation</span></div>
+      <div class="arch-row"><span class="arch-num">[11]</span><span class="arch-title">&#129302; Optimus Perceptron &mdash; AI Humanoid Robot Simulation</span><span class="arch-tags">JavaScript &middot; HTML5 Canvas &middot; 7-Layer AI &middot; 9 Tabs</span></div>
+      <div class="arch-row"><span class="arch-num">[12]</span><span class="arch-title">&#127908; TranscribeAI</span><span class="arch-tags">Python &middot; Whisper &middot; Apple Silicon &middot; 100% Offline</span></div>
+      <div class="arch-row"><span class="arch-num">[13]</span><span class="arch-title">&#128196; AI PDF Tools</span><span class="arch-tags">Flask &middot; Python &middot; Tesseract OCR &middot; pdf2docx</span></div>
+      <div class="arch-row"><span class="arch-num">[14]</span><span class="arch-title">&#128663; Tesla Self-Driving AI Simulation</span><span class="arch-tags">JavaScript &middot; HTML5 Canvas &middot; 3D Projection &middot; LiDAR Simulation</span></div>
+      <div class="arch-row"><span class="arch-num">[15]</span><span class="arch-title">&#9822; Knight Chess AI</span><span class="arch-tags">Minimax AI &middot; Alpha-Beta Pruning &middot; Next.js &middot; TypeScript</span></div>
+      <div class="arch-row"><span class="arch-num">[16]</span><span class="arch-title">&#129504; Transformer Explainer (SimulasiLLM)</span><span class="arch-tags">Transformer &middot; GPT-2 Simulation &middot; Attention Mechanism &middot; Pure HTML/CSS/JS</span></div>
+      <div class="arch-row"><span class="arch-num">[17]</span><span class="arch-title">&#128293; PyTorch Neural Network Simulation</span><span class="arch-tags">PyTorch &middot; Neural Networks &middot; Next.js &middot; TypeScript</span></div>
+      <div class="arch-row"><span class="arch-num">[18]</span><span class="arch-title">&#128172; Open Chatbot</span><span class="arch-tags">Next.js 16 &middot; React 19 &middot; TypeScript &middot; Vercel AI SDK</span></div>
+      <div class="arch-row"><span class="arch-num">[19]</span><span class="arch-title">&#128230; WinRA &mdash; Archive Manager for macOS</span><span class="arch-tags">Python &middot; CustomTkinter &middot; macOS Native &middot; ZIP/RAR</span></div>
+      <div class="arch-row"><span class="arch-num">[20]</span><span class="arch-title">&#128220; AcroRomi &mdash; Native PDF Editor for macOS</span><span class="arch-tags">Swift &middot; SwiftUI &middot; PDFKit &middot; Vision OCR</span></div>
+      <div class="arch-row"><span class="arch-num">[21]</span><span class="arch-title">&#129302; LLM Architecture Compendium 2025&ndash;2026</span><span class="arch-tags">Compendium &middot; 42 Models &middot; LLM Architecture &middot; 59 Pages</span></div>
+      <div class="arch-row"><span class="arch-num">[22]</span><span class="arch-title">&#128202; AI Exposure in the Job Market &mdash; Indonesia vs United States 2026</span><span class="arch-tags">Data Viz &middot; Job Market &middot; BPS &middot; BLS</span></div>
+      <div class="arch-row"><span class="arch-num">[23]</span><span class="arch-title">&#128506; Indonesian Jobs AI Map 2026</span><span class="arch-tags">AI Map &middot; 436 Occupations &middot; KBJI &middot; BPS</span></div>
+      <div class="arch-row"><span class="arch-num">[24]</span><span class="arch-title">&#128214; Vibe Coding SDLC Framework</span><span class="arch-tags">Whitepaper &middot; SDLC &middot; Vibe Coding &middot; 61 Pages</span></div>
+      <div class="arch-row"><span class="arch-num">[25]</span><span class="arch-title">&#129302; Vibe Coding Handbook: Using Claude Code</span><span class="arch-tags">Handbook &middot; Claude Code &middot; Vibe Coding &middot; 60 Pages</span></div>
+      <div class="arch-row"><span class="arch-num">[26]</span><span class="arch-title">&#127760; Web 4.0: The Birth of Autonomous Digital Life</span><span class="arch-tags">Whitepaper &middot; Web 4.0 &middot; AI Agents &middot; 40 Pages</span></div>
+      <div class="arch-row"><span class="arch-num">[27]</span><span class="arch-title">&#128188; AI Exposure of the US Job Market &mdash; Karpathy Clone</span><span class="arch-tags">Data Viz &middot; US Job Market &middot; BLS &middot; 800+ Occupations</span></div>
+      <div class="arch-row"><span class="arch-num">[28]</span><span class="arch-title">&#127974; Banking 6.0: The Evolution of Digital Banking</span><span class="arch-tags">Book &middot; Digital Banking &middot; AI-Native Finance &middot; Blockchain &amp; CBDC</span></div>
+      <div class="arch-row"><span class="arch-num">[29]</span><span class="arch-title">&#127983; The Future Fit Asian AI Organization</span><span class="arch-tags">Book &middot; AI Transformation &middot; Asian Leadership &middot; Change Management</span></div>
+      <div class="arch-row"><span class="arch-num">[30]</span><span class="arch-title">&#128214; SDLC Vibe Coding Handbook</span><span class="arch-tags">Handbook &middot; SDLC &middot; Vibe Coding &middot; AI Development</span></div>
+      <div class="arch-row"><span class="arch-num">[31]</span><span class="arch-title">&#129417; Claude Architect Handbook</span><span class="arch-tags">Study Guide &middot; Claude Platform &middot; Agentic AI &middot; MCP</span></div>
+      <div class="arch-row"><span class="arch-num">[32]</span><span class="arch-title">&#129504; AI Engineering Handbook &amp; Interview Preparation</span><span class="arch-tags">Handbook &middot; Transformers &middot; Vision Transformers &middot; Self-Attention</span></div>
+      <div class="arch-row"><span class="arch-num">[33]</span><span class="arch-title">&#129303; Hugging Face Handbook</span><span class="arch-tags">Handbook &middot; Hugging Face &middot; Google Colab &middot; Transformers</span></div>
+    </div>
+  </section>
+
+  <!-- ==================== LATEST RESEARCH ==================== -->
+  <section id="research" aria-labelledby="res-h">
+    <header class="sec-head">
+      <span class="sec-idx">[04]</span>
+      <h2 id="res-h"><span aria-hidden="true"><span class="ps">$</span>research <span class="flag">--latest</span></span><span class="sr-only">Latest Research</span></h2>
+      <span class="sec-note"># 7 artifacts</span>
+    </header>
+
+    <div class="research">
+      <div class="res-row">
+        <span class="res-num">[01]</span>
+        <div>
+          <h3><a href="https://rominur.com/LLM-Architecture-Compendium-42-Models-Jekardah-Lab-2026.pdf">&#129302; LLM Architecture Compendium 2025&ndash;2026</a></h3>
+          <p>A comprehensive technical analysis of 42 large language model architectures from 270M to 1 trillion parameters. Covering Llama, Qwen, DeepSeek, Gemma, Kimi, Mistral, GLM, OLMo, MiniMax, Nemotron, Grok&hellip;</p>
+          <p class="res-href"><span class="arrow">&rarr;</span> rominur.com/LLM-Architecture-Compendium-42-Models-Jekardah-Lab-2026.pdf</p>
+        </div>
+      </div>
+      <div class="res-row">
+        <span class="res-num">[02]</span>
+        <div>
+          <h3><a href="https://jekardah.com/ai-exposure-indonesia-vs-us-2026.html">&#128202; AI Exposure in the Job Market &mdash; Indonesia vs United States 2026</a></h3>
+          <p>Interactive visualization comparing AI exposure across 17 Indonesian sectors and 22 US occupation groups using BPS Sakernas and BLS data with Karpathy-style scoring methodology.</p>
+          <p class="res-href"><span class="arrow">&rarr;</span> jekardah.com/ai-exposure-indonesia-vs-us-2026.html</p>
+        </div>
+      </div>
+      <div class="res-row">
+        <span class="res-num">[03]</span>
+        <div>
+          <h3><a href="https://jekardah.com/ai-exposure-indonesia.html">&#128506; Indonesian Jobs AI Map 2026</a></h3>
+          <p>Interactive mapping tool displaying AI exposure levels across 436 Indonesian occupations with treemap visualization, outlook scatter plots, and distribution breakdowns by education and salary&hellip;</p>
+          <p class="res-href"><span class="arrow">&rarr;</span> jekardah.com/ai-exposure-indonesia.html</p>
+        </div>
+      </div>
+      <div class="res-row">
+        <span class="res-num">[04]</span>
+        <div>
+          <h3><a href="https://jekardah.com/Vibe-Coding-SDLC-Whitepaper-Jekardah-Lab-2026.pdf">&#128214; Vibe Coding SDLC Framework</a></h3>
+          <p>A 6-phase methodology for AI-assisted software development. From requirements to production with 12 chapters, case studies, templates and checklists.</p>
+          <p class="res-href"><span class="arrow">&rarr;</span> jekardah.com/Vibe-Coding-SDLC-Whitepaper-Jekardah-Lab-2026.pdf</p>
+        </div>
+      </div>
+      <div class="res-row">
+        <span class="res-num">[05]</span>
+        <div>
+          <h3><a href="https://jekardah.com/VibeCoding-Handbook-Claude-Code-Jekardah-Lab-2026.pdf">&#129302; Vibe Coding Handbook: Using Claude Code</a></h3>
+          <p>Practical guide covering installation, CLAUDE.md configuration, prompt patterns, workflows, testing, debugging and security across 10 chapters.</p>
+          <p class="res-href"><span class="arrow">&rarr;</span> jekardah.com/VibeCoding-Handbook-Claude-Code-Jekardah-Lab-2026.pdf</p>
+        </div>
+      </div>
+      <div class="res-row">
+        <span class="res-num">[06]</span>
+        <div>
+          <h3><a href="https://jekardah.com/Web40-Whitepaper-Autonomous-Digital-Life-2026.pdf">&#127760; Web 4.0: The Birth of Autonomous Digital Life</a></h3>
+          <p>Explores AI agents functioning as independent economic actors with crypto-based mechanics, including Darwinian selection and self-replication concepts across 13 sections.</p>
+          <p class="res-href"><span class="arrow">&rarr;</span> jekardah.com/Web40-Whitepaper-Autonomous-Digital-Life-2026.pdf</p>
+        </div>
+      </div>
+      <div class="res-row">
+        <span class="res-num">[07]</span>
+        <div>
+          <h3><a href="https://jobs.jekardah.com/">&#128188; AI Exposure of the US Job Market &mdash; Karpathy Clone</a></h3>
+          <p>Interactive dashboard showing AI exposure for 800+ US occupations. Treemap, salary vs exposure scatter plot, breakdown by category &amp; education using BLS data.</p>
+          <p class="res-href"><span class="arrow">&rarr;</span> jobs.jekardah.com</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ==================== BOOKS & STUDY GUIDES ==================== -->
+  <section id="books" aria-labelledby="books-h">
+    <header class="sec-head">
+      <span class="sec-idx">[05]</span>
+      <h2 id="books-h"><span aria-hidden="true"><span class="ps">$</span>books <span class="flag">--study-guides</span></span><span class="sr-only">Books and Study Guides</span></h2>
+      <span class="sec-note"># 6 volumes</span>
+    </header>
+
+    <div class="books-grid">
+      <article class="book">
+        <span class="book-vol">VOL.01</span>
+        <h3>&#127974; Banking 6.0: The Evolution of Digital Banking</h3>
+        <p>AI-Native Banking for the Future Economy. A strategic, technical, and futuristic handbook tracing six generations of banking &mdash; from branch ledgers to autonomous financial ecosystems.</p>
+        <div class="book-links"><a class="act act-demo" href="https://rominur.com/Banking-6.0.pdf">&#128196; PDF</a></div>
+      </article>
+      <article class="book">
+        <span class="book-vol">VOL.02</span>
+        <h3>&#127983; The Future Fit Asian AI Organization</h3>
+        <p>Balancing Tradition with Tomorrow AI. A practitioner&rsquo;s guide to leading organizational transformation in Asia&rsquo;s AI era. Structured in five parts across 19 chapters&hellip;</p>
+        <div class="book-links"><a class="act act-demo" href="https://rominur.com/the-future-fit-asian-ai-organization.pdf">&#128196; PDF</a></div>
+      </article>
+      <article class="book">
+        <span class="book-vol">VOL.03</span>
+        <h3>&#128214; SDLC Vibe Coding Handbook</h3>
+        <p>The complete guide to building software with AI &mdash; from requirements to maintenance. A practitioner&rsquo;s framework synthesizing research from IBM, NIST, OWASP, METR, Anthropic, Google Cloud&hellip;</p>
+        <div class="book-links"><a class="act act-demo" href="https://rominur.com/Vibe-Coding-Handbook-SDLC-2026.pdf">&#128196; PDF</a></div>
+      </article>
+      <article class="book">
+        <span class="book-vol">VOL.04</span>
+        <h3>&#129417; Claude Architect Handbook</h3>
+        <p>Unofficial independent study guide for mastering Agentic Architecture, Tool Design, MCP &amp; Prompt Engineering for Anthropic&rsquo;s Claude Platform.</p>
+        <div class="book-links">
+          <a class="act" href="https://claude.jekardah.com/">&#127760; Web</a>
+          <a class="act act-demo" href="https://rominur.com/Claude-Code-Architect-Handbook-2026.pdf">&#128196; PDF</a>
+        </div>
+      </article>
+      <article class="book">
+        <span class="book-vol">VOL.05</span>
+        <h3>&#129504; AI Engineering Handbook &amp; Interview Preparation</h3>
+        <p>A comprehensive guide to understanding Transformer and Vision Transformer (ViT) architectures, from mathematical foundations to practical implementation. Covers 12 chapters and 5 advanced topics&hellip;</p>
+        <div class="book-links"><a class="act act-demo" href="https://rominur.com/AI_Engineering_Handbook_and_Interview_Preparation.pdf">&#128196; PDF</a></div>
+      </article>
+      <article class="book">
+        <span class="book-vol">VOL.06</span>
+        <h3>&#129303; Hugging Face Handbook</h3>
+        <p>The AI Researcher&rsquo;s Guide to Using Google Colab. A practical, hands-on handbook for navigating the Hugging Face ecosystem using Google Colab as the primary research environment&hellip;</p>
+        <div class="book-links"><a class="act act-demo" href="https://jekardah.com/HuggingFace_Handbook_2026_Jekardah.pdf">&#128196; PDF</a></div>
+      </article>
+    </div>
+  </section>
+
+  <!-- ==================== EXPERIENCE — GIT LOG ==================== -->
+  <section id="log" aria-labelledby="log-h">
+    <header class="sec-head">
+      <span class="sec-idx">[06]</span>
+      <h2 id="log-h"><span aria-hidden="true"><span class="ps">$</span>git log <span class="flag">--experience</span></span><span class="sr-only">Professional Experience</span></h2>
+      <span class="sec-note"># 8 commits &middot; 2004..2026</span>
+    </header>
+
+    <ol class="gitlog">
+      <li class="commit">
+        <p class="commit-meta"><span aria-hidden="true">*</span> <span class="commit-year">2026</span> <span class="commit-ref">(HEAD &rarr; main)</span></p>
+        <h3>&#129302; Deep Learning &amp; Agentic AI</h3>
+        <p>Building and training neural networks with PyTorch. Designing autonomous AI agents capable of multi-step reasoning, tool use, and self-correction. Multi-vector embeddings for image retrieval and semantic search using vector databases.</p>
+      </li>
+      <li class="commit">
+        <p class="commit-meta"><span aria-hidden="true">*</span> <span class="commit-year">2025</span></p>
+        <h3>&#129504; Generative AI &amp; AI Safety</h3>
+        <p>Applying large language models for content generation, summarization, and analysis. Implementing guardrails, input/output validation, and safety layers to ensure responsible and reliable AI deployment in production systems.</p>
+      </li>
+      <li class="commit">
+        <p class="commit-meta"><span aria-hidden="true">*</span> <span class="commit-year">2023</span></p>
+        <h3>&#128172; AI Engineering &amp; LLM Integration</h3>
+        <p>Crafting effective prompts for ChatGPT and other LLMs. Building AI-powered workflows and integrating language models into applications for automation, code generation, and intelligent data processing.</p>
+      </li>
+      <li class="commit">
+        <p class="commit-meta"><span aria-hidden="true">*</span> <span class="commit-year">2023</span></p>
+        <h3>&#128225; Intelligent Network Operation</h3>
+        <p>Leading 24/7 monitoring, incident response, and proactive maintenance for nationwide communication networks including VSAT satellite, terrestrial, and cellular infrastructures. Ensuring high availability and performance optimization for thousands of remote banking units across Indonesia.</p>
+      </li>
+      <li class="commit">
+        <p class="commit-meta"><span aria-hidden="true">*</span> <span class="commit-year">2017</span></p>
+        <h3>&#128272; Cryptography &amp; Web Application Security</h3>
+        <p>Applied AES encryption for front-end code obfuscation to protect web applications. Deep expertise in cryptographic algorithms, secure coding practices, and vulnerability mitigation for banking-grade systems.</p>
+      </li>
+      <li class="commit">
+        <p class="commit-meta"><span aria-hidden="true">*</span> <span class="commit-year">2009</span></p>
+        <h3>&#127974; E-Channel Monitoring &amp; Operations</h3>
+        <p>Monitored and ensured 24/7 availability of over 20,000 ATMs, 200,000 EDCs, 500 CDMs, and CRM systems across the national banking network. Developed digital dashboards for real-time monitoring, root cause analysis, and operational reliability of electronic channel infrastructure.</p>
+      </li>
+      <li class="commit">
+        <p class="commit-meta"><span aria-hidden="true">*</span> <span class="commit-year">2005</span></p>
+        <h3>&#128737; Enterprise Security Infrastructure</h3>
+        <p>Deployed and operated firewall, IDS, IPS, anti-spam, and antivirus systems for banking environments. Built enterprise Active Directory infrastructure managing authentication and access control for large-scale organizations.</p>
+      </li>
+      <li class="commit">
+        <p class="commit-meta"><span aria-hidden="true">*</span> <span class="commit-year">2004</span> <span class="commit-ref">(root-commit)</span></p>
+        <h3>&#128273; Authentication Systems &amp; Algorithm Design</h3>
+        <p>Designed multi-factor authentication systems using one-time passwords with MD5 hashing. Foundation in algorithm design, network protocols, and informatics engineering.</p>
+      </li>
+    </ol>
+  </section>
+
+  <!-- ==================== EDUCATION ==================== -->
+  <section id="education" aria-labelledby="edu-h">
+    <header class="sec-head">
+      <span class="sec-idx">[07]</span>
+      <h2 id="edu-h"><span aria-hidden="true"><span class="ps">$</span>education <span class="flag">--degrees</span></span><span class="sr-only">Education</span></h2>
+      <span class="sec-note"># 2 degrees</span>
+    </header>
+
+    <div class="edu-grid">
+      <article class="edu">
+        <div class="edu-logo">
+          <img src="logo-ui.svg" alt="Universitas Indonesia logo" width="64" height="64">
+        </div>
+        <div>
+          <h3>M.Eng &mdash; Network Security</h3>
+          <p class="edu-meta">Universitas Indonesia, Jakarta &middot; <span class="yr">2017</span></p>
+        </div>
+      </article>
+      <article class="edu">
+        <div class="edu-logo">
+          <img src="logo-ugm.png" alt="Universitas Gadjah Mada logo" width="68" height="70">
+        </div>
+        <div>
+          <h3>B.Eng &mdash; Informatics</h3>
+          <p class="edu-meta">Universitas Gadjah Mada, Yogyakarta &middot; <span class="yr">2004</span></p>
+        </div>
+      </article>
+    </div>
+  </section>
+
+  <!-- ==================== CERTIFICATIONS ==================== -->
+  <section id="certifications" aria-labelledby="cert-h">
+    <header class="sec-head">
+      <span class="sec-idx">[08]</span>
+      <h2 id="cert-h"><span aria-hidden="true"><span class="ps">$</span>certifications <span class="flag">--verified</span></span><span class="sr-only">Certifications</span></h2>
+      <span class="sec-note"># 7 verified</span>
+    </header>
+
+    <ul class="certs">
+      <li><span class="tick" aria-hidden="true">&#10003;</span> CEH &mdash; Certified Ethical Hacker</li>
+      <li><span class="tick" aria-hidden="true">&#10003;</span> CDMP &mdash; Certified Data Management Professional</li>
+      <li><span class="tick" aria-hidden="true">&#10003;</span> Lead Auditor ISO 9001</li>
+      <li><span class="tick" aria-hidden="true">&#10003;</span> Lead Auditor ISO 55001</li>
+      <li><span class="tick" aria-hidden="true">&#10003;</span> CGEIT &mdash; Governance of Enterprise IT</li>
+      <li><span class="tick" aria-hidden="true">&#10003;</span> Generative AI <span class="issuer">DeepLearning.AI</span></li>
+      <li><span class="tick" aria-hidden="true">&#10003;</span> Agentic AI <span class="issuer">DeepLearning.AI</span></li>
+    </ul>
+  </section>
+
+</div>
+</main>
+
+<!-- ==================== FOOTER ==================== -->
+<footer>
+  <div class="foot-inner">
+    <p class="p-line"><span class="host">romi@lab</span><span class="path">:~/portfolio</span>$ <span class="cmd">exit</span></p>
+    <p class="foot-exit">[process exited with code 0]</p>
+    <div class="foot-row">
+      <p class="foot-copy">&copy; Romi Nur Ismanto</p>
+      <p>
+        <a href="https://github.com/romizone">github/romizone</a> &nbsp;&middot;&nbsp;
+        <a href="https://huggingface.co/romizone">hf/romizone</a> &nbsp;&middot;&nbsp;
+        <a href="#main">&uarr; scroll --top</a>
+      </p>
+    </div>
+  </div>
+</footer>
+
+</body>
+</html>
