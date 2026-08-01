@@ -1,0 +1,83 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 400 300" role="img" aria-label="PdfRomeo macOS PDF toolkit">
+  <defs>
+    <linearGradient id="pr-bg" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#0f172a"/>
+      <stop offset="100%" style="stop-color:#1e293b"/>
+    </linearGradient>
+    <linearGradient id="pr-accent" x1="0%" y1="0%" x2="100%" y2="0%">
+      <stop offset="0%" style="stop-color:#2b54b8"/>
+      <stop offset="100%" style="stop-color:#86c5e6"/>
+    </linearGradient>
+    <linearGradient id="pr-sheet" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" style="stop-color:#ffffff"/>
+      <stop offset="100%" style="stop-color:#dceaf8"/>
+    </linearGradient>
+  </defs>
+
+  <rect width="400" height="300" fill="url(#pr-bg)" rx="16"/>
+
+  <!-- App window -->
+  <rect x="46" y="30" width="308" height="196" rx="11" fill="#111827" stroke="url(#pr-accent)" stroke-width="2"/>
+  <path d="M46 41a11 11 0 0 1 11-11h286a11 11 0 0 1 11 11v13H46z" fill="#1f2937"/>
+  <circle cx="62" cy="42" r="4" fill="#ef4444"/>
+  <circle cx="76" cy="42" r="4" fill="#f59e0b"/>
+  <circle cx="90" cy="42" r="4" fill="#22c55e"/>
+
+  <!-- Search bar (Sejda-style home) -->
+  <rect x="112" y="35" width="140" height="14" rx="7" fill="#0f172a" stroke="#334155" stroke-width="1"/>
+  <circle cx="123" cy="42" r="3.4" fill="none" stroke="#86c5e6" stroke-width="1.4"/>
+  <line x1="125.6" y1="44.6" x2="128" y2="47" stroke="#86c5e6" stroke-width="1.4" stroke-linecap="round"/>
+
+  <!-- Tool grid -->
+  <g>
+    <rect x="62" y="68" width="82" height="46" rx="8" fill="#0f172a" stroke="#2b54b8" stroke-width="1.4"/>
+    <rect x="74" y="79" width="26" height="4" rx="2" fill="#4380d6"/>
+    <rect x="74" y="88" width="42" height="3" rx="1.5" fill="#334155"/>
+    <rect x="74" y="95" width="34" height="3" rx="1.5" fill="#334155"/>
+
+    <rect x="156" y="68" width="82" height="46" rx="8" fill="#0f172a" stroke="#334155" stroke-width="1.2"/>
+    <rect x="168" y="79" width="26" height="4" rx="2" fill="#86c5e6"/>
+    <rect x="168" y="88" width="42" height="3" rx="1.5" fill="#334155"/>
+    <rect x="168" y="95" width="30" height="3" rx="1.5" fill="#334155"/>
+
+    <rect x="250" y="68" width="82" height="46" rx="8" fill="#0f172a" stroke="#334155" stroke-width="1.2"/>
+    <rect x="262" y="79" width="26" height="4" rx="2" fill="#4380d6"/>
+    <rect x="262" y="88" width="42" height="3" rx="1.5" fill="#334155"/>
+    <rect x="262" y="95" width="36" height="3" rx="1.5" fill="#334155"/>
+
+    <rect x="62" y="126" width="82" height="46" rx="8" fill="#0f172a" stroke="#334155" stroke-width="1.2"/>
+    <rect x="74" y="137" width="26" height="4" rx="2" fill="#86c5e6"/>
+    <rect x="74" y="146" width="42" height="3" rx="1.5" fill="#334155"/>
+    <rect x="74" y="153" width="28" height="3" rx="1.5" fill="#334155"/>
+
+    <rect x="156" y="126" width="82" height="46" rx="8" fill="#0f172a" stroke="#334155" stroke-width="1.2"/>
+    <rect x="168" y="137" width="26" height="4" rx="2" fill="#4380d6"/>
+    <rect x="168" y="146" width="42" height="3" rx="1.5" fill="#334155"/>
+    <rect x="168" y="153" width="33" height="3" rx="1.5" fill="#334155"/>
+
+    <rect x="250" y="126" width="82" height="46" rx="8" fill="#0f172a" stroke="#334155" stroke-width="1.2"/>
+    <rect x="262" y="137" width="26" height="4" rx="2" fill="#86c5e6"/>
+    <rect x="262" y="146" width="42" height="3" rx="1.5" fill="#334155"/>
+    <rect x="262" y="153" width="26" height="3" rx="1.5" fill="#334155"/>
+  </g>
+
+  <!-- Tool count badge -->
+  <rect x="62" y="186" width="86" height="24" rx="12" fill="#2b54b8" fill-opacity="0.18" stroke="#2b54b8" stroke-width="1.4"/>
+  <text x="105" y="202" font-family="system-ui, -apple-system, 'Segoe UI', sans-serif" font-size="12" font-weight="700" fill="#86c5e6" text-anchor="middle">43 TOOLS</text>
+
+  <!-- Progress / processing bar -->
+  <rect x="160" y="194" width="172" height="8" rx="4" fill="#0f172a" stroke="#334155" stroke-width="1"/>
+  <rect x="161" y="195" width="112" height="6" rx="3" fill="url(#pr-accent)"/>
+
+  <!-- PDF sheet, overlapping bottom-right -->
+  <g transform="translate(252 178)">
+    <path d="M0 8a8 8 0 0 1 8-8h44l24 24v58a8 8 0 0 1-8 8H8a8 8 0 0 1-8-8z" fill="url(#pr-sheet)"/>
+    <path d="M52 0l24 24H60a8 8 0 0 1-8-8z" fill="#86c5e6"/>
+    <rect x="12" y="38" width="34" height="4" rx="2" fill="#c9d2de"/>
+    <rect x="12" y="48" width="50" height="4" rx="2" fill="#c9d2de"/>
+    <text x="12" y="76" font-family="system-ui, -apple-system, 'Segoe UI', sans-serif" font-size="17" font-weight="800" fill="#2b54b8">PDF</text>
+  </g>
+
+  <!-- Apple Silicon note -->
+  <text x="62" y="248" font-family="system-ui, -apple-system, 'Segoe UI', sans-serif" font-size="11" font-weight="600" fill="#64748b" letter-spacing="1.2">macOS &#183; APPLE SILICON</text>
+</svg>
