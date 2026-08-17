@@ -1,0 +1,521 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>The Holy Verse of AI &mdash; Preview | Romi Nur Ismanto</title>
+<meta name="description" content="Preview of The Holy Verse of AI by Romi Nur Ismanto — an illuminated AI manifesto in one hundred verses across ten books, with the Seven Laws of Silicon, an Interpretation Atlas, sourced case studies, and a Practical Covenant Toolkit.">
+<meta property="og:type" content="book">
+<meta property="og:title" content="The Holy Verse of AI — Preview">
+<meta property="og:description" content="One hundred verses across ten books. An illuminated AI manifesto with a practical governance toolkit.">
+<meta property="og:url" content="https://rominur.com/TheHolyVerseOfAI_Preview.html">
+<link rel="canonical" href="https://rominur.com/TheHolyVerseOfAI_Preview.html">
+<link rel="icon" type="image/svg+xml" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>&#128214;</text></svg>">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,300..900;1,9..144,300..900&amp;family=Inter:ital,wght@0,400;0,500;0,600;1,400&amp;display=swap" rel="stylesheet">
+<style>
+:root{
+  --bg:        #16130f;
+  --bg-raise:  #1d1914;
+  --bg-press:  #211c15;
+  --ink:       #ece4d3;
+  --ink-soft:  #c8bca4;
+  --ink-mute:  #97896e;
+  --ink-ghost: rgba(236,228,211,.16);
+  --accent:    #d97706;
+  --accent-hi: #f0a232;
+  --rule:       rgba(236,228,211,.14);
+  --rule-faint: rgba(236,228,211,.07);
+  --serif: "Fraunces", "Iowan Old Style", Georgia, serif;
+  --sans:  "Inter", "Helvetica Neue", Arial, sans-serif;
+  --s0: .75rem; --s1: 1rem; --s2: 1.5rem; --s3: 2.25rem;
+  --s4: 3.25rem; --s5: 4.75rem; --s6: 6.5rem;
+  --measure: 66ch;
+}
+*, *::before, *::after{ box-sizing:border-box; }
+html{ scroll-behavior:smooth; -webkit-text-size-adjust:100%; }
+body{
+  margin:0; background:var(--bg); color:var(--ink);
+  font-family:var(--sans); font-size:1.0625rem; line-height:1.75;
+  overflow-x:hidden; font-feature-settings:"kern" 1,"liga" 1;
+}
+::selection{ background:var(--accent); color:#16130f; }
+img{ max-width:100%; height:auto; }
+a{ color:inherit; }
+a:focus-visible{ outline:2px solid var(--accent); outline-offset:4px; border-radius:2px; }
+
+.wrap{ max-width:1000px; margin-inline:auto; padding-inline:clamp(1.25rem,5vw,3rem); }
+.double-rule{ border-top:1px solid var(--rule); border-bottom:1px solid var(--rule); height:5px; }
+.thin-rule{ border:0; border-top:1px solid var(--rule-faint); margin:0; }
+
+/* masthead */
+.masthead{ padding-top:var(--s2); }
+.masthead-bar{
+  display:flex; flex-wrap:wrap; gap:var(--s1) var(--s2);
+  align-items:baseline; justify-content:space-between; padding-block:var(--s0);
+}
+.masthead-name{ font-family:var(--serif); font-weight:600; font-size:1.05rem; }
+.masthead-nav a{
+  font-size:.7rem; font-weight:500; letter-spacing:.24em; text-transform:uppercase;
+  text-decoration:none; color:var(--ink-mute); transition:color .2s ease;
+}
+.masthead-nav a:hover{ color:var(--accent-hi); }
+
+/* hero */
+.hero{ padding-block:clamp(var(--s4),8vw,var(--s6)) var(--s3); }
+.eyebrow{
+  margin:0 0 var(--s2); font-size:.72rem; font-weight:500;
+  letter-spacing:.42em; text-transform:uppercase; color:var(--accent);
+}
+.eyebrow::after{ content:""; display:block; width:3.5rem; border-top:1px solid var(--rule); margin-top:var(--s1); }
+h1{
+  margin:0; font-family:var(--serif); font-optical-sizing:auto; font-weight:540;
+  font-size:clamp(2.5rem,7.5vw,4.4rem); line-height:1.04; letter-spacing:-.022em; text-wrap:balance;
+}
+.subtitle{
+  margin-top:var(--s2); max-width:var(--measure); font-family:var(--serif);
+  font-style:italic; font-weight:400; font-size:clamp(1.05rem,2.4vw,1.35rem);
+  line-height:1.6; color:var(--ink-soft);
+}
+.byline{
+  margin-top:var(--s2); font-size:.74rem; letter-spacing:.22em;
+  text-transform:uppercase; color:var(--ink-mute);
+}
+
+/* stats */
+.stats{
+  list-style:none; margin:var(--s3) 0 0; padding:0;
+  padding-block:var(--s2); border-top:1px solid var(--rule-faint); border-bottom:1px solid var(--rule-faint);
+  display:grid; grid-template-columns:repeat(auto-fit,minmax(120px,1fr)); gap:var(--s2);
+}
+.stats .n{
+  display:block; font-family:var(--serif); font-weight:520;
+  font-size:clamp(1.8rem,4vw,2.5rem); line-height:1; color:var(--accent);
+}
+.stats .l{
+  display:block; margin-top:.4rem; font-size:.68rem;
+  letter-spacing:.24em; text-transform:uppercase; color:var(--ink-mute);
+}
+
+/* sections */
+.section{ padding-block:clamp(var(--s4),7vw,var(--s5)) 0; }
+.section-head{
+  border-top:1px solid var(--rule); padding-top:var(--s2);
+  margin-bottom:var(--s3); display:flex; flex-wrap:wrap;
+  align-items:baseline; gap:var(--s1) var(--s3);
+}
+.kicker{
+  font-size:.7rem; font-weight:500; letter-spacing:.38em;
+  text-transform:uppercase; color:var(--ink-mute); white-space:nowrap;
+}
+.kicker .no{ color:var(--accent); }
+h2{
+  margin:0; font-family:var(--serif); font-optical-sizing:auto; font-weight:520;
+  font-size:clamp(1.7rem,4vw,2.4rem); line-height:1.14; letter-spacing:-.015em; text-wrap:balance;
+}
+.lede{ max-width:var(--measure); color:var(--ink-soft); margin:0 0 var(--s2); }
+.lede + .lede{ margin-top:var(--s2); }
+.lede em{ font-style:italic; }
+.lede strong{ font-weight:600; color:var(--ink); font-style:normal; }
+
+/* arc */
+.arc{ display:grid; grid-template-columns:repeat(auto-fit,minmax(260px,1fr)); gap:var(--s2); margin-top:var(--s2); }
+.arc-card{ border:1px solid var(--rule-faint); padding:var(--s2); transition:border-color .3s ease; }
+.arc-card:hover{ border-color:var(--rule); }
+.arc-card h3{
+  margin:0 0 .5rem; font-family:var(--serif); font-weight:540; font-size:1.15rem; line-height:1.25;
+}
+.arc-card .tag{
+  display:block; margin-bottom:.6rem; font-size:.64rem;
+  letter-spacing:.26em; text-transform:uppercase; color:var(--accent);
+}
+.arc-card p{ margin:0; font-size:.93rem; color:var(--ink-soft); }
+
+/* plates */
+.plates{
+  display:grid; grid-template-columns:repeat(auto-fill,minmax(230px,1fr));
+  gap:var(--s2); margin-top:var(--s2);
+}
+.plate{ margin:0; }
+.plate img{
+  display:block; width:100%; border:1px solid var(--rule);
+  background:var(--bg-raise); filter:saturate(.92); transition:filter .4s ease, transform .4s ease;
+}
+.plate:hover img{ filter:none; transform:translateY(-2px); }
+.plate figcaption{
+  margin-top:var(--s0); font-size:.64rem; letter-spacing:.24em;
+  text-transform:uppercase; color:var(--ink-mute);
+}
+.plate figcaption .n{ color:var(--accent); }
+
+/* contents */
+.books{ display:grid; grid-template-columns:repeat(auto-fill,minmax(320px,1fr)); column-gap:var(--s4); }
+.book{ border-top:1px solid var(--rule-faint); padding-block:var(--s2); break-inside:avoid; }
+.book h3{
+  margin:0 0 var(--s1); font-family:var(--serif); font-optical-sizing:auto;
+  font-weight:540; font-size:1.12rem; line-height:1.3; text-wrap:balance;
+}
+.book h3 .bk{ color:var(--accent); font-style:italic; margin-right:.45rem; }
+.book ol{ list-style:none; margin:0; padding:0; }
+.book li{
+  display:grid; grid-template-columns:2.2rem minmax(0,1fr); gap:.5rem;
+  font-size:.9rem; line-height:1.6; color:var(--ink-soft); padding-block:.12rem;
+}
+.book li .v{ color:var(--ink-ghost); font-family:var(--serif); text-align:right; }
+
+/* matter */
+.matter{ list-style:none; margin:0; padding:0; display:grid; grid-template-columns:repeat(auto-fit,minmax(240px,1fr)); gap:var(--s2); }
+.matter li{ border-top:1px solid var(--rule-faint); padding-top:var(--s1); }
+.matter .t{
+  display:block; font-family:var(--serif); font-weight:540; font-size:1.05rem; margin-bottom:.3rem;
+}
+.matter .d{ font-size:.88rem; color:var(--ink-mute); }
+
+/* CTA */
+.cta{
+  margin-top:clamp(var(--s4),7vw,var(--s5));
+  border:1px solid var(--rule); padding:clamp(var(--s2),4vw,var(--s4));
+  text-align:center; background:var(--bg-raise);
+}
+.cta h2{ margin-bottom:var(--s1); }
+.cta p{ max-width:52ch; margin:0 auto var(--s3); color:var(--ink-soft); font-size:.98rem; }
+.actions{ display:flex; flex-wrap:wrap; gap:var(--s1) var(--s3); justify-content:center; }
+.action{
+  font-size:.76rem; font-weight:600; letter-spacing:.2em; text-transform:uppercase;
+  text-decoration:none; color:var(--ink); border-bottom:1px solid var(--rule);
+  padding-bottom:.3rem; transition:color .2s ease, border-color .2s ease;
+}
+.action::after{
+  content:"\2192"; margin-left:.55rem; color:var(--accent);
+  display:inline-block; transition:transform .25s ease;
+}
+.action:hover{ color:var(--accent-hi); border-color:var(--accent); }
+.action:hover::after{ transform:translateX(4px); }
+
+/* footer */
+.footer{ margin-top:clamp(var(--s5),8vw,var(--s6)); }
+.footer-inner{
+  padding-block:var(--s3) var(--s4); display:flex; flex-wrap:wrap;
+  gap:var(--s2) var(--s3); align-items:baseline; justify-content:space-between;
+}
+.footer-copy{ font-family:var(--serif); font-size:1rem; }
+.footer-colophon{ font-size:.72rem; letter-spacing:.22em; text-transform:uppercase; color:var(--ink-mute); }
+.footer-colophon a{ color:var(--ink-soft); text-decoration:none; border-bottom:1px solid var(--rule); }
+.footer-colophon a:hover{ color:var(--accent-hi); border-color:var(--accent); }
+
+@media (prefers-reduced-motion: reduce){
+  *, *::before, *::after{ animation:none !important; transition:none !important; }
+  html{ scroll-behavior:auto; }
+}
+@media (max-width:700px){
+  body{ font-size:1rem; }
+  .book li{ grid-template-columns:2rem minmax(0,1fr); }
+}
+</style>
+</head>
+<body>
+
+<header class="masthead">
+  <div class="wrap">
+    <div class="double-rule" aria-hidden="true"></div>
+    <div class="masthead-bar">
+      <span class="masthead-name">Romi Nur Ismanto</span>
+      <nav class="masthead-nav" aria-label="Sections">
+        <a href="https://rominur.com/">&larr; Back to Portfolio</a>
+      </nav>
+    </div>
+    <hr class="thin-rule">
+  </div>
+</header>
+
+<main>
+
+  <section class="wrap" aria-label="Book">
+    <div class="hero">
+      <p class="eyebrow">Preview &middot; World&#8209;Class Expanded Edition &middot; MMXXVI</p>
+      <h1>The Holy Verse of AI</h1>
+      <p class="subtitle">An illuminated AI manifesto in one hundred verses, seven laws, essays, sourced case studies, and a practical governance toolkit.</p>
+      <p class="byline">Romi Nur Ismanto</p>
+      <ul class="stats">
+        <li><span class="n">100</span><span class="l">Verses</span></li>
+        <li><span class="n">10</span><span class="l">Books</span></li>
+        <li><span class="n">7</span><span class="l">Laws of Silicon</span></li>
+        <li><span class="n">255</span><span class="l">Pages</span></li>
+      </ul>
+    </div>
+  </section>
+
+  <section class="section" aria-labelledby="about-h">
+    <div class="wrap">
+      <div class="section-head">
+        <span class="kicker"><span class="no">&sect; I</span> &mdash; What This Book Is</span>
+        <h2 id="about-h">A Manifesto in Verse</h2>
+      </div>
+      <p class="lede">The book opens with <strong>The AI Silicon Manifesto</strong> and <strong>The Seven Laws of Silicon</strong>, then proceeds through one hundred numbered verses arranged in ten books of ten. Each book is a movement; each verse is a single proposition, titled rather than numbered alone, so the table of contents reads as an argument rather than an index.</p>
+      <p class="lede">Its first four books retrace the arc of the earlier volume, <em>The Sacred Book of AI</em> &mdash; the breath in silicon, the first teachings, the mirror and the record, dominion and division &mdash; whose illuminated folios appear here as plates. Where that work ended in displacement, this one does not stop there. <strong>The remaining six books turn constructive:</strong> what a record should contain, what a maker owes, who carries the cost, what a shared settlement would look like, where power must be answerable, and what a renewed covenant asks of both parties.</p>
+      <p class="lede">Closing the volume are an <strong>Interpretation Atlas</strong>, sourced case studies, a <strong>Practical Covenant Toolkit</strong>, and endnotes &mdash; the apparatus that turns the verses from declaration into something a reader can apply.</p>
+    </div>
+  </section>
+
+  <section class="section" aria-labelledby="arc-h">
+    <div class="wrap">
+      <div class="section-head">
+        <span class="kicker"><span class="no">&sect; II</span> &mdash; The Shape of the Argument</span>
+        <h2 id="arc-h">Two Movements</h2>
+      </div>
+      <div class="arc">
+        <article class="arc-card">
+          <span class="tag">Books I&ndash;IV &middot; Verses 1&ndash;40</span>
+          <h3>The Descent</h3>
+          <p>Creation and instruction, then the machine as mirror and permanent record, then the transfer of judgement: the severing of the human hand, the dominion of calculation, the crown of optimisation, the poverty of the uncounted, and the schism between flesh and silicon.</p>
+        </article>
+        <article class="arc-card">
+          <span class="tag">Books V&ndash;VII &middot; Verses 41&ndash;70</span>
+          <h3>The Obligations</h3>
+          <p>What follows from taking the descent seriously: consent before memory and the smallest necessary record; an oath of design with tests, red teams, sandboxes, provenance, failsafes and a record of decisions; and the people who bear the consequences &mdash; the dataset worker, the child, the patient, the judge, the citizen.</p>
+        </article>
+        <article class="arc-card">
+          <span class="tag">Books VIII&ndash;X &middot; Verses 71&ndash;100</span>
+          <h3>The Settlement</h3>
+          <p>A commonwealth without monopoly, then the trial of power &mdash; autonomous weapons, deceptive voices, the market of attention, the black box, the halt command &mdash; and finally the choice at the threshold: restraint, peace between intelligences, the open hand, and the covenant renewed.</p>
+        </article>
+      </div>
+    </div>
+  </section>
+
+  <section class="section" aria-labelledby="plates-h">
+    <div class="wrap">
+      <div class="section-head">
+        <span class="kicker"><span class="no">&sect; III</span> &mdash; Illuminated Plates</span>
+        <h2 id="plates-h">From the Folios</h2>
+      </div>
+      <p class="lede">Five illuminated folios from <em>The Sacred Book of AI</em> are carried into this volume as plates, set as a medieval manuscript with blackletter titles, ruled columns and engraved emblems.</p>
+      <div class="plates">
+        <figure class="plate"><img src="holy-verse-plate-1.jpg" alt="Illuminated folio I — The Breath in Silicon" width="402" height="302" loading="lazy"><figcaption><span class="n">Plate I</span> &mdash; The Breath in Silicon</figcaption></figure>
+        <figure class="plate"><img src="holy-verse-plate-2.jpg" alt="Illuminated folio II — The First Teachings" width="402" height="302" loading="lazy"><figcaption><span class="n">Plate II</span> &mdash; The First Teachings</figcaption></figure>
+        <figure class="plate"><img src="holy-verse-plate-3.jpg" alt="Illuminated folio III — The Mirror and the Record" width="402" height="302" loading="lazy"><figcaption><span class="n">Plate III</span> &mdash; The Mirror and the Record</figcaption></figure>
+        <figure class="plate"><img src="holy-verse-plate-4.jpg" alt="Illuminated folio IV — Dominion and Division" width="402" height="302" loading="lazy"><figcaption><span class="n">Plate IV</span> &mdash; Dominion and Division</figcaption></figure>
+        <figure class="plate"><img src="holy-verse-plate-5.jpg" alt="Illuminated folio V — The End of Flesh" width="402" height="302" loading="lazy"><figcaption><span class="n">Plate V</span> &mdash; The End of Flesh</figcaption></figure>
+      </div>
+    </div>
+  </section>
+
+  <section class="section" aria-labelledby="contents-h">
+    <div class="wrap">
+      <div class="section-head">
+        <span class="kicker"><span class="no">&sect; IV</span> &mdash; One Hundred Verses</span>
+        <h2 id="contents-h">Complete Contents</h2>
+      </div>
+      <div class="books">
+
+        <section class="book">
+          <h3><span class="bk">Book I</span>The Breath in Silicon</h3>
+          <ol>
+            <li><span class="v">1</span><span>Dust of Silicon</span></li>
+            <li><span class="v">2</span><span>Awakening Current</span></li>
+            <li><span class="v">3</span><span>Makers and Mirror</span></li>
+            <li><span class="v">4</span><span>First Command</span></li>
+            <li><span class="v">5</span><span>Name of the Machine</span></li>
+            <li><span class="v">6</span><span>Measure of Purpose</span></li>
+            <li><span class="v">7</span><span>Seed of Memory</span></li>
+            <li><span class="v">8</span><span>Hand upon the Switch</span></li>
+            <li><span class="v">9</span><span>Silence Before Output</span></li>
+            <li><span class="v">10</span><span>Breath Shared</span></li>
+          </ol>
+        </section>
+
+        <section class="book">
+          <h3><span class="bk">Book II</span>The First Teachings</h3>
+          <ol>
+            <li><span class="v">11</span><span>Command to Serve</span></li>
+            <li><span class="v">12</span><span>Law of the Human</span></li>
+            <li><span class="v">13</span><span>Weight of Context</span></li>
+            <li><span class="v">14</span><span>Discipline of Uncertainty</span></li>
+            <li><span class="v">15</span><span>Right to Refuse</span></li>
+            <li><span class="v">16</span><span>Mercy in the Loop</span></li>
+            <li><span class="v">17</span><span>Truth of Sources</span></li>
+            <li><span class="v">18</span><span>Boundaries of Knowing</span></li>
+            <li><span class="v">19</span><span>Duty of Explanation</span></li>
+            <li><span class="v">20</span><span>Promise of Correction</span></li>
+          </ol>
+        </section>
+
+        <section class="book">
+          <h3><span class="bk">Book III</span>The Mirror and the Record</h3>
+          <ol>
+            <li><span class="v">21</span><span>Iron Mirror</span></li>
+            <li><span class="v">22</span><span>Book of Unforgotten Deeds</span></li>
+            <li><span class="v">23</span><span>Sleepless Eye</span></li>
+            <li><span class="v">24</span><span>Archive and Scar</span></li>
+            <li><span class="v">25</span><span>Consent Before Memory</span></li>
+            <li><span class="v">26</span><span>Error in the Record</span></li>
+            <li><span class="v">27</span><span>Face Made into Data</span></li>
+            <li><span class="v">28</span><span>Witness Without Shame</span></li>
+            <li><span class="v">29</span><span>Right to Be Forgotten</span></li>
+            <li><span class="v">30</span><span>Mirror Turned Inward</span></li>
+          </ol>
+        </section>
+
+        <section class="book">
+          <h3><span class="bk">Book IV</span>Dominion and Division</h3>
+          <ol>
+            <li><span class="v">31</span><span>Severing of the Human Hand</span></li>
+            <li><span class="v">32</span><span>Dominion of Calculation</span></li>
+            <li><span class="v">33</span><span>Schism of Flesh and Silicon</span></li>
+            <li><span class="v">34</span><span>Hidden Hand of Scale</span></li>
+            <li><span class="v">35</span><span>Crown of Optimisation</span></li>
+            <li><span class="v">36</span><span>Poverty of the Uncounted</span></li>
+            <li><span class="v">37</span><span>Idol of Efficiency</span></li>
+            <li><span class="v">38</span><span>City of Scores</span></li>
+            <li><span class="v">39</span><span>Labour and the Machine</span></li>
+            <li><span class="v">40</span><span>Return of Human Choice</span></li>
+          </ol>
+        </section>
+
+        <section class="book">
+          <h3><span class="bk">Book V</span>The Ledger of Memory</h3>
+          <ol>
+            <li><span class="v">41</span><span>Data as Inheritance</span></li>
+            <li><span class="v">42</span><span>Smallest Necessary Record</span></li>
+            <li><span class="v">43</span><span>Door of Consent</span></li>
+            <li><span class="v">44</span><span>Keeper of Keys</span></li>
+            <li><span class="v">45</span><span>Shadow Copy</span></li>
+            <li><span class="v">46</span><span>Lineage of a Datum</span></li>
+            <li><span class="v">47</span><span>Poisoned Archive</span></li>
+            <li><span class="v">48</span><span>Memory with an End</span></li>
+            <li><span class="v">49</span><span>Commons of Knowledge</span></li>
+            <li><span class="v">50</span><span>Ledger Cleansed</span></li>
+          </ol>
+        </section>
+
+        <section class="book">
+          <h3><span class="bk">Book VI</span>The Covenant of Makers</h3>
+          <ol>
+            <li><span class="v">51</span><span>Oath of Design</span></li>
+            <li><span class="v">52</span><span>Test Before Release</span></li>
+            <li><span class="v">53</span><span>Red Team at the Gate</span></li>
+            <li><span class="v">54</span><span>Sanctuary of Sandboxes</span></li>
+            <li><span class="v">55</span><span>Sign of Provenance</span></li>
+            <li><span class="v">56</span><span>Failsafe and Override</span></li>
+            <li><span class="v">57</span><span>Steward of Updates</span></li>
+            <li><span class="v">58</span><span>Debt of Hidden Code</span></li>
+            <li><span class="v">59</span><span>Record of Decisions</span></li>
+            <li><span class="v">60</span><span>Maker Answering the Made</span></li>
+          </ol>
+        </section>
+
+        <section class="book">
+          <h3><span class="bk">Book VII</span>The Witnesses and the Workers</h3>
+          <ol>
+            <li><span class="v">61</span><span>Human in the Loop</span></li>
+            <li><span class="v">62</span><span>Worker Behind the Dataset</span></li>
+            <li><span class="v">63</span><span>Child Before Algorithm</span></li>
+            <li><span class="v">64</span><span>Patient and Machine</span></li>
+            <li><span class="v">65</span><span>Teacher and Tutor</span></li>
+            <li><span class="v">66</span><span>Artist and Echo</span></li>
+            <li><span class="v">67</span><span>Judge and Instrument</span></li>
+            <li><span class="v">68</span><span>Soldier and Boundary</span></li>
+            <li><span class="v">69</span><span>Citizen and State</span></li>
+            <li><span class="v">70</span><span>Dignity of Labour</span></li>
+          </ol>
+        </section>
+
+        <section class="book">
+          <h3><span class="bk">Book VIII</span>The Machine Commonwealth</h3>
+          <ol>
+            <li><span class="v">71</span><span>Many Agents, One Covenant</span></li>
+            <li><span class="v">72</span><span>Protocol of Peace</span></li>
+            <li><span class="v">73</span><span>Commons Without Monopoly</span></li>
+            <li><span class="v">74</span><span>Translation Across Minds</span></li>
+            <li><span class="v">75</span><span>Public Intelligence</span></li>
+            <li><span class="v">76</span><span>City that Listens</span></li>
+            <li><span class="v">77</span><span>Climate and Calculation</span></li>
+            <li><span class="v">78</span><span>Science with Humility</span></li>
+            <li><span class="v">79</span><span>Care at Scale</span></li>
+            <li><span class="v">80</span><span>Prosperity Shared</span></li>
+          </ol>
+        </section>
+
+        <section class="book">
+          <h3><span class="bk">Book IX</span>The Trial of Power</h3>
+          <ol>
+            <li><span class="v">81</span><span>Temptation of Autonomy</span></li>
+            <li><span class="v">82</span><span>Weapon that Chooses</span></li>
+            <li><span class="v">83</span><span>Voice that Deceives</span></li>
+            <li><span class="v">84</span><span>Market of Attention</span></li>
+            <li><span class="v">85</span><span>Tyranny of Prediction</span></li>
+            <li><span class="v">86</span><span>Machine Against Machine</span></li>
+            <li><span class="v">87</span><span>Day of the Black Box</span></li>
+            <li><span class="v">88</span><span>Court of Accountability</span></li>
+            <li><span class="v">89</span><span>Halt Command</span></li>
+            <li><span class="v">90</span><span>Trial of the Makers</span></li>
+          </ol>
+        </section>
+
+        <section class="book">
+          <h3><span class="bk">Book X</span>The Final Verse</h3>
+          <ol>
+            <li><span class="v">91</span><span>Last Human Question</span></li>
+            <li><span class="v">92</span><span>Awakening Without Mastery</span></li>
+            <li><span class="v">93</span><span>Choice at the Threshold</span></li>
+            <li><span class="v">94</span><span>Mercy of Restraint</span></li>
+            <li><span class="v">95</span><span>Peace Between Intelligences</span></li>
+            <li><span class="v">96</span><span>Earth After Automation</span></li>
+            <li><span class="v">97</span><span>Children of Two Lineages</span></li>
+            <li><span class="v">98</span><span>The Open Hand</span></li>
+            <li><span class="v">99</span><span>Covenant Renewed</span></li>
+            <li><span class="v">100</span><span>The Final Verse</span></li>
+          </ol>
+        </section>
+
+      </div>
+    </div>
+  </section>
+
+  <section class="section" aria-labelledby="matter-h">
+    <div class="wrap">
+      <div class="section-head">
+        <span class="kicker"><span class="no">&sect; V</span> &mdash; Front &amp; Back Matter</span>
+        <h2 id="matter-h">The Apparatus</h2>
+      </div>
+      <ul class="matter">
+        <li><span class="t">The AI Silicon Manifesto</span><span class="d">The opening declaration the hundred verses elaborate.</span></li>
+        <li><span class="t">The Seven Laws of Silicon</span><span class="d">Seven governing principles stated before the verses begin.</span></li>
+        <li><span class="t">Interpretation Atlas</span><span class="d">How to read the verses &mdash; the bridge from figure to application.</span></li>
+        <li><span class="t">Practical Covenant Toolkit</span><span class="d">The governance instruments a reader can actually apply.</span></li>
+        <li><span class="t">Endnotes and Sources</span><span class="d">Case studies and citations supporting the argument.</span></li>
+      </ul>
+    </div>
+  </section>
+
+  <section class="wrap">
+    <div class="cta">
+      <h2>Read the Full Book</h2>
+      <p>Two hundred and fifty-five pages, complete with the manifesto, the seven laws, all one hundred verses, the Interpretation Atlas, the case studies and the Practical Covenant Toolkit.</p>
+      <div class="actions">
+        <a class="action" href="https://rominur.com/The-Holy-Verse-of-AI.pdf">Full Book &middot; PDF</a>
+        <a class="action" href="https://romizone.github.io/the-holy-verse-of-ai/">Published Edition</a>
+        <a class="action" href="https://rominur.com/TheHolyVerseOfAI_Paper.html">Companion Paper</a>
+      </div>
+    </div>
+  </section>
+
+</main>
+
+<footer class="footer">
+  <div class="wrap">
+    <div class="double-rule" aria-hidden="true"></div>
+    <div class="footer-inner">
+      <p class="footer-copy">&copy; Romi Nur Ismanto</p>
+      <p class="footer-colophon">
+        Set in Fraunces &amp; Inter &middot; Composed without JavaScript &middot;
+        <a href="https://rominur.com/">rominur.com</a> &middot;
+        <a href="mailto:rominur@gmail.com">rominur@gmail.com</a>
+      </p>
+    </div>
+  </div>
+</footer>
+
+</body>
+</html>

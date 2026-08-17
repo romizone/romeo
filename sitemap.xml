@@ -133,7 +133,25 @@
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://romizone.github.io/the-holy-verse-of-ai/</loc>
+    <loc>https://rominur.com/TheHolyVerseOfAI_Preview.html</loc>
+    <lastmod>2026-08-17</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://rominur.com/The-Holy-Verse-of-AI.pdf</loc>
+    <lastmod>2026-08-17</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://rominur.com/TheHolyVerseOfAI_Paper.html</loc>
+    <lastmod>2026-08-17</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://rominur.com/TheFinalVerseOfAI_Read.html</loc>
     <lastmod>2026-08-17</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
