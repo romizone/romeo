@@ -1,0 +1,187 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>PdfRomeo: In-Place Paragraph Reflow and a Headless Engine for a Native macOS PDF Workspace</title>
+    <meta name="description" content="PdfRomeo is a 43-tool PDF workspace for Apple Silicon. This paper describes its Qt-free engine, its own line breaker over the PDF's embedded font metrics, and the two-phase reflow that re-wraps a paragraph in place and makes room below it without losing content.">
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body {
+            font-family: 'Times New Roman', Times, Georgia, serif;
+            line-height: 1.6;
+            color: #111;
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 60px 40px;
+            background: #fff;
+        }
+        .paper-title { text-align: center; margin-bottom: 30px; }
+        .paper-title h1 { font-size: 1.65em; font-weight: 700; line-height: 1.3; margin-bottom: 18px; }
+        .paper-title .authors { font-size: 1.05em; margin-bottom: 4px; }
+        .paper-title .affiliation { font-size: 0.95em; color: #555; font-style: italic; }
+        .paper-title .email { font-size: 0.9em; color: #1a73e8; margin-top: 4px; }
+        .paper-title .date { font-size: 0.9em; color: #777; margin-top: 10px; }
+        .abstract { background: #f9f9f9; border-left: 4px solid #333; padding: 18px 22px; margin: 30px 0; }
+        .abstract h2 { font-size: 1em; text-transform: uppercase; letter-spacing: 1px; margin-bottom: 8px; border: none; padding: 0; }
+        .abstract p { font-size: 0.95em; color: #333; text-align: justify; }
+        .keywords { font-size: 0.9em; color: #555; margin-bottom: 30px; }
+        .keywords strong { color: #333; }
+        h2 { font-size: 1.2em; font-weight: 700; margin-top: 30px; margin-bottom: 12px; border-bottom: 1px solid #ddd; padding-bottom: 4px; }
+        h3 { font-size: 1.05em; font-weight: 700; margin-top: 18px; margin-bottom: 8px; }
+        p { text-align: justify; margin-bottom: 12px; font-size: 0.97em; }
+        table { width: 100%; border-collapse: collapse; margin: 16px 0; font-size: 0.9em; }
+        table th, table td { border: 1px solid #ccc; padding: 8px 12px; text-align: left; vertical-align: top; }
+        table th { background: #f0f0f0; font-weight: 700; }
+        table caption { font-size: 0.88em; font-style: italic; color: #555; margin-bottom: 6px; text-align: left; }
+        code { font-family: 'Courier New', Courier, monospace; background: #f4f4f4; padding: 2px 5px; border-radius: 3px; font-size: 0.88em; }
+        pre { background: #f4f4f4; padding: 14px 18px; border-radius: 4px; overflow-x: auto; font-size: 0.85em; margin: 12px 0; border: 1px solid #e0e0e0; }
+        pre code { background: none; padding: 0; }
+        ul, ol { margin: 10px 0 12px 24px; font-size: 0.97em; }
+        li { margin-bottom: 4px; }
+        .pipeline { background: #f7f9fc; border: 1px solid #d4e2f7; border-radius: 6px; padding: 16px 20px; text-align: center; font-size: 0.95em; color: #1a5276; margin: 16px 0; letter-spacing: 0.3px; }
+        .references { font-size: 0.88em; }
+        .references ol { margin-left: 20px; }
+        .references li { margin-bottom: 8px; color: #444; }
+        .paper-footer { text-align: center; font-size: 0.8em; color: #aaa; margin-top: 50px; padding-top: 20px; border-top: 1px solid #eee; }
+        .paper-footer a { color: #1a73e8; }
+        @media print { body { padding: 20px; } }
+        @media (max-width: 600px) { body { padding: 20px 15px; } .paper-title h1 { font-size: 1.3em; } table { font-size: 0.82em; } }
+    </style>
+</head>
+<body>
+
+    <div class="paper-title">
+        <h1>PdfRomeo: In-Place Paragraph Reflow and a Headless Engine for a Native macOS PDF Workspace</h1>
+        <div class="authors">Romi Nur Ismanto</div>
+        <div class="affiliation">Independent AI Research Lab, Jakarta, Indonesia</div>
+        <div class="email">rominur@gmail.com</div>
+        <div class="date">July 2026</div>
+    </div>
+
+    <div class="abstract">
+        <h2>Abstract</h2>
+        <p>PDF is a presentation format, not a document model: it records where glyphs are placed, not what paragraph they belong to. Editing a sentence therefore has no defined meaning, and most tools either decline to try or produce a visually plausible result that has quietly destroyed something. PdfRomeo is a native macOS workspace for Apple Silicon combining a document viewer with forty-three batch tools, and its principal engineering contribution is a paragraph editor that re-wraps text in place and moves the surrounding content to accommodate it. This paper describes that mechanism and the architecture around it. Three design decisions carry the work. First, the engine layer contains no user-interface imports whatsoever, so every operation is drivable from a script, a server, or a test harness without a window. Second, reflow does not use the high-level text-drawing routines of the underlying PDF library: those routines were measured to be structurally unfit &mdash; unable to render mixed bold and italic in one call, silently ignoring justification for embedded fonts, and shattering words when chained &mdash; so the system measures with the document's own embedded font widths, breaks lines itself, and emits a content-stream fragment that references the page's existing font resources without re-embedding anything. Third, the phase that moves content down the page is treated as the only irreversible operation in the system: because shifted content that passes the page edge is lost silently rather than clipped, the implementation measures the ink in every band before writing, re-stamps the entire page rather than the affected region, and edits the page in place so that links, form widgets, annotations and bookmarks survive. Where a correct result cannot be guaranteed &mdash; tables, multi-column or rotated pages, contents pages, OCR layers &mdash; the operation refuses with a stated reason rather than producing damage that looks like success.</p>
+    </div>
+
+    <div class="keywords">
+        <strong>Keywords:</strong> PDF editing, text reflow, content streams, font metrics, PyMuPDF, pikepdf, headless architecture, macOS, PySide6, document integrity
+    </div>
+
+    <h2>1. Introduction</h2>
+    <p>A word processor stores a document as structure: paragraphs made of runs, laid out at display time. A PDF stores the result of that layout &mdash; positioned glyphs, drawing operators, resource dictionaries &mdash; and discards the structure that produced it. There is no paragraph object in a PDF to edit.</p>
+    <p>This gap explains the state of PDF editors. Most either refuse to edit text, or convert to another format and back (losing fidelity), or overlay a white rectangle and draw new text on top (leaving the original text extractable underneath and the layout unchanged). Editors that genuinely re-wrap a paragraph must reconstruct structure that was never recorded, and must then modify a page whose remaining content has no idea the paragraph grew.</p>
+    <p>PdfRomeo attempts the honest version of this operation. Selecting <em>Edit Text</em> outlines every paragraph the engine believes it can safely re-wrap; double-clicking one and retyping re-wraps the paragraph in the document's own font with its own justification and inline emphasis, and moves the content below it to make room &mdash; or refuses, with a reason, where doing so would damage the page. Sections 3 through 6 describe how that is implemented. Section 2 describes the architecture it sits in, and Section 7 the refusal policy that bounds it.</p>
+
+    <h2>2. Architecture</h2>
+    <p>The application separates into three layers, and the separation is enforced rather than aspirational: no module in the engine layer imports the UI toolkit.</p>
+
+    <table>
+        <caption>Table 1. Layer responsibilities.</caption>
+        <thead>
+            <tr><th>Layer</th><th>Contents</th><th>Depends on</th></tr>
+        </thead>
+        <tbody>
+            <tr><td>Interface</td><td>Workspace, viewer, panels, tool forms, commenting</td><td>Qt (PySide6), engine</td></tr>
+            <tr><td>Workers</td><td>Background execution, progress, cancellation</td><td>Engine</td></tr>
+            <tr><td>Engine</td><td>Document session, page geometry, reflow, font metrics, text blocks, conversion, tool operations</td><td>pikepdf, PyMuPDF &mdash; no UI toolkit</td></tr>
+        </tbody>
+    </table>
+
+    <p>Three consequences follow. Every one of the forty-three tools is callable headlessly, which makes batch and server use possible without the application. The engine is testable without instantiating a window or an event loop, which matters because the behaviours that need testing are geometric and byte-level, not visual. And the operations that can destroy a document are confined to a layer with no user-interface concerns in it, so their correctness can be reasoned about in isolation.</p>
+    <p>Above the engine, the workspace presents documents as tabs on a threaded, continuously scrolling canvas with page thumbnails, bookmarks, search and comments in side panels, and the tool grid always one click away. Editing operations &mdash; annotations, page manipulation, bookmarks &mdash; pass through an undo stack; saving is atomic in place, and encrypted documents that open with a password stay encrypted when saved.</p>
+
+    <h2>3. Why Not the Library's Text API</h2>
+    <p>The obvious implementation of reflow is to call the PDF library's text-box routine with the new paragraph. That approach was evaluated and rejected on three measured grounds, each structural rather than a matter of tuning.</p>
+    <p><strong>One style per call.</strong> The high-level insert routine accepts a single font, size, and colour for the whole call. A paragraph reading <em>normal <strong>bold</strong> normal</em> cannot be expressed by it at all &mdash; not imperfectly, but not at all.</p>
+    <p><strong>Justification is silently inert.</strong> The justify flag emits the PDF word-spacing operator, which by specification applies only to single-byte character code 32. Because the library embeds TrueType fonts as composite Type0 with Identity-H encoding, the operator matches nothing. The call succeeds, reports no error, and produces ragged text where justified text was requested &mdash; the worst class of failure, because it is invisible to the caller.</p>
+    <p><strong>Chained writers shatter words.</strong> Composing mixed runs by chaining the lower-level text writer causes each run to be wrapped against the first line's remaining width, breaking words mid-token &mdash; <code>despit / e / head / winds</code>. This is a consequence of how the chain computes available width, not a parameter that can be corrected.</p>
+    <p>The conclusion drawn is that mixed-run justified reflow requires measuring and breaking lines directly, and emitting the drawing operators without an intermediary.</p>
+
+    <h2>4. Phase A &mdash; Measuring, Breaking, and Emitting</h2>
+    <h3>4.1 Measurement from the document's own metrics</h3>
+    <p>Line breaking requires knowing the advance width of every glyph in the exact font the page uses. That information is already present in the PDF's font dictionaries, and the engine reads it from there rather than consulting a system font that merely shares a name. Measuring with the document's own widths means the re-wrapped paragraph occupies the same horizontal space as the original, and the emitted text can reference the page's existing font resources &mdash; nothing is re-embedded.</p>
+    <p>Avoiding re-embedding is not only elegance. Identical font streams added by separate operations are not deduplicated by the library's garbage-collection modes, so an editor that embeds on every edit grows the file on every edit. Referencing the existing resource keeps repeated editing size-neutral.</p>
+
+    <h3>4.2 The emitted fragment is not self-contained</h3>
+    <p>Appending drawing operators to a page content stream appears simple and is the second trap. The save and restore operators preserve and restore graphics state; they do not <em>reset</em> it. A fragment appended to a page whose stream left state modified inherits that state. Measured on a single test page, four distinct leaks each produced a different wrong result:</p>
+
+    <table>
+        <caption>Table 2. Inherited state leaks and their observed effect on an appended text fragment.</caption>
+        <thead>
+            <tr><th>Leaked state</th><th>Observed effect</th></tr>
+        </thead>
+        <tbody>
+            <tr><td>Unbalanced save with a transform</td><td>Text drawn at the wrong coordinates entirely</td></tr>
+            <tr><td>Open clipping path</td><td>Text absent from the rendered page</td></tr>
+            <tr><td>Horizontal scaling left at 50%</td><td>Every advance halved; justification arithmetic twice wrong</td></tr>
+            <tr><td>Character spacing left non-zero</td><td>Span visibly shattered</td></tr>
+        </tbody>
+    </table>
+
+    <p>Two defences are applied together because neither subsumes the other. The page's existing content is first wrapped so that unbalanced state cannot escape it; the fragment then explicitly pins rendering mode, character spacing, word spacing, horizontal scale, and text rise to their defaults. Wrapping addresses transforms and clipping paths but is a no-op on a page judged already balanced; pinning addresses every text-state leak but nothing about a transform or a clip. Applying only one leaves a reproducible failure.</p>
+
+    <h3>4.3 Coordinates</h3>
+    <p>The third trap is the coordinate conversion. Subtracting the page height from a y-coordinate is the familiar idiom, and it is correct only for an unrotated page whose crop box equals its media box and begins at the origin. It was measured wrong by 200 points on a page rotated 90 degrees, and entirely off-page on a shifted media box. The engine instead applies the inverse of the page's own transformation matrix, which was verified correct for unrotated pages, 90- and 270-degree rotations, an inset crop box, and a shifted media box. The one combination still unhandled &mdash; rotation together with a differing crop box &mdash; is excluded by the eligibility gate rather than approximated.</p>
+
+    <h2>5. Phase B &mdash; Making Room Without Losing Content</h2>
+    <p>A re-wrapped paragraph rarely occupies its original height. Growing it requires moving everything below it down, and this phase is treated as the most dangerous code in the system, because it is the only part whose failure mode is irreversible mangling rather than a refusal.</p>
+    <p><strong>Content pushed past the page edge is lost, not clipped.</strong> In a measured case, shifting a band by 80 points dropped a footer entirely: extracted text fell from 653 to 613 characters, with no exception raised and no error returned. The implementation therefore measures the ink inside every band itself and raises before writing anything, rather than trusting the shift to fail loudly.</p>
+    <p><strong>Uncovered ranges vanish identically.</strong> The shift blanks the page's content stream and re-stamps it from an in-memory clone, so any vertical range not covered by a re-stamped tile never returns. The routine consequently does not stamp only the caller's bands: it tiles the whole page, filling every gap and both horizontal margins of a column-local band with pass-through tiles at zero displacement.</p>
+    <p><strong>Rebuilding into a new document destroys interactive objects.</strong> Constructing a fresh page and showing the old one into it returned empty link and widget lists &mdash; annotations, form fields and the table of contents did not survive. The engine edits the same page object in place instead. The in-place variant was measured lossless to the pixel against an ideally typeset reference at 150 dpi, with byte-identical extracted text.</p>
+    <p><strong>Annotations are not in the content stream</strong> and are therefore unaffected by a band shift; they must be moved separately. Setting an annotation rectangle directly fails silently for precisely the markup types the commenting layer produces, so those are handled by their own path rather than the generic one.</p>
+    <div class="pipeline">
+        eligibility gate &rarr; measure with embedded metrics &rarr; break lines &rarr; emit pinned fragment &rarr; measure band ink &rarr; tile whole page &rarr; shift in place &rarr; move annotations
+    </div>
+
+    <h2>6. The Refusal Policy</h2>
+    <p>The design treats a refusal as a correct outcome and a plausible-looking corruption as a defect. Before any paragraph is offered as editable, an eligibility gate excludes constructions where re-wrapping cannot be guaranteed: tables, where reflow would break column alignment; contents pages, where leader dots and page numbers are positionally meaningful; rotated pages and multi-column layouts outside the verified coordinate cases; and OCR text layers, where the visible content is an image and the text is an invisible overlay. If growth cannot be accommodated without pushing content off the page, the operation declines rather than proceeding.</p>
+    <p>The user-facing consequence is that some paragraphs are simply not outlined as editable, with a stated reason. That is a smaller product surface than a competitor advertising unrestricted PDF text editing &mdash; and a considerably more trustworthy one, because the operations that are offered are the operations that were verified.</p>
+
+    <h2>7. The Tool Layer</h2>
+    <p>Around the workspace sit forty-three batch tools in six families, all implemented in the headless engine.</p>
+
+    <table>
+        <caption>Table 3. Tool families.</caption>
+        <thead>
+            <tr><th>Family</th><th>Representative operations</th></tr>
+        </thead>
+        <tbody>
+            <tr><td>Organize</td><td>Merge; interleaved merge; split by range, page, bookmark, size or text; extract; reorder; crop; rotate; resize; N-up; flip</td></tr>
+            <tr><td>Edit &amp; Sign</td><td>Place or rewrite page text; fill and sign; make existing PDFs fillable; watermark; header and footer; page numbers; Bates numbering continuous across files; bookmarks; metadata</td></tr>
+            <tr><td>Convert</td><td>PDF to Word, table-aware Excel, PowerPoint, text, and JPG/PNG/TIFF at any DPI; HTML to PDF; images to PDF; Word to PDF</td></tr>
+            <tr><td>Security</td><td>AES-128 protection with granular permissions; unlock; flatten to read-only</td></tr>
+            <tr><td>Compress &amp; Scans</td><td>Compression by real image downscaling; auto-deskew; OCR to searchable text; grayscale; repair of damaged files</td></tr>
+            <tr><td>Others</td><td>Extract embedded images; rename files from page text</td></tr>
+        </tbody>
+    </table>
+
+    <p>Two entries deserve comment. Redaction removes content from the file rather than drawing over it, so redacted text is not recoverable by extraction &mdash; the failure mode that has repeatedly exposed supposedly redacted documents in practice. Compression downscales embedded images rather than only re-writing object streams, which is where the size actually resides in scanned documents.</p>
+
+    <h2>8. Distribution and Limitations</h2>
+    <p>The application builds to an arm64-native bundle and disk image for Apple Silicon, and runs from source on a virtual environment for development. Documents are processed locally: there is no upload, no account, and no network round-trip in any operation.</p>
+    <p>Four limitations are worth stating plainly. The reflow gate excludes real and common constructions, most notably tables and multi-column pages, and the combination of page rotation with a differing crop box remains unhandled by design. Some conversions delegate to platform facilities and inherit their availability. The measured guarantees in Sections 4 and 5 were established against specific library versions, and are properties of this implementation paired with those versions rather than of the format. And the application targets Apple Silicon only; while the engine layer carries no platform-specific code and could support other targets, that has not been done.</p>
+
+    <h2>9. Conclusion</h2>
+    <p>The interesting problem in PDF editing is not adding text to a page &mdash; it is changing text that is already there without silently damaging the page around it. PdfRomeo addresses it by declining the convenient abstractions: measuring with the document's own embedded metrics rather than a system font, breaking lines itself rather than calling a text box that cannot justify or mix styles, emitting operators with inherited state explicitly pinned, and treating the content-shifting phase as dangerous enough to verify byte-for-byte and pixel-for-pixel. The refusal policy is part of the same argument. An editor that declines a table is less capable than one that claims to handle everything, and considerably more useful than one that mangles a table while reporting success.</p>
+
+    <h2>References</h2>
+    <div class="references">
+        <ol>
+            <li>Adobe Systems. <em>PDF Reference, Sixth Edition, Version 1.7.</em> Adobe Systems Incorporated, 2006.</li>
+            <li>ISO. &ldquo;Document management &mdash; Portable document format &mdash; Part 1: PDF 1.7.&rdquo; ISO 32000-1:2008.</li>
+            <li>Artifex Software. &ldquo;PyMuPDF Documentation: Text Writing, Content Streams and Page Transformations.&rdquo; 2026.</li>
+            <li>pikepdf contributors. &ldquo;pikepdf: A Python Library for Reading and Writing PDF Files.&rdquo; 2026.</li>
+            <li>Knuth, D. E., and Plass, M. F. &ldquo;Breaking Paragraphs into Lines.&rdquo; <em>Software: Practice and Experience</em>, 11(11), 1119&ndash;1184, 1981.</li>
+            <li>Smith, R. &ldquo;An Overview of the Tesseract OCR Engine.&rdquo; ICDAR, 2007.</li>
+            <li>The Qt Company. &ldquo;Qt for Python (PySide6) Documentation.&rdquo; 2026.</li>
+        </ol>
+    </div>
+
+    <div class="paper-footer">
+        <p>&copy; 2026 Romi Nur Ismanto.</p>
+        <p>GitHub: <a href="https://github.com/romizone/pdfromeo">github.com/romizone/pdfromeo</a> &middot; <a href="https://github.com/romizone/pdfromeo/releases/tag/v1.2.0">Download v1.2.0</a></p>
+    </div>
+
+</body>
+</html>

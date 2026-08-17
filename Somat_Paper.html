@@ -1,0 +1,191 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Somat: A Single-Surface Conversational Interface with Server-Resident Capability and Client-Resident State</title>
+    <meta name="description" content="Somat is an Indonesian-language AI chat with no model picker and no settings: capability is exposed through the conversation itself. This paper describes its tool layer, document pipeline, in-browser OCR, and the split that keeps secrets on the server and history in the browser.">
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body {
+            font-family: 'Times New Roman', Times, Georgia, serif;
+            line-height: 1.6;
+            color: #111;
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 60px 40px;
+            background: #fff;
+        }
+        .paper-title { text-align: center; margin-bottom: 30px; }
+        .paper-title h1 { font-size: 1.65em; font-weight: 700; line-height: 1.3; margin-bottom: 18px; }
+        .paper-title .authors { font-size: 1.05em; margin-bottom: 4px; }
+        .paper-title .affiliation { font-size: 0.95em; color: #555; font-style: italic; }
+        .paper-title .email { font-size: 0.9em; color: #1a73e8; margin-top: 4px; }
+        .paper-title .date { font-size: 0.9em; color: #777; margin-top: 10px; }
+        .abstract { background: #f9f9f9; border-left: 4px solid #333; padding: 18px 22px; margin: 30px 0; }
+        .abstract h2 { font-size: 1em; text-transform: uppercase; letter-spacing: 1px; margin-bottom: 8px; border: none; padding: 0; }
+        .abstract p { font-size: 0.95em; color: #333; text-align: justify; }
+        .keywords { font-size: 0.9em; color: #555; margin-bottom: 30px; }
+        .keywords strong { color: #333; }
+        h2 { font-size: 1.2em; font-weight: 700; margin-top: 30px; margin-bottom: 12px; border-bottom: 1px solid #ddd; padding-bottom: 4px; }
+        h3 { font-size: 1.05em; font-weight: 700; margin-top: 18px; margin-bottom: 8px; }
+        p { text-align: justify; margin-bottom: 12px; font-size: 0.97em; }
+        table { width: 100%; border-collapse: collapse; margin: 16px 0; font-size: 0.9em; }
+        table th, table td { border: 1px solid #ccc; padding: 8px 12px; text-align: left; vertical-align: top; }
+        table th { background: #f0f0f0; font-weight: 700; }
+        table caption { font-size: 0.88em; font-style: italic; color: #555; margin-bottom: 6px; text-align: left; }
+        code { font-family: 'Courier New', Courier, monospace; background: #f4f4f4; padding: 2px 5px; border-radius: 3px; font-size: 0.88em; }
+        pre { background: #f4f4f4; padding: 14px 18px; border-radius: 4px; overflow-x: auto; font-size: 0.85em; margin: 12px 0; border: 1px solid #e0e0e0; }
+        pre code { background: none; padding: 0; }
+        ul, ol { margin: 10px 0 12px 24px; font-size: 0.97em; }
+        li { margin-bottom: 4px; }
+        .pipeline { background: #f7f9fc; border: 1px solid #d4e2f7; border-radius: 6px; padding: 16px 20px; text-align: center; font-size: 0.95em; color: #1a5276; margin: 16px 0; letter-spacing: 0.3px; }
+        .references { font-size: 0.88em; }
+        .references ol { margin-left: 20px; }
+        .references li { margin-bottom: 8px; color: #444; }
+        .paper-footer { text-align: center; font-size: 0.8em; color: #aaa; margin-top: 50px; padding-top: 20px; border-top: 1px solid #eee; }
+        .paper-footer a { color: #1a73e8; }
+        @media print { body { padding: 20px; } }
+        @media (max-width: 600px) { body { padding: 20px 15px; } .paper-title h1 { font-size: 1.3em; } table { font-size: 0.82em; } }
+    </style>
+</head>
+<body>
+
+    <div class="paper-title">
+        <h1>Somat: A Single-Surface Conversational Interface with Server-Resident Capability and Client-Resident State</h1>
+        <div class="authors">Romi Nur Ismanto</div>
+        <div class="affiliation">Independent AI Research Lab, Jakarta, Indonesia</div>
+        <div class="email">rominur@gmail.com</div>
+        <div class="date">August 2026</div>
+    </div>
+
+    <div class="abstract">
+        <h2>Abstract</h2>
+        <p>Most consumer AI interfaces expose their machinery: a model picker, a mode switch, a settings panel, a separate tab for image generation. Each control is a decision the user must make before receiving any value, and each is a decision they are usually unequipped to make well. Somat takes the opposite position. The interface is a single conversation box; capability is not selected but inferred from the request, and appears only when it is asked for. This paper describes the design and implementation of that arrangement. Two rules organise the system. The first is that capability lives entirely on the server: the provider key, the model identifiers, and the routing decisions never reach the browser, and are absent from the client bundle, the system prompt, and error messages alike. The second is that state lives entirely on the client: conversation history, including generated images, is stored in the browser's IndexedDB, and the deployment carries no database at all. Between these two rules sits a tool layer of two application functions &mdash; image generation and document construction &mdash; augmented by provider-side web search and page fetch, driven from a single streaming turn loop over server-sent events. Documents are produced by a Markdown-to-office pipeline in which the model writes structured Markdown and the server renders it to .docx, .xlsx, .pptx, or .pdf; the presentation renderer additionally enforces a strategy-consulting slide grammar. Scanned images and image-only PDFs are recognised in the browser through WebAssembly OCR before any upload occurs, so pixels of a scanned document never leave the device. The result is a deployment whose privacy properties follow from where things are placed rather than from promises about how they are handled.</p>
+    </div>
+
+    <div class="keywords">
+        <strong>Keywords:</strong> conversational interface, tool use, LLM routing, server-sent events, document generation, client-side OCR, IndexedDB, rate limiting, Next.js, Indonesian NLP
+    </div>
+
+    <h2>1. Introduction</h2>
+    <p>A conventional AI chat product asks the user to configure it. Which model? Which mode &mdash; chat, image, code, search? Which API key? These controls are presented as flexibility, but they impose a burden before any value is delivered, and they ask for judgements most users cannot make: the difference between two model names is not legible to someone who simply wants a letter written or a table produced.</p>
+    <p>Somat, deployed at <code>somat.rominur.com</code>, removes the controls entirely. There is one input box. There is no model picker, no mode switch, no API configuration, and no settings page. When the user asks a question they receive an answer; when they ask for an image they receive an image; when they ask for a spreadsheet they receive a spreadsheet. Capability is discovered through use rather than through configuration.</p>
+    <p>This is a design commitment with engineering consequences, and the remainder of this paper is about those consequences. Section 2 states the principles. Section 3 describes the turn loop and the tool layer. Section 4 covers the document pipeline. Section 5 covers ingestion and in-browser OCR. Section 6 covers the state and secrecy split. Section 7 covers abuse control for an interface with no login. Section 8 discusses limitations.</p>
+
+    <h2>2. Design Principles</h2>
+    <p>Four principles govern the implementation, and every subsequent section is an application of one of them.</p>
+    <p><strong>P1 &mdash; One surface.</strong> Everything the product can do is reachable from the conversation. No capability is placed behind a mode, a tab, or a toggle. The cost of this principle is borne by the routing layer: if the user cannot declare intent through a control, intent must be inferred from language.</p>
+    <p><strong>P2 &mdash; Capability on the server.</strong> The provider key, model identifiers, and limits are server-only. No value is exposed through a public build-time variable, so none can appear in the client bundle. The system prompt additionally instructs the assistant never to disclose the model, vendor, or version even when asked directly, so the identity is withheld at the language layer as well as the transport layer.</p>
+    <p><strong>P3 &mdash; State on the client.</strong> Conversations are persisted in the browser. The server holds no user data at rest, which means there is no user database to secure, migrate, or breach.</p>
+    <p><strong>P4 &mdash; Prefer the device.</strong> Work that can be done on the user's machine is done there. Optical character recognition is the clearest case: recognising a scanned page locally means the page image is never transmitted.</p>
+
+    <h2>3. The Turn Loop and Tool Layer</h2>
+    <h3>3.1 Streaming architecture</h3>
+    <p>A request produces a single server-sent event stream. The route assembles the system prompt and the trimmed conversation, opens an upstream streaming completion, and relays deltas to the browser as they arrive. Tool calls are accumulated across streaming chunks, executed when the upstream turn ends in a tool request, appended to the message list as tool results, and the completion is re-opened &mdash; all within the same response stream, so the user sees one continuous reply rather than a sequence of requests.</p>
+    <div class="pipeline">
+        request &rarr; quota &rarr; history trim &rarr; upstream stream &rarr; tool calls &rarr; tool results &rarr; continue &rarr; SSE to client
+    </div>
+    <p>History is bounded before dispatch rather than after: the oldest turns are dropped until the serialised conversation fits a character budget, with independent caps on a single message and on generated output. Bounding the input at the edge keeps both latency and cost predictable regardless of how long a conversation has run.</p>
+
+    <h3>3.2 Two application tools, two provider tools</h3>
+    <p>The assistant is offered four tools. Two are implemented by the application; two are executed by the provider.</p>
+
+    <table>
+        <caption>Table 1. Tools offered in a single conversational turn.</caption>
+        <thead>
+            <tr><th>Tool</th><th>Executed by</th><th>Purpose</th></tr>
+        </thead>
+        <tbody>
+            <tr><td><code>buat_gambar</code></td><td>Application</td><td>Generate one image from a description, with aspect ratio and quality arguments</td></tr>
+            <tr><td><code>buat_dokumen</code></td><td>Application</td><td>Build a .docx, .xlsx, .pptx, or .pdf from Markdown content</td></tr>
+            <tr><td><code>web_search</code></td><td>Provider</td><td>Search the web when the answer depends on current information</td></tr>
+            <tr><td><code>web_fetch</code></td><td>Provider</td><td>Retrieve and read a page the user has linked</td></tr>
+        </tbody>
+    </table>
+
+    <p>Two details of this arrangement are worth drawing out. First, the tool schemas are written in Indonesian, matching the language of the conversation they are selected from; the selection decision is made in the same language as the request that triggers it. Second, the image tool's schema instructs the model to rewrite the user's request into a detailed English image prompt before calling &mdash; the interface remains Indonesian while the generation prompt is expressed in the language the image model handles best. This is invisible to the user, which is the point.</p>
+    <p>Provider-side tools are declared rather than implemented. Search and fetch execute upstream, and their citations return with the completion, so the application carries no crawler, no HTML extraction, and no robots handling. Search is bounded on three axes &mdash; results per search, searches per turn, and total results per turn &mdash; because each search carries a marginal cost.</p>
+
+    <h3>3.3 Routing without a router</h3>
+    <p>Under P1 there is no mode switch, so intent must be inferred. Rather than a classifier ahead of the model, Somat delegates the decision to tool selection itself: the model is given tools whose descriptions state exactly when they apply, and the system prompt directs it to call them without first asking for confirmation when the request is unambiguous. The routing layer is therefore the tool schema, and adding a capability means adding a tool description rather than extending a dispatcher.</p>
+
+    <h2>4. The Document Pipeline</h2>
+    <p>Document generation is the feature that most distinguishes the system from a text-only chat, and it rests on one decision: the model never emits a binary format. It emits Markdown, and the server renders that Markdown to the requested format. Language models write Markdown reliably; they do not write OOXML reliably. Placing the format boundary here means a malformed document is a rendering bug in code that can be tested, not a generation failure in a model that cannot be.</p>
+    <div class="pipeline">
+        model &rarr; Markdown + format + title &rarr; server renderer &rarr; .docx / .xlsx / .pptx / .pdf &rarr; download card
+    </div>
+    <p>Four renderers share the Markdown parse and diverge in mapping. The word processor renderer maps headings, paragraphs, lists, tables, and code blocks to their document equivalents. The spreadsheet renderer maps each Markdown table to a worksheet, using the heading immediately above the table as the sheet name. The PDF renderer performs its own pagination. The presentation renderer is described below. Renderers are imported dynamically per format, so a request for a spreadsheet never loads the presentation or PDF code paths.</p>
+
+    <h3>4.1 A slide grammar, not a slide dump</h3>
+    <p>Presentation output is where a naive Markdown mapping fails most visibly: headings become titles, bullets become bullets, and the result is a document that has been reformatted rather than a deck that argues. Somat instead constrains generation to a consulting deck grammar, enforced in the system prompt and honoured by the renderer's parse:</p>
+    <ul>
+        <li>The second slide is always an executive summary of three points.</li>
+        <li>Each slide title is an <em>action title</em> &mdash; a complete sentence stating a conclusion, not a topic label. &ldquo;Operating cost fell 18% after routes were consolidated&rdquo;, not &ldquo;Operating Cost&rdquo;.</li>
+        <li>Read in sequence, the titles alone must tell a coherent story (horizontal logic).</li>
+        <li>A slide carries at most five points, mutually exclusive and collectively exhaustive, each supporting only its own title (vertical logic).</li>
+        <li>A blockquote line becomes a &ldquo;so what&rdquo; kicker rendered in a band beneath the body; a <code>Sumber:</code> line becomes a source note in the slide foot.</li>
+        <li>The final slide states concrete recommendations and next steps.</li>
+    </ul>
+    <p>The renderer reads this grammar structurally rather than cosmetically: kicker and source lines are lifted out of the body into dedicated regions, and body height is computed from whether a kicker is present. The prompt and the renderer encode the same document model, so a deck that follows the grammar renders correctly and one that does not degrades to an ordinary slide rather than breaking.</p>
+
+    <h2>5. Ingestion and In-Browser OCR</h2>
+    <p>Uploaded files are handled along two paths depending on whether the file carries a text layer.</p>
+    <p><strong>Text-bearing files</strong> &mdash; PDF, Word (.docx and legacy .doc), Excel, PowerPoint, OpenDocument, HTML, plain text, delimited data, and source files &mdash; are parsed server-side and inserted into the conversation as text. Spreadsheets are converted sheet by sheet, each labelled, so a workbook arrives as identifiable tables rather than an undifferentiated dump.</p>
+    <p><strong>Image-bearing files</strong> &mdash; photographs, screenshots, and scanned PDFs &mdash; are recognised on the device. A WebAssembly OCR worker configured for Indonesian and English runs in the browser; scanned PDF pages are rasterised locally and recognised page by page under a page cap that keeps the tab responsive, and only the resulting text is transmitted.</p>
+    <p>This is P4 in its strongest form. A user photographing an identity document or a bank statement is handing the pixels to their own browser, not to a server; the network sees only the extracted characters. The trade-off is honest: recognition quality is bounded by the device, and long scans are slower than a server would be. For the document types users actually photograph, that trade is worth making.</p>
+
+    <h2>6. State and Secrecy</h2>
+    <p>The two halves of the deployment are deliberately asymmetric, and the table below states which side holds what.</p>
+
+    <table>
+        <caption>Table 2. Placement of state and secrets.</caption>
+        <thead>
+            <tr><th>Item</th><th>Location</th><th>Consequence</th></tr>
+        </thead>
+        <tbody>
+            <tr><td>Provider API key</td><td>Server environment only</td><td>Never in the bundle; cannot be read from the client</td></tr>
+            <tr><td>Model identifiers</td><td>Server config only</td><td>Absent from responses, prompts, and error messages</td></tr>
+            <tr><td>Conversation history</td><td>Browser IndexedDB</td><td>No server-side user database exists</td></tr>
+            <tr><td>Generated images</td><td>Browser IndexedDB, as data URLs</td><td>Chosen over local storage to avoid its size ceiling</td></tr>
+            <tr><td>Rate-limit counters</td><td>Server memory, or Redis when configured</td><td>Only ephemeral, non-identifying state</td></tr>
+        </tbody>
+    </table>
+
+    <p>The privacy claim here is structural. A conventional assurance &mdash; &ldquo;we do not retain your conversations&rdquo; &mdash; is a statement about behaviour and requires trust. &ldquo;There is no database&rdquo; is a statement about architecture and can be checked from the deployment. Clearing browser data deletes the history because the browser is where the history is, and no deletion request is involved.</p>
+    <p>The corresponding cost is equally structural: history does not follow the user between devices or browsers, and clearing site data is irreversible. For an unauthenticated public tool this is the correct trade, but it is a trade and not a free win.</p>
+
+    <h2>7. Abuse Control Without Accounts</h2>
+    <p>An open interface with no login and a metered upstream needs a defence that does not require identity. Somat meters by client address across three independent dimensions, each with a short burst window and a daily ceiling: conversation turns, image generations, and uploads. Image limits are considerably tighter than chat limits because image generation is the most expensive operation available, and a site-wide daily image ceiling sits above the per-address one so that a distributed attempt cannot exhaust the budget by spreading across addresses.</p>
+    <p>Counters live in Redis when it is configured and in process memory otherwise. The fallback is documented rather than concealed: on a serverless platform each instance keeps its own counters, so effective limits are looser than the configured values. Stating this is more useful than implying a guarantee the deployment does not provide.</p>
+
+    <h2>8. Limitations</h2>
+    <p><strong>Inference is not selection.</strong> Under P1 the user cannot force a tool. When intent is genuinely ambiguous, the model may answer in prose where a document was wanted. This is the direct cost of removing controls, and it is accepted rather than solved.</p>
+    <p><strong>The device bounds OCR.</strong> Recognition runs on the user's hardware, so quality and speed vary with it, and long scanned PDFs are capped to keep the browser responsive.</p>
+    <p><strong>Portability is forfeited.</strong> Client-resident history cannot sync, and no server-side recovery exists.</p>
+    <p><strong>Deck grammar is enforced by prompt.</strong> The presentation rules are instructions to a model, not a validator. A deck that violates the grammar renders as an ordinary deck; nothing rejects it. A structural check before rendering would make the guarantee real, and is the clearest next step.</p>
+    <p><strong>Identity withholding is a policy, not a control.</strong> The assistant is instructed not to disclose the model it runs on. Instructions of this kind are known to be circumventable under adversarial prompting; the transport-layer protection of the key is robust, the language-layer withholding of the model name is not.</p>
+
+    <h2>9. Conclusion</h2>
+    <p>Somat is an argument that a capable AI product need not expose its machinery to be useful, and that the interface simplification is affordable if the engineering absorbs the cost. Removing the mode switch pushes intent inference into tool schemas. Removing the format selector pushes correctness into renderers that can be tested. Removing the database pushes state into the browser. Removing the server-side OCR pushes recognition onto the device. In each case the user-facing surface gets smaller and the implementation gets more opinionated &mdash; which is the trade the system is built to make.</p>
+
+    <h2>References</h2>
+    <div class="references">
+        <ol>
+            <li>Vercel. &ldquo;Next.js App Router: Route Handlers and Streaming.&rdquo; Next.js Documentation, 2026.</li>
+            <li>WHATWG. &ldquo;Server-Sent Events.&rdquo; HTML Living Standard, &sect;9.2.</li>
+            <li>W3C. &ldquo;Indexed Database API 3.0.&rdquo; W3C Working Draft, 2024.</li>
+            <li>Smith, R. &ldquo;An Overview of the Tesseract OCR Engine.&rdquo; ICDAR, 2007.</li>
+            <li>ECMA International. &ldquo;Office Open XML File Formats.&rdquo; ECMA-376, 5th edition, 2016.</li>
+            <li>Minto, B. <em>The Pyramid Principle: Logic in Writing and Thinking.</em> Pearson, 2009.</li>
+            <li>Schulhoff, S., et al. &ldquo;Ignore This Title and HackAPrompt: Exposing Systemic Vulnerabilities of LLMs Through a Global Prompt Hacking Competition.&rdquo; EMNLP, 2023.</li>
+        </ol>
+    </div>
+
+    <div class="paper-footer">
+        <p>&copy; 2026 Romi Nur Ismanto.</p>
+        <p>Live app: <a href="https://somat.rominur.com">somat.rominur.com</a> &middot; GitHub: <a href="https://github.com/romizone/somat">github.com/romizone/somat</a></p>
+    </div>
+
+</body>
+</html>
