@@ -1,0 +1,61 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 400 300">
+  <defs>
+    <linearGradient id="bg" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#0f172a"/>
+      <stop offset="100%" style="stop-color:#1e293b"/>
+    </linearGradient>
+    <linearGradient id="accent" x1="0%" y1="0%" x2="100%" y2="0%">
+      <stop offset="0%" style="stop-color:#14b8a6"/>
+      <stop offset="100%" style="stop-color:#6366f1"/>
+    </linearGradient>
+    <linearGradient id="img" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#f472b6"/>
+      <stop offset="100%" style="stop-color:#8b5cf6"/>
+    </linearGradient>
+  </defs>
+  <rect width="400" height="300" fill="url(#bg)" rx="16"/>
+
+  <!-- Chat window -->
+  <rect x="54" y="30" width="292" height="200" rx="12" fill="#111827" stroke="url(#accent)" stroke-width="2"/>
+  <rect x="54" y="30" width="292" height="26" rx="12" fill="#1f2937"/>
+  <rect x="54" y="44" width="292" height="12" fill="#1f2937"/>
+  <circle cx="70" cy="43" r="4" fill="#ef4444"/>
+  <circle cx="84" cy="43" r="4" fill="#f59e0b"/>
+  <circle cx="98" cy="43" r="4" fill="#22c55e"/>
+  <text x="200" y="47" font-family="system-ui,Arial,sans-serif" font-size="10" font-weight="700" fill="#94a3b8" text-anchor="middle" letter-spacing="1.5">SOMAT</text>
+
+  <!-- Assistant bubble -->
+  <rect x="70" y="70" width="150" height="30" rx="9" fill="#0b3b3a" stroke="#14b8a6" stroke-width="1"/>
+  <text x="82" y="89" font-family="system-ui,Arial,sans-serif" font-size="10" fill="#5eead4">Ada yang bisa dibantu?</text>
+
+  <!-- User bubble -->
+  <rect x="176" y="108" width="154" height="26" rx="9" fill="url(#accent)"/>
+  <text x="253" y="125" font-family="system-ui,Arial,sans-serif" font-size="9.5" fill="#0f172a" text-anchor="middle" font-weight="600">Buatkan gambar &amp; Excel</text>
+
+  <!-- Generated image card -->
+  <rect x="70" y="142" width="60" height="46" rx="6" fill="url(#img)"/>
+  <circle cx="86" cy="160" r="5" fill="#fde68a"/>
+  <path d="M74 184 L92 166 L104 178 L114 170 L126 184 Z" fill="#1e293b" opacity="0.55"/>
+  <!-- File cards (docx/xlsx/pptx/pdf) -->
+  <g font-family="system-ui,Arial,sans-serif" font-size="8" font-weight="700" text-anchor="middle">
+    <rect x="140" y="142" width="44" height="46" rx="6" fill="#1f2937" stroke="#334155" stroke-width="1"/>
+    <rect x="150" y="150" width="24" height="4" rx="2" fill="#22c55e"/>
+    <text x="162" y="180" fill="#22c55e">XLSX</text>
+    <rect x="192" y="142" width="44" height="46" rx="6" fill="#1f2937" stroke="#334155" stroke-width="1"/>
+    <rect x="202" y="150" width="24" height="4" rx="2" fill="#f97316"/>
+    <text x="214" y="180" fill="#f97316">PPTX</text>
+    <rect x="244" y="142" width="44" height="46" rx="6" fill="#1f2937" stroke="#334155" stroke-width="1"/>
+    <rect x="254" y="150" width="24" height="4" rx="2" fill="#ef4444"/>
+    <text x="266" y="180" fill="#ef4444">PDF</text>
+  </g>
+
+  <!-- Input bar -->
+  <rect x="70" y="200" width="210" height="18" rx="9" fill="#0b1220" stroke="#334155" stroke-width="1"/>
+  <text x="82" y="212" font-family="system-ui,Arial,sans-serif" font-size="9" fill="#64748b">Tulis pesan…</text>
+  <circle cx="312" cy="209" r="12" fill="url(#accent)"/>
+  <path d="M307 209 L317 209 M313 205 L317 209 L313 213" stroke="#0f172a" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
+
+  <!-- Caption -->
+  <text x="200" y="258" font-family="Georgia,serif" font-size="20" font-weight="700" fill="#e2e8f0" text-anchor="middle">Somat</text>
+  <text x="200" y="278" font-family="system-ui,Arial,sans-serif" font-size="11" fill="#94a3b8" text-anchor="middle">AI Chat Indonesia · teks &amp; gambar</text>
+</svg>
