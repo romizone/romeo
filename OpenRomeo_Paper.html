@@ -1,0 +1,180 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>OpenRomeo: A Local-First Desktop Agent with Risk-Classified Approval and Deliverable-Oriented Skills</title>
+    <meta name="description" content="OpenRomeo is a cross-platform desktop AI coworker that returns finished files rather than chat. This paper describes its turn engine, its risk-classified permission model, the Inbox that lets unattended runs park their asks, and the SKILL.md skill layer with progressive disclosure.">
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body {
+            font-family: 'Times New Roman', Times, Georgia, serif;
+            line-height: 1.6;
+            color: #111;
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 60px 40px;
+            background: #fff;
+        }
+        .paper-title { text-align: center; margin-bottom: 30px; }
+        .paper-title h1 { font-size: 1.65em; font-weight: 700; line-height: 1.3; margin-bottom: 18px; }
+        .paper-title .authors { font-size: 1.05em; margin-bottom: 4px; }
+        .paper-title .affiliation { font-size: 0.95em; color: #555; font-style: italic; }
+        .paper-title .email { font-size: 0.9em; color: #1a73e8; margin-top: 4px; }
+        .paper-title .date { font-size: 0.9em; color: #777; margin-top: 10px; }
+        .abstract { background: #f9f9f9; border-left: 4px solid #333; padding: 18px 22px; margin: 30px 0; }
+        .abstract h2 { font-size: 1em; text-transform: uppercase; letter-spacing: 1px; margin-bottom: 8px; border: none; padding: 0; }
+        .abstract p { font-size: 0.95em; color: #333; text-align: justify; }
+        .keywords { font-size: 0.9em; color: #555; margin-bottom: 30px; }
+        .keywords strong { color: #333; }
+        h2 { font-size: 1.2em; font-weight: 700; margin-top: 30px; margin-bottom: 12px; border-bottom: 1px solid #ddd; padding-bottom: 4px; }
+        h3 { font-size: 1.05em; font-weight: 700; margin-top: 18px; margin-bottom: 8px; }
+        p { text-align: justify; margin-bottom: 12px; font-size: 0.97em; }
+        table { width: 100%; border-collapse: collapse; margin: 16px 0; font-size: 0.9em; }
+        table th, table td { border: 1px solid #ccc; padding: 8px 12px; text-align: left; vertical-align: top; }
+        table th { background: #f0f0f0; font-weight: 700; }
+        table caption { font-size: 0.88em; font-style: italic; color: #555; margin-bottom: 6px; text-align: left; }
+        code { font-family: 'Courier New', Courier, monospace; background: #f4f4f4; padding: 2px 5px; border-radius: 3px; font-size: 0.88em; }
+        pre { background: #f4f4f4; padding: 14px 18px; border-radius: 4px; overflow-x: auto; font-size: 0.85em; margin: 12px 0; border: 1px solid #e0e0e0; }
+        pre code { background: none; padding: 0; }
+        ul, ol { margin: 10px 0 12px 24px; font-size: 0.97em; }
+        li { margin-bottom: 4px; }
+        .pipeline { background: #f7f9fc; border: 1px solid #d4e2f7; border-radius: 6px; padding: 16px 20px; text-align: center; font-size: 0.95em; color: #1a5276; margin: 16px 0; letter-spacing: 0.3px; }
+        .references { font-size: 0.88em; }
+        .references ol { margin-left: 20px; }
+        .references li { margin-bottom: 8px; color: #444; }
+        .paper-footer { text-align: center; font-size: 0.8em; color: #aaa; margin-top: 50px; padding-top: 20px; border-top: 1px solid #eee; }
+        .paper-footer a { color: #1a73e8; }
+        @media print { body { padding: 20px; } }
+        @media (max-width: 600px) { body { padding: 20px 15px; } .paper-title h1 { font-size: 1.3em; } table { font-size: 0.82em; } }
+    </style>
+</head>
+<body>
+
+    <div class="paper-title">
+        <h1>OpenRomeo: A Local-First Desktop Agent with Risk-Classified Approval and Deliverable-Oriented Skills</h1>
+        <div class="authors">Romi Nur Ismanto</div>
+        <div class="affiliation">Independent AI Research Lab, Jakarta, Indonesia</div>
+        <div class="email">rominur@gmail.com</div>
+        <div class="date">July 2026</div>
+    </div>
+
+    <div class="abstract">
+        <h2>Abstract</h2>
+        <p>A chat assistant returns text that a person must then act on; the work of producing the document, updating the spreadsheet, or sending the reply remains theirs. OpenRomeo is a cross-platform desktop agent built on the opposite premise: the unit of output is a finished artefact in the user's own workspace &mdash; a formatted document, an updated workbook, a triaged inbox &mdash; rather than a message describing one. This paper describes the system that premise requires. Four components carry it. A turn engine runs the model-tool loop asynchronously with blocking provider and tool calls off the event loop, executes read-only calls concurrently while keeping writes and shell commands strictly ordered, and can be interrupted mid-stream, mid-tool, or between iterations; on restart it detects tool calls left unanswered by a previous process and re-processes them rather than resuming into an inconsistent transcript. A permission layer classifies every tool by intrinsic risk &mdash; read, local write, execution, or off-machine side effect &mdash; and decides allow, deny, or ask against the session mode and the workspace root, with the decision function deliberately separated from the surface that renders the prompt. An Inbox generalises approval to the unattended case: rather than acting alone or stalling invisibly, a running agent parks its request as an item that any surface can resolve exactly once, under a first-responder-wins contract. A skill layer adopts the Anthropic <code>SKILL.md</code> format with progressive disclosure, so only skill names and descriptions occupy context while full instructions load on demand; the built-in document suite is overridable by name from a user or workspace folder. Credentials and conversations remain on the machine, with an optional cloud broker used only for OAuth consent &mdash; a boundary the paper states precisely, including what the broker does see. OpenRomeo is a fork of OpenWorker, and this paper distinguishes inherited architecture from what the fork adds.</p>
+    </div>
+
+    <div class="keywords">
+        <strong>Keywords:</strong> agentic AI, desktop agent, tool use, permission model, human-in-the-loop, agent skills, progressive disclosure, MCP, local-first software, Tauri
+    </div>
+
+    <h2>1. Introduction</h2>
+    <p>The dominant form of AI assistance is conversational: a person describes a task, a model returns text, and the person performs the task. For questions this is the right shape. For work it is not, because the deliverable &mdash; the report in the correct template, the spreadsheet with the numbers actually updated, the reply actually sent &mdash; is what the task consists of, and text describing it leaves the labour where it started.</p>
+    <p>Closing that gap requires an agent to touch things: the file system, the terminal, and third-party services holding real data. Each capability that makes the agent useful is the same capability that makes it dangerous, and the interesting design problem is not obtaining permissions but structuring them &mdash; deciding what may proceed silently, what must be asked, what happens when no one is watching, and what remains true if the machine is turned off mid-task.</p>
+    <p>OpenRomeo is a desktop application for macOS and Windows addressing that problem. It is a fork of OpenWorker by Andrew Ng and contributors, itself built on aisuite; the agent engine, permission model, and connector platform originate there, and this paper marks the boundary where it matters. Section 2 describes the architecture, Section 3 the turn engine, Section 4 permissions, Section 5 the Inbox, Section 6 skills, Section 7 the provider layer, Section 8 the credential boundary, and Section 9 the limitations.</p>
+
+    <h2>2. Architecture</h2>
+    <p>The system is three processes with one direction of dependency.</p>
+    <div class="pipeline">
+        Tauri shell + React UI &nbsp;&rarr;&nbsp; local Python agent server &nbsp;&rarr;&nbsp; your files, tools, and model provider
+    </div>
+    <p>The desktop shell supervises a local agent server rather than embedding the agent, so the interface can be reloaded, closed, or replaced without disturbing a running task. Because the server is an ordinary local service, the same backend drives the packaged desktop app and a browser during development, and long-running work survives interface restarts &mdash; a property the recovery behaviour in Section 3.3 depends on.</p>
+
+    <table>
+        <caption>Table 1. Components and responsibilities.</caption>
+        <thead>
+            <tr><th>Component</th><th>Responsibility</th></tr>
+        </thead>
+        <tbody>
+            <tr><td>Agent backend (Python)</td><td>Turn engine, providers, tool registry, permissions and risk, connectors and MCP, skills, memory, automations, audit log, Inbox</td></tr>
+            <tr><td>Desktop surface</td><td>React interface inside a Tauri shell; supervises the server process</td></tr>
+            <tr><td>Speech sidecar (Rust)</td><td>Local speech-to-text for voice input</td></tr>
+            <tr><td>Packaging</td><td>macOS disk images including an Intel cross-build, Windows installer and MSI, update manifest</td></tr>
+        </tbody>
+    </table>
+
+    <h2>3. The Turn Engine</h2>
+    <p>One user request becomes many model-tool iterations, continuing until the model stops requesting tools, a rail trips, or the user interrupts. Three properties of this loop are worth stating.</p>
+
+    <h3>3.1 Concurrency that respects side effects</h3>
+    <p>When a model requests several tools at once, executing them in sequence wastes time and executing them all in parallel is unsafe. The engine splits the difference along the risk classification of Section 4: read-only calls run concurrently, while writes and shell commands remain strictly ordered. Reading six files at once is safe because the operations do not interact; writing two files concurrently is not, because their ordering may be the difference between a correct and a corrupted workspace. Blocking provider and tool calls are dispatched off the event loop, so the interface stays responsive during a long model call.</p>
+
+    <h3>3.2 Interruption at three points</h3>
+    <p>An agent that cannot be stopped is not trustworthy regardless of how good its judgement is. Interruption is handled at each place a turn can be waiting: between streamed chunks of a model response, inside a running tool via registered interrupt hooks, and at the loop checkpoint between iterations. A stop request therefore takes effect promptly rather than at the next convenient boundary, which for a long shell command or a slow API call would be indistinguishable from ignoring it.</p>
+
+    <h3>3.3 Recovery from an incomplete transcript</h3>
+    <p>Conversations with tool calls have a structural invariant: every assistant tool call must be followed by its result. A process that dies mid-tool &mdash; a crash, a quit, an evicted engine &mdash; leaves a transcript violating that invariant, and naively resuming produces either a provider error or a model reasoning from a request whose outcome it never saw. The engine instead inspects the trailing assistant message on resume, identifies tool calls with no answer, and re-processes them. Turn-ending conditions such as an error or an interruption are persisted as display-only markers, so a stray retry cannot re-answer a turn that already completed.</p>
+    <p>A bounded iteration count acts as the outer rail against loops that make no progress.</p>
+
+    <h2>4. Permissions as a Function of Risk</h2>
+    <p>Earlier designs of this kind maintain hardcoded sets of dangerous tool names inside the permission logic. OpenRomeo's backend instead treats risk as a declared property of a tool, read through a single classification function &mdash; which means adding a tool does not require editing the permission engine, and an unknown tool is classified conservatively rather than escaping the gate.</p>
+
+    <table>
+        <caption>Table 2. Risk classes and their treatment.</caption>
+        <thead>
+            <tr><th>Class</th><th>Meaning</th><th>Treatment</th></tr>
+        </thead>
+        <tbody>
+            <tr><td><code>read</code></td><td>No side effects</td><td>Always allowed; eligible for concurrent execution</td></tr>
+            <tr><td><code>write_local</code></td><td>Mutates the workspace</td><td>Path-scoped to the working root and gated by mode</td></tr>
+            <tr><td><code>exec</code></td><td>Runs commands</td><td>Mode-gated; command prefixes refine the decision</td></tr>
+            <tr><td><code>external</code></td><td>Side effects off the machine</td><td>Gated, and the hook for unattended Inbox routing</td></tr>
+        </tbody>
+    </table>
+
+    <p>Effective risk resolves in a fixed order: a user-local override, then the by-name table for vetted built-in tools, then tool metadata declaring that approval is required, and otherwise read. The override exists chiefly so that a deliberately conservative default &mdash; notably for tools arriving over MCP &mdash; can be relaxed by the user rather than by the vendor.</p>
+    <p>Risk is then combined with a session mode. <em>Discuss</em> and <em>Plan</em> are read-only, differing only in that Plan drives an explore-then-propose-then-execute contract; <em>Interactive</em> is the default, permitting reads and asking before writes and commands; <em>Auto</em> allows without prompting but remains path-scoped; <em>Custom</em> is Interactive with a configured allow-list. Approvals may be granted once or as a task-scoped standing rule, and when such a rule permits a call the decision carries the rule with it, so the audit log and the interface can state which grant applied.</p>
+    <p>One structural choice deserves emphasis: the permission engine only <em>decides</em>. It does not prompt, block, or render. The turn engine routes a needs-user decision to whichever surface is attached and records the outcome. That separation is what makes Section 5 possible &mdash; the same decision can be answered by a desktop dialog, a queue item, or a message from another device, without the policy layer knowing which.</p>
+
+    <h2>5. The Inbox: Approval Without a Watcher</h2>
+    <p>Interactive approval assumes someone is present. Scheduled and unattended runs break that assumption, and the usual resolutions are both bad: act without asking, or stall silently until someone returns.</p>
+    <p>The Inbox is a durable, cross-session queue of what agents need from the user &mdash; an approval, a question, a notification, or a request to be granted a directory. When a permission decision requires a person and no one is attached, the request becomes an Inbox item and the agent suspends until it is resolved.</p>
+    <p>The contract is explicit about the race it must survive. Each item moves from pending to resolved exactly once; resolution is idempotent and first-responder-wins. This matters because the same item may be answerable from several places at once &mdash; the application, a messaging connector, or the composer after resuming the session &mdash; and two simultaneous answers must not produce two actions. The Inbox is the store of record and other surfaces are transports of the same items, rather than each surface maintaining its own notion of what is pending.</p>
+    <p>The result is that an unattended agent has a third option beyond acting alone and giving up: it can wait, visibly, with the reason for waiting attached.</p>
+
+    <h2>6. Skills and the Document Suite</h2>
+    <p>Skills teach the agent repeatable procedures. OpenRomeo adopts the Anthropic Agent Skills <code>SKILL.md</code> format &mdash; a folder with YAML frontmatter naming and describing the skill, optionally constraining the tools it may use, followed by a body of instructions and any resources or scripts &mdash; so skills written for other tools in that ecosystem work without translation.</p>
+    <p>The loading strategy is progressive disclosure, and it addresses a real constraint. Injecting every skill's full instructions at session start consumes context proportional to the number of installed skills, most of which are irrelevant to the current request. Instead only the catalog &mdash; each skill's name and description &mdash; is present at the start, and a skill's body is loaded on demand when the agent decides it applies. Context cost therefore scales with the number of skills <em>used</em>, not the number installed.</p>
+    <p>Four skills ship built in: <code>docx</code>, <code>pptx</code>, <code>xlsx</code>, and <code>pdf</code> &mdash; the document suite that makes the deliverable premise of Section 1 concrete. Resolution is by name, with a user-level directory and a workspace-level directory each able to override a built-in: a team with house formatting rules for spreadsheets replaces <code>xlsx</code> in the workspace folder and every session in that project uses it. New sessions pick up changes without a restart, and removing a skill means deleting its folder.</p>
+
+    <h2>7. Providers and Model Portability</h2>
+    <p>Model access is the user's own. Keys are supplied per provider and verified with a single read-only call, or a local runtime is used instead and no key is required at all; usage bills to the user's provider account, since the application intermediates nothing.</p>
+    <p>The registry curates models across the major hosted providers, open-weight inference services, and local runtimes, with vision enabled on the multimodal flagships. Two details make the abstraction usable rather than merely broad. Arbitrary model strings are accepted with conservative capability fallbacks, so a model released after the application was built can be selected without an update &mdash; the fallback assumes less capability rather than more, which fails toward a degraded experience instead of a broken one. And provider credential resolution is deliberately kept separate per provider rather than falling back across them, so a key configured for one service is never silently used to reach another.</p>
+    <p>Beyond model choice, the tool surface spans twenty-five-plus first-party connectors &mdash; source control, messaging, issue tracking, documents, mail and calendar, CRM &mdash; alongside anything reachable over the Model Context Protocol, plus the local file system and terminal. Connector and tool actions are written to a durable local audit log with secret-bearing fields stripped.</p>
+
+    <h2>8. The Credential Boundary</h2>
+    <p>There is no account, no sign-up, and no subscription for the application itself. Conversations, tokens, and keys live in a local secret store under the platform's per-user configuration directory. There is no OpenRomeo server holding user data, because there is no OpenRomeo server.</p>
+    <p>Integrations may be connected in two ways, and the distinction is the honest part of the story. A manually pasted token is fully local: the credential is entered in the application and never transits a third party. One-click OAuth instead uses an optional upstream cloud broker to conduct the consent handshake; long-lived tokens are written only to the user's machine, but they do pass through the broker during consent and refresh, one connector uses short-lived cloud-minted tokens by design, and a broker sign-in leaves connection metadata and opt-out session telemetry with the broker. Skipping the broker entirely is supported, and manual token entry is available for almost every integration.</p>
+    <p>Stating this precisely is the point. &ldquo;Local-first&rdquo; is frequently used to mean &ldquo;mostly local, with an unexamined exception&rdquo;; the useful version names the exception, says what it can observe, and offers a path that avoids it.</p>
+
+    <h2>9. Limitations</h2>
+    <p><strong>Approval fatigue is unsolved.</strong> Risk classification reduces prompting for reads, and standing rules reduce repetition within a task, but a user in Interactive mode on a write-heavy task still answers many prompts &mdash; and a user who tires of answering will switch to Auto, which is precisely the outcome the gate exists to avoid.</p>
+    <p><strong>Distribution builds are unsigned.</strong> macOS reports downloaded copies as damaged under Gatekeeper quarantine and requires a manual attribute removal; Windows shows a SmartScreen warning. Both are documented workarounds, and both teach users to bypass a security prompt &mdash; an unfortunate lesson that only notarisation and code signing properly resolve.</p>
+    <p><strong>The broker is a real boundary.</strong> For OAuth-connected integrations, tokens transit a third party during consent and refresh. This is disclosed rather than eliminated.</p>
+    <p><strong>Output quality is the model's.</strong> The engine governs what an agent may do and when it must ask; it does not make a weak model produce a strong document. The deliverable premise raises the cost of a poor result, because a wrong file in the workspace is more consequential than a wrong paragraph in a chat window.</p>
+    <p><strong>Much of the foundation is inherited.</strong> The agent engine, permission model, and connector platform come from OpenWorker and aisuite. The fork's contributions are the frontier-model lineup, the built-in document skills, image generation, and packaging &mdash; not the architecture beneath them.</p>
+
+    <h2>10. Conclusion</h2>
+    <p>Making an assistant produce finished work rather than descriptions of work is a permissions problem before it is a modelling problem. OpenRomeo's answer is to make risk a declared property that a single classifier reads, to separate deciding from prompting so the same decision can be answered by a person present or absent, to give an unattended agent the option of waiting visibly rather than acting alone or hanging, and to keep the loop interruptible at every point it can wait and recoverable when the process dies mid-tool. The document skills make the premise concrete, and the credential boundary is stated with its exceptions named. What remains genuinely open is approval fatigue: the gate is only as good as the attention of the person answering it, and no amount of classification manufactures that attention.</p>
+
+    <h2>References</h2>
+    <div class="references">
+        <ol>
+            <li>Ng, A., et al. &ldquo;OpenWorker.&rdquo; GitHub repository, 2026.</li>
+            <li>Ng, A., et al. &ldquo;aisuite: A Unified Interface for Generative AI Providers.&rdquo; GitHub repository, 2025.</li>
+            <li>Anthropic. &ldquo;Agent Skills and the SKILL.md Format.&rdquo; Anthropic Documentation, 2026.</li>
+            <li>Anthropic. &ldquo;Model Context Protocol Specification.&rdquo; modelcontextprotocol.io, 2025.</li>
+            <li>Tauri Contributors. &ldquo;Tauri: Build Smaller, Faster Desktop Applications.&rdquo; Tauri Documentation, 2026.</li>
+            <li>Hardt, D. &ldquo;The OAuth 2.0 Authorization Framework.&rdquo; RFC 6749, IETF, 2012.</li>
+            <li>Kleppmann, M., et al. &ldquo;Local-First Software: You Own Your Data, in Spite of the Cloud.&rdquo; Onward!, 2019.</li>
+            <li>Radford, A., et al. &ldquo;Robust Speech Recognition via Large-Scale Weak Supervision.&rdquo; ICML, 2023.</li>
+        </ol>
+    </div>
+
+    <div class="paper-footer">
+        <p>&copy; 2026 Romi Nur Ismanto. Released under MIT License.</p>
+        <p>GitHub: <a href="https://github.com/romizone/OpenRomeo">github.com/romizone/OpenRomeo</a> &middot; <a href="https://github.com/romizone/OpenRomeo/releases/tag/v1.0.2">Download v1.0.2</a></p>
+    </div>
+
+</body>
+</html>
