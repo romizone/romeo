@@ -1,0 +1,164 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>EditPDF: A Zero-Upload PDF Workspace in the Browser Tab</title>
+    <meta name="description" content="EditPDF runs forty-one PDF tools entirely in the browser — no server, no upload. This paper describes the pdf-lib/PDF.js split, the font problem in-place text editing creates, and why redaction rasterises the page.">
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body {
+            font-family: 'Times New Roman', Times, Georgia, serif;
+            line-height: 1.6;
+            color: #111;
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 60px 40px;
+            background: #fff;
+        }
+        .paper-title { text-align: center; margin-bottom: 30px; }
+        .paper-title h1 { font-size: 1.65em; font-weight: 700; line-height: 1.3; margin-bottom: 18px; }
+        .paper-title .authors { font-size: 1.05em; margin-bottom: 4px; }
+        .paper-title .affiliation { font-size: 0.95em; color: #555; font-style: italic; }
+        .paper-title .email { font-size: 0.9em; color: #1a73e8; margin-top: 4px; }
+        .paper-title .date { font-size: 0.9em; color: #777; margin-top: 10px; }
+        .abstract { background: #f9f9f9; border-left: 4px solid #333; padding: 18px 22px; margin: 30px 0; }
+        .abstract h2 { font-size: 1em; text-transform: uppercase; letter-spacing: 1px; margin-bottom: 8px; border: none; padding: 0; }
+        .abstract p { font-size: 0.95em; color: #333; text-align: justify; }
+        .keywords { font-size: 0.9em; color: #555; margin-bottom: 30px; }
+        .keywords strong { color: #333; }
+        h2 { font-size: 1.2em; font-weight: 700; margin-top: 30px; margin-bottom: 12px; border-bottom: 1px solid #ddd; padding-bottom: 4px; }
+        h3 { font-size: 1.05em; font-weight: 700; margin-top: 18px; margin-bottom: 8px; }
+        p { text-align: justify; margin-bottom: 12px; font-size: 0.97em; }
+        table { width: 100%; border-collapse: collapse; margin: 16px 0; font-size: 0.9em; }
+        table th, table td { border: 1px solid #ccc; padding: 8px 12px; text-align: left; vertical-align: top; }
+        table th { background: #f0f0f0; font-weight: 700; }
+        table caption { font-size: 0.88em; font-style: italic; color: #555; margin-bottom: 6px; text-align: left; }
+        code { font-family: 'Courier New', Courier, monospace; background: #f4f4f4; padding: 2px 5px; border-radius: 3px; font-size: 0.88em; }
+        blockquote { margin: 16px 0 16px 24px; padding-left: 16px; border-left: 3px solid #c9b083; font-style: italic; color: #444; font-size: 0.95em; }
+        ul, ol { margin: 10px 0 12px 24px; font-size: 0.97em; }
+        li { margin-bottom: 4px; }
+        .pipeline { background: #f7f9fc; border: 1px solid #d4e2f7; border-radius: 6px; padding: 16px 20px; text-align: center; font-size: 0.95em; color: #1a5276; margin: 16px 0; letter-spacing: 0.3px; }
+        .references { font-size: 0.88em; }
+        .references ol { margin-left: 20px; }
+        .references li { margin-bottom: 8px; color: #444; }
+        .paper-footer { text-align: center; font-size: 0.8em; color: #aaa; margin-top: 50px; padding-top: 20px; border-top: 1px solid #eee; }
+        .paper-footer a { color: #1a73e8; }
+        @media print { body { padding: 20px; } }
+        @media (max-width: 600px) { body { padding: 20px 15px; } .paper-title h1 { font-size: 1.3em; } table { font-size: 0.82em; } }
+    </style>
+</head>
+<body>
+
+    <div class="paper-title">
+        <h1>EditPDF: A Zero-Upload PDF Workspace in the Browser Tab</h1>
+        <div class="authors">Romi Nur Ismanto</div>
+        <div class="affiliation">Independent AI Research Lab, Jakarta, Indonesia</div>
+        <div class="email">hello@rominur.com</div>
+        <div class="date">August 2026</div>
+    </div>
+
+    <div class="abstract">
+        <h2>Abstract</h2>
+        <p>Online PDF tools ask the user to upload the document. For a holiday itinerary that is unremarkable; for a contract, a payslip, a medical result or a scanned identity document it is a transfer of custody, and the privacy policy is the only thing standing between the file and whatever the operator chooses to do with it. EditPDF removes the transfer rather than promising to handle it well: forty-one PDF tools run inside the browser tab, the application is a static bundle with no backend, and the document never leaves the machine. This paper describes what that constraint costs and how the implementation pays it. Three problems dominate. First, the reading and writing of PDF must be split across two libraries with incompatible strengths &mdash; PDF.js can render and extract but not author, pdf-lib can author but not render &mdash; so the pipeline renders through one and writes through the other, with the page canvas serving as the bridge for operations that cannot be expressed structurally. Second, in-place text editing requires the glyphs of a font the browser may not possess and the document may only partially embed; the application ships metric-compatible substitutes for the three standard families and embeds them through fontkit, which keeps re-wrapped lines the right length at the cost of exact glyph fidelity when the original face is unavailable. Third, redaction cannot be done honestly by drawing a black rectangle, because the text survives underneath and remains extractable; the implementation instead rasterises each marked page so the words are destroyed, and states plainly in the interface that those pages stop being searchable. The paper argues that the third case is the clearest illustration of the project's stance: where a correct result and a convenient one diverge, the tool takes the correct one and tells the user what it cost.</p>
+    </div>
+
+    <div class="keywords">
+        <strong>Keywords:</strong> client-side computing, PDF editing, local-first software, pdf-lib, PDF.js, font embedding, redaction, OCR, privacy by architecture, React
+    </div>
+
+    <h2>1. Introduction</h2>
+    <p>The standard architecture for an online PDF tool is a file upload, a server-side operation, and a download link. It is simple to build and it works, and it also means that every document a user edits is, for some interval, resident on someone else's disk. The industry's answer to the resulting unease is the privacy policy: an assurance about conduct, verifiable by nobody, and irrelevant to an attacker who reaches the storage bucket by another route.</p>
+    <p>EditPDF, deployed at <code>pdf.rominur.com</code>, takes the other path. It is a static single-page application; opening a document hands it to the browser tab, not to a network. There is no upload endpoint, no processing queue, no temporary storage, and no retention window &mdash; not because these are well managed, but because they do not exist. The privacy property is structural rather than promissory, and a reader can confirm it from the network panel of their own browser.</p>
+    <p>The constraint is severe, and the rest of this paper is about the engineering it forces. Section 2 describes the split-library architecture. Section 3 covers in-place text editing and the font problem. Section 4 covers redaction. Section 5 surveys the tool set. Section 6 covers OCR and conversion. Section 7 states the limits.</p>
+
+    <h2>2. Two Libraries, One Document</h2>
+    <p>No single JavaScript library both reads and writes PDF well, and the division is not arbitrary &mdash; it reflects what each was built for.</p>
+
+    <table>
+        <caption>Table 1. Division of responsibility between the PDF libraries.</caption>
+        <thead>
+            <tr><th>Library</th><th>Used for</th><th>Cannot do</th></tr>
+        </thead>
+        <tbody>
+            <tr><td>PDF.js</td><td>Rendering pages to canvas, text extraction, page geometry</td><td>Author or modify a document</td></tr>
+            <tr><td>pdf-lib</td><td>Structural edits: pages, annotations, form fields, drawing, metadata</td><td>Render a page; encrypt</td></tr>
+            <tr><td>@cantoo/pdf-lib</td><td>Password protection with granular permissions</td><td>&mdash;</td></tr>
+            <tr><td>fontkit</td><td>Embedding and subsetting TrueType faces for new text</td><td>&mdash;</td></tr>
+        </tbody>
+    </table>
+
+    <p>The application therefore maintains two views of the same document: a rendered view the user sees and interacts with, produced by PDF.js on a canvas with its worker configured to keep decoding off the main thread, and a structural view that receives edits and produces the saved file. Most tools are expressed structurally &mdash; splitting, merging, rotation, watermarks, page numbers, form fields &mdash; and never touch the canvas. A minority cannot be, and for those the rendered canvas becomes the source of truth: rasterised export to JPG and PNG at a chosen resolution, compression, and redaction as described in Section 4.</p>
+    <div class="pipeline">
+        file &rarr; PDF.js (render, extract) &rarr; edit model &rarr; pdf-lib (write) &rarr; download &mdash; no network hop at any stage
+    </div>
+    <p>Encryption is the one place where the mainstream library was insufficient: pdf-lib upstream does not implement password protection, so the protect tool uses a maintained fork that does, setting user and owner passwords with a permission set in which printing is granted at high resolution or refused outright rather than silently downgraded.</p>
+
+    <h2>3. Editing Text, and the Font Problem</h2>
+    <p>A PDF records positioned glyphs, not paragraphs. Clicking a line and retyping it therefore requires reconstructing a structure the format never stored, and then rendering replacement text that matches what surrounds it. The second half of that problem is where browser-based editors usually fail visibly.</p>
+    <p>Replacement text must be drawn in a font. Three cases arise. If the document embeds the full face, it can be reused. If it embeds only a subset &mdash; the common case, since producers embed only the glyphs actually used &mdash; the characters the user newly types may not be present. If it embeds nothing and merely names a standard font, the file supplies no glyphs at all.</p>
+    <p>EditPDF handles the latter two by shipping metric-compatible substitutes for the three standard families and embedding them through fontkit when text is added or rewritten. Metric compatibility is the operative property: the substitute advances each character by the same width as the face it stands in for, so a rewritten line occupies the same horizontal space and the surrounding layout does not shift. The visual difference is a slightly different letterform; the alternative &mdash; substituting a font with different metrics &mdash; produces text that overflows its column or falls short of the margin, which is far more conspicuous. The fonts are bundled with the application rather than fetched, consistent with the no-network rule.</p>
+    <p>Alongside text editing sit the operations that do not require reconstruction at all: whiteout, which covers a region opaquely; inserted images, shapes and signature marks; and form filling, all of which are additive and therefore structurally straightforward.</p>
+
+    <h2>4. Redaction, and Why It Rasterises</h2>
+    <p>Redaction is the operation most often implemented incorrectly, and the failure is well documented: a black rectangle drawn over a name changes only what is displayed. The text object beneath it is untouched, and any extraction tool &mdash; including copy and paste &mdash; returns it. Court filings and government releases have been de-redacted this way repeatedly.</p>
+    <p>Doing it correctly inside a browser is not a matter of a better drawing call. Removing a specific text run from a content stream while leaving the rest of the page intact is the kind of surgery Section 3 describes as difficult, and a partial job here fails dangerously rather than visibly.</p>
+    <p>EditPDF takes the blunt but sound route: a page carrying redaction marks is rendered to a canvas with the marked regions painted out, and that image replaces the page. The text is not hidden, it is gone &mdash; there is no text layer left to extract from. The application states the consequence in the tool itself rather than in a footnote:</p>
+    <blockquote>A marked page is rebuilt as a picture. The words underneath are gone for good &mdash; not merely covered &mdash; so nothing can be selected, searched or copied back out. The price is that those pages stop being searchable.</blockquote>
+    <p>This is the project's design stance in miniature. The rasterising approach is worse on every axis except the one that matters: file size grows, selectable text is lost, and only the marked pages are affected rather than the document as a whole. What it buys is that the redaction is real. Telling the user the price, at the moment of the decision, is the part most implementations omit.</p>
+
+    <h2>5. The Tool Set</h2>
+    <p>Forty-one tools are grouped by intent rather than by implementation.</p>
+
+    <table>
+        <caption>Table 2. Tools by family.</caption>
+        <thead>
+            <tr><th>Family</th><th>Tools</th></tr>
+        </thead>
+        <tbody>
+            <tr><td>Edit &amp; sign</td><td>PDF editor (in-place text, whiteout, images, shapes), fill &amp; sign, create forms, watermark, page numbers, header &amp; footer, Bates numbering, stamps</td></tr>
+            <tr><td>Organise</td><td>Merge, alternate &amp; mix, split by range, in half, by size, by text, by bookmarks, extract pages, delete pages, organize, rotate, crop, resize, N-up, flip</td></tr>
+            <tr><td>Convert</td><td>PDF to Word, Excel, PowerPoint, text, JPG; JPG to PDF; extract images</td></tr>
+            <tr><td>Protect</td><td>Password protection with permissions, unlock, flatten, redact, remove annotations</td></tr>
+            <tr><td>Repair &amp; refine</td><td>Compress, grayscale, OCR, repair, create bookmarks, edit properties, rename</td></tr>
+        </tbody>
+    </table>
+
+    <p>The taxonomy mirrors that of the author's desktop application, PdfRomeo, and the overlap is deliberate: the same operations are useful whether the user will install software or not. What differs is where the boundary of feasibility falls. The desktop application re-wraps a paragraph and shifts the content below it to make room, because it can measure with the document's own embedded metrics and rewrite the content stream in place; the browser application edits text within its existing box.</p>
+
+    <h2>6. OCR and Conversion</h2>
+    <p>Scanned documents carry no text layer, and OCR runs in the tab through a WebAssembly build of Tesseract. This is the operation where the no-server rule is felt most directly: recognition speed depends entirely on the user's machine, and a long scanned document is measurably slower than it would be on a server. It is also the operation where the rule matters most, since scanned documents are disproportionately the sensitive ones &mdash; identity papers, statements, medical records &mdash; and these are exactly the files a user should be most reluctant to upload.</p>
+    <p>Conversion to Word, Excel and PowerPoint is performed by constructing the target format in the browser from extracted text and layout. The fidelity ceiling here is real and inherent: a PDF does not record which lines formed a table or which runs formed a heading, so a converter reconstructs that structure by inference. Simple documents convert well; heavily designed ones convert approximately.</p>
+
+    <h2>7. Limits</h2>
+    <p><strong>The device is the computer.</strong> Everything runs in one tab, so a very large document is bounded by the memory the browser will grant it, and heavy operations are as fast as the user's machine and no faster. A server-backed competitor will beat it on a 500-page scan.</p>
+    <p><strong>Redaction trades searchability for safety.</strong> Marked pages become images. This is the correct trade, and it is still a trade.</p>
+    <p><strong>Conversion is inference.</strong> Output for complex layouts is an approximation, because the structure being recovered was never recorded.</p>
+    <p><strong>Substituted fonts are not the original.</strong> Metric compatibility preserves the layout, not the letterforms. Where the document embeds no usable face, edited text will look close rather than identical.</p>
+    <p><strong>No automation surface.</strong> With no backend there is no API and no batch queue; the tool serves a person at a keyboard, not a pipeline.</p>
+
+    <h2>8. Conclusion</h2>
+    <p>EditPDF is an argument that the upload in an online PDF tool is a convenience for the operator rather than a necessity for the user, and that removing it is affordable if the implementation absorbs the cost. Doing so forces a split-library pipeline, bundled metric-compatible fonts, and a redaction routine that destroys rather than conceals. The last of these is the most instructive: the honest implementation is worse in several measurable respects and correct in the one respect that matters, and the interface says so at the point of use. A privacy claim a user can verify in their own network panel is worth more than one they must take on faith.</p>
+
+    <h2>References</h2>
+    <div class="references">
+        <ol>
+            <li>Adobe Systems. <em>PDF Reference, Sixth Edition, Version 1.7.</em> 2006.</li>
+            <li>ISO. &ldquo;Document management &mdash; Portable document format &mdash; Part 1: PDF 1.7.&rdquo; ISO 32000-1:2008.</li>
+            <li>Mozilla. &ldquo;PDF.js: A General-Purpose, Web Standards-Based Platform for Parsing and Rendering PDFs.&rdquo; 2026.</li>
+            <li>Hopkins, A., et al. &ldquo;pdf-lib: Create and Modify PDF Documents in Any JavaScript Environment.&rdquo; 2026.</li>
+            <li>Smith, R. &ldquo;An Overview of the Tesseract OCR Engine.&rdquo; ICDAR, 2007.</li>
+            <li>Bland, M., et al. &ldquo;Story Beyond the Eye: Glyph Positions Break PDF Text Redaction.&rdquo; PETS, 2023.</li>
+            <li>National Security Agency. &ldquo;Redaction of PDF Files Using Adobe Acrobat Professional.&rdquo; NSA Information Assurance Guidance, 2005.</li>
+            <li>Kleppmann, M., et al. &ldquo;Local-First Software: You Own Your Data, in Spite of the Cloud.&rdquo; Onward!, 2019.</li>
+            <li>Ismanto, R. N. &ldquo;PdfRomeo: In-Place Paragraph Reflow and a Headless Engine for a Native macOS PDF Workspace.&rdquo; 2026.</li>
+        </ol>
+    </div>
+
+    <div class="paper-footer">
+        <p>&copy; 2026 Romi Nur Ismanto.</p>
+        <p>Live app: <a href="https://pdf.rominur.com">pdf.rominur.com</a> &middot; GitHub: <a href="https://github.com/romizone/sejda-lookalike">github.com/romizone/sejda-lookalike</a></p>
+    </div>
+
+</body>
+</html>
