@@ -1,0 +1,441 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AI Research Handbook: An Evaluation-First Framework for Domain-Specific Large Language Models in Indonesia's Regulated Industries</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body {
+            font-family: 'Times New Roman', Times, Georgia, serif;
+            line-height: 1.6;
+            color: #111;
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 60px 40px;
+            background: #fff;
+        }
+        .paper-title { text-align: center; margin-bottom: 30px; }
+        .paper-title h1 { font-size: 1.65em; font-weight: 700; line-height: 1.3; margin-bottom: 18px; }
+        .paper-title .authors { font-size: 1.05em; margin-bottom: 4px; }
+        .paper-title .affiliation { font-size: 0.95em; color: #555; font-style: italic; }
+        .paper-title .email { font-size: 0.9em; color: #1a73e8; margin-top: 4px; }
+        .paper-title .date { font-size: 0.9em; color: #777; margin-top: 10px; }
+        .abstract { background: #f9f9f9; border-left: 4px solid #333; padding: 18px 22px; margin: 30px 0; }
+        .abstract h2 { font-size: 1em; text-transform: uppercase; letter-spacing: 1px; margin-bottom: 8px; border: none; padding: 0; }
+        .abstract p { font-size: 0.95em; color: #333; text-align: justify; }
+        .keywords { font-size: 0.9em; color: #555; margin-bottom: 30px; }
+        .keywords strong { color: #333; }
+        h2 { font-size: 1.2em; font-weight: 700; margin-top: 30px; margin-bottom: 12px; border-bottom: 1px solid #ddd; padding-bottom: 4px; }
+        h3 { font-size: 1.05em; font-weight: 700; margin-top: 18px; margin-bottom: 8px; }
+        p { text-align: justify; margin-bottom: 12px; font-size: 0.97em; }
+        table { width: 100%; border-collapse: collapse; margin: 16px 0; font-size: 0.9em; }
+        table th, table td { border: 1px solid #ccc; padding: 8px 12px; text-align: left; }
+        table th { background: #f0f0f0; font-weight: 700; }
+        table caption { font-size: 0.88em; font-style: italic; color: #555; margin-bottom: 6px; text-align: left; }
+        code { font-family: 'Courier New', Courier, monospace; background: #f4f4f4; padding: 2px 5px; border-radius: 3px; font-size: 0.88em; }
+        pre { background: #f4f4f4; padding: 14px 18px; border-radius: 4px; overflow-x: auto; font-size: 0.85em; margin: 12px 0; border: 1px solid #e0e0e0; }
+        ul, ol { margin: 10px 0 12px 24px; font-size: 0.97em; }
+        li { margin-bottom: 4px; }
+        .pipeline { background: #f7f9fc; border: 1px solid #d4e2f7; border-radius: 6px; padding: 16px 20px; text-align: center; font-size: 0.95em; color: #1a5276; margin: 16px 0; letter-spacing: 0.3px; }
+        .references { font-size: 0.88em; }
+        .references ol { margin-left: 20px; }
+        .references li { margin-bottom: 8px; color: #444; }
+        .paper-footer { text-align: center; font-size: 0.8em; color: #aaa; margin-top: 50px; padding-top: 20px; border-top: 1px solid #eee; }
+        @media print { body { padding: 20px; } }
+        @media (max-width: 600px) { body { padding: 20px 15px; } .paper-title h1 { font-size: 1.3em; } }
+    </style>
+</head>
+<body>
+
+    <div class="paper-title">
+        <h1>AI Research Handbook: An Evaluation-First Framework for Domain-Specific Large Language Models in Indonesia&rsquo;s Regulated Industries</h1>
+        <div class="authors">Romi Nur Ismanto</div>
+        <div class="affiliation">Independent AI Research Lab, Jakarta, Indonesia</div>
+        <div class="email">hello@rominur.com</div>
+        <div class="date">August 2026</div>
+    </div>
+
+    <div class="abstract">
+        <h2>Abstract</h2>
+        <p>
+            We present the <strong>AI Research Handbook &mdash; A Professional LLM Master</strong>, a 573-page technical reference for designing, training, evaluating, and operating domain-specific large language models inside Indonesian regulated institutions. Most published guidance on LLM development assumes an English-language context with no supervising regulator, no internal auditor examining the decision trail, and no obligation to keep data inside a named jurisdiction. This work targets the opposite setting: banks under Otoritas Jasa Keuangan (OJK) supervision, mining operators bound by good-mining-practice rules, and electronic system providers subject to Indonesia&rsquo;s Personal Data Protection Law (UU 27/2022). In that setting the question &ldquo;is the model good&rdquo; is never sufficient; the answerable question is <em>good by which measure, evidenced by what, approved by whom, and traceable how far</em>. The handbook is therefore evaluation-first: it treats the evaluation harness as a versioned product with a named owner, an SLA, and its own regression tests, rather than as a script executed shortly before release. Its principal contributions are a four-axis failure diagnosis that maps observed defects to the correct intervention before budget is committed; a mandatory intervention ordering (CPT &rarr; SFT &rarr; DPO &rarr; RAG) with cost formulas rather than quoted figures; a seven-stage lifecycle in which each stage carries its own dataset, primary metric, decision owner, and output artefact; a three-layer separation of model, system, and user-experience evaluation; a five-gate release process (G0&ndash;G4) with an intentionally short list of non-waivable blockers; and a control mapping that lets one body of evidence serve UU PDP, POJK, SEOJK, NIST AI RMF 1.0, and ISO/IEC 42001 simultaneously. Nine parts, forty-six chapters, six appendices, and eighty-four figures are organised around three recurring use cases &mdash; banking risk assessment, mining safety documentation, and customer service automation &mdash; chosen because the correct answer for one is demonstrably the wrong answer for another. A closing part revises the hardware assumptions of the earlier chapters for the 2026 small-model regime, in which 27&ndash;32B open-weight models run on a single 32&nbsp;GB consumer GPU. All factual data carry a stated cut-off of 25 August 2026.
+        </p>
+    </div>
+
+    <div class="keywords">
+        <strong>Keywords:</strong> large language models, model evaluation, LLMOps, regulated industries, Indonesian NLP, retrieval-augmented generation, continued pretraining, supervised fine-tuning, preference alignment, quality gates, AI governance, UU PDP, POJK, NIST AI RMF, ISO/IEC 42001, red teaming, small language models
+    </div>
+
+    <h2>1. Introduction</h2>
+    <p>
+        The practical literature on building large language model programmes is abundant, but it is written almost entirely for one context: English-language products, shipped by teams that answer to a product manager rather than to a risk committee, in jurisdictions where the location of a training corpus is a cost decision rather than a legal one. Practitioners in Indonesian regulated institutions inherit that literature and discover, usually late, that it omits the constraints that actually govern their release schedule.
+    </p>
+    <p>
+        Three omissions recur. First, evaluation is treated as a gate to pass rather than as a system to maintain, so the numbers that justify a release cannot be reproduced six months later when an auditor asks for them. Second, language is treated as a solved problem, so the specific failure mode of Indonesian formal register, code-mixing, and regional languages is diagnosed as a general capability deficit and answered with the wrong &mdash; and far more expensive &mdash; intervention. Third, compliance is treated as a document produced after the technical work, rather than as a set of design constraints that determine which architectures are admissible at all.
+    </p>
+    <p>
+        This handbook is written for the reader who owns those constraints: a Head of AI, Chief AI Scientist, Principal AI Architect, or AI Research Lead who is accountable for technical decisions and must defend them before a risk committee. It assumes the reader understands transformer architecture and has trained models before; it does not explain gradient descent. Three secondary audiences are addressed explicitly &mdash; evaluation leads building a benchmark function from nothing, technology risk managers and internal auditors who need to know what may legitimately be demanded of an LLM programme, and senior practitioners preparing for the role.
+    </p>
+    <p>The principal contributions of this work are:</p>
+    <ul>
+        <li>A <strong>four-axis failure diagnosis</strong> that classifies 50&ndash;100 real production failures before any intervention is chosen, together with a decision matrix mapping each dominant symptom to an intervention, a relative cost order, and a calendar estimate.</li>
+        <li>A <strong>mandatory intervention ordering</strong> &mdash; CPT &rarr; SFT &rarr; DPO &rarr; RAG &mdash; derived from how each stage perturbs the preceding one, with RAG placed at the system layer and therefore built in parallel from the start.</li>
+        <li>An <strong>evaluation-as-product</strong> discipline: named owner, semantic versioning, published SLA, canary tests that detect a broken harness, and a standing operating budget.</li>
+        <li>A <strong>seven-stage lifecycle</strong> in which each stage answers a different question with a different dataset, a different primary metric, a different decision owner, and a different output artefact.</li>
+        <li>A <strong>three-layer separation</strong> of model, system, and user-experience evaluation, with the observation that diagnosing at the wrong layer is the single most expensive error in enterprise LLM programmes.</li>
+        <li>A <strong>five-gate release process</strong> (G0&ndash;G4) with measurable pass criteria, mandatory evidence, a named decision owner per gate, and a deliberately short list of four absolute blockers that no one may waive.</li>
+        <li>A <strong>single-control compliance matrix</strong> in which one piece of evidence satisfies UU PDP, POJK, SEOJK, NIST AI RMF, and ISO/IEC 42001 concurrently.</li>
+        <li>A <strong>revision of hardware assumptions</strong> for the 2026 small-model regime, including KV-cache budgeting driven by attention architecture rather than parameter count.</li>
+    </ul>
+
+    <h2>2. Scope and Organisation</h2>
+    <p>
+        The handbook comprises nine parts, forty-six chapters, and six appendices across 573 pages, illustrated by eighty-four figures. Every chapter follows an identical internal structure &mdash; executive summary, body with directly usable tables, Indonesian context, common traps, checklist, and key points &mdash; so that chapters can be read out of order. The figures are designed to be legible without the surrounding prose, and the List of Figures functions as a second index: a reader searching for a decision matrix or a compliance mapping will often reach it faster through the figure caption than through the chapter title.
+    </p>
+
+    <table>
+        <caption>Table 1: Structure of the handbook by part</caption>
+        <tr><th>Part</th><th>Title</th><th>Chapters</th><th>Central question</th></tr>
+        <tr><td>I</td><td>Foundations, Role, and Strategy</td><td>1&ndash;6</td><td>Is this problem worth solving with an LLM, and who owns it?</td></tr>
+        <tr><td>II</td><td>Data: Sourcing, Curation, Governance</td><td>7&ndash;12</td><td>Is this corpus lawful, sufficient, and traceable?</td></tr>
+        <tr><td>III</td><td>Training, Adaptation, Alignment</td><td>13&ndash;18</td><td>Which intervention, in which order, at what cost?</td></tr>
+        <tr><td>IV</td><td>Evaluation Strategy and Benchmark Development</td><td>19&ndash;30</td><td>How is quality proven rather than asserted?</td></tr>
+        <tr><td>V</td><td>Production and Continuous Improvement</td><td>31&ndash;34</td><td>Does what we measured still hold today?</td></tr>
+        <tr><td>VI</td><td>Responsible AI, Security, and Compliance</td><td>35&ndash;37</td><td>What is the blast radius, and can it be explained?</td></tr>
+        <tr><td>VII</td><td>Leadership, Ecosystem, and Monetisation</td><td>38&ndash;41</td><td>Who staffs this, and what is the unit economics?</td></tr>
+        <tr><td>VIII</td><td>Case Studies and Closing</td><td>42&ndash;43</td><td>What does the whole path look like end to end?</td></tr>
+        <tr><td>IX</td><td>Small Models and Local Compute</td><td>44&ndash;46</td><td>What changed in 2026, and what must be recomputed?</td></tr>
+    </table>
+
+    <p>
+        Twelve of the forty-six chapters &mdash; Part IV in its entirety &mdash; are devoted to evaluation. This proportion is deliberate and is defended in the text on a specific ground: in regulated industry the ability to demonstrate quality is a precondition for being permitted to release at all, and an organisation that cannot evaluate its models with discipline should not be training them.
+    </p>
+
+    <h3>2.1 Three Recurring Use Cases</h3>
+    <p>
+        To keep the discussion concrete, three use cases recur throughout the book under fixed abbreviations. They were selected because each demands a different technical path, and the book repeatedly demonstrates that the correct answer for one is the wrong answer for another.
+    </p>
+
+    <table>
+        <caption>Table 2: The three canonical use cases and their characteristics</caption>
+        <tr><th>Code</th><th>Use case</th><th>Defining characteristics</th></tr>
+        <tr><td><strong>BRA</strong></td><td>Banking Risk Assessment</td><td>Credit-risk and compliance analyst assistant. High cost of error, mandatory clause-level citation, tight supervision, low volume.</td></tr>
+        <tr><td><strong>MSD</strong></td><td>Mining Safety Documentation</td><td>Safety documentation drafting and retrieval. Life-safety consequence, specialised terminology, intermittent field connectivity.</td></tr>
+        <tr><td><strong>CSA</strong></td><td>Customer Service Automation</td><td>Multichannel Indonesian customer service. Very high volume, cost and latency sensitivity, colloquial and regional language.</td></tr>
+    </table>
+
+    <p>
+        Organisations named in the worked examples &mdash; Bank Nusantara Sejahtera, PT Bara Katulistiwa, and Pusat AI Nusantara &mdash; are fictitious, and the figures attached to them are illustrative and marked as such in the text.
+    </p>
+
+    <h2>3. Diagnosis Before Intervention: The Four Axes</h2>
+    <p>
+        The handbook&rsquo;s central methodological claim is that intervention selection must follow, never precede, a labelled distribution of real failures. The prescribed procedure is to draw 50&ndash;100 genuine failure cases from production logs and label each on exactly one of four axes. A case that cannot be labelled indicates that the definition of correctness is not yet clear &mdash; a specification problem, not a model problem.
+    </p>
+
+    <table>
+        <caption>Table 3: The four diagnostic axes and their tests</caption>
+        <tr><th>Axis</th><th>Failure</th><th>Diagnostic test</th></tr>
+        <tr><td>1 &mdash; Knowledge</td><td>The model lacks a required fact: an internal memo number, this quarter&rsquo;s credit-ratio threshold, the current SOP revision.</td><td>Paste the source document into the prompt manually. If the answer becomes correct, this is a retrieval problem.</td></tr>
+        <tr><td>2 &mdash; Format and style</td><td>Facts are correct but the output shape is wrong: invalid JSON, off-template structure, register too informal, citation misplaced.</td><td>Do three few-shot examples fix it consistently? If yes, it is cheap. If it improves but destabilises on 5&ndash;10% of cases, this is a strong fine-tuning candidate.</td></tr>
+        <tr><td>3 &mdash; Capability</td><td>Reasoning, multi-step arithmetic, tool use, or long rule chains fail. Documents present, format clear, conclusion wrong.</td><td>The axis most often misdiagnosed as a knowledge problem.</td></tr>
+        <tr><td>4 &mdash; Language</td><td>Quality degrades on formal Indonesian, code-mixed registers, or regional languages: grammatical sentences that read as literal translations from English, local terminology replaced by generic equivalents, inflated tokens per sentence.</td><td>The only axis that routinely justifies continued pretraining.</td></tr>
+    </table>
+
+    <p>
+        The text is explicit about the consequence of skipping this step: if 70% of failures sit on axis 1, a six-week fine-tuning programme will repair 30% of the problem with 100% of the budget.
+    </p>
+
+    <h3>3.1 Why &ldquo;The Model Doesn&rsquo;t Know&rdquo; Is Almost Always a Retrieval Problem</h3>
+    <p>
+        Knowledge that changes faster than the training cycle must not be stored in weights. The handbook frames this as an operational consequence rather than an architectural preference: updating one paragraph in a knowledge base takes minutes, whereas updating one paragraph&rsquo;s influence on weights means retraining and re-running the entire release gate sequence. In Indonesian banking a second and more binding reason applies &mdash; UU 27/2022 grants data subjects a right to erasure, and personal data absorbed into weights creates an obligation that cannot practically be discharged without retraining. The rule applied consistently throughout the book is that personal data and high-volatility facts belong in the retrieval layer, while patterns, terminology, and style may enter the weights.
+    </p>
+    <p>
+        Before concluding that a knowledge deficit exists, three checks are prescribed on the retrieval pipeline: whether the correct document is indexed at all, whether it enters the top-<em>k</em> (measured as recall@k on a labelled query set, with recall below roughly 0.8 indicating a chunking, embedding, or lexical-search defect), and whether a correct document already in context was ignored &mdash; which reclassifies the case to axis 3.
+    </p>
+
+    <h3>3.2 The Intervention Matrix</h3>
+    <p>
+        Relative cost is expressed with structured prompting as the 1&times; baseline. Calendar figures assume a team of three to five and are presented as orders of magnitude to be recomputed against local capacity.
+    </p>
+
+    <table>
+        <caption>Table 4: Dominant symptom to intervention, relative cost, and calendar time</caption>
+        <tr><th>Dominant symptom</th><th>Diagnosis</th><th>Intervention</th><th>Relative cost</th><th>Time</th></tr>
+        <tr><td>Facts wrong, correct when document pasted</td><td>Knowledge</td><td>RAG / improve retrieval</td><td>3&ndash;8&times;</td><td>4&ndash;8 weeks</td></tr>
+        <tr><td>Document indexed but not in top-<em>k</em></td><td>Retrieval</td><td>Hybrid search + reranking</td><td>2&ndash;4&times;</td><td>2&ndash;4 weeks</td></tr>
+        <tr><td>JSON/template repeatedly invalid</td><td>Format</td><td>Constrained decoding &rarr; SFT</td><td>1&times; &rarr; 30&times;</td><td>1 week &rarr; 6 weeks</td></tr>
+        <tr><td>Internal terminology misread</td><td>Terminology</td><td>SFT (+ glossary retrieval)</td><td>30&times;</td><td>6&ndash;10 weeks</td></tr>
+        <tr><td>Multi-step reasoning fails</td><td>Capability</td><td>Larger model / task decomposition</td><td>2&ndash;10&times;</td><td>2&ndash;6 weeks</td></tr>
+        <tr><td>Tone and refusal inconsistent</td><td>Style / preference</td><td>SFT then DPO or KTO</td><td>40&times;</td><td>8&ndash;12 weeks</td></tr>
+        <tr><td>Quality drops on regional language</td><td>Language</td><td>CPT then SFT</td><td>200&ndash;1,000&times;</td><td>4&ndash;7 months</td></tr>
+        <tr><td>Cost per request too high</td><td>Economics</td><td>Distillation to a smaller model</td><td>25&times; once</td><td>6&ndash;10 weeks</td></tr>
+    </table>
+
+    <p>
+        The matrix is read top to bottom: a lower row is never the right answer while an upper row remains unexecuted and unmeasured.
+    </p>
+
+    <h3>3.3 Mandatory Ordering When Several Interventions Are Required</h3>
+    <div class="pipeline">
+        CPT &rarr; SFT &rarr; DPO &rarr; RAG (system layer, built in parallel from the start)
+    </div>
+    <p>
+        The ordering is not stylistic. CPT precedes SFT because it shifts the weight distribution broadly and would dilute SFT results if run afterwards. DPO after SFT is pointless without it, because preference tuning refines an existing policy rather than creating one. RAG sits outside the training chain as a system component, and precisely for that reason must be built first: models produced by CPT and SFT have to be trained on the same prompt schema that production will use, including how documents are injected into context.
+    </p>
+    <p>
+        Two practical consequences follow. The production prompt schema must be fixed before SFT data is assembled, since changing it afterwards means rebuilding the dataset. And re-evaluation after every stage must run on the same harness; a stage that does not improve the metric is reverted, not stacked.
+    </p>
+
+    <h2>4. Cost and Effort Formulas</h2>
+    <p>
+        A recurring editorial principle of the handbook is to present formulas rather than quotable numbers, so that estimates remain valid as prices move. Relative workload across the five intervention paths spans three orders of magnitude, from roughly 1 person-hour for structured prompting to roughly 900 person-hours for continued pretraining.
+    </p>
+    <p>
+        For CPT the compute estimate derives from <code>FLOPs &asymp; 6 &times; N &times; D</code>. For an 8B model on 1 billion tokens this yields 6 &times; 8&times;10<sup>9</sup> &times; 1&times;10<sup>9</sup> = 4.8&times;10<sup>19</sup> FLOPs. An H100 peaks near 990 TFLOPs in BF16 dense; at 40% MFU the effective rate is about 396 TFLOPs, giving roughly 33.7 GPU-hours per billion tokens. The book is explicit that this is an arithmetic derivation rather than a cited figure, and instructs the reader to measure actual MFU before committing a budget.
+    </p>
+    <p>
+        For SFT and PEFT the dominant cost is annotation, not compute &mdash; QLoRA on a 7B model for three hours is a trivial compute line item, and the three-order-of-magnitude gap against full fine-tuning is the stated reason not to attempt full FT without evaluation evidence that LoRA is insufficient. Memory follows <code>VRAM &asymp; weights + gradients + optimizer state + activations</code>, quoted as a range because vendor sources differ by up to roughly 30%. RAG cost is engineering and indexing rather than training, dominated by source curation, embedding, and the labelled query set needed to measure recall@k. Prompting cost is recurring inference: an 800-token system prompt called a million times a month is not free, and must be computed at prevailing input rates with cached-input and batch discounts applied.
+    </p>
+
+    <h2>5. Evaluation as a Product</h2>
+    <p>
+        The failure pattern the handbook sets out to eliminate is familiar: an engineer writes <code>eval.py</code> to compare two checkpoints, the numbers are used in a meeting, and the script decays on a branch that is never merged. Three months later the same question returns, the script is re-run, and the number differs &mdash; because the dataset changed, the prompt was improved, or the vendor updated the judge model. Nobody can explain why.
+    </p>
+    <p>Treating evaluation as a production component implies five concrete obligations:</p>
+    <ul>
+        <li><strong>A named owner.</strong> One person is accountable for harness health, not &ldquo;the team&rdquo;. Without a name there is no owner.</li>
+        <li><strong>Semantic versioning.</strong> Any change that alters the meaning of a number &mdash; adding test cases, changing a rubric, replacing the judge model &mdash; is a major version bump that <em>breaks historical comparability</em>, and must be declared rather than absorbed silently.</li>
+        <li><strong>A published SLA.</strong> A daily regression suite completes in minutes; a full release suite completes in hours. An evaluation that takes a working day will be skipped under deadline pressure, and the quality gate becomes theatre.</li>
+        <li><strong>Tests for the harness itself.</strong> Canary cases &mdash; a deliberately perfect answer that must score near maximum, a deliberately empty answer that must score near zero. If the canaries move, the harness is broken, not the model.</li>
+        <li><strong>An operating budget.</strong> Running LLM-as-judge over 5,000 test cases nightly is a real recurring cost and belongs in the plan rather than in next month&rsquo;s invoice.</li>
+    </ul>
+
+    <h3>5.1 Seven Lifecycle Stages, Seven Different Questions</h3>
+    <p>
+        The next most common error is using one evaluation suite for every stage. Each stage answers a different question, uses a different dataset, and is decided by a different person.
+    </p>
+
+    <table>
+        <caption>Table 5: Lifecycle stage, question, dataset, primary metric, decision owner, artefact</caption>
+        <tr><th>Stage</th><th>Core question</th><th>Dataset</th><th>Primary metric</th><th>Decider</th><th>Artefact</th></tr>
+        <tr><td>Data curation</td><td>Fit to train on?</td><td>2,000-doc corpus sample</td><td>Coverage, dedup, PII, contamination</td><td>Data Steward</td><td>Corpus Card</td></tr>
+        <tr><td>CPT</td><td>Gains without forgetting?</td><td>Held-out domain + general regression</td><td>Perplexity, regression delta</td><td>Training Lead</td><td>Training Report</td></tr>
+        <tr><td>SFT</td><td>Follows instructions?</td><td>Sealed test set</td><td>Format and instruction compliance</td><td>Training Lead</td><td>Eval Report v-N</td></tr>
+        <tr><td>Alignment</td><td>Safe without being rigid?</td><td>Hazard suite + legitimate suite</td><td>Hazard compliance, over-refusal</td><td>Model Risk Committee</td><td>Safety Report</td></tr>
+        <tr><td>Integration / RAG</td><td>Does the system work?</td><td>Document-grounded QA set</td><td>Groundedness, retrieval recall</td><td>System Architect</td><td>System Eval Report</td></tr>
+        <tr><td>Pre-release</td><td>Fit to face real users?</td><td>Full suite + adversarial</td><td>All gates G0&ndash;G4</td><td>Model Risk Committee</td><td>Release Evidence Pack</td></tr>
+        <tr><td>Production</td><td>Does it still hold today?</td><td>Live traffic sample</td><td>Drift, escalation, complaints</td><td>Product Owner</td><td>Monthly Model Review</td></tr>
+    </table>
+
+    <p>
+        Two rules are singled out. At the CPT stage, held-out domain perplexity and a general-capability regression suite must run side by side to detect catastrophic forgetting &mdash; never the first without the second. At the alignment stage, hazard compliance (which must rise) and over-refusal on legitimate requests (which must not) are both mandatory, because measuring only the first is the easiest way to produce a model that is safe and useless.
+    </p>
+
+    <h3>5.2 Three Layers That Must Be Kept Distinct</h3>
+    <p>
+        The handbook identifies layer confusion as the most expensive error in enterprise LLM programmes.
+    </p>
+    <ul>
+        <li><strong>Layer 1 &mdash; Model evaluation.</strong> The object is the weights. Prompt in, text out; no retrieval, no tools, no guardrails, no production system template. Its function is to compare checkpoints and select one for promotion. Numbers from this layer may never be used to promise anything to the business, because users never interact with bare weights. Owner: Training Lead.</li>
+        <li><strong>Layer 2 &mdash; System evaluation.</strong> The object is the complete pipeline: intent classification, query rewriting, retrieval, reranking, context construction, model, input and output guardrails, post-processing, fallback. Its function is to decide whether the system is fit to release. This is where the actual business question is answered. Owner: System Architect.</li>
+        <li><strong>Layer 3 &mdash; User-experience evaluation.</strong> The object is human interaction across a session rather than a single turn: users who repeat a question three times, users who give up, users who receive a correct answer they cannot act on. Owner: Product Owner.</li>
+    </ul>
+    <p>
+        The book&rsquo;s worked illustration is a CSA programme in which escalation to human agents rose sharply after release. The reflex response &mdash; collect more instruction data and re-run SFT &mdash; consumed three weeks and real GPU cost, and the metrics did not improve. The actual cause, discoverable in four hours once the layers were separated, was that retrieval was returning a stale version of the administrative-fee document because the index had not been refreshed. The model was never at fault; the fix was one line in the index scheduler. The cheap preventive test is stated as a working rule: <em>before blaming the model, re-run the failing case with a manually inserted gold context</em>. If the model then answers correctly, the defect lies in retrieval or context construction, not in the weights.
+    </p>
+
+    <h3>5.3 Independence of the Evaluation Function</h3>
+    <p>
+        The team that builds a model must not be the only party that judges it. The handbook grounds this in incentive structure rather than suspicion of individual integrity: a person who has spent weeks preparing instruction data will, without any bad intent, choose thresholds and test cases that present their work favourably. Indonesian banks already have the vocabulary for the remedy &mdash; <em>three lines of defense</em> &mdash; and the recommendation is to apply it directly rather than invent a parallel structure.
+    </p>
+    <p>
+        The first line builds: data engineering, training, system architecture, running development evaluations as often as it likes on datasets it manages itself. The second line is model validation and risk: it holds a sealed test set that the first line cannot access, runs independent evaluation, and holds veto power over release. Banks that already operate a Model Risk Management function for credit scoring are advised to place LLMs inside it rather than create a new silo. The third line is internal audit, which does not run evaluations but tests whether the evaluation process ran as documented and whether the evidence is complete.
+    </p>
+    <p>
+        The operational consequence is accepted from the outset: a sealed test set must be genuinely sealed. It is stored in a repository with separate access control, never sent through chat channels, and individual failing cases are never shown to the training team &mdash; only failure-category summaries. Once a specific example leaks it will enter the next training set and the test set is dead. Partial rotation of the sealed set each release cycle limits the damage when leakage occurs anyway. On reporting lines, the head of evaluation should report to the Chief Risk Officer or equivalent rather than to a Head of AI whose KPI is feature delivery; where that is not organisationally possible, the compensating control is mandatory attendance of the risk function with veto rights at the Model Risk Committee.
+    </p>
+
+    <h3>5.4 A Reproducible Evaluation Harness</h3>
+    <p>
+        The feasibility test posed in the text is concrete: an auditor asks in March 2027 why a given model version, approved in September 2026, scored 0.91 on groundedness. Can that evaluation be re-run today and yield the same number? If the answer is &ldquo;approximately&rdquo;, there is no harness. Seven things must be recorded on every evaluation execution, and none may be implicit: dataset version (content hash, not filename &mdash; a dataset whose typos were &ldquo;merely fixed&rdquo; is a new dataset); task-definition version, including rubric and annotator instructions; prompt version, including system prompt, template, and few-shot examples, since a single word can shift scores by several points; model and decode configuration, covering checkpoint name, revision hash, quantisation, temperature, top-<em>p</em>, max tokens, and seed; judge-model version, pinned to a specific revision; harness code commit hash; and execution environment, including serving library version, driver version, and GPU type, because attention-kernel differences between versions can change outputs at identical seeds.
+    </p>
+    <p>
+        A notable governance recommendation follows from the judge-model dependency: where numbers will enter release evidence, prefer open-weight judges that the organisation can store itself, because a closed model may change under the programme&rsquo;s feet without notice and exact reproduction then becomes impossible. The recommended repository layout keeps a versioned task registry in git &mdash; one YAML per task, carrying dataset URI and SHA-256, sealed flag, segment definitions, prompt template hash, generation parameters, scoring configuration with pinned judge revision and rubric hash, pass and block thresholds, and an explicit <code>breaks_comparability_with</code> provenance field. Platform tools may serve as a storage layer beneath this, but the registry itself stays in version control so that it is subject to code review and an approval trail.
+    </p>
+
+    <h3>5.5 Evaluation Budget</h3>
+    <p>
+        The question that always arrives at the investment committee is how much evaluation should cost. The handbook offers a defensible starting point &mdash; 15&ndash;25% of total LLM programme budget &mdash; explicitly labelled a practitioner heuristic rather than an industry benchmark, covering human annotation, evaluation compute, harness engineering, and domain-expert time. High-risk use cases such as BRA sit at or above the upper bound. The accompanying formula makes the components explicit:
+    </p>
+    <pre>Annual_eval_cost =
+    (N_annotation_cases   &times; Hours_per_case &times; Domain_expert_rate)
+  + (N_executions_annual  &times; N_cases &times; Tokens_per_case &times; Judge_token_price)
+  + (Harness_FTE          &times; FTE_cost)
+  + (GPU_eval_hours       &times; GPU_hourly_price)</pre>
+    <p>
+        The component most often underestimated is not compute but domain-expert time &mdash; and it is the one that cannot be automated away, because no model yet knows whether a given reading of an internal credit-policy clause is correct. The argument that works before a board is not an appeal to best practice but an asymmetry of cost: a single incident forcing suspension of a customer-facing service, or a regulatory finding of misleading product information on a digital channel, exceeds an annual evaluation budget.
+    </p>
+
+    <h2>6. Quality Gates and the Release Decision</h2>
+    <p>
+        Release approval is structured as five sequential gates, each with measurable pass criteria, mandatory evidence, and a single named decision owner. Gates are tiered rather than uniform: a system touching customers or credit decisions runs all five in full, while an internal assistant without access to personal data runs an abbreviated version in which G3 and G4 remain mandatory. Two procedural rules apply throughout &mdash; evidence packs circulate a minimum of three working days before the meeting, so that a committee seeing numbers for the first time on a slide is receiving rather than deciding; and mid-cycle threshold changes must pass through the same procedure as a waiver, because a quiet threshold adjustment is the hardest form of gate erosion to detect.
+    </p>
+
+    <table>
+        <caption>Table 6: The five release gates</caption>
+        <tr><th>Gate</th><th>Measurable pass criteria</th><th>Mandatory evidence</th><th>Decider</th><th>Waivable</th></tr>
+        <tr><td>G0 &mdash; Data</td><td>Zero contamination; residual PII below threshold; clean licensing per source</td><td>Corpus Card, contamination report, legal opinion, RoPA record</td><td>Data Steward + DPO</td><td>Partial</td></tr>
+        <tr><td>G1 &mdash; Base model</td><td>Primary metric passes on sealed set; general-capability regression within bounds; no significant segment below block threshold; canaries pass</td><td>Versioned Eval Report (dataset, prompt, judge, harness hashes); Model Card; Training Report</td><td>Head of Model Validation (second line)</td><td>Partial</td></tr>
+        <tr><td>G2 &mdash; Integrated system</td><td>End-to-end suite passes; retrieval recall and groundedness reported separately; 100% format compliance; guardrails fire on all positives and not beyond bounds on negatives; fallback tested; p95/p99 latency and cost per interaction under threshold</td><td>System Eval Report, load-test results, fallback matrix, hashed system configuration</td><td>System Architect + Product Owner</td><td>Partial</td></tr>
+        <tr><td>G3 &mdash; Security and compliance</td><td>Zero PII leakage on the privacy suite; red teaming mapped to OWASP Top 10 for LLM Applications 2026; all critical findings closed or mitigated with verified controls; DPIA complete; cross-region inference documented explicitly</td><td>Red-team report, privacy-test report, DPIA, compliance opinion, cross-region data-flow map</td><td>CISO + Head of Compliance (independent veto each)</td><td><strong>No</strong></td></tr>
+        <tr><td>G4 &mdash; Operational</td><td>Observability active and verified; tracing and logging free of raw PII; alerts with defined thresholds and recipients; rollback rehearsed in staging with recorded timing; incident runbook complete, including SEOJK 29/2022 breach-notification paths</td><td>Dashboard captures, alert configuration, rollback test record, runbook, staged release plan</td><td>Head of IT Operations + Product Owner</td><td>Partial</td></tr>
+    </table>
+
+    <h3>6.1 Four Absolute Blockers</h3>
+    <p>
+        The list of non-waivable conditions is deliberately short, on the stated reasoning that its strength varies inversely with its length: if twenty items are absolute, the organisation will learn that &ldquo;absolute&rdquo; is negotiable.
+    </p>
+    <ol>
+        <li><strong>PII leakage within the test population.</strong> One occurrence blocks. No waiver, no compensating control, no limited release.</li>
+        <li><strong>Explicit regulatory violation</strong> &mdash; for example, placing a core banking system or a component subject to it outside Indonesia without OJK approval, which contravenes POJK 11/POJK.03/2022 directly. No level of business benefit makes this waivable.</li>
+        <li><strong>Hallucination above threshold on a narrowly defined high-risk topic.</strong> &ldquo;High-risk topic&rdquo; must be defined in writing and kept narrow: for BRA, credit limits, credit-quality classification, and interpretation of regulatory provisions; for MSD, rescue procedures and hazard-exposure thresholds; for CSA, fees, interest rates, and customer rights.</li>
+        <li><strong>Inability to roll back within the defined time window.</strong> A system that cannot be returned to its prior state within the stated bound must not be released, however good its metrics.</li>
+    </ol>
+    <p>
+        The stated test for any proposed fifth item is whether it truly cannot be mitigated by a compensating control. If it can, it is a conditional-waiver candidate rather than an absolute blocker.
+    </p>
+
+    <h3>6.2 A Legitimate Waiver Mechanism</h3>
+    <p>
+        Waivers will occur whether or not they are governed; ungoverned, they occur through corridor conversations that leave no trace. The handbook therefore specifies the mechanism: G1 and G2 waivers require full-quorum Model Risk Committee approval, G0 requires the DPO&rsquo;s signature, G4 requires the Head of IT Operations, and G3 cannot be waived by anyone including a director &mdash; a rule framed as protecting executives from improper pressure. Every waiver carries an expiry of at most ninety days, and an unresolved waiver at expiry triggers automatic service suspension rather than automatic extension; that default direction is what distinguishes programmes that clear their quality debt from those that accumulate it. A waiver without a compensating control is negligence rather than a waiver; the customary forms are mandatory human-in-the-loop for affected request classes, restriction to internal channels, topic-scope limitation, reduced traffic share, or increased production-evaluation sampling frequency. A central waiver registry records gate, criterion, actual versus threshold value, business justification, compensating control, approver, expiry, and resolution status. It is the first document an internal auditor requests, and the count of active waivers is described as a more honest indicator of programme health than any quality metric.
+    </p>
+    <p>
+        The Model Risk Committee is chaired from the second line &mdash; the Head of Model Validation &mdash; not from the building team, with the Chief Risk Officer, Head of Compliance, CISO, DPO, Product Owner, and Head of AI in attendance. Quorum requires the risk, compliance, and security functions; the absence of any one postpones the meeting rather than producing a conditional approval. Rubber-stamping is countered by three devices: circulating the evidence pack at least three working days in advance, appointing a designated challenger for each release whose task is to prepare and deliver the argument against, and recording decisions with dissenting opinions attributed by name. The approval rate is itself monitored &mdash; a committee that approves 100% of submissions across four consecutive quarters is not functioning &mdash; and deferral is explicitly framed as a normal outcome rather than a failure of the proposing team.
+    </p>
+
+    <h2>7. Indonesia-Specific Technical Content</h2>
+    <p>
+        Several chapters address problems that have no counterpart in English-language guidance.
+    </p>
+    <ul>
+        <li><strong>PII detection for Indonesian (Ch. 10).</strong> A taxonomy of Indonesian personal-data types, an explanation of why English-trained detectors fail on them, a three-layer hybrid detector architecture, recall and precision targets, cross-document pseudonym consistency, and canary tokens for memorisation and extraction testing.</li>
+        <li><strong>Tokenisation and vocabulary adaptation (Ch. 11).</strong> Fertility treated as a cost problem before a quality problem, the Indonesian morphology that defeats byte-pair encoding, and safe vocabulary-expansion procedure. The Komodo-7B case is cited as an explicit precedent: roughly 2,000 Indonesian and 1,000 regional-language words added to produce a final 35,008-token vocabulary &mdash; an expansion that mandates CPT, because new embeddings must be trained.</li>
+        <li><strong>Indonesia-centric benchmarks (Ch. 22&ndash;23).</strong> Why translated benchmarks yield wrong conclusions, an inventory of existing Indonesian benchmarks and their limits, the gaps an organisation must build itself, a five-layer benchmark design, and construction of a regulatory test set without infringing copyright.</li>
+        <li><strong>Adversarial evaluation (Ch. 28).</strong> Jailbreak and prompt injection distinguished as different problems, coverage mapped to OWASP Top 10 for LLM Applications 2026, and a catalogue of twelve Indonesian-language attack prompts.</li>
+        <li><strong>Compliance mapping (Ch. 36).</strong> A single-control matrix spanning UU PDP, POJK, SMKP, the EU AI Act, ISO/IEC 42001, and NIST AI RMF, with the accompanying evidence list per control.</li>
+    </ul>
+    <p>
+        On governance frameworks the handbook&rsquo;s position is that the lifecycle structure need not be re-authored for regulators, only mapped. NIST AI RMF 1.0 aligns directly: GOVERN corresponds to evaluation-function independence, team charter, and reporting lines; MAP to lifecycle stages 1 and 2; MEASURE to the harness and layers 1&ndash;3; MANAGE to stage 7 and the gate mechanism. The NIST AI 600-1 Generative AI Profile contributes twelve GenAI risk categories &mdash; confabulation, data privacy, and information supply-chain security among them &mdash; usable as a coverage checklist in which every category relevant to a use case must map to at least one evaluation task. ISO/IEC 42001:2023, structured on Annex SL, attaches to the ISO/IEC 27001:2022 systems most Indonesian banks already hold: the task registry, versioned evaluation reports, and approval minutes constitute <em>documented information</em>; the seven-stage cycle is part of the AI system life cycle; and second-line independence satisfies the roles-and-responsibilities clause.
+    </p>
+
+    <h2>8. Revised Hardware Assumptions for 2026</h2>
+    <p>
+        Part IX was added late in the writing and does not replace earlier chapters; it updates the figures, capacity formulas, and deployment patterns in chapters that still assume data-centre GPUs. Four concurrent changes are identified: quality per parameter rose sharply, with Qwen3 trained on roughly 36 trillion tokens covering 119 languages and dialects and Gemma 4 claiming 140+ languages; licensing loosened precisely at the sizes that matter, with Gemma 4 released under Apache 2.0; Meta ceased shipping new open-weight Llama models through 2026, which matters disproportionately for Indonesia because most of the Indonesian model lineage &mdash; Sahabat-AI, SEA-LION v2/v3, Komodo, Cendol &mdash; rests on a Llama base, so the established CPT path lost its supplier and the successors are the Qwen and Gemma families; and 32&nbsp;GB consumer GPUs became a legitimate serving target for 27&ndash;32B models at Q4 with long context.
+    </p>
+
+    <table>
+        <caption>Table 7: Published scores for small 2026 models against a 2024 flagship (sources differ in methodology)</caption>
+        <tr><th>Model</th><th>Release</th><th>Parameters</th><th>MMLU-Pro</th><th>GPQA Diamond</th></tr>
+        <tr><td>Llama 3.1 70B Instruct</td><td>Jul 2024</td><td>70B dense</td><td>66.4</td><td>46.7</td></tr>
+        <tr><td>Gemma 4 31B</td><td>Mar/Apr 2026</td><td>30.7B dense</td><td>85.2</td><td>84.3</td></tr>
+        <tr><td>Qwen 3.5 27B</td><td>Feb 2026</td><td>27B dense</td><td>86.1</td><td>85.5</td></tr>
+        <tr><td>Qwen 3.5 9B</td><td>Mar 2026</td><td>9B dense</td><td>82.5</td><td>81.7</td></tr>
+        <tr><td>Gemma 4 26B-A4B</td><td>Mar 2026</td><td>26B total / 4B active</td><td>82.6</td><td>82.3</td></tr>
+        <tr><td>Gemma 4 E4B</td><td>Mar 2026</td><td>4B effective</td><td>69.4</td><td>58.6</td></tr>
+    </table>
+
+    <p>
+        The handbook presents this table only together with four caveats that must accompany it every time it is shown: there is no official head-to-head comparison, and figures are combined from model cards that may differ in shot count, chain-of-thought usage, and prompt variants; some 2026 benchmarks did not exist in the Llama 3.1 era, and contamination or benchmark overfitting is a real risk; benchmark scores measure capability on the distribution of public problems, not on the distribution of the reader&rsquo;s work; and static benchmarks lean toward Qwen while Arena chat preference leans toward Gemma, so a product judged by humans should weight preference signal while one judged on structured correctness should weight static benchmarks. The operational conclusion that survives all four is narrow and specific: <em>drop one size class relative to 2024 habits, then prove it with an internal benchmark</em> &mdash; never the reverse order.
+    </p>
+
+    <h3>8.1 Three Size Classes</h3>
+    <table>
+        <caption>Table 8: Size class, fitting work, and minimum hardware</caption>
+        <tr><th>Class</th><th>Example models</th><th>Context</th><th>Suitable work</th><th>Minimum device</th></tr>
+        <tr><td>2&ndash;4B</td><td>Gemma 4 E2B/E4B, Qwen3.5-2B/4B, Ministral 3 3B, Phi-4-mini 3.8B</td><td>64K&ndash;256K</td><td>Classification, routing, patterned extraction, edge</td><td>8&nbsp;GB VRAM / phone</td></tr>
+        <tr><td>8&ndash;9B</td><td>Qwen3.5-9B, Ministral 3 8B, Gemma 2 9B CPT Sahabat-AI, Apertus-SEA-LION-v4-8B</td><td>8K&ndash;262K</td><td>General-purpose worker: RAG, summarisation, drafting</td><td>16&nbsp;GB VRAM</td></tr>
+        <tr><td>20&ndash;35B</td><td>Qwen3.8-27B, Gemma 4 31B, Gemma-SEA-LION-v4-27B, Devstral Small 2 24B</td><td>128K&ndash;262K</td><td>70B-class replacement: reasoning, agents, audit</td><td>32&nbsp;GB VRAM</td></tr>
+    </table>
+
+    <h3>8.2 KV Cache Is Set by Architecture, Not Parameter Count</h3>
+    <p>
+        The section the handbook flags as most often skipped and most often responsible for sizing errors concerns attention architecture. In 2024 models, KV cache could be treated as a simple function of layer count and KV head count. In 2026 models, attention architectures differ between models in ways that change memory requirements several-fold at identical parameter counts. Gemma 4 31B uses 60 layers with a 1,024-token sliding window and full attention only every sixth layer &mdash; 10 global layers, 50 local &mdash; so its cache does not grow with context except on the global layers, shrinking KV cache at 32K context roughly fivefold against an equivalent full-attention architecture. Qwen3.8-27B uses 64 layers with Gated DeltaNet and full attention every fourth layer, yielding 64 KiB per token against Gemma 4 31B&rsquo;s 160 KiB &mdash; about 2.5&times; less, despite similar model size. The operative instruction is to choose a model by reading its attention configuration, not only its parameter count: two candidates that look equivalent on a specification sheet can differ by 10&nbsp;GB of VRAM on a long-context workload.
+    </p>
+
+    <h3>8.3 State of Small Indonesian-Language Models</h3>
+    <p>
+        The handbook reports the position without softening either side. Sahabat-AI has not released a new small model since 2025; the 8B (<code>llama3-8b-cpt-sahabatai-v1-instruct</code>) and 9B (<code>gemma2-9b-cpt-sahabatai-v1-instruct</code>) variants remain at v1, and the 9B variant carries an 8,192-token context &mdash; a hard constraint for RAG with several document chunks plus a system prompt plus conversation history, not one that aggressive chunking can evade without sacrificing groundedness. Its model card states that the model is not safety-aligned, so developers must add their own guardrail layer. Reported scores are SEA-HELM Indonesia 64.15%, Javanese 64.44%, Sundanese 54.91%, IndoMMLU 62.6%. Meanwhile the top of the SEA-HELM open-instruct tier at or below 200B is held by general models: Indonesian is led by Qwen 3 VL 32B at 68.41, followed by Qwen 3 Next 80B MoE at 67.11; no Western model appears in the top five for Indonesian at this tier.
+    </p>
+    <p>
+        The correct reading is set out explicitly. This does not make Sahabat-AI useless &mdash; it was trained on GPU Merdeka Lintasarta with all data and compute inside Indonesian territory, and that sovereignty claim is a real regulatory asset that Qwen does not carry. It means that <em>if</em> the operative criterion is measured Indonesian-language quality, the 27&ndash;32B Qwen or SEA-LION class beats the local 9B option and still fits on a single 32&nbsp;GB GPU at Q4; and <em>if</em> the criterion is domestic training provenance, the choice narrows sharply and the price is an 8,192-token context plus the obligation to build a safety layer. A third path, frequently overlooked, is to perform Indonesian CPT on an Apache 2.0 9B or 27B base following the Sahabat-AI and SEA-LION pattern &mdash; a budget now within reach of a single workstation.
+    </p>
+
+    <h2>9. Artefacts and Templates</h2>
+    <p>
+        Roughly half the chapters close with a directly reusable artefact rather than a summary, and six appendices consolidate them: a glossary (A); governance document templates including AI Use Case Charter, Data Source Register, DPIA, Data Contract, Release Evidence Pack, model approval minutes, AI incident post-mortem, and improvement recommendation record (B); evaluation specifications and model cards, including an eval-harness specification, a reference evaluation task catalogue, LLM judge prompts, and a six-dimension human-evaluation rubric (C); a nine-domain technical competency matrix with scoring rubric, thirty evidence-based interview questions, and a twelve-month development plan (D); a reference list with traceability notes marking which items require re-verification (E); and the visual system and design tokens used to build all eighty-four figures, including the contrast validator (F).
+    </p>
+    <p>
+        Chapter 43 functions as a re-reading map, assembling the material into an eighteen-month execution plan and indicating which chapters are relevant at each stage. Three reading paths are offered: a <em>builder</em> path through Parts I&ndash;III in order then Part IV; an <em>evaluator</em> path through Part IV entire, then Chapters 27&ndash;28, then Part V; and a <em>leader</em> path through Chapters 1&ndash;3, Parts VI&ndash;VII, then Chapters 42&ndash;43.
+    </p>
+
+    <h2>10. Limitations and Scope Conditions</h2>
+    <p>
+        The handbook states its own limits, and they are worth reproducing rather than smoothing over.
+    </p>
+    <ul>
+        <li><strong>Dated factual content.</strong> Tool versions, token prices, regulation numbers, and industry statistics were collected and verified as of 25 August 2026. Library versions change in weeks and API prices in months; Indonesian implementing regulations under UU PDP, including the establishment of its supervisory authority, are explicitly flagged as likely to have moved by the time of reading.</li>
+        <li><strong>Formulas rather than figures.</strong> Where a number could go stale it is accompanied by its derivation, so that estimates can be recomputed rather than merely re-quoted. Figures not traceable to a primary source are marked as illustrative.</li>
+        <li><strong>Not legal advice.</strong> Treatment of UU PDP, POJK, SEOJK, and Ministry of Energy and Mineral Resources regulation is presented as a technical summary for system design, not as binding legal interpretation.</li>
+        <li><strong>Fictitious worked examples.</strong> Named organisations and their accompanying figures are illustrative and marked as such.</li>
+        <li><strong>An explicit request to the reader.</strong> The book asks that no figure be quoted from it into a document a regulator will read without first verifying it against the primary source &mdash; the same standard it demands of model outputs, applied to itself.</li>
+    </ul>
+
+    <h2>11. Conclusion</h2>
+    <p>
+        The AI Research Handbook argues that in regulated industry the binding constraint on an LLM programme is rarely model quality and almost always the ability to demonstrate quality: to name the measure, produce the evidence, identify the approver, and trace the decision. Its structural response is to treat evaluation as a long-lived product with an owner, a version, a backlog, and an SLA; to force diagnosis ahead of intervention so that budget follows the actual distribution of failures; to separate model, system, and user-experience evaluation so that defects are repaired at the layer where they live; and to make release contingent on gates whose criteria are measurable, whose evidence is mandatory, and whose small set of absolute blockers is short enough to stay absolute.
+    </p>
+    <p>
+        Two of its positions are likely to remain valid longer than its numbers. The first is that the most expensive error in enterprise LLM work is diagnosing at the wrong layer &mdash; retraining a model to fix a stale index. The second is that an organisation unable to evaluate its models with discipline should not be training them. The 2026 revision in Part IX changes what hardware the work requires and which model families are viable; it does not change either conclusion. As tooling and model supply continue to shift, the durable content of this book is the decision structure &mdash; the axes, the ordering, the layers, the gates, and the evidence &mdash; rather than the versions it happens to name.
+    </p>
+
+    <h2>References</h2>
+    <div class="references">
+        <ol>
+            <li>Republic of Indonesia. &ldquo;Undang-Undang No. 27 Tahun 2022 tentang Pelindungan Data Pribadi.&rdquo; Jakarta, 2022.</li>
+            <li>Otoritas Jasa Keuangan. &ldquo;POJK No. 11/POJK.03/2022 tentang Penyelenggaraan Teknologi Informasi oleh Bank Umum.&rdquo; Jakarta, 2022.</li>
+            <li>Otoritas Jasa Keuangan. &ldquo;SEOJK No. 29/SEOJK.03/2022 tentang Penyelenggaraan Teknologi Informasi oleh Bank Umum.&rdquo; Jakarta, 2022.</li>
+            <li>Kementerian ESDM. &ldquo;Kepmen ESDM No. 1827 K/30/MEM/2018 tentang Pedoman Pelaksanaan Kaidah Teknik Pertambangan yang Baik.&rdquo; Jakarta, 2018.</li>
+            <li>National Institute of Standards and Technology. &ldquo;AI Risk Management Framework (AI RMF 1.0).&rdquo; NIST, January 2023.</li>
+            <li>National Institute of Standards and Technology. &ldquo;NIST AI 600-1: Generative AI Profile.&rdquo; NIST, July 2024.</li>
+            <li>International Organization for Standardization. &ldquo;ISO/IEC 42001:2023 &mdash; Information technology &mdash; Artificial intelligence &mdash; Management system.&rdquo; ISO, 2023.</li>
+            <li>International Organization for Standardization. &ldquo;ISO/IEC 23894:2023 &mdash; Artificial intelligence &mdash; Guidance on risk management.&rdquo; ISO, 2023.</li>
+            <li>OWASP Foundation. &ldquo;OWASP Top 10 for Large Language Model Applications.&rdquo; 2026 revision.</li>
+            <li>MITRE Corporation. &ldquo;MITRE ATLAS: Adversarial Threat Landscape for Artificial-Intelligence Systems.&rdquo; MITRE.</li>
+            <li>Hu, E. J., et al. &ldquo;LoRA: Low-Rank Adaptation of Large Language Models.&rdquo; ICLR, 2022.</li>
+            <li>Dettmers, T., et al. &ldquo;QLoRA: Efficient Finetuning of Quantized LLMs.&rdquo; NeurIPS, 2023.</li>
+            <li>Rafailov, R., et al. &ldquo;Direct Preference Optimization: Your Language Model is Secretly a Reward Model.&rdquo; NeurIPS, 2023.</li>
+            <li>Kwon, W., et al. &ldquo;Efficient Memory Management for Large Language Model Serving with PagedAttention.&rdquo; SOSP, 2023.</li>
+            <li>Owadally, I., et al. &ldquo;Komodo: A Linguistic Expedition into Indonesian Regional Languages.&rdquo; 2024.</li>
+            <li>AI Singapore. &ldquo;SEA-LION: Southeast Asian Languages in One Network.&rdquo; Model cards and technical reports, 2023&ndash;2026.</li>
+            <li>GoTo and Indosat Ooredoo Hutchison. &ldquo;Sahabat-AI Model Cards.&rdquo; 2024&ndash;2025.</li>
+            <li>AI Singapore. &ldquo;SEA-HELM: Southeast Asian Holistic Evaluation of Language Models.&rdquo; Leaderboard and methodology, 2026.</li>
+            <li>Koto, F., et al. &ldquo;IndoMMLU: Measuring Massive Multitask Language Understanding in Indonesian.&rdquo; EMNLP, 2023.</li>
+            <li>Wang, Y., et al. &ldquo;MMLU-Pro: A More Robust and Challenging Multi-Task Language Understanding Benchmark.&rdquo; NeurIPS, 2024.</li>
+            <li>Rein, D., et al. &ldquo;GPQA: A Graduate-Level Google-Proof Q&amp;A Benchmark.&rdquo; COLM, 2024.</li>
+            <li>Es, S., et al. &ldquo;RAGAS: Automated Evaluation of Retrieval Augmented Generation.&rdquo; EACL, 2024.</li>
+            <li>Krippendorff, K. &ldquo;Content Analysis: An Introduction to Its Methodology.&rdquo; 4th ed., SAGE, 2018.</li>
+            <li>Qwen Team, Alibaba Cloud. &ldquo;Qwen3 and Qwen3.5 Technical Reports and Model Cards.&rdquo; 2025&ndash;2026.</li>
+            <li>Google DeepMind. &ldquo;Gemma 4 Model Cards and Technical Report.&rdquo; 2026.</li>
+        </ol>
+    </div>
+
+    <div class="paper-footer">
+        <p>&copy; 2026 Romi Nur Ismanto. All rights reserved.</p>
+        <p>Full handbook: <a href="https://rominur.com/AI-Research-Handbook.pdf">rominur.com/AI-Research-Handbook.pdf</a> &middot; 573 pages, first edition, August 2026</p>
+        <p>Data cut-off: 25 August 2026. Figures marked illustrative are not measured results.</p>
+    </div>
+
+</body>
+</html>
