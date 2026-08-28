@@ -1,0 +1,179 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Jaipong: A Two-Stage Text-to-Song Studio and the Case for a Line-Oriented Plan Format</title>
+    <meta name="description" content="Jaipong turns one Indonesian sentence into a complete sung song through two models with different economics. This paper describes the truncation-proof plan format, streaming audio over SSE, and cost governance for a per-song-priced model on an open website.">
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body {
+            font-family: 'Times New Roman', Times, Georgia, serif;
+            line-height: 1.6;
+            color: #111;
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 60px 40px;
+            background: #fff;
+        }
+        .paper-title { text-align: center; margin-bottom: 30px; }
+        .paper-title h1 { font-size: 1.65em; font-weight: 700; line-height: 1.3; margin-bottom: 18px; }
+        .paper-title .authors { font-size: 1.05em; margin-bottom: 4px; }
+        .paper-title .affiliation { font-size: 0.95em; color: #555; font-style: italic; }
+        .paper-title .email { font-size: 0.9em; color: #1a73e8; margin-top: 4px; }
+        .paper-title .date { font-size: 0.9em; color: #777; margin-top: 10px; }
+        .abstract { background: #f9f9f9; border-left: 4px solid #333; padding: 18px 22px; margin: 30px 0; }
+        .abstract h2 { font-size: 1em; text-transform: uppercase; letter-spacing: 1px; margin-bottom: 8px; border: none; padding: 0; }
+        .abstract p { font-size: 0.95em; color: #333; text-align: justify; }
+        .keywords { font-size: 0.9em; color: #555; margin-bottom: 30px; }
+        .keywords strong { color: #333; }
+        h2 { font-size: 1.2em; font-weight: 700; margin-top: 30px; margin-bottom: 12px; border-bottom: 1px solid #ddd; padding-bottom: 4px; }
+        h3 { font-size: 1.05em; font-weight: 700; margin-top: 18px; margin-bottom: 8px; }
+        p { text-align: justify; margin-bottom: 12px; font-size: 0.97em; }
+        table { width: 100%; border-collapse: collapse; margin: 16px 0; font-size: 0.9em; }
+        table th, table td { border: 1px solid #ccc; padding: 8px 12px; text-align: left; vertical-align: top; }
+        table th { background: #f0f0f0; font-weight: 700; }
+        table caption { font-size: 0.88em; font-style: italic; color: #555; margin-bottom: 6px; text-align: left; }
+        code { font-family: 'Courier New', Courier, monospace; background: #f4f4f4; padding: 2px 5px; border-radius: 3px; font-size: 0.88em; }
+        pre { font-family: 'Courier New', Courier, monospace; background: #f4f4f4; border: 1px solid #e0e0e0; border-radius: 4px; padding: 12px 16px; font-size: 0.85em; line-height: 1.5; overflow-x: auto; margin: 14px 0; }
+        blockquote { margin: 16px 0 16px 24px; padding-left: 16px; border-left: 3px solid #c9b083; font-style: italic; color: #444; font-size: 0.95em; }
+        ul, ol { margin: 10px 0 12px 24px; font-size: 0.97em; }
+        li { margin-bottom: 4px; }
+        .pipeline { background: #f7f9fc; border: 1px solid #d4e2f7; border-radius: 6px; padding: 16px 20px; text-align: center; font-size: 0.95em; color: #1a5276; margin: 16px 0; letter-spacing: 0.3px; }
+        .references { font-size: 0.88em; }
+        .references ol { margin-left: 20px; }
+        .references li { margin-bottom: 8px; color: #444; }
+        .paper-footer { text-align: center; font-size: 0.8em; color: #aaa; margin-top: 50px; padding-top: 20px; border-top: 1px solid #eee; }
+        .paper-footer a { color: #1a73e8; }
+        @media print { body { padding: 20px; } }
+        @media (max-width: 600px) { body { padding: 20px 15px; } .paper-title h1 { font-size: 1.3em; } table { font-size: 0.82em; } }
+    </style>
+</head>
+<body>
+
+    <div class="paper-title">
+        <h1>Jaipong: A Two-Stage Text-to-Song Studio and the Case for a Line-Oriented Plan Format</h1>
+        <div class="authors">Romi Nur Ismanto</div>
+        <div class="affiliation">Independent AI Research Lab, Jakarta, Indonesia</div>
+        <div class="email">hello@rominur.com</div>
+        <div class="date">August 2026</div>
+    </div>
+
+    <div class="abstract">
+        <h2>Abstract</h2>
+        <p>Jaipong, deployed at <code>jaipong.rominur.com</code>, turns one Indonesian sentence into a complete sung song: a language model writes the title, style direction and lyrics, and a music generation model performs them as real audio. The two models have different latencies, different failure modes and &mdash; decisively &mdash; different economics, since the music model is priced per song rather than per token. The application is therefore built as two serverless endpoints rather than one, each finishing well inside its time budget, with the expensive quota enforced at the endpoint where the money is actually spent. This paper describes three design decisions that carry the system. First, the song plan is written in a line-oriented format instead of JSON: each field occupies one line, so the title reaches the screen the moment its line completes, every lyric line follows as it is written, and a generation truncated mid-stream degrades to the last whole line instead of to a parse error &mdash; there is no malformed JSON to repair because there is no JSON. Second, generated audio travels to the browser as base64 chunks over server-sent events, split on four-character boundaries so every chunk decodes independently, and the file format is identified by sniffing its first bytes rather than trusting the request parameters &mdash; the music model returns MP3 even when asked for WAV. Third, the server keeps nothing: song metadata lives in the browser's localStorage and the audio itself in IndexedDB, while the API key and model names exist only on the server. The result is a studio in which regional Indonesian traditions &mdash; jaipongan, dangdut koplo, keroncong, gamelan &mdash; sit beside pop and EDM as one-tap presets, and in which the worst possible day of abuse has a known price ceiling.</p>
+    </div>
+
+    <div class="keywords">
+        <strong>Keywords:</strong> text-to-song generation, music generation models, streaming parsers, server-sent events, Web Audio API, IndexedDB, cost governance, rate limiting, Indonesian music, Next.js
+    </div>
+
+    <h2>1. Introduction</h2>
+    <p>The application is named after jaipongan, the kendang-driven dance music of West Java &mdash; a tradition that was itself a deliberate act of synthesis, assembled in the 1970s from older Sundanese forms into something new and popular. The name states the ambition: not a generic music toy with an Indonesian translation layer, but a studio in which an Indonesian speaker describes a song in their own language and receives one back in it, with jaipongan, dangdut koplo, keroncong and gamelan offered as first-class styles rather than exotic afterthoughts.</p>
+    <p>Getting there requires two different models. A language model is good at titles, structure and lyrics &mdash; and at following instructions such as &ldquo;use these lyrics exactly as written.&rdquo; A music generation model is good at sound &mdash; singing included &mdash; but is expensive in a categorically different way: it is priced per song, not per token, at roughly $0.08 per generation. The system's architecture follows from taking that difference seriously rather than hiding both models behind one endpoint.</p>
+    <p>Section 2 describes the two-stage pipeline and why it is two endpoints. Section 3 describes the plan format, which is the paper's central argument. Section 4 covers moving audio over SSE. Section 5 covers playback. Section 6 covers client-owned storage and the server's deliberate statelessness. Section 7 covers cost governance. Section 8 states the limits.</p>
+
+    <h2>2. Two Stages, Two Endpoints</h2>
+    <p>Composition runs in two stages, both through OpenRouter, each behind its own serverless endpoint.</p>
+
+    <table>
+        <caption>Table 1. The two stages of song composition.</caption>
+        <thead>
+            <tr><th>Stage</th><th>Endpoint</th><th>Model (default)</th><th>Produces</th><th>Priced</th></tr>
+        </thead>
+        <tbody>
+            <tr><td>1. Plan</td><td><code>/api/compose</code></td><td>Gemini Flash</td><td>Title, genre, style paragraph, lyrics &mdash; streamed line by line</td><td>Per token</td></tr>
+            <tr><td>2. Audio</td><td><code>/api/render</code></td><td>Lyria 3 Pro</td><td>Finished stereo audio plus time-stamped lyrics</td><td>Per song</td></tr>
+        </tbody>
+    </table>
+
+    <p>The split is not decorative. Each stage finishes well inside a serverless function's time budget, where a single combined endpoint would have to survive the sum of both models' worst cases. More important, the split lets each endpoint enforce the quota appropriate to its cost: the plan stage is cheap and rate-limited loosely; the render stage is where an actual per-song charge occurs, so the burst, daily and global limits of Section 7 are checked there &mdash; at the door where the money leaves.</p>
+    <div class="pipeline">
+        sentence &rarr; /api/compose (LLM writes the plan, streamed) &rarr; user sees lyrics as they are written &rarr; /api/render (music model sings it) &rarr; base64 audio over SSE &rarr; IndexedDB &rarr; Web Audio playback
+    </div>
+    <p>The user's explicit choices survive both stages: a vocal selection (female, male, instrumental) and a supplied title override whatever the model guessed, and lyrics the user provides are passed to the music model with the instruction to sing them verbatim &mdash; the model is asked not to edit, extend or translate them. The form also accepts free-style tags, and twelve one-tap genre presets fill them in &mdash; Pop Indonesia, Dangdut Koplo, Jaipong Sunda, Keroncong, Gamelan Ambient, Balada Galau, Rock Anthem, Lo-fi, EDM, Reggae, Jazz Kafe and Cinematic &mdash; with target durations from 45 seconds to 4 minutes.</p>
+
+    <h2>3. The Plan Format, or: No JSON to Repair</h2>
+    <p>The natural implementation of stage one asks the language model for a JSON object. Jaipong deliberately does not. The plan is a line-oriented text format, one field per line, lyrics as plain lines under section labels:</p>
+
+    <pre>JUDUL: Goyang Panen Rampak
+GENRE: Jaipong Sunda
+TAG: jaipong, kendang sunda, suling, ceria
+VOKAL: wanita
+GAYA: Jaipong Sunda bertempo lincah sekitar 120 BPM, kendang rapat&hellip;
+LIRIK:
+[Verse 1]
+Pare koneng di sawah
+Hate bungah sumringah</pre>
+
+    <p>Two properties fall out of this choice, and both are user-visible. The first is streamability: a parser fed the model's output token by token can act on every completed line immediately. The implementation is a small incremental parser that buffers until each newline; when the <code>JUDUL</code> line completes, the title is already on the user's screen &mdash; while the model is still writing the first verse &mdash; and every lyric line follows the moment it exists. Waiting for a JSON object to close before parsing it forfeits exactly this.</p>
+    <p>The second property is graceful truncation. A generation cut off mid-stream &mdash; by a token limit, a network fault, or an upstream hiccup &mdash; leaves a prefix of whole lines, and a prefix of whole lines is a valid, usable plan. Truncated JSON, by contrast, is a syntax error, and the standard remedies (retry the call, or attempt mechanical repair of a dangling brace) either spend money again or risk silently corrupting the content. In this format the failure mode is &ldquo;the song has one verse fewer,&rdquo; not &ldquo;the song does not parse.&rdquo;</p>
+    <p>The parser is deliberately forgiving in the same spirit: section labels such as <code>[Chorus]</code> are recognised and withheld from the lyric stream, a style paragraph that wraps across lines is folded back together, and the vocal field accepts natural-language variants and normalises them. The format asks the model for the smallest amount of discipline it reliably has &mdash; put each field on its own line &mdash; and no more.</p>
+
+    <h2>4. Audio over SSE, and Trusting the File</h2>
+    <p>Stage two streams the finished audio back through the same server-sent-events channel used for status and lyrics. The audio arrives from the upstream model as base64; the server re-chunks it on four-character boundaries before forwarding, because base64 decodes in quanta of four characters &mdash; a chunk split anywhere else is undecodable on its own. Aligned chunks let the browser decode and accumulate the file incrementally instead of holding a single giant string in memory.</p>
+    <p>The first chunk carries one more obligation: identifying what the file actually is. The request asks the model for WAV; the model sends MP3 anyway. Rather than trusting the request parameter &mdash; or the response's claimed format &mdash; the server sniffs the first bytes: a <code>RIFF</code> header means WAV, an <code>ID3</code> tag or an MP3 frame-sync means MP3, and the sniffed answer sets the MIME type the browser will use. The principle generalises and is worth stating plainly: at a model boundary, believe the bytes, not the negotiation.</p>
+    <p>A final guard closes the stage: if the accumulated audio is implausibly small &mdash; under roughly 30 KB, the size of no real song &mdash; the render is declared failed rather than saved, so the library never accumulates silent, empty tracks that a user would discover only on pressing play.</p>
+    <p>Alongside the audio, the music model returns the lyrics it actually sang, time-stamped per line (<code>[12.0:] Pare koneng di sawah</code>). The parser for these is again forgiving &mdash; lines without timestamps are accepted as untimed lyrics &mdash; so a format drift upstream degrades the karaoke display rather than emptying it.</p>
+
+    <h2>5. Playback: Web Audio, Not the Audio Element</h2>
+    <p>The obvious way to play an MP3 is an <code>&lt;audio&gt;</code> element. Jaipong instead decodes the full file into an <code>AudioBuffer</code> and plays it through the Web Audio API, for a reason that only appears in testing: autoplay policy. A media element's <code>play()</code> is judged by the browser's user-activation rules at each call, and a play started programmatically &mdash; say, when generation finishes a minute after the user's last click &mdash; can simply be refused. An <code>AudioContext</code>, once unlocked by any user gesture, stays unlocked; playback through it is governed by a decision the user already made.</p>
+    <p>The choice has a second dividend. The application inherited an analyser-driven spectrum visualizer from its own earlier synthesizer engine (Section 8); a buffer-source player plugs into the same analyser node, so the visualizer, the volume control and the seek logic serve both players unchanged. Time-stamped lyrics drive a three-tier karaoke panel &mdash; past lines dimmed, the active line lit and slightly enlarged, coming lines waiting &mdash; with the active line held centred in its own panel rather than scrolling the page. Transport is also on the keyboard: space toggles play, arrow keys seek.</p>
+
+    <h2>6. The Browser Owns the Audio</h2>
+    <p>The server generates songs; it does not keep them. Library metadata &mdash; titles, genres, tags, timed lyrics &mdash; lives in <code>localStorage</code>, and the audio files themselves live in IndexedDB, which is built for blobs of this size. A song evicted from the library takes its audio with it. There is no server-side database, no account system, and no stored copy of anything a user has made: the operator could not produce a user's songs if asked, because they exist only in that user's browser.</p>
+    <p>The same boundary is drawn around configuration. Every environment variable is read server-side only &mdash; none carries the <code>NEXT_PUBLIC_</code> prefix that Next.js would inline into client bundles &mdash; so the OpenRouter key and even the model names never reach the browser. A health endpoint reports whether the service is configured without disclosing what it is configured with.</p>
+
+    <h2>7. Paying per Song: Cost Governance</h2>
+    <p>An open website with no login attached to a model priced per song is an invitation to an unbounded bill, and the mitigation has to be architectural rather than hopeful. Jaipong's quotas are layered where Section 2 put them &mdash; at the render endpoint, where the charge occurs:</p>
+
+    <table>
+        <caption>Table 2. Default quota layers on song generation.</caption>
+        <thead>
+            <tr><th>Layer</th><th>Default</th><th>Bounds</th></tr>
+        </thead>
+        <tbody>
+            <tr><td>Burst, per IP</td><td>6 songs / 5 minutes</td><td>Scripted rapid-fire from one address</td></tr>
+            <tr><td>Daily, per IP</td><td>40 songs / day</td><td>One address's total consumption</td></tr>
+            <tr><td>Daily, global</td><td>150 songs / day</td><td>The operator's worst possible day: &asymp;$12</td></tr>
+        </tbody>
+    </table>
+
+    <p>The global layer is the one that matters, because it converts an open-ended risk into a number the operator chose. At $0.08 per song, 150 songs is about $12; the ceiling is set in one environment variable and can follow the budget. The per-IP counters live in process memory by default, which on serverless means each warm instance counts separately &mdash; the limits are softer than their numbers. The README says so rather than pretending otherwise, and an optional Upstash Redis backing makes the counters exact across instances when precision is worth a dependency. The global cap is the backstop either way.</p>
+
+    <h2>8. Compatibility: The Old Synthesizer Stays</h2>
+    <p>Jaipong's first incarnation did not call a music model at all: the language model wrote a full score &mdash; notes, chords, drum grooves &mdash; and a hand-built Web Audio synthesizer engine performed it in the browser, with music-theory, instrument and groove modules and a WAV exporter. The music-model rebuild made that engine obsolete for new songs and deleted none of it: score-era songs in a user's library still play through the old engine and still export to WAV, while new tracks play through the buffer player of Section 5, both feeding the same analyser. Keeping a superseded engine alive purely so that nobody's saved songs die is unglamorous, and it is what a library feature owes its users.</p>
+
+    <h2>9. Limits</h2>
+    <p><strong>Duration is a request, not a contract.</strong> The target duration is passed to the music model as an instruction; the model decides where the song actually ends.</p>
+    <p><strong>Lyric fidelity is likewise asked, not enforced.</strong> The music model is instructed to sing supplied lyrics verbatim, and mostly does; nothing downstream can force it. The timed lyrics it returns describe what it sang, which is the honest record.</p>
+    <p><strong>Per-IP quotas are approximate on serverless.</strong> In-memory counters reset with instances; only the Redis option makes them exact. The global cap, checked the same way, shares the imprecision but bounds the damage.</p>
+    <p><strong>The library is as durable as the browser's storage.</strong> IndexedDB survives normal use but yields to a cleared profile or storage pressure; there is no server copy to restore from &mdash; the price of Section 6, stated plainly.</p>
+    <p><strong>Generated audio cannot be edited.</strong> A song that is almost right is regenerated, not tweaked; the system offers no stems, no remix, no partial re-render.</p>
+
+    <h2>10. Conclusion</h2>
+    <p>Jaipong's useful lessons are mostly about seams. Between the user and the language model, a line-oriented plan format buys streaming and truncation-tolerance that JSON structurally cannot offer, at the cost of a forty-line parser. Between the language model and the music model, a plain-text plan is the entire interface, so either model can be swapped by environment variable. Between the music model and the browser, format-sniffing the first bytes &mdash; rather than believing the request parameters &mdash; absorbs an upstream that sends MP3 when asked for WAV. And between the operator and an open internet, a per-song-priced model is made deployable by placing the quota at the endpoint where the money moves and capping the worst day at a chosen number. None of these is specific to music; all of them recur wherever generative models with unequal economics are composed into one product.</p>
+
+    <h2>References</h2>
+    <div class="references">
+        <ol>
+            <li>Manuel, P., and Baier, R. &ldquo;Jaipongan: Indigenous Popular Music of West Java.&rdquo; <em>Asian Music</em> 18(1), 1986.</li>
+            <li>Agostinelli, A., et al. &ldquo;MusicLM: Generating Music from Text.&rdquo; arXiv:2301.11325, 2023.</li>
+            <li>Google DeepMind. &ldquo;Lyria: High-Fidelity Music Generation.&rdquo; Model documentation, 2026.</li>
+            <li>OpenRouter. &ldquo;API Reference: Streaming and Multimodal Outputs.&rdquo; 2026.</li>
+            <li>WHATWG. &ldquo;HTML Living Standard &mdash; Server-Sent Events.&rdquo; 2026.</li>
+            <li>WHATWG. &ldquo;HTML Living Standard &mdash; Media Elements and User Activation.&rdquo; 2026.</li>
+            <li>W3C. &ldquo;Web Audio API.&rdquo; W3C Recommendation, 2021.</li>
+            <li>W3C. &ldquo;Indexed Database API 3.0.&rdquo; W3C Working Draft, 2026.</li>
+            <li>Josefsson, S. &ldquo;The Base16, Base32, and Base64 Data Encodings.&rdquo; RFC 4648, 2006.</li>
+            <li>Ismanto, R. N. &ldquo;Somat: A Single-Box Indonesian AI Chat for Text, Images and Documents.&rdquo; 2026.</li>
+        </ol>
+    </div>
+
+    <div class="paper-footer">
+        <p>&copy; 2026 Romi Nur Ismanto.</p>
+        <p>Live app: <a href="https://jaipong.rominur.com">jaipong.rominur.com</a> &middot; GitHub: <a href="https://github.com/romizone/jaipong">github.com/romizone/jaipong</a></p>
+    </div>
+
+</body>
+</html>
