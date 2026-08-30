@@ -1,0 +1,435 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mastering PyTorch Handbook: A Contract-First Curriculum for Deep Learning Engineering on Ephemeral Cloud Runtimes</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body {
+            font-family: 'Times New Roman', Times, Georgia, serif;
+            line-height: 1.6;
+            color: #111;
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 60px 40px;
+            background: #fff;
+        }
+        .paper-title { text-align: center; margin-bottom: 30px; }
+        .paper-title h1 { font-size: 1.65em; font-weight: 700; line-height: 1.3; margin-bottom: 18px; }
+        .paper-title .authors { font-size: 1.05em; margin-bottom: 4px; }
+        .paper-title .affiliation { font-size: 0.95em; color: #555; font-style: italic; }
+        .paper-title .email { font-size: 0.9em; color: #1a73e8; margin-top: 4px; }
+        .paper-title .date { font-size: 0.9em; color: #777; margin-top: 10px; }
+        .abstract { background: #f9f9f9; border-left: 4px solid #333; padding: 18px 22px; margin: 30px 0; }
+        .abstract h2 { font-size: 1em; text-transform: uppercase; letter-spacing: 1px; margin-bottom: 8px; border: none; padding: 0; }
+        .abstract p { font-size: 0.95em; color: #333; text-align: justify; }
+        .keywords { font-size: 0.9em; color: #555; margin-bottom: 30px; }
+        .keywords strong { color: #333; }
+        h2 { font-size: 1.2em; font-weight: 700; margin-top: 30px; margin-bottom: 12px; border-bottom: 1px solid #ddd; padding-bottom: 4px; }
+        h3 { font-size: 1.05em; font-weight: 700; margin-top: 18px; margin-bottom: 8px; }
+        p { text-align: justify; margin-bottom: 12px; font-size: 0.97em; }
+        table { width: 100%; border-collapse: collapse; margin: 16px 0; font-size: 0.9em; }
+        table th, table td { border: 1px solid #ccc; padding: 8px 12px; text-align: left; }
+        table th { background: #f0f0f0; font-weight: 700; }
+        table caption { font-size: 0.88em; font-style: italic; color: #555; margin-bottom: 6px; text-align: left; }
+        code { font-family: 'Courier New', Courier, monospace; background: #f4f4f4; padding: 2px 5px; border-radius: 3px; font-size: 0.88em; }
+        pre { background: #f4f4f4; padding: 14px 18px; border-radius: 4px; overflow-x: auto; font-size: 0.85em; margin: 12px 0; border: 1px solid #e0e0e0; }
+        ul, ol { margin: 10px 0 12px 24px; font-size: 0.97em; }
+        li { margin-bottom: 4px; }
+        .pipeline { background: #f7f9fc; border: 1px solid #d4e2f7; border-radius: 6px; padding: 16px 20px; text-align: center; font-size: 0.95em; color: #1a5276; margin: 16px 0; letter-spacing: 0.3px; }
+        .references { font-size: 0.88em; }
+        .references ol { margin-left: 20px; }
+        .references li { margin-bottom: 8px; color: #444; }
+        .paper-footer { text-align: center; font-size: 0.8em; color: #aaa; margin-top: 50px; padding-top: 20px; border-top: 1px solid #eee; }
+        @media print { body { padding: 20px; } }
+        @media (max-width: 600px) { body { padding: 20px 15px; } .paper-title h1 { font-size: 1.3em; } }
+    </style>
+</head>
+<body>
+
+    <div class="paper-title">
+        <h1>Mastering PyTorch Handbook: A Contract-First, Reproducibility-Driven Curriculum for Deep Learning Engineering on Ephemeral Cloud Runtimes</h1>
+        <div class="authors">Romi Nur Ismanto</div>
+        <div class="affiliation">Independent AI Research Lab, Jakarta, Indonesia</div>
+        <div class="email">hello@rominur.com</div>
+        <div class="date">August 2026</div>
+    </div>
+
+    <div class="abstract">
+        <h2>Abstract</h2>
+        <p>
+            We present the <strong>Mastering PyTorch Handbook</strong> (<em>Dari Tensor Dasar hingga Training Terdistribusi, Generative AI, Deployment, dan MLOps</em>), a 600-page Indonesian-language handbook that teaches PyTorch 2.11+ as an engineering discipline rather than as an API surface. The premise of the book is that most PyTorch instruction fails at the same seam: a learner who can reproduce a tutorial line by line still cannot say what shape a tensor should have at a module boundary, which state must survive a runtime disconnection, how to prove that an optimisation actually made anything faster, or why a model that trains cleanly in a notebook breaks the moment it is exported. The handbook answers this by fixing an invariant twelve-section template applied identically to all forty-eight chapters &mdash; mental model, Colab setup, runnable baseline, contract dissection, illustrated walkthrough, guided experiment, profiling, failure mode, mini project, exercises, and cheat sheet &mdash; so that the pedagogical shape of every topic is the same and only the subject changes. Three commitments run through the entire text. First, <em>contracts before code</em>: every chapter names a shape contract, a state contract, and a single failure signal, and reading code means tracing tensors from source to output while marking each dtype and device transition. Second, <em>measurement before optimisation</em>: no performance claim is admitted without warm-up iterations, explicit CUDA synchronisation on both sides of the timer, a stated repeat count, and a reported median rather than a single number. Third, <em>reproducibility as a pipeline property</em>: a seed is necessary but never sufficient, and every experiment must record seed, configuration, metric, and package versions. Google Colab is chosen deliberately, not for convenience but because its ephemeral runtime, mutable default packages, and non-automatic device placement force the discipline the book is trying to teach. Twelve parts carry the reader from tensors and autograd through data pipelines, computer vision, transformers, mixed precision, <code>torch.compile</code>, DDP and FSDP, generative and multimodal models, export and serving, interpretability and adversarial robustness, to an end-to-end capstone; forty-eight mental models and forty-eight assessed mini projects supply the practicum, and twelve appendices &mdash; template notebook, tensor and autograd cheat sheets, formula sheet, debugging decision tree, GPU memory model, reproducibility checklist, testing strategy, production quality gates, two glossaries, and a primary-source list &mdash; form a standing reference layer. Reference documentation was verified on 29 August 2026.
+        </p>
+    </div>
+
+    <div class="keywords">
+        <strong>Keywords:</strong> PyTorch, deep learning engineering, Google Colab, reproducibility, tensor shape contracts, autograd, mixed precision, torch.compile, distributed training, FSDP, diffusion models, ONNX, ExecuTorch, model serving, interpretability, adversarial robustness, technical pedagogy, Indonesian-language curriculum
+    </div>
+
+    <h2>1. Introduction</h2>
+    <p>
+        PyTorch has become the working language of applied deep learning because it gives direct control over tensors, autograd, modules, compilation, and distributed execution. That directness is also the source of its characteristic failure mode in teaching. An API is easy to demonstrate and hard to internalise: a reader can follow forty cells of a tutorial, obtain the expected output, and still hold no model of what the code guarantees. The gap does not show up while the tutorial is running. It shows up the first time the data is real, the batch is ragged, the GPU is contended, the runtime disconnects mid-epoch, or the trained model has to leave the notebook.
+    </p>
+    <p>
+        The handbook opens by naming this gap explicitly: mastering syntax is not enough, and a competent engineer must understand data shape, state, numerics, performance, and operational risk. Its response is structural rather than exhortative. Instead of adding warnings to a conventional tutorial sequence, it fixes a chapter template in which the uncomfortable questions are mandatory sections that appear in every chapter, in the same order, whether the subject is broadcasting or fully sharded data parallelism.
+    </p>
+    <p>
+        The stated design of each chapter is to move from a mental model to a runnable Colab cell, then to have the reader read the output, modify the experiment, inspect the bottleneck, and close with a small project. The intent is that the reader learns not only what to type but <em>why the code works and when a given approach should be chosen</em>. Four principles are printed in the front matter and govern the rest of the text: measure before optimising, validate shape before training, save state before the runtime disconnects, and test the contract before the model is released.
+    </p>
+    <p>The principal contributions of this work are:</p>
+    <ul>
+        <li>An <strong>invariant twelve-section chapter template</strong>, applied without exception across forty-eight chapters, that makes contract analysis, controlled experimentation, profiling, and failure reproduction non-optional parts of learning any topic.</li>
+        <li>A <strong>contract vocabulary</strong> &mdash; shape contract, state contract, failure signal &mdash; instantiated separately for each chapter, so that the reader acquires a single analytic habit rather than forty-eight isolated recipes.</li>
+        <li>A <strong>measurement protocol</strong> that treats performance claims as evidence requiring warm-up, CUDA synchronisation, repetition, and distributional reporting, applied uniformly from the first chapter onward.</li>
+        <li>A <strong>six-step failure-mode discipline</strong> &mdash; reproduce, observe, isolate, assert, repair, regression-test &mdash; paired with a chapter-specific failure signal and a global debugging decision tree ordered from the most local error outward.</li>
+        <li>A <strong>practicum architecture</strong> of forty-eight assessed mini projects sharing one four-criterion rubric, explicitly positioned as a one-semester or bootcamp module set for instructors.</li>
+        <li>A <strong>deliberate choice of ephemeral cloud runtime</strong> as the target environment, on the grounds that Colab's disposability and non-automatic device placement are pedagogically useful rather than merely convenient.</li>
+        <li>A <strong>twelve-appendix reference layer</strong> that separates durable material &mdash; cheat sheets, formulas, decision trees, checklists, quality gates, glossaries &mdash; from the version-sensitive chapter body.</li>
+    </ul>
+
+    <h2>2. Scope and Organisation</h2>
+    <p>
+        The handbook comprises twelve parts, forty-eight chapters, and twelve appendices across 600 pages, with forty-eight mental-model diagrams and forty-eight mini projects. Every chapter occupies exactly twelve pages and follows the same internal sequence, which makes the book navigable out of order: a reader looking for the profiling section of the quantisation chapter knows in advance where in that chapter it sits. The target environment is Google Colab with PyTorch 2.11 or later; the compiler chapters additionally explain how to check compatibility with PyTorch 2.13.
+    </p>
+
+    <table>
+        <caption>Table 1: Structure of the handbook by part</caption>
+        <tr><th>Part</th><th>Title</th><th>Chapters</th><th>Central question</th></tr>
+        <tr><td>I</td><td>Orientation and Colab Foundations</td><td>1&ndash;4</td><td>Is this runtime reproducible, and does my first end-to-end model actually run?</td></tr>
+        <tr><td>II</td><td>Tensors and Autograd</td><td>5&ndash;8</td><td>What is the shape, the dtype, the device &mdash; and where does the gradient flow?</td></tr>
+        <tr><td>III</td><td>Data Pipelines</td><td>9&ndash;12</td><td>Is the input pipeline correct, and is it the bottleneck?</td></tr>
+        <tr><td>IV</td><td>Neural Networks and Training</td><td>13&ndash;16</td><td>Is this training loop right, or merely not crashing?</td></tr>
+        <tr><td>V</td><td>Computer Vision</td><td>17&ndash;20</td><td>Which vision architecture, and what does transfer actually transfer?</td></tr>
+        <tr><td>VI</td><td>NLP and Transformers</td><td>21&ndash;24</td><td>How do sequences become tensors, and what does attention compute?</td></tr>
+        <tr><td>VII</td><td>Advanced Training</td><td>25&ndash;28</td><td>How is training made faster, more stable, and resumable?</td></tr>
+        <tr><td>VIII</td><td>Compilation and Performance</td><td>29&ndash;32</td><td>Where is the time and memory going, and what is safe to compress?</td></tr>
+        <tr><td>IX</td><td>Distributed and Scale-Out</td><td>33&ndash;36</td><td>What breaks when one process becomes many?</td></tr>
+        <tr><td>X</td><td>Generative and Multimodal</td><td>37&ndash;40</td><td>How are distributions learned rather than labels?</td></tr>
+        <tr><td>XI</td><td>Deployment and MLOps</td><td>41&ndash;44</td><td>Does the model survive leaving the notebook?</td></tr>
+        <tr><td>XII</td><td>Research, Safety, and Capstone</td><td>45&ndash;48</td><td>Can the behaviour be explained, attacked, and governed?</td></tr>
+    </table>
+
+    <p>
+        The chapter sequence within these parts moves from Colab orientation, reproducibility and environment management, the PyTorch ecosystem map, and a first end-to-end classifier; through tensor shape/dtype/device, indexing, broadcasting and <code>einsum</code>, autograd and the computational graph, and custom autograd with gradient checking; through <code>Dataset</code> and <code>DataLoader</code>, transforms and augmentation, custom datasets for real data, and input-pipeline optimisation; through <code>nn.Module</code> design, losses and optimisers, the correct training loop, and regularisation, initialisation and normalisation. Applied parts cover CNNs, transfer learning, semantic segmentation, detection and vision transformers; then text representation and embeddings, RNN/LSTM/GRU, attention and multi-head attention, and the transformer encoder. Advanced parts cover automatic mixed precision, schedulers with gradient accumulation and clipping, checkpoint/resume/early stopping, and hyperparameter tuning with experiment tracking; then <code>torch.compile</code> and graph capture, the profiler and bottleneck analysis, memory efficiency, and quantisation with pruning. Scale-out covers <code>DistributedDataParallel</code>, fully sharded data parallel, data and tensor sharding, and multi-node with fault tolerance. Generative work covers autoencoders and VAEs, GANs, diffusion models, and multimodal contrastive learning. Deployment covers <code>torch.export</code> and ONNX, edge AI with ExecuTorch, serving a model as an API, and monitoring, testing and CI/CD. The closing part covers interpretability with Captum, robustness with adversarial testing and fairness, custom operators and extensions, and the capstone.
+    </p>
+
+    <h3>2.1 Six Competence Levels</h3>
+    <p>
+        The parts are additionally grouped into six named levels that define what a reader can claim after each block. The grouping is stated as a learning path from foundation to production, and is the book's own answer to the question of when a reader is ready to move on.
+    </p>
+
+    <table>
+        <caption>Table 2: Learning path from foundation to production</caption>
+        <tr><th>Level</th><th>Chapters</th><th>Attainment</th></tr>
+        <tr><td>FOUNDATION</td><td>1&ndash;16</td><td>Colab, tensors, data, model, and the training loop.</td></tr>
+        <tr><td>APPLIED</td><td>17&ndash;24</td><td>Computer vision, sequences, attention, transformers.</td></tr>
+        <tr><td>ACCELERATE</td><td>25&ndash;32</td><td>AMP, checkpointing, tuning, compiler, profiler, compression.</td></tr>
+        <tr><td>SCALE</td><td>33&ndash;36</td><td>DDP, FSDP, sharding, fault tolerance.</td></tr>
+        <tr><td>CREATE</td><td>37&ndash;40</td><td>VAE, GAN, diffusion, multimodal.</td></tr>
+        <tr><td>OPERATE</td><td>41&ndash;48</td><td>Export, edge, serving, monitoring, interpretability, safety, capstone.</td></tr>
+    </table>
+
+    <p>
+        Attached to the path are four self-certification rules that function as the book's exit criteria and recur, in specialised form, as the closing checklist of every chapter: every mini project must yield a notebook that survives <em>Run all</em>; every experiment must persist seed, configuration, metric, and package versions; every deployment must carry a shape contract, a smoke test, and a fallback; and every performance claim must be accompanied by warm-up, synchronisation, and a repeat count.
+    </p>
+
+    <h3>2.2 Reader Profiles and Routing</h3>
+    <p>
+        Because the chapters are self-similar and the appendices are separable, the front matter routes five reader profiles through different subsets rather than assuming a single linear audience.
+    </p>
+
+    <table>
+        <caption>Table 3: Reader profiles and recommended routes</caption>
+        <tr><th>Profile</th><th>Recommended path</th></tr>
+        <tr><td>Python/ML beginner</td><td>Parts I&ndash;IV in order; complete every exercise.</td></tr>
+        <tr><td>Data scientist</td><td>Parts III&ndash;VII for pipelines, models, and experiments.</td></tr>
+        <tr><td>AI research engineer</td><td>Parts VIII&ndash;XII as reference for compiler, scale-out, and research work.</td></tr>
+        <tr><td>ML platform engineer</td><td>Parts IX&ndash;XI plus the quality-gate appendix.</td></tr>
+        <tr><td>Lecturer / instructor</td><td>The forty-eight mini projects as one semester of practicum modules or a bootcamp.</td></tr>
+    </table>
+
+    <p>
+        Minimum prerequisites are stated in the same spirit &mdash; basic Python including functions, classes, collections, exceptions and context managers; basic linear algebra including vectors, matrices, dot products and derivatives; a Google account for notebook storage; and a willingness to read shape, dtype, device, loss, and metric explicitly. The last item is a prerequisite of attitude rather than knowledge, and it is the one the rest of the book enforces.
+    </p>
+
+    <h2>3. The Invariant Chapter Template</h2>
+    <p>
+        The single most consequential design decision in the handbook is that all forty-eight chapters share one internal structure. Each chapter is twelve pages long and moves through the same twelve sections in the same order. The subject changes; the pedagogical shape does not.
+    </p>
+
+    <table>
+        <caption>Table 4: The twelve invariant sections of every chapter</caption>
+        <tr><th>#</th><th>Section</th><th>Function</th></tr>
+        <tr><td>1</td><td>Chapter opener</td><td>Four learning outcomes, prerequisites and keywords, and a parameter block giving level, expected duration, the artefact to be produced, and the validation standard (shape + metric + reproducibility).</td></tr>
+        <tr><td>2</td><td>Mental model</td><td>A four-node flow diagram plus a key question whose answer must be supported by tensor shape, log, or metric.</td></tr>
+        <tr><td>3</td><td>Colab setup</td><td>Five fixed steps and a setup cell that pins the version and resolves the device before anything else runs.</td></tr>
+        <tr><td>4</td><td>Core notebook</td><td>A minimal baseline to be run unmodified first, with its output saved for comparison.</td></tr>
+        <tr><td>5</td><td>Code and contract dissection</td><td>A symbol-to-contract table, closing with the chapter's shape contract, state contract, and failure signal.</td></tr>
+        <tr><td>6</td><td>Illustrated walkthrough</td><td>The mental model re-derived step by step, with a comprehension checkpoint: redraw the flow without looking at the page.</td></tr>
+        <tr><td>7</td><td>Guided experiment</td><td>One controlled variable change with hypothesis, control variables, primary metric, and guardrail metric.</td></tr>
+        <tr><td>8</td><td>Performance and profiling</td><td>A microbenchmark harness with warm-up, repeats, and CUDA synchronisation on both sides of the timer.</td></tr>
+        <tr><td>9</td><td>Failure mode and debugging</td><td>The chapter's characteristic failure, reproduced deliberately and worked through a six-step protocol.</td></tr>
+        <tr><td>10</td><td>Mini project</td><td>A small assessable artefact with six build steps and a four-criterion rubric.</td></tr>
+        <tr><td>11</td><td>Exercises and knowledge check</td><td>Eight questions to be answered without the summary, plus a code challenge.</td></tr>
+        <tr><td>12</td><td>Summary and cheat sheet</td><td>Operational glossary, ready-to-use checklist, the APIs introduced, and a one-sentence statement of what the chapter taught.</td></tr>
+    </table>
+
+    <p>
+        The front matter restates this as a ten-stage working protocol &mdash; build the concept map before touching code; verify version, runtime, and device; run the core notebook as-is and keep the baseline output; trace the shape, state, and gradient contracts; change exactly one variable and compare metrics; measure time or memory before making any claim; reproduce the failure under control; integrate the concepts into a small assessable artefact; answer the exercises without the summary; and use the cheat sheet while coding. A chapter is budgeted at 60&ndash;120 minutes, with the distributed and deployment chapters explicitly flagged as taking longer.
+    </p>
+    <p>
+        The pedagogical argument for invariance is that it converts structure into a free resource. A reader who has completed three chapters knows where the profiling section lives, knows that a failure signal is coming, and knows that a controlled experiment will be demanded. Attention that would otherwise be spent parsing the chapter's organisation is available for the subject itself, and the recurring sections accumulate into transferable habits rather than remaining chapter-local advice.
+    </p>
+
+    <h2>4. Mental Models as a Compression Device</h2>
+    <p>
+        Every chapter opens with a numbered mental model rendered as a four-node left-to-right flow, and the same diagram reappears in the illustrated walkthrough so that the reader meets it once as a promise and once as a summary. The four nodes are not arbitrary; they instantiate a fixed grammar in which the first node is the decision input, the second is the principal transformation, the third is the state or control mechanism, and the fourth is the result that must be verified. The caption printed under every diagram states the reading rule directly: the flow is read left to right, and shape, state, and metric are validated at each boundary.
+    </p>
+    <div class="pipeline">
+        decision input &rarr; principal transformation &rarr; state / control &rarr; verified result
+    </div>
+    <p>
+        Chapter 1 instantiates this as <code>runtime &rarr; GPU &rarr; package version &rarr; device</code>; Chapter 33 as <code>process_group &rarr; rank &rarr; all_reduce &rarr; DistributedSampler</code>; Chapter 48 as <code>problem framing &rarr; baseline &rarr; deployment &rarr; governance</code>. The uniformity of the grammar is what makes the forty-eight diagrams a system rather than a gallery: the reader learns one way of decomposing a topic and applies it forty-eight times.
+    </p>
+    <p>
+        Each mental model is followed by a key question of a deliberately awkward kind &mdash; if the second node changes, what happens to the fourth? &mdash; with the standing instruction that the answer must be supported by tensor shape, log, or metric rather than by recall. The comprehension checkpoint in the walkthrough section closes the loop: the reader must be able to redraw the flow without the page in front of them before continuing.
+    </p>
+
+    <h2>5. Google Colab as a Deliberate Target</h2>
+    <p>
+        The handbook is subtitled an Edisi Google Colab and targets Colab with PyTorch 2.11 or later throughout. The choice is treated as pedagogical rather than logistical. Colab's properties &mdash; a runtime that disappears, default packages that change without notice, and a GPU whose availability does not imply its use &mdash; are precisely the properties that expose sloppy engineering habits early and cheaply.
+    </p>
+    <p>
+        The front matter therefore carries a version warning before any code appears: Colab runtimes, GPUs, usage limits, and bundled packages can change, so the version diagnostic cell must be run before executing any notebook. A Colab legend fixes the vocabulary &mdash; <code>!pip install</code>, <em>Runtime &gt; Change runtime type</em>, <code>/content</code> as ephemeral runtime storage, <code>/content/drive</code> as the mount point, <em>Run all</em> as the reproducibility test, and <em>Restart session</em> as a requirement after certain core package changes. Attached to that legend is the sentence that motivates a large share of the book's early debugging material: GPU access does not make tensors or models automatically use the GPU, and device movement must remain explicit.
+    </p>
+    <p>
+        That single observation generates Chapter 1's failure signal &mdash; the GPU has been selected but the tensor is still on the CPU &mdash; and it recurs in altered form in the mixed-precision, compilation, and distributed chapters. The pre-flight checklist in the front matter operationalises the same concern: copy the notebook before altering a main experiment; run the version and device cell; keep large data on Drive or object storage rather than only in <code>/content</code>; write the objective metric before training; separate train, validation, and test from the outset; start from a small baseline that finishes quickly; enable the GPU only when the workload genuinely uses it; checkpoint state and configuration regularly; never paste unfamiliar code into a runtime holding live credentials; and record experiment results in a consistent table.
+    </p>
+
+    <h2>6. Contracts Before Code</h2>
+    <p>
+        Section 5 of every chapter is titled <em>Bedah Kode dan Kontrak</em> &mdash; code and contract dissection &mdash; and it is where the handbook's central technical claim lives. Reading code, in this book, does not mean recognising API names. It means recovering the guarantees that hold at each boundary: what shape a tensor has, what state exists and persists, and which single symptom indicates that the guarantee has been violated.
+    </p>
+
+    <table>
+        <caption>Table 5: The three contract types stated in every chapter</caption>
+        <tr><th>Contract</th><th>What it fixes</th><th>Where it is checked</th></tr>
+        <tr><td>Shape contract</td><td>The tensor shape at each boundary.</td><td>Data, model, loss, and metric boundaries.</td></tr>
+        <tr><td>State contract</td><td>Parameters, buffers, optimizer state, RNG, and checkpoints.</td><td>Anywhere execution can be interrupted or resumed.</td></tr>
+        <tr><td>Failure signal</td><td>The one symptom this chapter's characteristic defect produces.</td><td>The chapter's failure-mode section and its regression test.</td></tr>
+    </table>
+
+    <p>
+        Alongside the table, four reading rules are repeated verbatim in every chapter: start at the data source and follow the tensor to the output; mark every dtype or device transition; separate operations that create gradients from operations that only evaluate; and confirm that each metric is computed over the correct unit and the correct subset of the data. The last rule is quietly one of the most valuable in the book, because a metric computed over the wrong subset produces a plausible number that no shape assertion will ever catch.
+    </p>
+    <p>
+        Chapter 33 shows how the contract vocabulary specialises without changing form: <code>process_group</code>, <code>rank</code>, <code>all_reduce</code>, and <code>DistributedSampler</code> each receive a contract line, the shape and state contracts are stated in the same words as in Chapter 1, and the failure signal becomes <em>set_epoch is not called on the sampler</em> &mdash; a defect that produces no exception, degrades shuffling silently across epochs, and is therefore exactly the kind of error the contract habit exists to catch.
+    </p>
+
+    <h2>7. The Guided Experiment</h2>
+    <p>
+        Each chapter contains one controlled experiment with a fixed five-step procedure: save the baseline, change exactly one value, run the same number of steps while recording loss, metric, time, and memory, restore the original configuration before trying a second variable, and write a conclusion that distinguishes correlation from causation. The last step is stated as an explicit requirement rather than as advice.
+    </p>
+
+    <table>
+        <caption>Table 6: Components of the guided experiment</caption>
+        <tr><th>Component</th><th>Content</th></tr>
+        <tr><td>Hypothesis</td><td>A change in the chapter's second mental-model node will affect its fourth.</td></tr>
+        <tr><td>Control variables</td><td>Seed, data split, batch, number of steps, device.</td></tr>
+        <tr><td>Primary metric</td><td>The quantity the chapter is about.</td></tr>
+        <tr><td>Guardrail metric</td><td>Time, peak memory, numerical stability.</td></tr>
+    </table>
+
+    <p>
+        The guardrail row is the structurally interesting one. By requiring a second metric that the experiment is <em>not</em> trying to improve, the template makes the standard failure of applied deep learning &mdash; an accuracy gain purchased with an unreported tripling of memory or latency &mdash; visible by construction rather than by the experimenter's diligence. The same pairing reappears in the deployment part as the release condition that latency and memory must satisfy an SLO independently of whether the primary metric improved.
+    </p>
+
+    <h2>8. Measurement Discipline</h2>
+    <p>
+        Section 8 of every chapter states the rule that performance claims must come from fair measurement, and supplies a microbenchmark harness that does four things: it runs warm-up iterations before timing, it calls <code>torch.cuda.synchronize()</code> before starting and after finishing the timer, it repeats the measurement enough times to see a distribution, and it reports milliseconds per step derived from that distribution.
+    </p>
+    <pre>import time, torch
+
+def timed(fn, repeats=30):
+    for _ in range(5): fn()                      # warm-up
+    if torch.cuda.is_available(): torch.cuda.synchronize()
+    start = time.perf_counter()
+    for _ in range(repeats): fn()
+    if torch.cuda.is_available(): torch.cuda.synchronize()
+    return 1000 * (time.perf_counter() - start) / repeats</pre>
+    <p>
+        Four standing instructions accompany the harness in every chapter: establish whether the chapter's subject is actually the bottleneck, separate setup cost from steady-state GPU cost, record batch size, dtype, device, and PyTorch version alongside the number, and report a median or a distribution rather than a single value. The reason CUDA synchronisation is treated as non-negotiable is that CUDA kernel launches are asynchronous, so a timer that does not synchronise measures queueing rather than execution and reliably produces optimistic numbers &mdash; a mistake common enough in published benchmarks to be worth teaching in Chapter 1 rather than in Chapter 30.
+    </p>
+    <p>
+        The wider claim is one the compilation and quantisation parts depend on. Chapters 29 through 32 &mdash; <code>torch.compile</code> and graph capture, the profiler and bottleneck analysis, memory efficiency, quantisation and pruning &mdash; are only teachable if the reader already has a trustworthy way to tell whether an intervention helped. Establishing that instrument in the first chapter, and reusing it identically for the next forty-seven, is what allows the later parts to make claims at all.
+    </p>
+
+    <h2>9. Failure Mode and Debugging</h2>
+    <p>
+        Every chapter names one characteristic failure and reproduces it deliberately. The handling protocol is fixed at six steps and does not vary by subject.
+    </p>
+
+    <table>
+        <caption>Table 7: The six-step failure-mode protocol</caption>
+        <tr><th>Step</th><th>Action</th></tr>
+        <tr><td>1 &mdash; Reproduce</td><td>Shrink the data and the model until the failure appears quickly.</td></tr>
+        <tr><td>2 &mdash; Observe</td><td>Print shape, dtype, device, and the values connected to the chapter's subject.</td></tr>
+        <tr><td>3 &mdash; Isolate</td><td>Temporarily disable the suspected component and compare behaviour.</td></tr>
+        <tr><td>4 &mdash; Assert</td><td>Add finiteness, range, and shape checks.</td></tr>
+        <tr><td>5 &mdash; Repair</td><td>Fix the nearest cause &mdash; never suppress the exception.</td></tr>
+        <tr><td>6 &mdash; Regression test</td><td>Preserve the minimal input so the bug cannot return unnoticed.</td></tr>
+    </table>
+
+    <p>
+        The accompanying debug cell is a small inspection helper that prints name, shape, dtype, and device for a tensor and asserts that it contains no NaN or Inf, wrapped around a step executed under <code>torch.autograd.detect_anomaly(check_nan=True)</code>. Its purpose is not sophistication but availability: it is short enough to be retyped from memory into any notebook, which is the property that determines whether a debugging tool is actually used.
+    </p>
+    <p>
+        Appendix E generalises the per-chapter protocol into a global ordering, instructing the reader to start from the most local error and work outward.
+    </p>
+    <div class="pipeline">
+        data &rarr; shape &rarr; dtype/device &rarr; forward &rarr; loss &rarr; backward &rarr; optimizer &rarr; metric
+    </div>
+    <p>
+        Four canonical entry points are mapped onto that chain: a shape exception is resolved by printing dimensions at module boundaries; NaN or Inf is traced through input, loss scale, learning rate, and numerically unstable operations; an idle GPU indicates that the input pipeline and host-to-device transfer should be profiled rather than the model; and stagnant accuracy is diagnosed by first overfitting a single batch before enlarging the dataset. The ordering matters as much as the content, because it prevents the most expensive class of debugging error &mdash; investigating the optimiser when the defect is in the collate function.
+    </p>
+
+    <h2>10. Mini Projects and Assessment</h2>
+    <p>
+        Each chapter closes its practical arc with a small artefact built in six steps: define the input, target, and success threshold; implement the baseline; add logging; run one controlled experiment against the baseline; save configuration, metrics, diagrams, and checkpoints where relevant; and write a short README covering purpose, how to run, results, and limitations. The requirement is that the project must run from a clean runtime and produce an inspectable summary of results.
+    </p>
+
+    <table>
+        <caption>Table 8: The mini-project rubric, identical across all forty-eight projects</caption>
+        <tr><th>Criterion</th><th>Standard</th></tr>
+        <tr><td>Correctness</td><td>No errors; shape and dtype validated.</td></tr>
+        <tr><td>Reproducibility</td><td><em>Run all</em> from a clean runtime yields comparable results.</td></tr>
+        <tr><td>Evidence</td><td>A metric, log, or profile supports the conclusion.</td></tr>
+        <tr><td>Communication</td><td>The notebook has headings, comments, and a decision summary.</td></tr>
+    </table>
+
+    <p>
+        Two of the four criteria have nothing to do with model quality, which is the point. A project that reaches a good number but cannot be re-run, or that reaches it without evidence, fails on the same terms as one that does not run at all. The rubric's stability across all forty-eight projects is what makes the set usable as a course: an instructor grades against one standard, and a student receives comparable feedback in week one and week fourteen.
+    </p>
+    <p>
+        The exercise section that follows applies a parallel discipline to conceptual understanding. Its eight questions are stereotyped by design &mdash; explain the first mental-model node without using the second one's name; state the expected shape, dtype, and device at the principal boundary; identify when the state changes and who persists it; name the metric that would prove quality; reproduce the chapter's failure signal; name an optimisation that should not be attempted before profiling; design a checkpoint or test for the mini project; and state one speed/memory/accuracy trade-off. The answer criterion is printed alongside them: a strong answer names tensor contracts, state, measurement, and implementation risk &mdash; not merely an API name.
+    </p>
+
+    <h2>11. The Appendix Layer</h2>
+    <p>
+        Twelve appendices are deliberately separated from the chapter body and carry a standing instruction to return to them when starting a new notebook or reviewing code. The separation is a versioning decision: the chapters are tied to a specific runtime and API surface, whereas the appendices hold the material that survives version changes.
+    </p>
+
+    <table>
+        <caption>Table 9: The twelve appendices</caption>
+        <tr><th>Appendix</th><th>Title</th><th>Governing statement</th></tr>
+        <tr><td>A</td><td>Colab notebook template</td><td>Fixed cell order: metadata, install, imports, seed, config, data, model, training, evaluation, export, conclusion.</td></tr>
+        <tr><td>B</td><td>Tensor cheat sheet</td><td>Core tensor operations are chosen by shape semantics, not merely to make the code run.</td></tr>
+        <tr><td>C</td><td>Autograd cheat sheet</td><td>Gradients flow only through tracked operations on tensors connected to the loss.</td></tr>
+        <tr><td>D</td><td>Deep learning formulas</td><td>Formulas exist to check implementations and numerical scale.</td></tr>
+        <tr><td>E</td><td>Debugging decision tree</td><td>Start from the most local error and move outward.</td></tr>
+        <tr><td>F</td><td>GPU and memory</td><td>GPU memory is parameters, gradients, optimizer state, activations, workspace, and the caching allocator.</td></tr>
+        <tr><td>G</td><td>Reproducibility checklist</td><td>Reproducibility is a property of the whole pipeline, not of a single seed.</td></tr>
+        <tr><td>H</td><td>Testing strategy</td><td>A model requires unit, integration, numerical, regression, and serving-contract tests.</td></tr>
+        <tr><td>I</td><td>Production quality gates</td><td>Release only when both model quality and system quality meet agreed thresholds.</td></tr>
+        <tr><td>J</td><td>Glossary I (A&ndash;M)</td><td>Autograd, batch, checkpoint, gradient, module.</td></tr>
+        <tr><td>K</td><td>Glossary II (N&ndash;Z)</td><td>Optimizer, rank, tensor, throughput, warm-up.</td></tr>
+        <tr><td>L</td><td>Official references</td><td>Primary documentation to consult when versions change.</td></tr>
+    </table>
+
+    <p>
+        Appendix A is the operational core of the set. By fixing the cell order of every notebook &mdash; metadata, install, imports, seed, config, data, model, training, evaluation, export, conclusion &mdash; and adding four rules (separate configuration cells from implementation, wrap repeated stages in functions, avoid undocumented globals, assert on shape and finiteness), it turns the book's principles into a template that can be copied rather than remembered.
+    </p>
+    <p>
+        Appendix G is worth isolating for its framing. Reproducibility is defined as a property of the complete pipeline rather than of a seed: seeds must be fixed for Python, NumPy, CPU, and CUDA; package versions and configuration must be stored; the data split and preprocessing must be recorded; and the hardware and determinism mode must be documented. This is the same claim the training chapters make when they require that experiments persist seed, configuration, metric, and package versions &mdash; stated once in general form so it can be cited from anywhere in the book.
+    </p>
+    <p>
+        Appendix F similarly resolves a recurring confusion by enumerating GPU memory as six distinct components and warning against equating reserved with allocated memory &mdash; a distinction that determines whether an out-of-memory diagnosis is correct, and one that the memory-efficiency and FSDP chapters both depend on.
+    </p>
+
+    <h2>12. Release Discipline</h2>
+    <p>
+        Appendix I states the release condition directly: a model may ship only when both model quality and system quality meet agreed thresholds. Four checks are listed, and the agreement is required to precede the optimisation work rather than follow it.
+    </p>
+
+    <table>
+        <caption>Table 10: Production quality gates</caption>
+        <tr><th>#</th><th>Gate</th></tr>
+        <tr><td>1</td><td>The primary metric exceeds the baseline.</td></tr>
+        <tr><td>2</td><td>Latency and memory satisfy the SLO.</td></tr>
+        <tr><td>3</td><td>Robustness and subgroup tests pass.</td></tr>
+        <tr><td>4</td><td>Rollback and monitoring are available.</td></tr>
+    </table>
+
+    <p>
+        The capstone in Chapter 48 assembles the whole book against these gates. Its mental model is <code>problem framing &rarr; baseline &rarr; deployment &rarr; governance</code>; its baseline notebook is a nine-line skeleton that seeds the run, builds data and model from a configuration dictionary, trains, evaluates on the held-out loader, exports the best model, and runs the quality gates over the resulting metrics and artefact before printing them. Its failure signal is the one that motivates the entire structure of the handbook: <em>technical optimisation performed before the success criteria were agreed</em>.
+    </p>
+    <p>
+        Read against Chapter 1, whose failure signal is a tensor still sitting on the CPU after a GPU was selected, the pairing describes the book's arc compactly. The first chapter's defect is local, immediate, and diagnosable in a single print statement. The last chapter's defect is organisational, delayed, and diagnosable only in retrospect. Both are failures of the same kind &mdash; acting before verifying &mdash; and both are caught by the same habit applied at different scales.
+    </p>
+
+    <h2>13. Discussion</h2>
+    <p>
+        The strongest property of the design is the compounding effect of invariance. Because the twelve sections repeat forty-eight times, the reader executes the contract analysis, the controlled experiment, the fair benchmark, and the six-step debug loop forty-eight times each. No individual instance is remarkable; the aggregate is a set of engineering habits that transfer to code the book never discusses. A learner who has followed the sequence has, by construction, written forty-eight benchmark harnesses with warm-up and synchronisation and reproduced forty-eight failures deliberately, which is a substantially different outcome from having read about either practice once.
+    </p>
+    <p>
+        The cost of that design is equally direct. A fixed twelve-page budget imposes uniform depth on subjects of non-uniform difficulty: broadcasting and fully sharded data parallelism receive the same page count, and while the front matter acknowledges this by flagging the distributed and deployment chapters as needing more than the nominal 60&ndash;120 minutes, the page allocation itself does not vary. Chapters in Parts IX and XI therefore function best as structured entry points and checklists into topics whose full treatment lies in primary documentation, which is a defensible role but a narrower one than the foundational chapters play. The template's repeated scaffolding &mdash; the identical setup cell, the identical benchmark harness, the identical debug helper &mdash; also consumes real page area, a cost paid deliberately so that any chapter can be read on its own.
+    </p>
+    <p>
+        A second constraint is the target environment. Colab is what makes the book immediately runnable for a reader with only a browser and a Google account, and its ephemerality is genuinely useful for teaching state discipline. It also bounds what the exercises can demonstrate honestly: the DDP chapter's baseline is a <code>torchrun --standalone --nproc_per_node=2</code> single-node template, and multi-node coordination and fault tolerance are necessarily taught as contracts and procedures rather than as cells a reader can execute. The handbook is explicit about this framing &mdash; the artefact for that chapter is a single-node DDP template &mdash; which is the right way to handle the limitation, but a reader whose actual problem is a multi-node cluster should treat those chapters as preparation rather than as rehearsal.
+    </p>
+    <p>
+        Third, the book is version-anchored. It targets PyTorch 2.11+ and discusses 2.13 compatibility in the compiler chapters, verified its reference documentation on 29 August 2026, and prints a version warning in the front matter instructing the reader to run the diagnostic cell before executing anything. The API surface will move. The appendix layer is the structural answer &mdash; cheat sheets, formulas, the debugging tree, the memory model, the reproducibility checklist, the testing strategy, and the quality gates are all stated in terms that survive a release &mdash; and Appendix L exists specifically to send the reader to primary sources when a version changes. The durable content of the book is the decision structure; the version numbers are scaffolding.
+    </p>
+    <p>
+        A final observation concerns the language. The handbook is written in Indonesian while retaining English technical terms unchanged &mdash; shape contract, state contract, warm-up, throughput, rank, failure mode. That mixed register is a deliberate choice for a readership that will work in Indonesian teams and read English documentation, and it is what makes the book directly usable as a classroom text in Indonesian universities without isolating its readers from the primary literature.
+    </p>
+
+    <h2>14. Conclusion</h2>
+    <p>
+        The Mastering PyTorch Handbook argues that the binding constraint on a working deep learning engineer is not API knowledge but the possession of verification habits: knowing what shape to expect, what state must survive, what evidence a performance claim requires, and what symptom indicates that a guarantee has broken. Its structural response is to make those habits mandatory sections of every chapter rather than advice appended to some of them, and to hold that structure fixed across forty-eight chapters so that repetition does the teaching.
+    </p>
+    <p>
+        Three of its positions should outlast the version it targets. Measurement precedes optimisation, and a benchmark without warm-up and synchronisation is not evidence. Reproducibility is a property of the whole pipeline &mdash; seeds, versions, splits, hardware, determinism mode &mdash; and never of a seed alone. And a model is not finished when it trains, but when its contract has been tested, its failure mode reproduced, its quality gates agreed in advance, and its rollback path made available. The compiler flags, the sharding strategies, and the export formats will change; those three claims will not.
+    </p>
+
+    <h2>References</h2>
+    <div class="references">
+        <ol>
+            <li>PyTorch Foundation. &ldquo;PyTorch Documentation (stable).&rdquo; <em>docs.pytorch.org/docs/stable/</em>, verified 29 August 2026.</li>
+            <li>PyTorch Foundation. &ldquo;PyTorch Tutorials.&rdquo; <em>docs.pytorch.org/tutorials/</em>, verified 29 August 2026.</li>
+            <li>Google Research. &ldquo;Google Colaboratory: Frequently Asked Questions.&rdquo; <em>research.google.com/colaboratory/faq.html</em>, verified 29 August 2026.</li>
+            <li>PyTorch Foundation. &ldquo;ExecuTorch Documentation.&rdquo; <em>docs.pytorch.org/executorch/</em>, verified 29 August 2026.</li>
+            <li>Captum Team. &ldquo;Captum: Model Interpretability for PyTorch.&rdquo; <em>captum.ai</em>, verified 29 August 2026.</li>
+            <li>ONNX Community. &ldquo;Open Neural Network Exchange.&rdquo; <em>onnx.ai</em>, verified 29 August 2026.</li>
+            <li>Paszke, A., et al. &ldquo;PyTorch: An Imperative Style, High-Performance Deep Learning Library.&rdquo; NeurIPS, 2019.</li>
+            <li>Ansel, J., et al. &ldquo;PyTorch 2: Faster Machine Learning Through Dynamic Python Bytecode Transformation and Graph Compilation.&rdquo; ASPLOS, 2024.</li>
+            <li>Li, S., et al. &ldquo;PyTorch Distributed: Experiences on Accelerating Data Parallel Training.&rdquo; VLDB, 2020.</li>
+            <li>Zhao, Y., et al. &ldquo;PyTorch FSDP: Experiences on Scaling Fully Sharded Data Parallel.&rdquo; VLDB, 2023.</li>
+            <li>Micikevicius, P., et al. &ldquo;Mixed Precision Training.&rdquo; ICLR, 2018.</li>
+            <li>Chen, T., et al. &ldquo;Training Deep Nets with Sublinear Memory Cost.&rdquo; arXiv:1604.06174, 2016.</li>
+            <li>Kingma, D. P., and Ba, J. &ldquo;Adam: A Method for Stochastic Optimization.&rdquo; ICLR, 2015.</li>
+            <li>Loshchilov, I., and Hutter, F. &ldquo;Decoupled Weight Decay Regularization.&rdquo; ICLR, 2019.</li>
+            <li>Ioffe, S., and Szegedy, C. &ldquo;Batch Normalization: Accelerating Deep Network Training by Reducing Internal Covariate Shift.&rdquo; ICML, 2015.</li>
+            <li>He, K., et al. &ldquo;Deep Residual Learning for Image Recognition.&rdquo; CVPR, 2016.</li>
+            <li>Vaswani, A., et al. &ldquo;Attention Is All You Need.&rdquo; NeurIPS, 2017.</li>
+            <li>Dosovitskiy, A., et al. &ldquo;An Image Is Worth 16x16 Words: Transformers for Image Recognition at Scale.&rdquo; ICLR, 2021.</li>
+            <li>Kingma, D. P., and Welling, M. &ldquo;Auto-Encoding Variational Bayes.&rdquo; ICLR, 2014.</li>
+            <li>Goodfellow, I., et al. &ldquo;Generative Adversarial Networks.&rdquo; NeurIPS, 2014.</li>
+            <li>Ho, J., Jain, A., and Abbeel, P. &ldquo;Denoising Diffusion Probabilistic Models.&rdquo; NeurIPS, 2020.</li>
+            <li>Radford, A., et al. &ldquo;Learning Transferable Visual Models From Natural Language Supervision.&rdquo; ICML, 2021.</li>
+            <li>Jacob, B., et al. &ldquo;Quantization and Training of Neural Networks for Efficient Integer-Arithmetic-Only Inference.&rdquo; CVPR, 2018.</li>
+            <li>Sundararajan, M., Taly, A., and Yan, Q. &ldquo;Axiomatic Attribution for Deep Networks.&rdquo; ICML, 2017.</li>
+            <li>Madry, A., et al. &ldquo;Towards Deep Learning Models Resistant to Adversarial Attacks.&rdquo; ICLR, 2018.</li>
+            <li>Sculley, D., et al. &ldquo;Hidden Technical Debt in Machine Learning Systems.&rdquo; NeurIPS, 2015.</li>
+        </ol>
+    </div>
+
+    <div class="paper-footer">
+        <p>&copy; 2026 Romi Nur Ismanto. All rights reserved.</p>
+        <p>Full handbook: <a href="https://rominur.com/Mastering-PyTorch-Handbook.pdf">rominur.com/Mastering-PyTorch-Handbook.pdf</a> &middot; 600 pages, Professional Edition, 2026</p>
+        <p>Target environment: Google Colab with PyTorch 2.11+. Reference documentation verified 29 August 2026; APIs and cloud runtimes change &mdash; consult the current stable documentation.</p>
+    </div>
+
+</body>
+</html>
