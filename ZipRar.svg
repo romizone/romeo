@@ -1,0 +1,85 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 400 300">
+  <defs>
+    <linearGradient id="zrbg" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#10140f"/>
+      <stop offset="100%" style="stop-color:#171d16"/>
+    </linearGradient>
+    <linearGradient id="zrcopper" x1="0%" y1="0%" x2="100%" y2="0%">
+      <stop offset="0%" style="stop-color:#d4783a"/>
+      <stop offset="100%" style="stop-color:#8fb392"/>
+    </linearGradient>
+  </defs>
+  <rect width="400" height="300" fill="url(#zrbg)" rx="16"/>
+
+  <!-- app window -->
+  <rect x="40" y="26" width="320" height="206" rx="10" fill="#10140f" stroke="url(#zrcopper)" stroke-width="2"/>
+  <rect x="40" y="26" width="320" height="24" rx="10" fill="#171d16"/>
+  <rect x="40" y="40" width="320" height="10" fill="#171d16"/>
+  <circle cx="56" cy="38" r="4" fill="#c44b3a"/>
+  <circle cx="70" cy="38" r="4" fill="#e0b25a"/>
+  <circle cx="84" cy="38" r="4" fill="#8fb392"/>
+  <rect x="102" y="32" width="146" height="12" rx="6" fill="#0a0d09"/>
+  <text x="175" y="41" font-family="ui-monospace,Menlo,monospace" font-size="7" fill="#8b9284" text-anchor="middle">ziprar.rominur.com</text>
+
+  <!-- mode tabs -->
+  <rect x="52" y="60" width="60" height="16" rx="8" fill="#d4783a"/>
+  <text x="82" y="71" font-family="system-ui,Arial,sans-serif" font-size="7.5" font-weight="700" fill="#10140f" text-anchor="middle">Kompres</text>
+  <rect x="116" y="60" width="60" height="16" rx="8" fill="#0a0d09" stroke="#2a3327" stroke-width="1"/>
+  <text x="146" y="71" font-family="system-ui,Arial,sans-serif" font-size="7.5" fill="#8b9284" text-anchor="middle">Ekstrak</text>
+
+  <!-- dropzone with folder -->
+  <rect x="52" y="84" width="124" height="52" rx="6" fill="#0a0d09" stroke="#2a3327" stroke-width="1" stroke-dasharray="4 3"/>
+  <path d="M100 100 h10 l3 4 h13 v14 h-26 z" fill="none" stroke="#8fb392" stroke-width="1.6" stroke-linejoin="round"/>
+  <text x="114" y="130" font-family="system-ui,Arial,sans-serif" font-size="7" fill="#8b9284" text-anchor="middle">seret file atau folder</text>
+
+  <!-- format grid -->
+  <g font-family="system-ui,Arial,sans-serif" font-size="6.5" font-weight="700">
+    <rect x="52" y="144" width="38" height="15" rx="4" fill="#d4783a"/>
+    <text x="71" y="154.5" fill="#10140f" text-anchor="middle">ZIP</text>
+    <rect x="94" y="144" width="38" height="15" rx="4" fill="#0a0d09" stroke="#2a3327" stroke-width="1"/>
+    <text x="113" y="154.5" fill="#efe6d2" text-anchor="middle">7Z</text>
+    <rect x="136" y="144" width="40" height="15" rx="4" fill="#0a0d09" stroke="#2a3327" stroke-width="1"/>
+    <text x="156" y="154.5" fill="#efe6d2" text-anchor="middle">TAR.GZ</text>
+    <rect x="52" y="163" width="38" height="15" rx="4" fill="#0a0d09" stroke="#2a3327" stroke-width="1"/>
+    <text x="71" y="173.5" fill="#efe6d2" text-anchor="middle">TAR.XZ</text>
+    <rect x="94" y="163" width="38" height="15" rx="4" fill="#0a0d09" stroke="#2a3327" stroke-width="1"/>
+    <text x="113" y="173.5" fill="#efe6d2" text-anchor="middle">BZ2</text>
+    <rect x="136" y="163" width="40" height="15" rx="4" fill="#0a0d09" stroke="#2a3327" stroke-width="1"/>
+    <text x="156" y="173.5" fill="#efe6d2" text-anchor="middle">ZSTD</text>
+  </g>
+
+  <!-- password field -->
+  <rect x="52" y="184" width="124" height="16" rx="4" fill="#0a0d09" stroke="#2a3327" stroke-width="1"/>
+  <path d="M60 190 v-2 a2.6 2.6 0 0 1 5.2 0 v2 M58.8 190 h7.6 v5 h-7.6 z" fill="none" stroke="#e0b25a" stroke-width="1.1" stroke-linejoin="round"/>
+  <text x="72" y="196" font-family="ui-monospace,Menlo,monospace" font-size="7.5" fill="#8b9284">&#8226;&#8226;&#8226;&#8226;&#8226;&#8226;&#8226;&#8226;  AES-256</text>
+
+  <!-- right: engine routing -->
+  <rect x="188" y="60" width="160" height="140" rx="6" fill="#0a0d09" stroke="#2a3327" stroke-width="1"/>
+  <text x="196" y="73" font-family="system-ui,Arial,sans-serif" font-size="6" fill="#8b9284">MESIN DI BROWSER</text>
+
+  <rect x="196" y="80" width="144" height="24" rx="4" fill="#171d16" stroke="#d4783a" stroke-width="1"/>
+  <text x="203" y="90" font-family="ui-monospace,Menlo,monospace" font-size="6.5" fill="#d4783a">fflate</text>
+  <text x="203" y="99" font-family="system-ui,Arial,sans-serif" font-size="6" fill="#8b9284">ZIP tulis + jalur cepat baca</text>
+
+  <rect x="196" y="108" width="144" height="24" rx="4" fill="#171d16" stroke="#8fb392" stroke-width="1"/>
+  <text x="203" y="118" font-family="ui-monospace,Menlo,monospace" font-size="6.5" fill="#8fb392">libarchive.wasm</text>
+  <text x="203" y="127" font-family="system-ui,Arial,sans-serif" font-size="6" fill="#8b9284">RAR v4/v5, ISO, CAB, CPIO</text>
+
+  <rect x="196" y="136" width="144" height="24" rx="4" fill="#171d16" stroke="#e0b25a" stroke-width="1"/>
+  <text x="203" y="146" font-family="ui-monospace,Menlo,monospace" font-size="6.5" fill="#e0b25a">7zip.wasm</text>
+  <text x="203" y="155" font-family="system-ui,Arial,sans-serif" font-size="6" fill="#8b9284">7Z + sandi, bzip2 / xz / zstd</text>
+
+  <!-- own tar writer -->
+  <rect x="196" y="164" width="144" height="24" rx="4" fill="#171d16" stroke="#2a3327" stroke-width="1"/>
+  <text x="203" y="174" font-family="ui-monospace,Menlo,monospace" font-size="6.5" fill="#efe6d2">tar.ts</text>
+  <text x="203" y="183" font-family="system-ui,Arial,sans-serif" font-size="6" fill="#8b9284">penulis ustar 512-byte sendiri</text>
+
+  <!-- bottom bar: no upload -->
+  <rect x="52" y="208" width="296" height="16" rx="6" fill="#0a0d09" stroke="#2a3327" stroke-width="1"/>
+  <circle cx="63" cy="216" r="3.2" fill="#8fb392"/>
+  <text x="72" y="219" font-family="system-ui,Arial,sans-serif" font-size="6.5" fill="#8b9284">0 byte terkirim &#183; tanpa server &#183; memori dibersihkan setelah unduh</text>
+
+  <!-- caption -->
+  <text x="200" y="260" font-family="Georgia,serif" font-size="20" font-weight="700" fill="#efe6d2" text-anchor="middle">ZipRar</text>
+  <text x="200" y="280" font-family="system-ui,Arial,sans-serif" font-size="10.5" fill="#8b9284" text-anchor="middle">Arsip di browser &#183; file tidak pernah meninggalkan perangkat</text>
+</svg>
