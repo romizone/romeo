@@ -1,0 +1,95 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 400 300">
+  <defs>
+    <linearGradient id="ppbg" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#07140f"/>
+      <stop offset="100%" style="stop-color:#0c1f18"/>
+    </linearGradient>
+    <linearGradient id="ppspark" x1="0%" y1="0%" x2="100%" y2="0%">
+      <stop offset="0%" style="stop-color:#d6ff4a"/>
+      <stop offset="100%" style="stop-color:#3ee0a4"/>
+    </linearGradient>
+  </defs>
+  <rect width="400" height="300" fill="url(#ppbg)" rx="16"/>
+
+  <!-- app window -->
+  <rect x="40" y="26" width="320" height="206" rx="10" fill="#07140f" stroke="url(#ppspark)" stroke-width="2"/>
+  <rect x="40" y="26" width="320" height="24" rx="10" fill="#0c1f18"/>
+  <rect x="40" y="40" width="320" height="10" fill="#0c1f18"/>
+  <circle cx="56" cy="38" r="4" fill="#ff6b6b"/>
+  <circle cx="70" cy="38" r="4" fill="#d6ff4a"/>
+  <circle cx="84" cy="38" r="4" fill="#3ee0a4"/>
+  <rect x="100" y="32" width="150" height="12" rx="6" fill="#050f0b"/>
+  <text x="175" y="41" font-family="system-ui,Arial,sans-serif" font-size="7.5" fill="#6a8478" text-anchor="middle">pikapiku.rominur.com</text>
+
+  <!-- left column: dropzone, mic, quota -->
+  <rect x="52" y="60" width="140" height="60" rx="6" fill="#050f0b" stroke="#1c3a2d" stroke-width="1" stroke-dasharray="4 3"/>
+  <path d="M116 74 L116 90 M110 84 L116 90 L122 84" stroke="#d6ff4a" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
+  <text x="122" y="103" font-family="system-ui,Arial,sans-serif" font-size="8" fill="#9bb5a8" text-anchor="middle">Letakkan WAV / MP3 / MP4</text>
+  <text x="122" y="113" font-family="system-ui,Arial,sans-serif" font-size="7" fill="#6a8478" text-anchor="middle">maks. 5 jam &#183; 500 MB</text>
+
+  <!-- mic button + live waveform -->
+  <rect x="52" y="128" width="140" height="26" rx="13" fill="#050f0b" stroke="#1c3a2d" stroke-width="1"/>
+  <circle cx="68" cy="141" r="8" fill="url(#ppspark)"/>
+  <rect x="66.6" y="135.4" width="2.8" height="6" rx="1.4" fill="#07140f"/>
+  <path d="M64.4 140.2 a3.6 3.6 0 0 0 7.2 0" stroke="#07140f" stroke-width="1.2" fill="none" stroke-linecap="round"/>
+  <path d="M68 143.8 v2.2" stroke="#07140f" stroke-width="1.2" stroke-linecap="round"/>
+  <g fill="#3ee0a4">
+    <rect x="84" y="138" width="2.4" height="6" rx="1.2"/>
+    <rect x="90" y="134" width="2.4" height="14" rx="1.2"/>
+    <rect x="96" y="139" width="2.4" height="4" rx="1.2"/>
+    <rect x="102" y="132" width="2.4" height="18" rx="1.2"/>
+    <rect x="108" y="136" width="2.4" height="10" rx="1.2"/>
+    <rect x="114" y="133" width="2.4" height="16" rx="1.2"/>
+    <rect x="120" y="139" width="2.4" height="4" rx="1.2"/>
+    <rect x="126" y="135" width="2.4" height="12" rx="1.2"/>
+  </g>
+  <text x="160" y="144" font-family="system-ui,Arial,sans-serif" font-size="7.5" fill="#6a8478" text-anchor="middle">rekam mic</text>
+
+  <!-- quota tiles -->
+  <rect x="52" y="162" width="67" height="26" rx="5" fill="#050f0b" stroke="#1c3a2d" stroke-width="1"/>
+  <text x="58" y="172" font-family="system-ui,Arial,sans-serif" font-size="5.5" fill="#6a8478">KUOTA HARI INI</text>
+  <text x="58" y="183" font-family="ui-monospace,Menlo,monospace" font-size="9" fill="#d6ff4a">142 mnt</text>
+  <rect x="125" y="162" width="67" height="26" rx="5" fill="#050f0b" stroke="#1c3a2d" stroke-width="1"/>
+  <text x="131" y="172" font-family="system-ui,Arial,sans-serif" font-size="5.5" fill="#6a8478">JOB JAM INI</text>
+  <text x="131" y="183" font-family="ui-monospace,Menlo,monospace" font-size="9" fill="#e8f6ee">2 / 4</text>
+
+  <!-- right column: transcript blocks with speakers -->
+  <rect x="204" y="60" width="144" height="128" rx="6" fill="#050f0b" stroke="#1c3a2d" stroke-width="1"/>
+  <text x="212" y="72" font-family="ui-monospace,Menlo,monospace" font-size="6" fill="#3ee0a4">[00:00 - 00:24]</text>
+  <text x="212" y="82" font-family="system-ui,Arial,sans-serif" font-size="6.5" font-weight="700" fill="#d6ff4a">Speaker 0:</text>
+  <g fill="#1c3a2d">
+    <rect x="212" y="87" width="126" height="4.5" rx="2.25"/>
+    <rect x="212" y="95" width="112" height="4.5" rx="2.25"/>
+  </g>
+  <text x="212" y="112" font-family="ui-monospace,Menlo,monospace" font-size="6" fill="#3ee0a4">[00:24 - 00:51]</text>
+  <text x="212" y="122" font-family="system-ui,Arial,sans-serif" font-size="6.5" font-weight="700" fill="#d6ff4a">Speaker 1:</text>
+  <g fill="#1c3a2d">
+    <rect x="212" y="127" width="120" height="4.5" rx="2.25"/>
+    <rect x="212" y="135" width="126" height="4.5" rx="2.25"/>
+    <rect x="212" y="143" width="88" height="4.5" rx="2.25"/>
+  </g>
+  <!-- block being polished by the AI editor -->
+  <rect x="208" y="152" width="136" height="30" rx="4" fill="#0c1f18" stroke="#d6ff4a" stroke-width="1"/>
+  <text x="214" y="163" font-family="system-ui,Arial,sans-serif" font-size="6" fill="#d6ff4a">&#10024; editor AI merapikan&#8230;</text>
+  <g fill="#2a4d3c">
+    <rect x="214" y="169" width="106" height="4.5" rx="2.25"/>
+    <rect x="214" y="176" width="72" height="4.5" rx="2.25"/>
+  </g>
+
+  <!-- chunk pipeline strip -->
+  <rect x="52" y="198" width="296" height="22" rx="6" fill="#050f0b" stroke="#1c3a2d" stroke-width="1"/>
+  <text x="60" y="212" font-family="system-ui,Arial,sans-serif" font-size="6" fill="#6a8478">POTONG DI BROWSER</text>
+  <g>
+    <rect x="140" y="204" width="22" height="10" rx="2" fill="#3ee0a4"/>
+    <rect x="166" y="204" width="22" height="10" rx="2" fill="#3ee0a4"/>
+    <rect x="192" y="204" width="22" height="10" rx="2" fill="#d6ff4a"/>
+    <rect x="218" y="204" width="22" height="10" rx="2" fill="#1c3a2d"/>
+    <rect x="244" y="204" width="22" height="10" rx="2" fill="#1c3a2d"/>
+  </g>
+  <path d="M274 209 L288 209 M283 205 L288 209 L283 213" stroke="#6a8478" stroke-width="1.4" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
+  <text x="320" y="212" font-family="system-ui,Arial,sans-serif" font-size="6" fill="#9bb5a8" text-anchor="middle">lalu dihancurkan</text>
+
+  <!-- caption -->
+  <text x="200" y="260" font-family="Georgia,serif" font-size="20" font-weight="700" fill="#e8f6ee" text-anchor="middle">Pikapiku</text>
+  <text x="200" y="280" font-family="system-ui,Arial,sans-serif" font-size="10.5" fill="#9bb5a8" text-anchor="middle">Transkrip web &#183; media tidak pernah menyentuh server</text>
+</svg>

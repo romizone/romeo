@@ -1,0 +1,282 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Pikapiku: Client-Side Chunking and a No-Retention Schema for Long-Form Transcription on Serverless Infrastructure</title>
+    <meta name="description" content="Pikapiku transcribes up to five hours of audio on a serverless platform with a 90-second function limit by moving the orchestration into the browser. This paper describes overlap-based chunk planning, the bitrate ladder that fits a body limit, non-retention enforced by the database schema, and quota reserved before the upstream call.">
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body {
+            font-family: 'Times New Roman', Times, Georgia, serif;
+            line-height: 1.6;
+            color: #111;
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 60px 40px;
+            background: #fff;
+        }
+        .paper-title { text-align: center; margin-bottom: 30px; }
+        .paper-title h1 { font-size: 1.65em; font-weight: 700; line-height: 1.3; margin-bottom: 18px; }
+        .paper-title .authors { font-size: 1.05em; margin-bottom: 4px; }
+        .paper-title .affiliation { font-size: 0.95em; color: #555; font-style: italic; }
+        .paper-title .email { font-size: 0.9em; color: #1a73e8; margin-top: 4px; }
+        .paper-title .date { font-size: 0.9em; color: #777; margin-top: 10px; }
+        .abstract { background: #f9f9f9; border-left: 4px solid #333; padding: 18px 22px; margin: 30px 0; }
+        .abstract h2 { font-size: 1em; text-transform: uppercase; letter-spacing: 1px; margin-bottom: 8px; border: none; padding: 0; }
+        .abstract p { font-size: 0.95em; color: #333; text-align: justify; }
+        .keywords { font-size: 0.9em; color: #555; margin-bottom: 30px; }
+        .keywords strong { color: #333; }
+        h2 { font-size: 1.2em; font-weight: 700; margin-top: 30px; margin-bottom: 12px; border-bottom: 1px solid #ddd; padding-bottom: 4px; }
+        h3 { font-size: 1.05em; font-weight: 700; margin-top: 18px; margin-bottom: 8px; }
+        p { text-align: justify; margin-bottom: 12px; font-size: 0.97em; }
+        table { width: 100%; border-collapse: collapse; margin: 16px 0; font-size: 0.9em; }
+        table th, table td { border: 1px solid #ccc; padding: 8px 12px; text-align: left; vertical-align: top; }
+        table th { background: #f0f0f0; font-weight: 700; }
+        table caption { font-size: 0.88em; font-style: italic; color: #555; margin-bottom: 6px; text-align: left; }
+        code { font-family: 'Courier New', Courier, monospace; background: #f4f4f4; padding: 2px 5px; border-radius: 3px; font-size: 0.88em; }
+        pre { font-family: 'Courier New', Courier, monospace; background: #f4f4f4; border: 1px solid #e0e0e0; border-radius: 4px; padding: 12px 16px; font-size: 0.85em; line-height: 1.5; overflow-x: auto; margin: 14px 0; }
+        blockquote { margin: 16px 0 16px 24px; padding-left: 16px; border-left: 3px solid #c9b083; font-style: italic; color: #444; font-size: 0.95em; }
+        ul, ol { margin: 10px 0 12px 24px; font-size: 0.97em; }
+        li { margin-bottom: 4px; }
+        .pipeline { background: #f7f9fc; border: 1px solid #d4e2f7; border-radius: 6px; padding: 16px 20px; text-align: center; font-size: 0.95em; color: #1a5276; margin: 16px 0; letter-spacing: 0.3px; }
+        .references { font-size: 0.88em; }
+        .references ol { margin-left: 20px; }
+        .references li { margin-bottom: 8px; color: #444; }
+        .paper-footer { text-align: center; font-size: 0.8em; color: #aaa; margin-top: 50px; padding-top: 20px; border-top: 1px solid #eee; }
+        .paper-footer a { color: #1a73e8; }
+        @media print { body { padding: 20px; } }
+        @media (max-width: 600px) { body { padding: 20px 15px; } .paper-title h1 { font-size: 1.3em; } table { font-size: 0.82em; } }
+    </style>
+</head>
+<body>
+
+    <div class="paper-title">
+        <h1>Pikapiku: Client-Side Chunking and a No-Retention Schema for Long-Form Transcription on Serverless Infrastructure</h1>
+        <div class="authors">Romi Nur Ismanto</div>
+        <div class="affiliation">Independent AI Research Lab, Jakarta, Indonesia</div>
+        <div class="email">hello@rominur.com</div>
+        <div class="date">August 2026</div>
+    </div>
+
+    <div class="abstract">
+        <h2>Abstract</h2>
+        <p>Pikapiku, deployed at <code>pikapiku.rominur.com</code>, transcribes up to five hours of audio on a platform whose functions are capped at ninety seconds and whose request bodies are capped at roughly four and a half megabytes. Those two numbers make the obvious architecture impossible: a five-hour file cannot be uploaded in one request, and no single function invocation can transcribe it. The conventional answer is object storage plus a job queue plus a worker, which means the user's media comes to rest on someone else's disk. Pikapiku takes the other branch and moves the orchestration into the browser. <code>ffmpeg.wasm</code> cuts the file into roughly four-and-a-half-minute chunks inside the tab; each chunk is re-encoded to mono 16&nbsp;kHz MP3, walked down a bitrate ladder until it fits the body limit, sent to a short-lived function that forwards it to a speech model, and then discarded. This paper describes four decisions that make that structure work. First, chunks overlap by two seconds and the overlap is removed on the way back rather than on the way out, so a word spoken across a cut is transcribed with context on both sides but appears exactly once. Second, non-retention is enforced by the database schema rather than promised in a privacy policy: the <code>Transcript</code> model has columns for text, SRT and timed cues and no column for media, so there is no code path that could store a recording, and the decoded chunk buffer is zeroed in a <code>finally</code> block. Third, quota is reserved before the upstream call and keyed on a client-supplied job identifier, so a rejected request costs nothing and a sixty-eight-chunk file consumes one job slot rather than sixty-eight. Fourth, transcription and copy-editing are separated into two models with different prices and different prompts, and the editing pass degrades block by block &mdash; a batch the editor cannot process is split in half, retried, and finally passed through unedited, so the transcript is never lost to a failure in the pass that was only supposed to fix its typos.</p>
+    </div>
+
+    <div class="keywords">
+        <strong>Keywords:</strong> speech-to-text, long-form transcription, client-side media processing, WebAssembly, ffmpeg.wasm, serverless constraints, chunk overlap, speaker diarization, data minimisation, rate limiting, Next.js, Indonesian language
+    </div>
+
+    <h2>1. Introduction</h2>
+    <p>
+        Transcription is one of the few AI features whose privacy stakes are obvious to everyone who uses it. The input is a recording of people talking &mdash; an interview, a meeting, a consultation &mdash; and the ordinary way to process it is to upload the file to a server, put it in a bucket, and hand a worker the object key. Every step of that pipeline is a place the recording persists, and every one of those places is something the user is asked to take on trust.
+    </p>
+    <p>
+        Pikapiku is built on the observation that the platform constraints and the privacy goal push in the same direction. A serverless function that must finish in ninety seconds and accept a body of no more than about four and a half megabytes cannot receive a five-hour recording at all. Rather than routing around that limit with storage and a queue, the application accepts it as a design brief: if the server can only ever see a few megabytes at a time, then let the browser own the file, cut it locally, and send the server nothing but short compressed slices that it forwards and forgets.
+    </p>
+    <p>
+        The result is an application in which the strongest privacy claim is also the cheapest one to make. There is no bucket to secure, no lifecycle rule to configure, no deletion job to verify. The recording exists in the tab's memory and in the transient body of a few dozen HTTPS requests, and nowhere else.
+    </p>
+
+    <h2>2. The Wall the Design Is Built Against</h2>
+    <p>
+        The constants below are the concrete edges of the problem. They live in <code>src/lib/limits.ts</code> and <code>src/lib/config.ts</code>, are overridable by environment variable, and are exposed to the client so that the interface can state them rather than discover them by failing.
+    </p>
+
+    <table>
+        <caption>Table 1. Operating limits, with the constraint each one answers.</caption>
+        <tr><th>Limit</th><th>Default</th><th>Why this number</th></tr>
+        <tr><td>Function duration</td><td>90&nbsp;s per chunk</td><td>Platform ceiling; declared as <code>maxDuration</code> on the route handler. One chunk must fit comfortably inside it.</td></tr>
+        <tr><td>Chunk body</td><td>2,516,582&nbsp;bytes</td><td>Kept under the ~4.5&nbsp;MB request-body ceiling after base64 expands the payload by four-thirds.</td></tr>
+        <tr><td>Chunk length</td><td>270&nbsp;s core + 2&nbsp;s overlap</td><td>Long enough that a five-hour file is ~68 requests rather than hundreds; short enough to compress under the body limit.</td></tr>
+        <tr><td>Server chunk ceiling</td><td>360&nbsp;s</td><td>Independent server-side bound, so a hand-crafted request cannot claim an arbitrarily long chunk.</td></tr>
+        <tr><td>Total duration</td><td>5&nbsp;hours</td><td>Read from file metadata in the browser and rejected before any encoding work begins.</td></tr>
+        <tr><td>Upload size</td><td>500&nbsp;MB</td><td>Bounds what the tab must hold in memory. Stereo 44.1&nbsp;kHz WAV exceeds it well before the duration cap does.</td></tr>
+        <tr><td>Daily audio</td><td>5&nbsp;hours per user, UTC day</td><td>Caps the per-minute upstream bill per account.</td></tr>
+        <tr><td>Jobs per hour</td><td>4</td><td>Caps concurrency and burst, independently of total minutes.</td></tr>
+    </table>
+
+    <p>The pipeline that results runs entirely left to right, and the only long-lived process is the browser tab:</p>
+    <div class="pipeline">
+        probe duration &rarr; plan chunks &rarr; cut + encode in tab &rarr; POST one chunk &rarr; STT &rarr; shift cues &rarr; repeat &rarr; polish &rarr; save text only
+    </div>
+
+    <h2>3. Chunk Planning: Overlap In, Overlap Out</h2>
+    <p>
+        Cutting audio at a fixed interval will eventually cut through the middle of a word, and a speech model given a fragment that begins mid-syllable will produce a plausible wrong word rather than an error. The standard mitigation is to overlap the chunks so that every boundary is covered twice. The cost of overlap is duplication: the same speech now appears in two transcripts.
+    </p>
+    <p>
+        <code>planChunks()</code> resolves this by deciding at plan time which copy will be discarded. Each chunk carries a core duration and a <code>skipFirstSec</code> field, which is zero for the first chunk and otherwise the overlap length &mdash; clamped to half the chunk so that a very short final chunk cannot be skipped out of existence. Successive chunks start at <code>start + duration &minus; overlap</code>, and the loop terminates rather than looping forever when advancing would make no progress.
+    </p>
+    <p>
+        The discard itself happens on the return path, in <code>shiftCues()</code>, once the model has already had the benefit of the extra context. Any returned cue that ends inside the skipped region is dropped entirely; a cue that straddles the boundary has its start clamped forward to the skip point; every surviving cue is then translated by the chunk's offset into absolute time. A word spoken across a cut is therefore transcribed twice, with full context both times, and kept once.
+    </p>
+    <p>
+        Two defensive details are worth noting. Cues whose end is not strictly after their start are dropped rather than emitted as zero-length subtitles, and if the model returns no segments at all the client synthesises a single cue spanning the chunk from the plain text response &mdash; so a model that answers with text but no timestamps degrades to a paragraph rather than to nothing.
+    </p>
+
+    <h2>4. The Bitrate Ladder</h2>
+    <p>
+        Each chunk is re-encoded before it is sent: video discarded, downmixed to mono, resampled to 16&nbsp;kHz, and encoded as MP3. That transformation alone typically reduces a chunk by an order of magnitude, and 16&nbsp;kHz mono is the sample rate speech models are trained for, so nothing useful is lost.
+    </p>
+    <p>
+        Because content varies, one bitrate cannot be correct for every chunk. <code>cutChunkMp3()</code> therefore tries 64&nbsp;kbps, then 48, then 32, returning the first result that lands within the byte ceiling and is larger than a trivial floor. If even 32&nbsp;kbps overshoots, it raises a specific error rather than sending an oversized body and collecting a 413 from the platform. A second fallback handles wasm builds compiled without <code>libmp3lame</code>, retrying with the container-inferred encoder.
+    </p>
+    <p>
+        The server does not take the client's word for any of this. The route recomputes the approximate decoded size from the base64 length before allocating, checks the real length after decoding, validates the format against an allow-list, requires the job identifier to match a character-class pattern, and bounds the claimed chunk duration by its own ceiling. Client-side validation is there to give a good error message; server-side validation is there because the client is not trusted.
+    </p>
+
+    <h2>5. Non-Retention as a Schema Property</h2>
+    <p>
+        The privacy claim in the interface &mdash; that media files are never stored on the server &mdash; is not implemented as a deletion step. It is implemented as an absence.
+    </p>
+    <pre>model Transcript {
+  id           String   @id @default(cuid())
+  userId       String
+  source       String
+  title        String
+  language     String
+  durationSec  Int
+  speakerCount Int      @default(0)
+  text         String
+  srt          String
+  cues         Json
+  createdAt    DateTime @default(now())
+}</pre>
+    <p>
+        There is no <code>audioUrl</code>, no <code>blobKey</code>, no bytes column. A future change that tried to persist a recording would have to add a column first, which makes the intent visible in a migration rather than buried in a handler. The schema comments say the same thing in prose &mdash; only text, SRT and cue JSON; source media is never stored &mdash; but the guarantee is the shape of the table, not the comment.
+    </p>
+    <p>
+        Three shorter-lived surfaces are cleaned explicitly. The decoded chunk buffer is zeroed with <code>buffer.fill(0)</code> in the route's <code>finally</code> block, so it is overwritten on the error path as well as the success path. The ffmpeg virtual filesystem entry for the input file is deleted and the worker terminated when a job ends, whether it succeeded, failed, or was cancelled. And the interface's clear action aborts any in-flight request, empties the transcript state, and terminates ffmpeg &mdash; while telling the user plainly that server-side history is <em>not</em> affected, because silently leaving saved text behind after a button labelled &ldquo;delete&rdquo; would be the more damaging kind of surprise.
+    </p>
+
+    <h2>6. Quota Reserved Before the Upstream Call</h2>
+    <p>
+        Rate limiting that runs after the expensive call is accounting, not limiting. In <code>src/app/api/transcribe/route.ts</code> the order is: authenticate, validate, decode, <em>reserve quota</em>, and only then call the speech model. A request that exceeds either limit returns 429 with the current quota state attached and never reaches the provider.
+    </p>
+
+    <table>
+        <caption>Table 2. The two quota dimensions and what each one protects.</caption>
+        <tr><th>Dimension</th><th>Key</th><th>Window</th><th>Protects against</th></tr>
+        <tr><td>Audio seconds</td><td><code>pp:sec:&lt;email&gt;:&lt;UTC day&gt;</code></td><td>Calendar day, 48&nbsp;h TTL</td><td>Sustained per-minute spend on the speech model.</td></tr>
+        <tr><td>Jobs started</td><td><code>pp:jobs:&lt;email&gt;:&lt;UTC hour&gt;</code></td><td>Calendar hour, 2&nbsp;h TTL</td><td>Burst and concurrency, independently of total minutes.</td></tr>
+        <tr><td>Job identity</td><td><code>pp:jobseen:&lt;email&gt;:&lt;jobId&gt;</code></td><td>3&nbsp;h TTL</td><td>Counting one long file as one job rather than as its chunk count.</td></tr>
+    </table>
+
+    <p>
+        The third row carries the interesting subtlety. The client mints one <code>jobId</code> per file and sends it with every chunk. The first chunk to arrive under an unseen identifier consumes a slot from the hourly budget and marks the identifier as seen; the remaining sixty-seven chunks of a five-hour file find the marker and consume only seconds. Without it, the hourly job limit would be reached inside the first minute of any long file, and the limit would be measuring requests when what it means to measure is work started.
+    </p>
+    <p>
+        Two storage backends implement the same interface. When Upstash Redis credentials are present the counters are shared, and the increments are issued as one pipeline so a partially applied reservation cannot leave the day counter raised without the job counter. When they are absent an in-process <code>Map</code> with explicit expiry stands in, which is correct for local development and deliberately understated in the documentation as approximate on a platform that runs many instances &mdash; a limiter whose weakness is documented is safer than one whose weakness is assumed away.
+    </p>
+
+    <h2>7. Two Models, Two Jobs</h2>
+    <p>
+        Raw speech-to-text output and a readable transcript are different artefacts, and the application uses different models to produce them.
+    </p>
+    <p>
+        The first is a speech model, requested with <code>response_format: "verbose_json"</code>, segment-level timestamp granularity and temperature zero. Two are configured: a default transcription model, and a separate model selected when speaker separation is enabled, because diarization support is a property of the model rather than a flag any model will honour. Speaker identifiers arrive under several spellings across providers, so the parser accepts <code>speaker</code>, <code>speaker_id</code> and <code>speakerId</code>, and accepts a numeric string as well as a number. Segments that fail validation are skipped individually rather than failing the chunk, and if the response carries word-level data but no segments, the word array is parsed with the same routine.
+    </p>
+    <p>
+        The second is an inexpensive text model used only as a copy editor, under a prompt written as a list of prohibitions rather than aspirations: fix typos, spelling, punctuation, capitalisation and obvious mishearings; do not change meaning, do not summarise, do not add sentences, do not translate; preserve colloquial register, terminology, abbreviations, names and numbers; and &mdash; the operationally important one &mdash; do not merge or move text between blocks, returning each block separately under the same identifier it was given. The response is constrained to a JSON object and parsed defensively: a non-JSON response, a missing <code>blocks</code> array, a non-integer identifier or an empty string all cause that block to keep its original text rather than to fail the request.
+    </p>
+
+    <h2>8. Polishing Without Losing the Transcript</h2>
+    <p>
+        The editing pass is optional, runs after transcription is complete, and is engineered on the premise that it is the least important stage and must therefore be the one that fails most gracefully.
+    </p>
+    <p>
+        Blocks are grouped into batches bounded on two axes at once &mdash; at most eighteen blocks and at most six thousand characters &mdash; so that neither many short blocks nor few long ones can produce an oversized request. Each batch is sent with absolute block indices, so a response can be applied positionally without depending on ordering. When a batch fails, it is split in half and each half retried; blocks that fail again keep their original speech-to-text text and are counted, and the count is surfaced to the user as a note saying how many blocks were used unedited. The transcript is never lost to an error in the pass that was only supposed to fix its typos.
+    </p>
+    <p>
+        Progress is reported per batch and the partially edited document is rendered as it arrives, so the transcript visibly improves rather than freezing behind a spinner. Abort is propagated distinctly: an <code>AbortError</code> is rethrown rather than counted as a failure, because a user who cancelled does not need to be told that their blocks could not be edited.
+    </p>
+
+    <h2>9. From Cues to a Readable Document</h2>
+    <p>
+        Subtitle cues are the wrong reading unit for a transcript &mdash; they are short, they break mid-sentence, and a two-hour interview becomes thousands of them. <code>cuesToBlocks()</code> merges adjacent cues into paragraph-sized blocks and breaks on any of three conditions.
+    </p>
+
+    <table>
+        <caption>Table 3. Block boundary rules.</caption>
+        <tr><th>Condition</th><th>Threshold</th><th>Reason</th></tr>
+        <tr><td>Speaker changes</td><td>any change</td><td>A paragraph belongs to one speaker.</td></tr>
+        <tr><td>Silence between cues</td><td>&gt; 1.5&nbsp;s</td><td>A pause is the natural paragraph break in speech.</td></tr>
+        <tr><td>Block duration</td><td>&gt; 30&nbsp;s</td><td>An uninterrupted monologue still needs paragraphs to stay readable.</td></tr>
+    </table>
+
+    <p>
+        The rendered form places a bracketed time range on its own line, the speaker label beneath it, and the paragraph beneath that &mdash; the same layout the Word export produces, so what is read on screen and what is downloaded are the same document. Four outputs derive from the same cue array without re-running any model: plain text, a Word file with a title and a generated subtitle recording duration, speaker count, source and whether the AI editor ran, an SRT file with hour-padded comma-separated timestamps, and the cue array itself stored as JSON for the history view.
+    </p>
+
+    <h2>10. The Microphone Path</h2>
+    <p>
+        Recording takes a deliberately different route through the same endpoint. <code>MediaRecorder</code> already emits compressed audio, so the ffmpeg stage is unnecessary; five-second slices are sent directly as WebM/Opus, or as MP4/M4A where Opus is unavailable, with the container negotiated by feature detection rather than assumed. Timestamps accumulate against a running offset so that live cues land on the same absolute timeline as file-based ones, and the same completion path &mdash; block assembly, optional editing, history save &mdash; runs afterwards. Live transcription is therefore not a separate feature with its own output format; it is the same pipeline with a different first stage.
+    </p>
+
+    <h2>11. Authentication and the Error Surface</h2>
+    <p>
+        Access control is a Next.js proxy rather than a check inside each handler. Every path except <code>/login</code> and the authentication API is redirected to sign-in when no session exists, so <code>/api/transcribe</code> is unreachable anonymously; the matcher excludes static assets and images so that the login page renders correctly. The transcribe route repeats the session check anyway and derives the quota key from the session email rather than from anything the client sends, because a limiter keyed on a client-supplied identity is not a limiter.
+    </p>
+    <p>
+        Upstream failures are translated before they are shown. A 401 or 403 becomes a message telling the user the service is unavailable and to contact the site operator; a 402 becomes a message about exhausted service quota; 429 asks them to wait; 408 and 504 suggest a shorter file. The real status code and a truncated response body go to the server log. The user is told what to do, and is not told whether an API key was rejected, which provider was called, or what it returned &mdash; a distinction that matters because the transcription API key is a bearer credential and error text is the most commonly overlooked place it leaks.
+    </p>
+
+    <h2>12. Limits</h2>
+    <p>
+        Encoding is CPU-bound in the tab. <code>ffmpeg.wasm</code> is single-threaded, so on a long file the cutting stage, not the network or the model, usually dominates wall-clock time, and the tab must stay open for the duration. The core is fetched from a public CDN on first use, which keeps media binaries off the server but adds an external dependency to the critical path.
+    </p>
+    <p>
+        The two-second overlap is a heuristic. It covers ordinary word-length spans at a boundary; it does not guarantee that a long word or a run-together phrase is never split, and the de-duplication rule can drop a legitimate cue that happens to end inside the skipped window.
+    </p>
+    <p>
+        Speaker identifiers are per chunk. The model has no memory across requests, so Speaker&nbsp;1 in the third chunk is not necessarily the same person as Speaker&nbsp;1 in the first, and the labels should be read as turn markers rather than as stable identities across a long recording. Reconciling them would require cross-chunk voice embedding, which the current design does not attempt.
+    </p>
+    <p>
+        The upload cap binds earlier than the duration cap for uncompressed input: stereo 44.1&nbsp;kHz WAV runs to roughly 1.9&nbsp;GB over three hours and is rejected long before five hours, so such material must be compressed or exported as mono first &mdash; a limitation the interface states in the rejection message rather than leaving to be discovered. And the editing pass, being a language model, can still normalise a dialect form or an unusual name into something more common despite being instructed not to; it is therefore a checkbox, the unedited text remains the fallback, and the transcript can be re-edited or left alone.
+    </p>
+
+    <h2>13. Conclusion</h2>
+    <p>
+        Pikapiku's architecture follows from taking two platform limits literally instead of engineering around them. A ninety-second function and a four-and-a-half-megabyte body cannot process a five-hour recording, so the recording never goes to the server as a recording: it is cut in the browser, sent as short compressed slices, and forgotten. What began as a constraint produces the privacy property directly &mdash; there is no bucket, no lifecycle policy and no deletion job, because there is nothing stored to delete.
+    </p>
+    <p>
+        Three of its choices generalise past this application. Overlap on the way out and de-duplicate on the way back, so the model gets context and the user gets one copy. Encode guarantees into the schema rather than into a policy document, so violating them requires a migration someone has to review. And place the quota check before the expensive call rather than after it, keyed on something the client cannot forge, so that a limit that is exceeded costs nothing to enforce.
+    </p>
+
+    <h2>References</h2>
+    <div class="references">
+        <ol>
+            <li>Radford, A., et al. &ldquo;Robust Speech Recognition via Large-Scale Weak Supervision.&rdquo; ICML, 2023.</li>
+            <li>Bain, M., et al. &ldquo;WhisperX: Time-Accurate Speech Transcription of Long-Form Audio.&rdquo; INTERSPEECH, 2023.</li>
+            <li>Bredin, H., et al. &ldquo;pyannote.audio: Neural Building Blocks for Speaker Diarization.&rdquo; ICASSP, 2020.</li>
+            <li>Park, T. J., et al. &ldquo;A Review of Speaker Diarization: Recent Advances with Deep Learning.&rdquo; <em>Computer Speech &amp; Language</em> 72, 2022.</li>
+            <li>OpenRouter. &ldquo;API Reference: Audio Transcriptions and Chat Completions.&rdquo; 2026.</li>
+            <li>FFmpeg Project. &ldquo;FFmpeg Documentation.&rdquo; 2026.</li>
+            <li>ffmpeg.wasm Contributors. &ldquo;ffmpeg.wasm: WebAssembly Port of FFmpeg.&rdquo; Project documentation, 2026.</li>
+            <li>W3C. &ldquo;WebAssembly Core Specification 2.0.&rdquo; W3C Recommendation, 2025.</li>
+            <li>W3C. &ldquo;MediaStream Recording.&rdquo; W3C Working Draft, 2026.</li>
+            <li>Valin, J.-M., Vos, K., and Terriberry, T. &ldquo;Definition of the Opus Audio Codec.&rdquo; RFC 6716, 2012.</li>
+            <li>Josefsson, S. &ldquo;The Base16, Base32, and Base64 Data Encodings.&rdquo; RFC 4648, 2006.</li>
+            <li>Hardt, D. &ldquo;The OAuth 2.0 Authorization Framework.&rdquo; RFC 6749, 2012.</li>
+            <li>Sakimura, N., et al. &ldquo;OpenID Connect Core 1.0.&rdquo; OpenID Foundation, 2014.</li>
+            <li>Republic of Indonesia. &ldquo;Undang-Undang No. 27 Tahun 2022 tentang Pelindungan Data Pribadi.&rdquo; Jakarta, 2022.</li>
+            <li>Pfitzmann, A., and Hansen, M. &ldquo;A Terminology for Talking about Privacy by Data Minimization.&rdquo; v0.34, 2010.</li>
+            <li>Cavoukian, A. &ldquo;Privacy by Design: The 7 Foundational Principles.&rdquo; Information and Privacy Commissioner of Ontario, 2011.</li>
+            <li>Vercel. &ldquo;Functions: Limits and Configuration.&rdquo; Platform documentation, 2026.</li>
+            <li>Upstash. &ldquo;Redis REST API and Pipelining.&rdquo; Product documentation, 2026.</li>
+            <li>Vertut, J.-M. (SubRip). &ldquo;SubRip Text (SRT) Subtitle Format.&rdquo; De facto specification.</li>
+            <li>Ismanto, R. N. &ldquo;Transkrip: Offline Speech Transcription on Apple Silicon.&rdquo; 2026.</li>
+            <li>Ismanto, R. N. &ldquo;Jaipong: A Two-Stage Text-to-Song Studio and the Case for a Line-Oriented Plan Format.&rdquo; 2026.</li>
+        </ol>
+    </div>
+
+    <div class="paper-footer">
+        <p>&copy; 2026 Romi Nur Ismanto.</p>
+        <p>Live app: <a href="https://pikapiku.rominur.com">pikapiku.rominur.com</a> &middot; GitHub: <a href="https://github.com/romizone/pikapiku">github.com/romizone/pikapiku</a></p>
+        <p>Describes the repository as of 30 August 2026. Limits are environment-overridable defaults.</p>
+    </div>
+
+</body>
+</html>
