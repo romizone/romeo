@@ -1,0 +1,112 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 400 300">
+  <defs>
+    <linearGradient id="orbg" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#12233a"/>
+      <stop offset="100%" style="stop-color:#1b2f47"/>
+    </linearGradient>
+    <linearGradient id="orco" x1="0%" y1="0%" x2="100%" y2="0%">
+      <stop offset="0%" style="stop-color:#0f6cbd"/>
+      <stop offset="100%" style="stop-color:#5b5fc7"/>
+    </linearGradient>
+  </defs>
+  <rect width="400" height="300" fill="url(#orbg)" rx="16"/>
+
+  <!-- app window -->
+  <rect x="34" y="24" width="332" height="210" rx="9" fill="#f5f5f5" stroke="url(#orco)" stroke-width="2"/>
+
+  <!-- fluent top bar -->
+  <rect x="34" y="24" width="332" height="20" rx="9" fill="#ffffff"/>
+  <rect x="34" y="36" width="332" height="8" fill="#ffffff"/>
+  <rect x="35" y="43" width="330" height="1" fill="#e1dfdd"/>
+  <g fill="#616161">
+    <rect x="42" y="31" width="2.6" height="2.6" rx="0.6"/><rect x="46.4" y="31" width="2.6" height="2.6" rx="0.6"/><rect x="50.8" y="31" width="2.6" height="2.6" rx="0.6"/>
+    <rect x="42" y="35" width="2.6" height="2.6" rx="0.6"/><rect x="46.4" y="35" width="2.6" height="2.6" rx="0.6"/><rect x="50.8" y="35" width="2.6" height="2.6" rx="0.6"/>
+  </g>
+  <text x="60" y="37" font-family="Segoe UI,system-ui,Arial,sans-serif" font-size="8" font-weight="600" fill="#242424">Office Romeo</text>
+  <rect x="132" y="28" width="118" height="11" rx="3" fill="#f5f5f5"/>
+  <text x="191" y="36" font-family="Segoe UI,system-ui,Arial,sans-serif" font-size="6" fill="#8a8886" text-anchor="middle">office.rominur.com</text>
+  <circle cx="349" cy="34" r="6" fill="#c4314b"/>
+  <text x="349" y="36.5" font-family="Segoe UI,system-ui,Arial,sans-serif" font-size="5.5" font-weight="700" fill="#fff" text-anchor="middle">OR</text>
+
+  <!-- ribbon tabs -->
+  <g font-family="Segoe UI,system-ui,Arial,sans-serif" font-size="6">
+    <text x="44" y="54" fill="#185ABD" font-weight="700">Beranda</text>
+    <text x="76" y="54" fill="#616161">Sisip</text>
+    <text x="98" y="54" fill="#616161">Tata Letak</text>
+    <text x="136" y="54" fill="#616161">Tinjau</text>
+  </g>
+  <rect x="42" y="56" width="30" height="1.6" fill="#185ABD"/>
+  <rect x="35" y="61" width="330" height="1" fill="#e1dfdd"/>
+
+  <!-- ribbon buttons -->
+  <g fill="#ffffff" stroke="#e1dfdd" stroke-width="0.8">
+    <rect x="42" y="66" width="16" height="13" rx="2"/>
+    <rect x="61" y="66" width="16" height="13" rx="2"/>
+    <rect x="80" y="66" width="16" height="13" rx="2"/>
+  </g>
+  <text x="50" y="75" font-family="Georgia,serif" font-size="8" font-weight="700" fill="#242424" text-anchor="middle">B</text>
+  <text x="69" y="75" font-family="Georgia,serif" font-size="8" font-style="italic" fill="#242424" text-anchor="middle">I</text>
+  <text x="88" y="75" font-family="Georgia,serif" font-size="8" fill="#242424" text-anchor="middle">U</text>
+
+  <!-- document canvas -->
+  <rect x="42" y="86" width="188" height="140" rx="3" fill="#ffffff" stroke="#e1dfdd" stroke-width="1"/>
+  <text x="54" y="102" font-family="Georgia,serif" font-size="9.5" font-weight="700" fill="#185ABD">Rencana Strategis 2025</text>
+  <g fill="#d8d8d8">
+    <rect x="54" y="109" width="164" height="3.2" rx="1.6"/>
+    <rect x="54" y="116" width="152" height="3.2" rx="1.6"/>
+  </g>
+  <!-- highlighted selection being rewritten -->
+  <rect x="52" y="124" width="168" height="20" rx="2" fill="#ebf3fc" stroke="#0f6cbd" stroke-width="1"/>
+  <g fill="#9db8d6">
+    <rect x="56" y="129" width="158" height="3.2" rx="1.6"/>
+    <rect x="56" y="136" width="112" height="3.2" rx="1.6"/>
+  </g>
+  <g fill="#d8d8d8">
+    <rect x="54" y="150" width="160" height="3.2" rx="1.6"/>
+    <rect x="54" y="157" width="166" height="3.2" rx="1.6"/>
+    <rect x="54" y="164" width="138" height="3.2" rx="1.6"/>
+  </g>
+  <!-- appended blockquote from copilot -->
+  <rect x="54" y="175" width="2" height="26" fill="#5b5fc7"/>
+  <text x="61" y="182" font-family="Segoe UI,system-ui,Arial,sans-serif" font-size="5.5" font-weight="700" fill="#5b5fc7">Ringkasan:</text>
+  <g fill="#c9c6ef">
+    <rect x="61" y="186" width="150" height="3" rx="1.5"/>
+    <rect x="61" y="192" width="126" height="3" rx="1.5"/>
+  </g>
+  <g fill="#d8d8d8">
+    <rect x="54" y="209" width="158" height="3.2" rx="1.6"/>
+    <rect x="54" y="216" width="104" height="3.2" rx="1.6"/>
+  </g>
+
+  <!-- copilot side panel -->
+  <rect x="238" y="86" width="120" height="140" rx="3" fill="#ffffff" stroke="#e1dfdd" stroke-width="1"/>
+  <path d="M248 96 l2.6 5.4 5.4 2.6 -5.4 2.6 -2.6 5.4 -2.6 -5.4 -5.4 -2.6 5.4 -2.6 z" fill="#5b5fc7"/>
+  <text x="260" y="103" font-family="Segoe UI,system-ui,Arial,sans-serif" font-size="7" font-weight="600" fill="#5b5fc7">Copilot</text>
+  <!-- user bubble -->
+  <rect x="266" y="114" width="84" height="18" rx="5" fill="#f3f0ff"/>
+  <text x="272" y="121" font-family="Segoe UI,system-ui,Arial,sans-serif" font-size="5.5" fill="#3c3c3c">Ringkas dokumen ini</text>
+  <text x="272" y="128.5" font-family="Segoe UI,system-ui,Arial,sans-serif" font-size="5.5" fill="#3c3c3c">jadi satu paragraf.</text>
+  <!-- patch json -->
+  <rect x="246" y="138" width="104" height="46" rx="4" fill="#12233a"/>
+  <text x="252" y="147" font-family="ui-monospace,Menlo,monospace" font-size="5" fill="#6ea8dc">{</text>
+  <text x="256" y="155" font-family="ui-monospace,Menlo,monospace" font-size="5" fill="#8fd4a8">"appendHtml"</text>
+  <text x="292" y="155" font-family="ui-monospace,Menlo,monospace" font-size="5" fill="#e8e8e8">: "&#8230;",</text>
+  <text x="256" y="163" font-family="ui-monospace,Menlo,monospace" font-size="5" fill="#8fd4a8">"message"</text>
+  <text x="284" y="163" font-family="ui-monospace,Menlo,monospace" font-size="5" fill="#e8e8e8">: "&#8230;"</text>
+  <text x="252" y="171" font-family="ui-monospace,Menlo,monospace" font-size="5" fill="#6ea8dc">}</text>
+  <text x="252" y="180" font-family="Segoe UI,system-ui,Arial,sans-serif" font-size="4.6" fill="#7f9bb8">patch terkecil, bukan tulis ulang</text>
+  <!-- composer -->
+  <rect x="246" y="190" width="104" height="14" rx="7" fill="#f5f5f5" stroke="#e1dfdd" stroke-width="0.8"/>
+  <text x="253" y="199" font-family="Segoe UI,system-ui,Arial,sans-serif" font-size="5.2" fill="#8a8886">Tanya Copilot&#8230;</text>
+  <!-- app chips -->
+  <g font-family="Segoe UI,system-ui,Arial,sans-serif" font-size="5" font-weight="700" text-anchor="middle">
+    <rect x="246" y="210" width="23" height="12" rx="2" fill="#185ABD"/><text x="257.5" y="218.5" fill="#fff">W</text>
+    <rect x="273" y="210" width="23" height="12" rx="2" fill="#107C41"/><text x="284.5" y="218.5" fill="#fff">X</text>
+    <rect x="300" y="210" width="23" height="12" rx="2" fill="#C43E1C"/><text x="311.5" y="218.5" fill="#fff">P</text>
+    <rect x="327" y="210" width="23" height="12" rx="2" fill="#D13438"/><text x="338.5" y="218.5" fill="#fff">PDF</text>
+  </g>
+
+  <!-- caption -->
+  <text x="200" y="262" font-family="Georgia,serif" font-size="20" font-weight="700" fill="#eef3f8" text-anchor="middle">Office Romeo</text>
+  <text x="200" y="281" font-family="system-ui,Arial,sans-serif" font-size="10.5" fill="#93a8c0" text-anchor="middle">Copilot menyunting file, bukan mengarang ulang</text>
+</svg>
