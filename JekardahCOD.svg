@@ -1,0 +1,123 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 400 300">
+  <defs>
+    <linearGradient id="jkbg" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#0c4832"/>
+      <stop offset="100%" style="stop-color:#0e6d48"/>
+    </linearGradient>
+    <linearGradient id="jkacc" x1="0%" y1="0%" x2="100%" y2="0%">
+      <stop offset="0%" style="stop-color:#46c48a"/>
+      <stop offset="100%" style="stop-color:#1fa86f"/>
+    </linearGradient>
+  </defs>
+  <rect width="400" height="300" fill="url(#jkbg)" rx="16"/>
+
+  <!-- app window -->
+  <rect x="34" y="24" width="332" height="210" rx="9" fill="#f6f7f9" stroke="url(#jkacc)" stroke-width="2"/>
+
+  <!-- top bar -->
+  <rect x="34" y="24" width="332" height="22" rx="9" fill="#ffffff"/>
+  <rect x="34" y="38" width="332" height="8" fill="#ffffff"/>
+  <rect x="35" y="45" width="330" height="1" fill="#e5e7eb"/>
+  <rect x="44" y="30" width="10" height="10" rx="3" fill="#118858"/>
+  <text x="58" y="38.5" font-family="Inter,system-ui,Arial,sans-serif" font-size="8" font-weight="700" fill="#1a1d1f">Jekardah</text>
+  <rect x="104" y="29" width="120" height="12" rx="6" fill="#f6f7f9" stroke="#e5e7eb" stroke-width="0.8"/>
+  <circle cx="112" cy="35" r="2.4" fill="none" stroke="#9ca3af" stroke-width="1"/>
+  <path d="M114 37 l2 2" stroke="#9ca3af" stroke-width="1" stroke-linecap="round"/>
+  <text x="119" y="37.5" font-family="Inter,system-ui,Arial,sans-serif" font-size="5.8" fill="#9ca3af">Cari Avanza, raket padel, iPhone&#8230;</text>
+  <rect x="290" y="29" width="34" height="12" rx="6" fill="#118858"/>
+  <text x="307" y="37.5" font-family="Inter,system-ui,Arial,sans-serif" font-size="5.8" font-weight="700" fill="#fff" text-anchor="middle">+ Jual</text>
+  <circle cx="348" cy="35" r="5.5" fill="#d6f5e3"/>
+  <text x="348" y="37.3" font-family="Inter,system-ui,Arial,sans-serif" font-size="5" font-weight="700" fill="#0e6d48" text-anchor="middle">RN</text>
+
+  <!-- hero strip -->
+  <rect x="42" y="52" width="196" height="30" rx="6" fill="#ffffff" stroke="#e5e7eb" stroke-width="0.8"/>
+  <rect x="48" y="58" width="52" height="9" rx="4.5" fill="#d6f5e3"/>
+  <text x="74" y="64.5" font-family="Inter,system-ui,Arial,sans-serif" font-size="5.2" font-weight="700" fill="#0e6d48" text-anchor="middle">BUDAYAKAN COD</text>
+  <text x="48" y="77" font-family="Inter,system-ui,Arial,sans-serif" font-size="6.8" font-weight="700" fill="#1a1d1f">Ketemu orangnya. Cek barangnya. Baru bayar.</text>
+
+  <!-- category chips -->
+  <g font-family="Inter,system-ui,Arial,sans-serif" font-size="5.2" font-weight="600">
+    <rect x="42" y="88" width="30" height="11" rx="5.5" fill="#118858"/><text x="57" y="95.5" fill="#fff" text-anchor="middle">Mobil</text>
+    <rect x="75" y="88" width="30" height="11" rx="5.5" fill="#fff" stroke="#e5e7eb" stroke-width="0.8"/><text x="90" y="95.5" fill="#374151" text-anchor="middle">Motor</text>
+    <rect x="108" y="88" width="30" height="11" rx="5.5" fill="#fff" stroke="#e5e7eb" stroke-width="0.8"/><text x="123" y="95.5" fill="#374151" text-anchor="middle">Padel</text>
+    <rect x="141" y="88" width="32" height="11" rx="5.5" fill="#fff" stroke="#e5e7eb" stroke-width="0.8"/><text x="157" y="95.5" fill="#374151" text-anchor="middle">Tennis</text>
+    <rect x="176" y="88" width="30" height="11" rx="5.5" fill="#fff" stroke="#e5e7eb" stroke-width="0.8"/><text x="191" y="95.5" fill="#374151" text-anchor="middle">Futsal</text>
+    <rect x="209" y="88" width="29" height="11" rx="5.5" fill="#fff" stroke="#e5e7eb" stroke-width="0.8"/><text x="223.5" y="95.5" fill="#374151" text-anchor="middle">Jasa</text>
+  </g>
+
+  <!-- listing cards -->
+  <g>
+    <rect x="42" y="105" width="61" height="82" rx="5" fill="#fff" stroke="#e5e7eb" stroke-width="0.8"/>
+    <rect x="42" y="105" width="61" height="42" rx="5" fill="#e5e7eb"/>
+    <rect x="42" y="142" width="61" height="5" fill="#e5e7eb"/>
+    <path d="M52 140 l12 -13 8 8 6 -6 13 11 z" fill="#cbd5d1"/>
+    <rect x="46" y="109" width="18" height="8" rx="4" fill="#118858"/>
+    <text x="55" y="114.8" font-family="Inter,system-ui,Arial,sans-serif" font-size="4.6" font-weight="700" fill="#fff" text-anchor="middle">COD</text>
+    <text x="46" y="157" font-family="Inter,system-ui,Arial,sans-serif" font-size="5.6" fill="#1a1d1f">Avanza G 1.5 AT</text>
+    <text x="46" y="167" font-family="Inter,system-ui,Arial,sans-serif" font-size="6.4" font-weight="700" fill="#0e6d48">Rp 168.000.000</text>
+    <text x="46" y="178" font-family="Inter,system-ui,Arial,sans-serif" font-size="4.8" fill="#6b7280">Bekas &#183; Jakarta Timur</text>
+
+    <rect x="109" y="105" width="61" height="82" rx="5" fill="#fff" stroke="#e5e7eb" stroke-width="0.8"/>
+    <rect x="109" y="105" width="61" height="42" rx="5" fill="#e5e7eb"/>
+    <rect x="109" y="142" width="61" height="5" fill="#e5e7eb"/>
+    <ellipse cx="139" cy="122" rx="9" ry="12" fill="none" stroke="#cbd5d1" stroke-width="2.4"/>
+    <path d="M139 134 v10" stroke="#cbd5d1" stroke-width="2.4" stroke-linecap="round"/>
+    <rect x="113" y="109" width="18" height="8" rx="4" fill="#118858"/>
+    <text x="122" y="114.8" font-family="Inter,system-ui,Arial,sans-serif" font-size="4.6" font-weight="700" fill="#fff" text-anchor="middle">COD</text>
+    <text x="113" y="157" font-family="Inter,system-ui,Arial,sans-serif" font-size="5.6" fill="#1a1d1f">Siux Fenix 5 Pro</text>
+    <text x="113" y="167" font-family="Inter,system-ui,Arial,sans-serif" font-size="6.4" font-weight="700" fill="#0e6d48">Rp 3.450.000</text>
+    <text x="113" y="178" font-family="Inter,system-ui,Arial,sans-serif" font-size="4.8" fill="#6b7280">Baru &#183; Tangerang</text>
+
+    <rect x="176" y="105" width="62" height="82" rx="5" fill="#fff" stroke="#e5e7eb" stroke-width="0.8"/>
+    <rect x="176" y="105" width="62" height="42" rx="5" fill="#e5e7eb"/>
+    <rect x="176" y="142" width="62" height="5" fill="#e5e7eb"/>
+    <rect x="195" y="117" width="24" height="16" rx="3" fill="none" stroke="#cbd5d1" stroke-width="2.2"/>
+    <circle cx="200" cy="136" r="3" fill="#cbd5d1"/><circle cx="214" cy="136" r="3" fill="#cbd5d1"/>
+    <rect x="180" y="109" width="18" height="8" rx="4" fill="#118858"/>
+    <text x="189" y="114.8" font-family="Inter,system-ui,Arial,sans-serif" font-size="4.6" font-weight="700" fill="#fff" text-anchor="middle">COD</text>
+    <text x="180" y="157" font-family="Inter,system-ui,Arial,sans-serif" font-size="5.6" fill="#1a1d1f">Honda HR-V 1.5 E CVT</text>
+    <text x="180" y="167" font-family="Inter,system-ui,Arial,sans-serif" font-size="6.4" font-weight="700" fill="#0e6d48">Rp 289.000.000</text>
+    <text x="180" y="178" font-family="Inter,system-ui,Arial,sans-serif" font-size="4.8" fill="#6b7280">Bekas &#183; Bekasi</text>
+  </g>
+
+  <!-- chat panel -->
+  <rect x="246" y="52" width="112" height="135" rx="6" fill="#ffffff" stroke="#e5e7eb" stroke-width="0.8"/>
+  <text x="253" y="63" font-family="Inter,system-ui,Arial,sans-serif" font-size="6.2" font-weight="700" fill="#1a1d1f">Chat &#183; Toyota Avanza</text>
+  <circle cx="351" cy="61" r="2.2" fill="#1fa86f"/>
+  <rect x="253" y="70" width="72" height="16" rx="5" fill="#f3f4f6"/>
+  <text x="258" y="77" font-family="Inter,system-ui,Arial,sans-serif" font-size="5.2" fill="#1a1d1f">Masih ada, kak?</text>
+  <text x="258" y="83.5" font-family="Inter,system-ui,Arial,sans-serif" font-size="5.2" fill="#1a1d1f">Bisa cek dulu?</text>
+  <rect x="279" y="91" width="72" height="16" rx="5" fill="#118858"/>
+  <text x="284" y="98" font-family="Inter,system-ui,Arial,sans-serif" font-size="5.2" fill="#fff">Ada. Ketemu di</text>
+  <text x="284" y="104.5" font-family="Inter,system-ui,Arial,sans-serif" font-size="5.2" fill="#fff">Stasiun Cawang?</text>
+  <rect x="253" y="112" width="60" height="10" rx="5" fill="#f3f4f6"/>
+  <text x="258" y="119" font-family="Inter,system-ui,Arial,sans-serif" font-size="5.2" fill="#1a1d1f">Oke, sore ini &#128077;</text>
+  <!-- stepper -->
+  <g font-family="Inter,system-ui,Arial,sans-serif" font-size="4.8" font-weight="700" text-anchor="middle">
+    <circle cx="266" cy="140" r="7" fill="#118858"/><text x="266" y="142" fill="#fff">1</text>
+    <rect x="273" y="139" width="18" height="1.6" fill="#7ddbae"/>
+    <circle cx="298" cy="140" r="7" fill="#118858"/><text x="298" y="142" fill="#fff">2</text>
+    <rect x="305" y="139" width="18" height="1.6" fill="#7ddbae"/>
+    <circle cx="330" cy="140" r="7" fill="#fff" stroke="#118858" stroke-width="1.4"/><text x="330" y="142" fill="#0e6d48">3</text>
+  </g>
+  <g font-family="Inter,system-ui,Arial,sans-serif" font-size="4.6" fill="#374151" text-anchor="middle">
+    <text x="266" y="154">Ketemu</text><text x="298" y="154">Cek</text><text x="330" y="154">Bayar</text>
+  </g>
+  <rect x="253" y="163" width="98" height="16" rx="8" fill="#d6f5e3"/>
+  <text x="302" y="173.5" font-family="Inter,system-ui,Arial,sans-serif" font-size="5.4" font-weight="700" fill="#0e6d48" text-anchor="middle">Tanpa transfer, tanpa perantara</text>
+
+  <!-- footer strip -->
+  <rect x="42" y="195" width="316" height="30" rx="6" fill="#ffffff" stroke="#e5e7eb" stroke-width="0.8"/>
+  <g font-family="ui-monospace,Menlo,monospace" font-size="5.4" fill="#374151">
+    <rect x="50" y="201" width="52" height="8" rx="4" fill="#f3f4f6"/><text x="76" y="207" text-anchor="middle">Go net/http</text>
+    <rect x="106" y="201" width="60" height="8" rx="4" fill="#f3f4f6"/><text x="136" y="207" text-anchor="middle">Next.js 16</text>
+    <rect x="170" y="201" width="66" height="8" rx="4" fill="#f3f4f6"/><text x="203" y="207" text-anchor="middle">Neon Postgres</text>
+    <rect x="240" y="201" width="60" height="8" rx="4" fill="#f3f4f6"/><text x="270" y="207" text-anchor="middle">Google OAuth</text>
+    <rect x="304" y="201" width="46" height="8" rx="4" fill="#f3f4f6"/><text x="327" y="207" text-anchor="middle">Vercel sin1</text>
+  </g>
+  <text x="50" y="220" font-family="Inter,system-ui,Arial,sans-serif" font-size="5" fill="#6b7280">satu origin publik &#183; cookie HttpOnly &#183; foto hanya dari Blob atau /uploads &#183; review hanya setelah iklan terjual</text>
+
+  <!-- caption -->
+  <text x="200" y="262" font-family="Georgia,serif" font-size="20" font-weight="700" fill="#eefbf4" text-anchor="middle">Jekardah COD</text>
+  <text x="200" y="281" font-family="system-ui,Arial,sans-serif" font-size="10.5" fill="#b0ebcb" text-anchor="middle">Ketemu orangnya &#183; cek barangnya &#183; baru bayar</text>
+</svg>

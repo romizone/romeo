@@ -1,0 +1,247 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Jekardah COD: A Meet-Check-Pay Marketplace on a Go Serverless Function</title>
+    <meta name="description" content="Jekardah COD is a cash-on-delivery classifieds marketplace whose product decision is to move no money at all. This paper describes running a Go net/http API as a serverless function behind a single public origin, configuration that refuses to start misconfigured, an allowlist for listing photos, chat as the transaction layer, and reviews gated on a completed sale.">
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body {
+            font-family: 'Times New Roman', Times, Georgia, serif;
+            line-height: 1.6;
+            color: #111;
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 60px 40px;
+            background: #fff;
+        }
+        .paper-title { text-align: center; margin-bottom: 30px; }
+        .paper-title h1 { font-size: 1.65em; font-weight: 700; line-height: 1.3; margin-bottom: 18px; }
+        .paper-title .authors { font-size: 1.05em; margin-bottom: 4px; }
+        .paper-title .affiliation { font-size: 0.95em; color: #555; font-style: italic; }
+        .paper-title .email { font-size: 0.9em; color: #1a73e8; margin-top: 4px; }
+        .paper-title .date { font-size: 0.9em; color: #777; margin-top: 10px; }
+        .abstract { background: #f9f9f9; border-left: 4px solid #333; padding: 18px 22px; margin: 30px 0; }
+        .abstract h2 { font-size: 1em; text-transform: uppercase; letter-spacing: 1px; margin-bottom: 8px; border: none; padding: 0; }
+        .abstract p { font-size: 0.95em; color: #333; text-align: justify; }
+        .keywords { font-size: 0.9em; color: #555; margin-bottom: 30px; }
+        .keywords strong { color: #333; }
+        h2 { font-size: 1.2em; font-weight: 700; margin-top: 30px; margin-bottom: 12px; border-bottom: 1px solid #ddd; padding-bottom: 4px; }
+        h3 { font-size: 1.05em; font-weight: 700; margin-top: 18px; margin-bottom: 8px; }
+        p { text-align: justify; margin-bottom: 12px; font-size: 0.97em; }
+        table { width: 100%; border-collapse: collapse; margin: 16px 0; font-size: 0.9em; }
+        table th, table td { border: 1px solid #ccc; padding: 8px 12px; text-align: left; vertical-align: top; }
+        table th { background: #f0f0f0; font-weight: 700; }
+        table caption { font-size: 0.88em; font-style: italic; color: #555; margin-bottom: 6px; text-align: left; }
+        code { font-family: 'Courier New', Courier, monospace; background: #f4f4f4; padding: 2px 5px; border-radius: 3px; font-size: 0.88em; }
+        pre { font-family: 'Courier New', Courier, monospace; background: #f4f4f4; border: 1px solid #e0e0e0; border-radius: 4px; padding: 12px 16px; font-size: 0.85em; line-height: 1.5; overflow-x: auto; margin: 14px 0; }
+        blockquote { margin: 16px 0 16px 24px; padding-left: 16px; border-left: 3px solid #c9b083; font-style: italic; color: #444; font-size: 0.95em; }
+        ul, ol { margin: 10px 0 12px 24px; font-size: 0.97em; }
+        li { margin-bottom: 4px; }
+        .pipeline { background: #f7f9fc; border: 1px solid #d4e2f7; border-radius: 6px; padding: 16px 20px; text-align: center; font-size: 0.95em; color: #1a5276; margin: 16px 0; letter-spacing: 0.3px; }
+        .references { font-size: 0.88em; }
+        .references ol { margin-left: 20px; }
+        .references li { margin-bottom: 8px; color: #444; }
+        .paper-footer { text-align: center; font-size: 0.8em; color: #aaa; margin-top: 50px; padding-top: 20px; border-top: 1px solid #eee; }
+        .paper-footer a { color: #1a73e8; }
+        @media print { body { padding: 20px; } }
+        @media (max-width: 600px) { body { padding: 20px 15px; } .paper-title h1 { font-size: 1.3em; } table { font-size: 0.82em; } }
+    </style>
+</head>
+<body>
+
+    <div class="paper-title">
+        <h1>Jekardah COD: A Meet-Check-Pay Marketplace on a Go Serverless Function</h1>
+        <div class="authors">Romi Nur Ismanto</div>
+        <div class="affiliation">Independent AI Research Lab, Jakarta, Indonesia</div>
+        <div class="email">hello@rominur.com</div>
+        <div class="date">September 2026</div>
+    </div>
+
+    <div class="abstract">
+        <h2>Abstract</h2>
+        <p>Jekardah COD, deployed at <code>cod.jekardah.com</code>, is a classifieds marketplace built around one product decision: the platform moves no money. Its tagline &mdash; <em>ketemu orangnya, cek barangnya, baru bayar</em>: meet the person, check the item, then pay &mdash; describes a transaction the software cannot see, so the software's job becomes arranging the meeting and recording what happened around it. That framing shapes every layer. The public surface is one origin: a Next.js 16 front end rewrites <code>/api/*</code> to a separate Go project so that the session cookie, the OAuth state cookie and the Google callback never cross a domain. The API is plain Go <code>net/http</code> with the standard library's method-and-path router, run as a Vercel function that initialises one application per warm instance under double-checked locking, keeps its PostgreSQL pool to four connections because the platform may spawn many instances at once, and serialises schema migration under a transaction-scoped advisory lock so parallel cold starts cannot race. Configuration refuses to start when it would be unsafe &mdash; a default JWT secret, demo mode, missing OAuth or a plaintext backend are all rejected the moment the front-end URL is HTTPS, and the demo-login route is not merely disabled in production but never registered. Listing photos may only come from three places: the project's own upload path, the Vercel Blob host, or a placeholder service; both the Next upload route and the Go handler identify image type from leading bytes rather than from the declared content type, and the Next route confirms the session with the backend before it touches storage. Chat is the transaction layer &mdash; one conversation per listing and buyer, membership checked on every read and write, incremental polling by last-seen message id &mdash; and a review can only be written for a listing marked sold by a buyer who actually opened a conversation on it, addressed to its seller and no one else. The result is a marketplace in which trust is manufactured from the few facts the platform can verify, and nothing it cannot.</p>
+    </div>
+
+    <div class="keywords">
+        <strong>Keywords:</strong> classifieds marketplace, cash on delivery, Go net/http, serverless functions, connection pooling, advisory locks, OAuth 2.0, JWT, HttpOnly cookies, file upload validation, content sniffing, incremental polling, review integrity, Next.js rewrites, PostgreSQL
+    </div>
+
+    <h2>1. Introduction</h2>
+    <p>
+        Most marketplace software is organised around payment: escrow, settlement, refunds, disputes. Cash-on-delivery classifieds &mdash; the dominant way second-hand goods change hands in Indonesian cities &mdash; invert that. The buyer and seller meet in a public place, the buyer inspects the item, and money changes hands in person. The platform is not a party to the transaction; it is the place where the two parties found each other and agreed where to stand.
+    </p>
+    <p>
+        Jekardah COD takes that division of labour as a design brief rather than a limitation. There is no checkout, no wallet, no payment integration. What the platform can genuinely verify is small: who signed in, what they listed, who talked to whom about which listing, and what the seller eventually marked as sold. Everything the product does &mdash; search, listing, chat, wishlist, profiles, reviews &mdash; is built to make those few verifiable facts as trustworthy as possible, and to refuse to fabricate any it cannot check.
+    </p>
+    <p>
+        Technically the application is two Vercel projects presenting as one site: a Next.js 16 front end of roughly three thousand lines of TypeScript, and a Go API of roughly two and a half thousand lines behind it, both pinned to the Singapore region, with a serverless PostgreSQL database and a public object store for photographs. This paper describes the decisions that hold it together.
+    </p>
+
+    <h2>2. One Public Origin, Two Projects</h2>
+    <p>
+        Cookie-based sessions and OAuth both become fragile the moment a front end and its API live on different domains: cookies need cross-site attributes, the OAuth state cookie set by one host must be read by another, and the provider's callback lands on whichever host was registered. Jekardah avoids all of it by never exposing the API on its own domain. The Next.js configuration rewrites <code>/api/:path*</code> to an internal backend URL, so every browser request goes to <code>cod.jekardah.com/api/&hellip;</code> and is forwarded server-side. The session cookie, the ten-minute OAuth state cookie and Google's callback all belong to a single origin, and the front-end fetch helper sends <code>credentials: 'same-origin'</code> and nothing more exotic.
+    </p>
+    <div class="pipeline">
+        browser &rarr; cod.jekardah.com/api/* &rarr; Next.js rewrite &rarr; Go function &rarr; PostgreSQL
+    </div>
+    <p>
+        The back end keeps a distinction the configuration comments spell out: the <em>public</em> backend URL, which the Go application uses when it builds OAuth redirect and upload URLs, is separate from the <em>internal</em> reverse-proxy target, so that pointing both at the public domain cannot create a rewrite loop. The front end adds the standard hardening headers on every path &mdash; strict transport security for a year with subdomains, frame denial, content-type sniffing off, a conservative referrer policy and a permissions policy that disables camera, microphone and geolocation &mdash; and all five are present on the live site.
+    </p>
+
+    <h2>3. Go on a Serverless Function</h2>
+    <p>
+        The API is standard-library Go: <code>net/http</code>, the method-aware pattern router that arrived in Go 1.22 (<code>"GET /api/listings/{id}"</code>), <code>pgx</code> for PostgreSQL, and no web framework. It runs two ways from the same code &mdash; as a long-lived binary locally, and as a Vercel Go function in production &mdash; through a small bridge package that Vercel compiles as its entry point.
+    </p>
+    <p>
+        Three serverless-specific decisions live in that bridge and the database layer. First, one application object is created per warm instance under double-checked locking, and a failed initialisation is retried on the next request rather than poisoning the instance; the handler returns a JSON 503 in the meantime. Second, the connection pool is capped at four connections with no minimum, on the stated reasoning that the platform may run many instances in parallel and the connection string already goes through the provider's pooler &mdash; a pool sized for a single server would exhaust a serverless database quickly. Third, schema migration is idempotent and serialised.
+    </p>
+    <pre>SELECT pg_advisory_xact_lock(81425091337)</pre>
+    <p>
+        Every cold start runs the migration, so several instances can attempt it simultaneously. Taking a transaction-scoped advisory lock before the <code>CREATE TABLE IF NOT EXISTS</code> and <code>ADD COLUMN IF NOT EXISTS</code> statements means only one proceeds at a time and the rest find the work already done. The same migration also performs a one-off deduplication &mdash; deleting duplicate conversations for the same listing and buyer &mdash; before creating the unique index that will prevent them in future, which is the correct order and would be unsafe to run concurrently without the lock.
+    </p>
+    <p>
+        The router is wrapped in three middlewares: a recover that turns a panic into a logged stack trace and a JSON 500 rather than a dropped connection, request logging with duration, and CORS restricted to the single configured front-end origin with credentials allowed.
+    </p>
+
+    <h2>4. Configuration That Refuses to Start Wrong</h2>
+    <p>
+        The most consequential code in the back end is a validation function that runs before the database is opened. It treats an HTTPS front-end URL as the definition of production and applies a set of refusals from that.
+    </p>
+
+    <table>
+        <caption>Table 1. Startup guards in <code>config.Validate</code>.</caption>
+        <tr><th>Condition</th><th>Outcome</th></tr>
+        <tr><td>JWT secret shorter than 32 characters</td><td>Refuse to start, in any environment.</td></tr>
+        <tr><td>Production and the JWT secret is the shipped default</td><td>Refuse to start.</td></tr>
+        <tr><td>Production and demo mode enabled</td><td>Refuse to start.</td></tr>
+        <tr><td>Production and Google OAuth not configured</td><td>Refuse to start.</td></tr>
+        <tr><td>HTTPS front end with a plaintext backend URL</td><td>Refuse to start.</td></tr>
+        <tr><td>Client ID or secret set without the other</td><td>Refuse to start.</td></tr>
+        <tr><td>Front-end or backend URL carrying a path, query, fragment or userinfo</td><td>Refuse to start; only bare origins are accepted.</td></tr>
+    </table>
+
+    <p>
+        The pattern converts a class of production incident &mdash; the forgotten environment variable, the copied development secret &mdash; into a deployment that fails immediately and loudly instead of one that runs insecurely for weeks. Three of the unit tests exist specifically to hold this behaviour in place: one for the development defaults, one for each production guard, and one for the origin-only rule.
+    </p>
+    <p>
+        Demo login follows the same philosophy one step further. It is gated by an allowlist of two demo accounts and by demo mode, but in production the route is not disabled &mdash; it is never registered on the mux. A request to it on the live site returns a plain 404, indistinguishable from a path that never existed.
+    </p>
+
+    <h2>5. Sessions</h2>
+    <p>
+        Sign-in is Google OAuth with the state parameter bound to a short-lived, HTTP-only cookie: the callback compares the returned state against the cookie, clears the cookie regardless of the outcome, and redirects to an error page on any mismatch before exchanging the code. Profiles without a verified email are rejected. The user row is upserted on email, keeping an existing Google identifier if one is already stored.
+    </p>
+    <p>
+        The session itself is an HS256 JSON Web Token with a thirty-day expiry, carried in an HTTP-only, same-site cookie whose <code>Secure</code> flag follows the forwarded protocol so local development over plain HTTP still works. The parser pins the signing method: a token presenting any other algorithm is rejected before its signature is examined, and a dedicated test asserts that rejection. The front end's token helper exists only to delete a <code>localStorage</code> token left behind by earlier builds &mdash; a small artefact of a migration from JavaScript-readable storage to cookies that scripts cannot touch.
+    </p>
+
+    <h2>6. Listings, and Where Their Photos May Come From</h2>
+    <p>
+        Request bodies are read through a decoder that caps input at one mebibyte, disallows unknown fields, and rejects a body containing anything after the first JSON object. On top of that, listing creation applies a short table of rules.
+    </p>
+
+    <table>
+        <caption>Table 2. Validation applied when a listing is created.</caption>
+        <tr><th>Field</th><th>Rule</th></tr>
+        <tr><td>Title</td><td>Trimmed; 3 to 120 characters.</td></tr>
+        <tr><td>Description / location</td><td>At most 5,000 and 120 characters; location defaults to &ldquo;Indonesia&rdquo;.</td></tr>
+        <tr><td>Price</td><td>Strictly positive integer rupiah.</td></tr>
+        <tr><td>Category</td><td>Required.</td></tr>
+        <tr><td>Condition</td><td><em>baru</em> or <em>bekas</em>; defaults to new.</td></tr>
+        <tr><td>Photos</td><td>One to eight; each URL must pass the allowlist below.</td></tr>
+    </table>
+
+    <p>
+        The photo allowlist is the rule with teeth. A listing image URL is accepted only if it points at the Vercel Blob public host over HTTPS, at the placeholder service used by sample data, or at the application's own <code>/uploads/</code> path on its own backend host. Anything else &mdash; an arbitrary external image, a tracking pixel, a URL that resolves somewhere unexpected when the page renders &mdash; is refused with a 400. The same check is applied to chat image attachments and to listing updates, and it has its own unit test.
+    </p>
+    <p>
+        Updates are partial: every field is a pointer, so absence and emptiness are distinguishable, and only fields that were sent are validated and written. Ownership is checked first and a non-owner receives a 403 in plain language. When photos are replaced, the delete and re-insert run inside one transaction with the field updates, so a failure cannot leave a listing with no images. Status transitions are constrained to active, sold and deleted.
+    </p>
+
+    <h2>7. Two Sniffers and a Session Check</h2>
+    <p>
+        Uploads take a different path in production and development, and both paths refuse to trust the declared content type. In production the Next.js upload route reads the first twelve bytes and recognises JPEG, PNG, GIF and WebP by signature, caps files at four megabytes, and only then writes to the object store under a random UUID name with the <em>detected</em> MIME type. In development, and whenever no storage token is present, it forwards the multipart body to the Go handler, which caps at twelve megabytes, sniffs with the standard library's content detector over the first 512 bytes, and writes to a local directory under a UUID name.
+    </p>
+    <p>
+        Before either happens the Next route makes one call: it forwards the incoming cookie to the back end's <code>/api/me</code> and refuses the upload unless that call succeeds. The route therefore cannot become an anonymous write path into storage even though it runs in a different project from the code that owns the session &mdash; an easy mistake to make when a front end gains a storage token of its own.
+    </p>
+
+    <h2>8. Chat as the Transaction Layer</h2>
+    <p>
+        Because no money moves, the conversation is the closest thing the platform has to an order. A conversation is created per listing and buyer, guaranteed unique by index, and refused when the buyer is the seller. Both parties are inserted as participants, and every subsequent read and write checks participant membership and returns a 403 otherwise &mdash; a conversation id is not a capability.
+    </p>
+    <p>
+        Delivery is incremental polling rather than a socket. The first load returns the most recent hundred messages in ascending order; subsequent polls pass <code>after_id</code> and receive only what is newer, and each read stamps the reader's <code>last_read_at</code> so unread counts on the conversation list are derived rather than stored. Messages are capped at two thousand characters, may carry an image subject to the same URL allowlist as listings, and must contain at least one of text or image. The trade-off is stated in the README: polling every four seconds is not real-time, and real-time is listed among the things this version does not do.
+    </p>
+
+    <h2>9. Reviews Only After a Sale</h2>
+    <p>
+        Review systems fail when anyone can review anyone. Jekardah narrows the door to the one path its data can support.
+    </p>
+
+    <table>
+        <caption>Table 3. Conditions for writing a review.</caption>
+        <tr><th>Condition</th><th>Enforced where</th></tr>
+        <tr><td>The listing's status is <em>sold</em></td><td>SQL predicate</td></tr>
+        <tr><td>The reviewer opened a conversation on that listing as buyer</td><td>SQL <code>EXISTS</code> subquery</td></tr>
+        <tr><td>The reviewee is the listing's seller</td><td>Handler comparison</td></tr>
+        <tr><td>The reviewer is not the seller</td><td>Handler comparison</td></tr>
+        <tr><td>Rating is 1&ndash;5</td><td>Handler check and a database <code>CHECK</code> constraint</td></tr>
+        <tr><td>One review per reviewer per listing</td><td>Unique constraint; a second submission updates the first</td></tr>
+    </table>
+
+    <p>
+        None of this proves that cash changed hands &mdash; nothing in the system can. What it proves is that a seller declared the item sold and that this particular buyer had been talking to them about it, which is the strongest statement the platform can make honestly. Seller rating averages and counts are computed in the listing query itself, so a card on the search page carries the seller's reputation without a second request.
+    </p>
+
+    <h2>10. Sample Inventory With Attribution</h2>
+    <p>
+        An empty marketplace is unusable, so the migration seeds listings on first run: five per category across sixteen categories, each row flagged <code>is_sample</code> and carrying a <code>source_name</code> and <code>source_url</code> naming where the example came from, so the attribution is data rather than a footnote. A unique partial index on a <code>sample_key</code> makes the seeding idempotent across cold starts. Most sample photographs are not photographs at all: a front-end route renders an SVG illustration per item kind &mdash; hatchback, scooter, handheld console, sofa, guitar &mdash; and serves it with a year-long immutable cache header, while a handful of used-car listings drawn from social posts ship with their original images. Two tests pin the sample set: five per category, and the presence of the featured and photographed items.
+    </p>
+
+    <h2>11. Limits</h2>
+    <p>
+        The README is candid about scope, and the code agrees with it. Chat is polling, not push; moderation, reporting, notifications and seller verification are absent. Search is a lowercased <code>LIKE</code> over title and description, which is adequate at the current hundred-odd listings but cannot use the title index and will not scale to a large catalogue without full-text indexing. Neither listing creation nor messaging is rate-limited beyond the request-body caps, so a signed-in account can post quickly; that is a reasonable omission at this size and the natural next control to add. Photos are public objects under deterministic names, which is correct for listing images that are meant to be seen but means deletion of a listing does not yet delete its blobs. And the sale itself remains outside the system: <em>sold</em> is a seller's assertion, and the review gate inherits that.
+    </p>
+
+    <h2>12. Conclusion</h2>
+    <p>
+        Jekardah COD is an exercise in building a marketplace around what the software can verify and declining to pretend about the rest. Its architecture is conventional in the best sense &mdash; standard-library Go, a relational schema, one public origin &mdash; and its discipline lives in small refusals: to start with a default secret, to register a demo route in production, to accept a photo from an unknown host, to let a non-participant read a conversation, or to accept a review from someone who never talked to the seller. For a product whose entire proposition is <em>meet the person, check the item, then pay</em>, that is the right place for the rigour to be.
+    </p>
+
+    <h2>References</h2>
+    <div class="references">
+        <ol>
+            <li>The Go Authors. &ldquo;net/http: Routing Enhancements (Go 1.22).&rdquo; Go documentation, 2024.</li>
+            <li>The Go Authors. &ldquo;Package http: DetectContentType.&rdquo; Go standard library documentation.</li>
+            <li>Chalup, J. &ldquo;pgx: PostgreSQL Driver and Toolkit for Go; pgxpool.&rdquo; Project documentation, 2026.</li>
+            <li>PostgreSQL Global Development Group. &ldquo;Advisory Locks.&rdquo; <em>PostgreSQL Documentation</em>, section 13.3.5.</li>
+            <li>Neon. &ldquo;Connection Pooling for Serverless PostgreSQL.&rdquo; Product documentation, 2026.</li>
+            <li>Vercel. &ldquo;Using the Go Runtime with Vercel Functions.&rdquo; Platform documentation, 2026.</li>
+            <li>Vercel. &ldquo;Rewrites and Headers in Next.js.&rdquo; Next.js documentation, 2026.</li>
+            <li>Vercel. &ldquo;Vercel Blob: put() and Access Modes.&rdquo; Product documentation, 2026.</li>
+            <li>Hardt, D. &ldquo;The OAuth 2.0 Authorization Framework.&rdquo; RFC 6749, 2012.</li>
+            <li>Lodderstedt, T., et al. &ldquo;OAuth 2.0 Security Best Current Practice.&rdquo; RFC 9700, 2025.</li>
+            <li>Jones, M., Bradley, J., and Sakimura, N. &ldquo;JSON Web Token (JWT).&rdquo; RFC 7519, 2015.</li>
+            <li>Sheffer, Y., Hardt, D., and Jones, M. &ldquo;JSON Web Token Best Current Practices.&rdquo; RFC 8725, 2020.</li>
+            <li>Barth, A. &ldquo;HTTP State Management Mechanism.&rdquo; RFC 6265, 2011.</li>
+            <li>Hodges, J., Jackson, C., and Barth, A. &ldquo;HTTP Strict Transport Security (HSTS).&rdquo; RFC 6797, 2012.</li>
+            <li>OWASP Foundation. &ldquo;File Upload Cheat Sheet.&rdquo; 2026.</li>
+            <li>OWASP Foundation. &ldquo;Server-Side Request Forgery Prevention Cheat Sheet.&rdquo; 2026.</li>
+            <li>Resnick, P., and Zeckhauser, R. &ldquo;Trust Among Strangers in Internet Transactions: Empirical Analysis of eBay's Reputation System.&rdquo; <em>The Economics of the Internet and E-commerce</em>, 2002.</li>
+            <li>Tadelis, S. &ldquo;Reputation and Feedback Systems in Online Platform Markets.&rdquo; <em>Annual Review of Economics</em> 8, 2016.</li>
+            <li>Ismanto, R. N. &ldquo;Pikapiku: Client-Side Chunking and a No-Retention Schema for Long-Form Transcription on Serverless Infrastructure.&rdquo; 2026.</li>
+            <li>Ismanto, R. N. &ldquo;Office Romeo: Patch-Based Document Editing and One Router Across Two Runtimes.&rdquo; 2026.</li>
+        </ol>
+    </div>
+
+    <div class="paper-footer">
+        <p>&copy; 2026 Romi Nur Ismanto.</p>
+        <p>Live app: <a href="https://cod.jekardah.com">cod.jekardah.com</a></p>
+        <p>Describes the repository as of 30 August 2026. Sample listings carry source attribution in the data itself.</p>
+    </div>
+
+</body>
+</html>
