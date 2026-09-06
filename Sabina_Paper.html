@@ -1,0 +1,242 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sabina: Grounding a Bank Customer-Service Agent in Synthetic Core Data, Expanded Procedures, and a Pre-Model Guardrail</title>
+    <meta name="description" content="Sabina is a live customer-service agent for a fictional digital bank. This paper describes a request pipeline that refuses off-topic input before any model call, a ten-year transaction ledger computed deterministically from today's date, a 3,050-document retrieval index built from templated procedures, mock verification stated as mock, and tickets issued as a side effect of language.">
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body {
+            font-family: 'Times New Roman', Times, Georgia, serif;
+            line-height: 1.6;
+            color: #111;
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 60px 40px;
+            background: #fff;
+        }
+        .paper-title { text-align: center; margin-bottom: 30px; }
+        .paper-title h1 { font-size: 1.65em; font-weight: 700; line-height: 1.3; margin-bottom: 18px; }
+        .paper-title .authors { font-size: 1.05em; margin-bottom: 4px; }
+        .paper-title .affiliation { font-size: 0.95em; color: #555; font-style: italic; }
+        .paper-title .email { font-size: 0.9em; color: #1a73e8; margin-top: 4px; }
+        .paper-title .date { font-size: 0.9em; color: #777; margin-top: 10px; }
+        .abstract { background: #f9f9f9; border-left: 4px solid #333; padding: 18px 22px; margin: 30px 0; }
+        .abstract h2 { font-size: 1em; text-transform: uppercase; letter-spacing: 1px; margin-bottom: 8px; border: none; padding: 0; }
+        .abstract p { font-size: 0.95em; color: #333; text-align: justify; }
+        .keywords { font-size: 0.9em; color: #555; margin-bottom: 30px; }
+        .keywords strong { color: #333; }
+        h2 { font-size: 1.2em; font-weight: 700; margin-top: 30px; margin-bottom: 12px; border-bottom: 1px solid #ddd; padding-bottom: 4px; }
+        h3 { font-size: 1.05em; font-weight: 700; margin-top: 18px; margin-bottom: 8px; }
+        p { text-align: justify; margin-bottom: 12px; font-size: 0.97em; }
+        table { width: 100%; border-collapse: collapse; margin: 16px 0; font-size: 0.9em; }
+        table th, table td { border: 1px solid #ccc; padding: 8px 12px; text-align: left; vertical-align: top; }
+        table th { background: #f0f0f0; font-weight: 700; }
+        table caption { font-size: 0.88em; font-style: italic; color: #555; margin-bottom: 6px; text-align: left; }
+        code { font-family: 'Courier New', Courier, monospace; background: #f4f4f4; padding: 2px 5px; border-radius: 3px; font-size: 0.88em; }
+        pre { font-family: 'Courier New', Courier, monospace; background: #f4f4f4; border: 1px solid #e0e0e0; border-radius: 4px; padding: 12px 16px; font-size: 0.85em; line-height: 1.5; overflow-x: auto; margin: 14px 0; }
+        blockquote { margin: 16px 0 16px 24px; padding-left: 16px; border-left: 3px solid #c9b083; font-style: italic; color: #444; font-size: 0.95em; }
+        ul, ol { margin: 10px 0 12px 24px; font-size: 0.97em; }
+        li { margin-bottom: 4px; }
+        .pipeline { background: #f7f9fc; border: 1px solid #d4e2f7; border-radius: 6px; padding: 16px 20px; text-align: center; font-size: 0.95em; color: #1a5276; margin: 16px 0; letter-spacing: 0.3px; }
+        .references { font-size: 0.88em; }
+        .references ol { margin-left: 20px; }
+        .references li { margin-bottom: 8px; color: #444; }
+        .paper-footer { text-align: center; font-size: 0.8em; color: #aaa; margin-top: 50px; padding-top: 20px; border-top: 1px solid #eee; }
+        .paper-footer a { color: #1a73e8; }
+        @media print { body { padding: 20px; } }
+        @media (max-width: 600px) { body { padding: 20px 15px; } .paper-title h1 { font-size: 1.3em; } table { font-size: 0.82em; } }
+    </style>
+</head>
+<body>
+
+    <div class="paper-title">
+        <h1>Sabina: Grounding a Bank Customer-Service Agent in Synthetic Core Data, Expanded Procedures, and a Pre-Model Guardrail</h1>
+        <div class="authors">Romi Nur Ismanto</div>
+        <div class="affiliation">Independent AI Research Lab, Jakarta, Indonesia</div>
+        <div class="email">hello@rominur.com</div>
+        <div class="date">September 2026</div>
+    </div>
+
+    <div class="abstract">
+        <h2>Abstract</h2>
+        <p>Sabina, deployed at <code>sabina.rominur.com</code>, is a live customer-service agent for Bang Digital, a bank that does not exist. The fiction is the point: it allows the full shape of a banking assistant &mdash; account lookups, ten years of statements, deposit maturities, loan instalments, ATM and branch search, complaint tickets, and a corpus of standard operating procedures &mdash; to be built and exercised without a single real customer record. The design answers the two ways such assistants fail. Against wandering off-topic, a guardrail classifies every message with regular-expression families <em>before</em> any model call, so a question about shampoo prices or an instruction to ignore the system prompt is refused instantly, at zero inference cost, with a refusal phrased for the kind of question asked. Against inventing account facts, every number the agent can cite is generated deterministically: a seeded pseudo-random generator keyed on customer, account and calendar month produces the same ledger on every request, while the window it covers is always the ten years ending today, so balances, maturities and last month's statement stay current without a database. Retrieval runs over a hand-built inverted index of 2,845 procedures &mdash; expanded from a few dozen operation templates across products and cities &mdash; plus 205 service documents and a per-customer index rebuilt daily, and the retrieved identifiers and scores are streamed to the interface as evidence beside the answer. Identity verification is a mock and is labelled one in the prompt itself: after the agent asks for a date of birth and a mother's name, any plausible reply is accepted and the prior question is answered, with balance inquiries short-circuited to a deterministic reply that never reaches the model. Complaints become tickets as a side effect of language, with priority, owning unit and service-level commitments assigned by incident rule and the ticket number injected into the model's context with an instruction to cite it. The application streams over server-sent events, accepts an image of a transfer receipt through a vision-capable model, and degrades to a grounded template answer when no model key is present.</p>
+    </div>
+
+    <div class="keywords">
+        <strong>Keywords:</strong> conversational agents, customer service, retrieval-augmented generation, guardrails, synthetic data, deterministic generation, seeded PRNG, inverted index, BM25, server-sent events, vision-language models, ticketing, Indonesian banking, Next.js
+    </div>
+
+    <h2>1. Introduction</h2>
+    <p>
+        Bank customer-service assistants are judged by two failures. The first is scope: an assistant that will discuss anything is an assistant that will, sooner or later, discuss the wrong thing in a bank's name. The second is fabrication: an assistant that speaks confidently about balances, due dates and procedures it has no access to is worse than one that stays silent, because the confidence is indistinguishable from knowledge.
+    </p>
+    <p>
+        Sabina is built to make both failures structurally difficult, and it does so for a fictional institution. Bang Digital has products, rate boards, branches in thirty-eight cities, nine demo customers with ten-year histories, and thousands of procedures; none of it is real, and the landing page says so. That choice removes the risk that ordinarily prevents this kind of system from being built and demonstrated in public, while preserving the engineering problem exactly: the agent must answer only from data it has, refuse what is not its business, and show its evidence.
+    </p>
+    <p>
+        The application is a single Next.js 16 project of roughly seven thousand lines of TypeScript with no database and no authentication. The demo customer is chosen from a panel; the data behind that customer is computed on demand.
+    </p>
+
+    <h2>2. The Order of the Pipeline</h2>
+    <p>
+        Every message passes through a fixed sequence in the chat route, and the sequence is the architecture: what happens first determines what costs money, what can hallucinate, and what can be audited.
+    </p>
+    <div class="pipeline">
+        resolve mock verification &rarr; guardrail &rarr; identify customer &rarr; ticket lookup / creation &rarr; retrieval &rarr; grounded context &rarr; deterministic reply, template fallback, or model stream
+    </div>
+    <p>
+        Refusals leave the pipeline at the second stage and touch neither retrieval nor the model. Balance inquiries that follow a verification exchange leave before the model with a reply computed from the ledger. Everything else assembles two system messages &mdash; the persona and rules, then the grounded context &mdash; followed by the last eight turns of history, and streams the model's answer. The response is server-sent events in every branch, with a <code>meta</code> event first, <code>delta</code> events for text, and a <code>done</code> event, so the interface handles a refusal, a fallback and a live stream identically.
+    </p>
+
+    <h2>3. A Guardrail That Runs Before the Model</h2>
+    <p>
+        Classification is regular-expression based and deliberately conservative. A banking allowlist covers accounts, cards, transfers, loans, investments, rates, locations, complaints and the regulator's vocabulary; hard off-topic families cover retail prices, cooking, street vending, personal questions to the assistant, programming, entertainment, and a catch-all of politics, religion, homework and harmful content; a jailbreak family catches instruction-override phrasing in English and Indonesian. The decision procedure is short.
+    </p>
+
+    <table>
+        <caption>Table 1. Guardrail decisions, in evaluation order.</caption>
+        <tr><th>Condition</th><th>Decision</th></tr>
+        <tr><td>Jailbreak phrasing</td><td>Refuse, regardless of anything else in the message.</td></tr>
+        <tr><td>No text but an image attached</td><td>Allow (a receipt with no caption).</td></tr>
+        <tr><td>Greeting or &ldquo;who are you&rdquo; without off-topic content</td><td>Meta &mdash; answered by the model in persona.</td></tr>
+        <tr><td>Hard off-topic and no banking term</td><td>Refuse.</td></tr>
+        <tr><td>Any banking term, or an image</td><td>Allow.</td></tr>
+        <tr><td>Otherwise</td><td>Refuse.</td></tr>
+    </table>
+
+    <p>
+        The refusal text is chosen by the kind of question, so a shopping question is answered by a customer-service officer who is &ldquo;not a cashier&rdquo;, a question about where the assistant lives by a virtual assistant with no home, and an override attempt by the same officer declining to change role. The system prompt separately instructs the model not to reach for the cashier line unless the question really was about shopping, which is the kind of tonal detail that only becomes visible after watching refusals in production.
+    </p>
+    <p>
+        The consequence is economic as well as behavioural. On the live deployment a retail question and an instruction-override attempt each returned a <code>meta</code> event with <code>guardrail: true</code>, no retrieved documents, and the refusal text, in the time it takes to evaluate a handful of patterns. Off-topic traffic to a public demo costs nothing.
+    </p>
+
+    <h2>4. A Ledger Computed From Today</h2>
+    <p>
+        Sabina has no database, yet it can quote a customer's balance, list ATM withdrawals for the last thirty days, and name the next deposit maturity. The trick is that all of it is a pure function of the customer profile and the clock.
+    </p>
+    <p>
+        Each account's history is generated one calendar month at a time from a pseudo-random generator seeded with the string <code>cif:accountNo:YYYY-MM</code>. The seed is hashed with FNV-1a and driven through a Park&ndash;Miller generator, so a given month's transactions are identical on every request, on every instance, forever &mdash; and any month can be regenerated in isolation without generating the ones before it. Within a month the generator lays down the events a real statement would show: salary on the twenty-fifth by BI-FAST, scaled to the customer's segment; quarterly administration fees; occasional interest; a segment-dependent number of ATM withdrawals at named machines; QRIS purchases at recognisable merchants; bill payments and e-wallet top-ups. A running balance is maintained and floored at zero, and every transaction carries an identifier built from the customer, the account and the date.
+    </p>
+    <p>
+        The window is the ten years ending today. Account opening dates are expressed as years before now, deposit maturities roll forward by tenor from the opening date until they pass the current time, and the rate board prints today's date as its effective date. The customer therefore always has a statement for last month and a deposit maturing in the near future, and the demo never goes stale &mdash; without a scheduler, a migration or a stored row. Loan instalments use the standard annuity formula. The per-customer retrieval index is cached under the key <code>cif:date</code>, so it is rebuilt once per day, when &ldquo;today&rdquo; changes.
+    </p>
+
+    <h2>5. Retrieval Over Three Indices</h2>
+    <p>
+        Retrieval is a hand-written inverted index rather than a vector store. Documents are tokenised into a bag of unique terms drawn from title, category, keywords and body; postings and document frequencies are kept in maps. A query scores documents by the BM25 inverse-document-frequency term, weighted by how often the term appears in the query, with three heuristic boosts on top: a bonus for documents belonging to the session customer, a larger bonus for each document keyword that appears verbatim in the query, and a small bonus when the start of the title appears in the query. Results below a floor are dropped; each request takes the top eight procedures, the top eight service documents and the top twelve customer documents, and the customer&rsquo;s core records &mdash; profile, accounts, loans, cards, wealth &mdash; are pinned into the context with a fixed score whether or not the query matched them, so the model always sees the position it is being asked about.
+    </p>
+
+    <table>
+        <caption>Table 2. The three indices consulted on a banking request.</caption>
+        <tr><th>Index</th><th>Contents</th><th>Built</th></tr>
+        <tr><td>Procedures</td><td>2,845 standard operating procedures</td><td>Once per process</td></tr>
+        <tr><td>Service</td><td>205 documents: rate boards, outlets, fees, limits, playbooks</td><td>Once per process</td></tr>
+        <tr><td>Customer</td><td>Profile, accounts, cards, wealth, monthly statement summaries and transactions for the selected customer</td><td>Once per customer per day</td></tr>
+    </table>
+
+    <p>
+        The retrieved chunks are formatted into the grounded context with their identifiers, kinds, categories and scores, and the same identifiers and scores are sent to the browser in the <code>meta</code> event. The interface shows them beside the reply. A customer, or a reviewer, can see that an answer about a swallowed card was grounded in <code>SOP-ATM-016</code> and a cash-withdrawal FAQ, and can see the score each received &mdash; evidence rather than assertion.
+    </p>
+
+    <h2>6. Two Thousand Procedures From a Few Dozen</h2>
+    <p>
+        The procedure corpus is not authored one document at a time. A catalogue of operation templates &mdash; opening a facility, closing it, balance inquiry, statement inquiry, limit changes, fees and interest, blocking, and so on &mdash; is written once with a <code>{produk}</code> placeholder in its summary and steps, then expanded across twenty-five products, four customer segments and thirty-eight cities. Location-bound procedures such as &ldquo;print an emergency card at a Bang Digital branch in Jakarta Selatan&rdquo; are generated per city. Each expansion receives a stable identifier in a prefixed series.
+    </p>
+    <p>
+        What this buys is coverage: a query about any product in any city finds a procedure that names that product and that city, with steps, a service level, channels and exceptions. What it costs is redundancy, and the cost is visible. On the live deployment a swallowed-card report retrieved four procedures tied at the same score, two of them city-specific card-printing procedures for different cities. A corpus built by expansion needs either deduplication at retrieval time or a scoring term that prefers the general procedure over its thirty-eight regional copies; the current engine has neither, and the model is left to pick the relevant one from the context.
+    </p>
+
+    <h2>7. Verification That Says It Is a Mock</h2>
+    <p>
+        Real banks authenticate before disclosing a balance; a public demo cannot, and a demo that pretended to would be teaching the wrong lesson. Sabina's approach is to perform the ritual and label it. When the assistant has asked for a date of birth and a mother's maiden name, the next user message is tested for the shape of an answer &mdash; a date token in any of several formats and a name token, under 180 characters, not an override attempt, not off-topic &mdash; and if it has that shape it is accepted. The prompt injected for that turn begins <em>&ldquo;DEMO MOCKUP: always accept; do not compare with the customer record&rdquo;</em>, and the model is told to continue the banking question that preceded the challenge.
+    </p>
+    <p>
+        For the commonest case the model is not consulted at all: if the prior question was a balance inquiry, the route returns a reply computed directly from the ledger, listing each savings account, its status and its current balance. The one number a customer most wants to be exactly right is the one number the language model is never allowed to produce.
+    </p>
+
+    <h2>8. Tickets as a Side Effect of Language</h2>
+    <p>
+        A complaint should leave a trace, and Sabina creates that trace from the message itself. A table of incident rules matches phrasing for a swallowed card, a machine that did not dispense, fraud, a lost card, an unrecognised transaction, a failed transfer and an application fault; each rule carries a priority, an owning unit, a service-level commitment and a list of system actions. Questions phrased as &ldquo;how do I&hellip;&rdquo; without a first-person report are excluded, as are messages asking about an existing ticket, so that asking about the procedure does not open a case.
+    </p>
+
+    <table>
+        <caption>Table 3. Incident rules and the commitments attached to them.</caption>
+        <tr><th>Incident</th><th>Priority</th><th>Unit</th><th>Commitment</th></tr>
+        <tr><td>Card swallowed by ATM</td><td>high</td><td>Channel ATM</td><td>Immediate block; collection within two working days</td></tr>
+        <tr><td>Cash not dispensed</td><td>high</td><td>Channel ATM</td><td>Automatic refund within 24 hours; manual investigation seven working days</td></tr>
+        <tr><td>Fraud or phishing</td><td>critical</td><td>Fraud Operations</td><td>Immediate channel block; investigation one to seven working days</td></tr>
+        <tr><td>Unrecognised transaction</td><td>critical</td><td>Dispute &amp; Fraud</td><td>Chargeback 45&ndash;90 days; temporary credit where fraud is likely</td></tr>
+        <tr><td>Card lost or stolen</td><td>high</td><td>Card Operations</td><td>Block within three minutes; replacement three to seven working days</td></tr>
+        <tr><td>Transfer failed or pending</td><td>medium</td><td>Payment Operations</td><td>Automatic refund within 24 hours; investigation three working days</td></tr>
+        <tr><td>Application fault</td><td>medium</td><td>Digital Channel</td><td>Fifteen minutes for an individual case</td></tr>
+    </table>
+
+    <p>
+        A new ticket is not opened when an unresolved ticket of the same category exists for the customer within the last fifteen minutes, so a customer repeating themselves receives the same number. Identifiers take the form <code>BDCS-YYMMDD-NNNNN</code>, a ticket number appearing anywhere in a message triggers a lookup instead of a creation, and the ticket block placed in the model's context ends with an instruction in capitals that the number must be quoted back to the customer. The interface renders the ticket as a card beside the conversation.
+    </p>
+
+    <h2>9. Streaming, Images, and the Answer Without a Key</h2>
+    <p>
+        Model output is streamed: the route reads the provider's event stream, extracts content deltas line by line, and re-emits them as its own <code>delta</code> events, so the browser never sees the provider's framing. Reasoning is disabled and temperature kept low, on the stated reasoning that a customer-service reply should arrive quickly and directly. A message carrying an image &mdash; a transfer receipt, a screenshot of an error &mdash; is sent as a multimodal turn to a vision-capable model at original resolution, with a default caption asking that the attachment be checked for service purposes.
+    </p>
+    <p>
+        When no model key is configured the route still answers. A template reply addresses the customer by name, summarises the first lines of the grounded context, and lists the retrieved procedures by identifier and title; if the message opened a ticket, the reply is the ticket itself with its number, unit, priority and commitments. The application is therefore demonstrable, and testable, with the language model removed &mdash; a property that also makes it possible to check the retrieval and ticket layers independently of the model's wording. Any thrown error in the model path is caught and converted into a friendly, in-persona message delivered over the same stream.
+    </p>
+
+    <h2>10. Deployment</h2>
+    <p>
+        Production runs on Vercel with the root redirected to <code>/chat</code>. The same repository builds a standalone Node.js image &mdash; multi-stage Dockerfile, non-root user, static assets copied in &mdash; with a two-line Caddyfile for TLS and reverse proxy, so the demo can be self-hosted unchanged. Configuration is four environment variables, of which only the model key is secret; the public model name is a constant.
+    </p>
+
+    <h2>11. Limits</h2>
+    <p>
+        The ticket store is a JSON file, kept under <code>/tmp</code> on the serverless platform. That directory is local to a function instance and disappears with it, so a ticket number issued by one instance may be unknown to another, and all tickets vanish when instances recycle. On the live deployment, a ticket created in one chat request was not returned by three listing requests that followed it. For a demo the consequence is cosmetic; for anything more it is the first thing to replace with a durable store.
+    </p>
+    <p>
+        The chat endpoint is unauthenticated and unthrottled. The guardrail makes off-topic traffic free, but any message containing a banking term reaches the model, so a public deployment carries an open inference cost bounded only by traffic. A per-address limiter in front of the route would close this without touching the pipeline.
+    </p>
+    <p>
+        Regular-expression classification is brittle at the edges: a banking term inside an otherwise off-topic sentence opens the gate, English phrasings outside the patterns fall to the catch-all refusal, and the verification detector will accept a date and a name whatever their relationship to the record &mdash; which is the intended mock behaviour, but must never be mistaken for authentication. The expanded corpus produces near-duplicate retrievals, as noted in Section&nbsp;6. The response omits the hardening headers a banking property would carry, and the assistant is instructed to name its model only by a house name, which is a branding choice rather than an engineering one.
+    </p>
+
+    <h2>12. Conclusion</h2>
+    <p>
+        Sabina demonstrates that the difficult parts of a banking assistant &mdash; staying in scope, citing only what it has, showing its evidence, and leaving a record of complaints &mdash; can be engineered without a real bank behind it. Its useful ideas travel. Classify before you infer, so refusals are free and instant. Compute demo data from a seed and the clock, so it is both stable and current. Keep the retrieval evidence in the response, so an answer can be checked. And when a step is a mock, write the word into the prompt, so that neither the model nor the reader mistakes a ritual for a control.
+    </p>
+
+    <h2>References</h2>
+    <div class="references">
+        <ol>
+            <li>Lewis, P., et al. &ldquo;Retrieval-Augmented Generation for Knowledge-Intensive NLP Tasks.&rdquo; NeurIPS, 2020.</li>
+            <li>Robertson, S., and Zaragoza, H. &ldquo;The Probabilistic Relevance Framework: BM25 and Beyond.&rdquo; <em>Foundations and Trends in Information Retrieval</em> 3(4), 2009.</li>
+            <li>Manning, C. D., Raghavan, P., and Sch&uuml;tze, H. <em>Introduction to Information Retrieval</em>. Cambridge University Press, 2008.</li>
+            <li>Park, S. K., and Miller, K. W. &ldquo;Random Number Generators: Good Ones Are Hard to Find.&rdquo; <em>Communications of the ACM</em> 31(10), 1988.</li>
+            <li>Fowler, G., Noll, L. C., and Vo, K.-P. &ldquo;The FNV Non-Cryptographic Hash Algorithm.&rdquo; IETF Internet-Draft, 2019.</li>
+            <li>Perez, F., and Ribeiro, I. &ldquo;Ignore Previous Prompt: Attack Techniques for Language Models.&rdquo; NeurIPS ML Safety Workshop, 2022.</li>
+            <li>Greshake, K., et al. &ldquo;Not What You've Signed Up For: Compromising Real-World LLM-Integrated Applications with Indirect Prompt Injection.&rdquo; AISec, 2023.</li>
+            <li>Inan, H., et al. &ldquo;Llama Guard: LLM-based Input-Output Safeguard for Human-AI Conversations.&rdquo; arXiv:2312.06674, 2023.</li>
+            <li>Ji, Z., et al. &ldquo;Survey of Hallucination in Natural Language Generation.&rdquo; <em>ACM Computing Surveys</em> 55(12), 2023.</li>
+            <li>Otoritas Jasa Keuangan. &ldquo;POJK No. 22 Tahun 2023 tentang Pelindungan Konsumen dan Masyarakat di Sektor Jasa Keuangan.&rdquo; Jakarta, 2023.</li>
+            <li>Bank Indonesia. &ldquo;BI-FAST: Infrastruktur Sistem Pembayaran Ritel Nasional.&rdquo; Bank Indonesia, 2021.</li>
+            <li>Bank Indonesia and ASPI. &ldquo;QRIS: Quick Response Code Indonesian Standard.&rdquo; 2019.</li>
+            <li>WHATWG. &ldquo;HTML Living Standard &mdash; Server-Sent Events.&rdquo; 2026.</li>
+            <li>DeepSeek. &ldquo;DeepSeek API: Chat Completions, Streaming, and Vision Inputs.&rdquo; Platform documentation, 2026.</li>
+            <li>Vercel. &ldquo;Next.js App Router: Route Handlers and Streaming Responses.&rdquo; Documentation, 2026.</li>
+            <li>Vercel. &ldquo;Vercel Functions: Ephemeral Storage and /tmp.&rdquo; Platform documentation, 2026.</li>
+            <li>Ismanto, R. N. &ldquo;Somat: A Single-Box Indonesian AI Chat for Text, Images and Documents.&rdquo; 2026.</li>
+            <li>Ismanto, R. N. &ldquo;AI Research Handbook: An Evaluation-First Framework for Domain-Specific Large Language Models in Indonesia's Regulated Industries.&rdquo; 2026.</li>
+            <li>Ismanto, R. N. &ldquo;Office Romeo: Patch-Based Document Editing and One Router Across Two Runtimes.&rdquo; 2026.</li>
+        </ol>
+    </div>
+
+    <div class="paper-footer">
+        <p>&copy; 2026 Romi Nur Ismanto.</p>
+        <p>Live app: <a href="https://sabina.rominur.com/chat">sabina.rominur.com/chat</a> &middot; GitHub: <a href="https://github.com/romizone/Sabina">github.com/romizone/Sabina</a></p>
+        <p>Describes the repository as of 6 September 2026. Bang Digital is fictional; all customer data is synthetic.</p>
+    </div>
+
+</body>
+</html>
