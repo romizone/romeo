@@ -933,7 +933,7 @@ h2{
   <section class="wrap" aria-label="Introduction">
     <div class="hero">
       <div class="hero-text">
-        <p class="eyebrow">Collected Works &middot; Forty&#8209;Five Projects &middot; MMXXVI</p>
+        <p class="eyebrow">Collected Works &middot; Forty&#8209;Six Projects &middot; MMXXVI</p>
         <h1>Romi Nur Ismanto</h1>
         <p class="tagline"><em>I like to train my agentic AI agent on large datasets with inference speed</em><br> <strong>AI-powered tools</strong> <em>from Node JS roots to web frontiers.</em><br> <em>Every commit lands on GitHub for you to fork &amp; remix.</em></p>
       </div>
@@ -966,7 +966,7 @@ h2{
         <span class="ornament" aria-hidden="true">&#10086;</span>
       </div>
       <div class="bio-body">
-        <p>Romi Nur Ismanto is an engineer and author working at the intersection of agentic AI, network operations, and security. His path runs from designing one&#8209;time&#8209;password authentication systems in 2004, through two decades of banking&#8209;grade security infrastructure and nationwide e&#8209;channel monitoring, to building and training neural networks and autonomous AI agents today. He holds an M.Eng in Network Security from Universitas Indonesia and a B.Eng in Informatics from Universitas Gadjah Mada, has written twelve books and study guides, and has shipped forty&#8209;five projects &mdash; every one of them public on GitHub.</p>
+        <p>Romi Nur Ismanto is an engineer and author working at the intersection of agentic AI, network operations, and security. His path runs from designing one&#8209;time&#8209;password authentication systems in 2004, through two decades of banking&#8209;grade security infrastructure and nationwide e&#8209;channel monitoring, to building and training neural networks and autonomous AI agents today. He holds an M.Eng in Network Security from Universitas Indonesia and a B.Eng in Informatics from Universitas Gadjah Mada, has written twelve books and study guides, and has shipped forty&#8209;six projects &mdash; every one of them public on GitHub.</p>
       </div>
     </div>
   </section>
@@ -975,18 +975,36 @@ h2{
   <section class="section" id="projects" aria-labelledby="projects-h">
     <div class="wrap">
       <div class="section-head">
-        <span class="kicker"><span class="glyph" aria-hidden="true">&#128736;</span><span class="no">&sect; II</span> &mdash; Entries No. I&ndash;XVI</span>
+        <span class="kicker"><span class="glyph" aria-hidden="true">&#128736;</span><span class="no">&sect; II</span> &mdash; Entries No. I&ndash;XVII</span>
         <h2 id="projects-h">Featured AI Working Projects</h2>
       </div>
 
       <!-- Entry I -->
       <article class="entry">
         <figure class="entry-fig">
-          <span class="frame"><img src="Sabina.svg" alt="Sabina live bank customer-service agent thumbnail" width="400" height="300"></span>
-          <figcaption><span class="fig-no">Fig. 1</span> &mdash; Sabina</figcaption>
+          <span class="frame"><img src="OpenRomeoVideo.svg" alt="OpenRomeo Video Studio thumbnail" width="400" height="300"></span>
+          <figcaption><span class="fig-no">Fig. 1</span> &mdash; OpenRomeo Video Studio</figcaption>
         </figure>
         <div class="entry-body">
-          <p class="entry-meta"><span class="entry-no">No. I</span><span class="entry-date">Deployed: 5 September 2026</span></p>
+          <p class="entry-meta"><span class="entry-no">No. I</span><span class="entry-date">Deployed: 6 September 2026</span></p>
+          <h3>&#127916; OpenRomeo Video Studio &mdash; Ten Cinematic Seconds From a Sentence or an Image</h3>
+          <p class="entry-desc">Text or image to a ten-second cinematic clip at up to 1080p in six aspect ratios, with audio &mdash; on a model priced per clip, which makes the engineering question and the business question the same one: let anyone with a Google account try it, and make the worst day cost a known amount. The whole thing is one static HTML file, three serverless functions and a 142-line helper with a single dependency. There is no cookie and no session store: the Google ID token from the browser <em>is</em> the session, presented as a bearer credential on every call, verified against Google and cached per warm instance, and expiring exactly when Google says. The four-clip quota is not a counter but a <em>count</em> &mdash; each accepted job writes one small blob under a salted hash of the account, quota used is the number of blobs, and a refund is a deletion, so the ledger can never disagree with itself. Before submission a vision-capable model rewrites the idea into a 45&ndash;90-word cinematic prompt with camera move, lens, light and a three-beat motion arc, faithful to the reference frame; the rewrite is shown beside the original and silently reverts to the user&rsquo;s words on refusal, and the quota is checked <em>before</em> the rewrite so an empty account never pays for one. The video model is never named to the browser &mdash; every forwarded job object passes a field whitelist. The client polls every twenty seconds for up to an hour, keeps the job in local storage so a reload resumes rather than resubmits, refuses to show 100% until the provider says <em>completed</em>, and downloads from a presigned URL with a streaming server proxy as fallback so the key stays home. Failed jobs give the credit back.</p>
+          <p class="keywords"><span class="kw-label">Keywords</span> <span class="kw">Text-to-Video</span><span class="sep">&middot;</span><span class="kw">Image-to-Video</span><span class="sep">&middot;</span><span class="kw">OpenRouter</span><span class="sep">&middot;</span><span class="kw">Vercel Functions</span><span class="sep">&middot;</span><span class="kw">Vercel Blob</span><span class="sep">&middot;</span><span class="kw">Google Identity Services</span><span class="sep">&middot;</span><span class="kw">Stateless Sessions</span><span class="sep">&middot;</span><span class="kw">Cost Governance</span><span class="sep">&middot;</span><span class="kw">Vanilla JS</span></p>
+          <div class="actions">
+            <a class="action" href="https://video.rominur.com/">&#127760; Live App</a>
+            <a class="action" href="https://rominur.com/OpenRomeoVideo_Paper.html">&#128196; Paper</a>
+          </div>
+        </div>
+      </article>
+
+      <!-- Entry II -->
+      <article class="entry">
+        <figure class="entry-fig">
+          <span class="frame"><img src="Sabina.svg" alt="Sabina live bank customer-service agent thumbnail" width="400" height="300"></span>
+          <figcaption><span class="fig-no">Fig. 2</span> &mdash; Sabina</figcaption>
+        </figure>
+        <div class="entry-body">
+          <p class="entry-meta"><span class="entry-no">No. II</span><span class="entry-date">Deployed: 5 September 2026</span></p>
           <h3>&#127974; Sabina &mdash; Live Bank Customer Service on Synthetic Core Data</h3>
           <p class="entry-desc">A live customer-service agent for Bang Digital, a bank that does not exist &mdash; which is what lets the whole shape of a banking assistant be built and run in public without one real customer record. It answers the two ways such agents fail. Against wandering off-topic, a regex guardrail classifies every message <em>before</em> any model call, so a shampoo price or an &ldquo;ignore previous instructions&rdquo; is refused instantly, at zero inference cost, in a voice chosen for the kind of question &mdash; not a cashier, not a cook, not a person with a home address. Against inventing account facts, every number is computed rather than stored: a generator seeded on <em>cif:account:month</em> (FNV-1a into Park&ndash;Miller) lays down salary on the 25th by BI-FAST, quarterly fees, ATM withdrawals at named machines and QRIS purchases at real merchants, identical on every request yet always covering the ten years ending today, so last month&rsquo;s statement and the next deposit maturity never go stale. Retrieval is a hand-built inverted index with BM25 idf over 2,845 procedures expanded from a few dozen templates across 25 products and 38 cities, plus 205 service documents and a per-customer index rebuilt daily; the retrieved ids and scores are streamed to the screen as evidence beside the answer. Verification is a mock and the prompt says so in capitals &mdash; any date of birth and mother&rsquo;s name is accepted &mdash; and a balance inquiry after it is answered from the ledger without the model ever producing the number. Complaints become tickets from language alone, with priority, unit and SLA by incident rule. SSE streaming, a vision model for transfer receipts, a grounded template answer when no key is present, and a Docker&nbsp;+&nbsp;Caddy path beside Vercel.</p>
           <p class="keywords"><span class="kw-label">Keywords</span> <span class="kw">Next.js 16</span><span class="sep">&middot;</span><span class="kw">TypeScript</span><span class="sep">&middot;</span><span class="kw">DeepRomeo (DeepSeek)</span><span class="sep">&middot;</span><span class="kw">RAG</span><span class="sep">&middot;</span><span class="kw">BM25</span><span class="sep">&middot;</span><span class="kw">Guardrails</span><span class="sep">&middot;</span><span class="kw">Seeded PRNG</span><span class="sep">&middot;</span><span class="kw">SSE Streaming</span><span class="sep">&middot;</span><span class="kw">Vision</span><span class="sep">&middot;</span><span class="kw">Bahasa Indonesia</span></p>
@@ -998,14 +1016,14 @@ h2{
         </div>
       </article>
 
-      <!-- Entry II -->
+      <!-- Entry III -->
       <article class="entry">
         <figure class="entry-fig">
           <span class="frame"><img src="JekardahCOD.svg" alt="Jekardah COD marketplace thumbnail" width="400" height="300"></span>
-          <figcaption><span class="fig-no">Fig. 2</span> &mdash; Jekardah COD</figcaption>
+          <figcaption><span class="fig-no">Fig. 3</span> &mdash; Jekardah COD</figcaption>
         </figure>
         <div class="entry-body">
-          <p class="entry-meta"><span class="entry-no">No. II</span><span class="entry-date">Deployed: 30 August 2026</span></p>
+          <p class="entry-meta"><span class="entry-no">No. III</span><span class="entry-date">Deployed: 30 August 2026</span></p>
           <h3>&#129309; Jekardah COD &mdash; A Marketplace Where You Meet, Check, Then Pay</h3>
           <p class="entry-desc">A cash-on-delivery classifieds marketplace built on one product decision: the platform moves no money. <em>Ketemu orangnya, cek barangnya, baru bayar</em> &mdash; meet the person, check the item, then pay &mdash; describes a transaction the software cannot see, so the software&rsquo;s job is to arrange the meeting and record what it can honestly verify. A Next.js 16 front end rewrites <em>/api/*</em> to a separate Go project, so the session cookie, the OAuth state cookie and Google&rsquo;s callback never leave one origin. The API is standard-library Go &mdash; <em>net/http</em> with the 1.22 method-and-path router, pgx, no framework &mdash; run as a Vercel function that builds one application per warm instance under double-checked locking, caps its PostgreSQL pool at four connections because the platform spawns instances freely, and serialises schema migration under a transaction-scoped advisory lock so parallel cold starts cannot race. Configuration refuses to start wrong: the moment the front-end URL is HTTPS, a default JWT secret, demo mode, missing OAuth or a plaintext backend are all rejected, and the demo-login route is never registered rather than merely disabled. Listing photos may come from exactly three hosts, and both the Next upload route and the Go handler identify image type from leading bytes, not the declared content type; the Next route confirms the session with the backend before it touches storage. Chat is the transaction layer &mdash; one conversation per listing and buyer, membership checked on every read and write, incremental polling by last-seen id &mdash; and a review can only be written for a listing marked sold, by a buyer who actually opened a conversation on it, about its seller and no one else. Sixteen categories from Avanza to padel rackets, seeded with attributed samples.</p>
           <p class="keywords"><span class="kw-label">Keywords</span> <span class="kw">Go net/http</span><span class="sep">&middot;</span><span class="kw">Next.js 16</span><span class="sep">&middot;</span><span class="kw">PostgreSQL (Neon)</span><span class="sep">&middot;</span><span class="kw">pgx</span><span class="sep">&middot;</span><span class="kw">Google OAuth 2.0</span><span class="sep">&middot;</span><span class="kw">JWT HS256</span><span class="sep">&middot;</span><span class="kw">Vercel Blob</span><span class="sep">&middot;</span><span class="kw">Tailwind CSS 4</span><span class="sep">&middot;</span><span class="kw">Bahasa Indonesia</span></p>
@@ -1016,14 +1034,14 @@ h2{
         </div>
       </article>
 
-      <!-- Entry III -->
+      <!-- Entry IV -->
       <article class="entry">
         <figure class="entry-fig">
           <span class="frame"><img src="OfficeRomeo.svg" alt="Office Romeo browser office suite thumbnail" width="400" height="300"></span>
-          <figcaption><span class="fig-no">Fig. 3</span> &mdash; Office Romeo</figcaption>
+          <figcaption><span class="fig-no">Fig. 4</span> &mdash; Office Romeo</figcaption>
         </figure>
         <div class="entry-body">
-          <p class="entry-meta"><span class="entry-no">No. III</span><span class="entry-date">Deployed: 5 September 2026</span></p>
+          <p class="entry-meta"><span class="entry-no">No. IV</span><span class="entry-date">Deployed: 5 September 2026</span></p>
           <h3>&#128221; Office Romeo &mdash; A Copilot That Edits the File, Not a Chat Beside It</h3>
           <p class="entry-desc">A browser office suite &mdash; document, spreadsheet, slides and PDF editors under one shell &mdash; built on the position that an assistant inside a document should return an <em>edit</em>, not a draft. A chat pane leaves the user to copy and reconcile; letting the model rewrite the whole document silently rewords the paragraphs nobody asked it to touch. So the model is constrained to a patch vocabulary against the live canvas &mdash; a replacement for the selection, a fragment to append, a cell write, a colour, a slide to add &mdash; and told to prefer the smallest patch that does the job; full replacement exists but is reserved for requests that genuinely mean the whole document. Highlight one sentence and the rule is explicit: revise only that selection, never the document. Underneath, one framework-neutral router returning plain status/body/headers is mounted twice &mdash; as Vite middleware in dev and as serverless functions in production &mdash; so both environments run identical routing code and the &ldquo;works locally, 404 after deploy&rdquo; bug has nowhere to live. The model call is budgeted against the platform&rsquo;s own function ceiling: a three-model fallback under a total budget below the cap, a per-attempt timeout, a floor below which a new attempt is not started, reasoning mode switched off because a canvas patch needs neither the latency nor the tokens, and an early exit on auth and billing failures where retrying cannot help. The sheet is a real evaluator &mdash; tokeniser, parser, AST interpreter, sixty functions, memoised dependency walk, cycle detection, Excel serial dates, and leading zeros kept as text &mdash; because a copilot that writes a formula into a grid that cannot evaluate it has produced a screenshot. Files are stored per user under AES-256-GCM, so the object store holds ciphertext only.</p>
           <p class="keywords"><span class="kw-label">Keywords</span> <span class="kw">React 19</span><span class="sep">&middot;</span><span class="kw">Vite 6</span><span class="sep">&middot;</span><span class="kw">Serverless</span><span class="sep">&middot;</span><span class="kw">Patch Protocol</span><span class="sep">&middot;</span><span class="kw">Structured Output</span><span class="sep">&middot;</span><span class="kw">Formula Engine</span><span class="sep">&middot;</span><span class="kw">contentEditable</span><span class="sep">&middot;</span><span class="kw">AES-256-GCM</span><span class="sep">&middot;</span><span class="kw">HMAC Sessions</span><span class="sep">&middot;</span><span class="kw">Google Sign-In</span></p>
@@ -1035,14 +1053,14 @@ h2{
         </div>
       </article>
 
-      <!-- Entry IV -->
+      <!-- Entry V -->
       <article class="entry">
         <figure class="entry-fig">
           <span class="frame"><img src="ZipRar.svg" alt="ZipRar client-side archive tool thumbnail" width="400" height="300"></span>
-          <figcaption><span class="fig-no">Fig. 4</span> &mdash; ZipRar</figcaption>
+          <figcaption><span class="fig-no">Fig. 5</span> &mdash; ZipRar</figcaption>
         </figure>
         <div class="entry-body">
-          <p class="entry-meta"><span class="entry-no">No. IV</span><span class="entry-date">Deployed: 31 August 2026</span></p>
+          <p class="entry-meta"><span class="entry-no">No. V</span><span class="entry-date">Deployed: 31 August 2026</span></p>
           <h3>&#128230; ZipRar &mdash; Archives That Never Leave the Browser</h3>
           <p class="entry-desc">The standard bargain of the online archive tool is that you hand your files to a stranger&rsquo;s server to use the feature. ZipRar declines it: the Vercel config declares a Vite build and a <em>dist</em> directory and nothing else &mdash; no API route, no bucket, no function &mdash; so the network tab is the privacy audit. No single library covers the format matrix, so three engines are routed behind one interface: fflate writes ZIP and provides a fast path for reading it, libarchive in a worker reads everything else including RAR&nbsp;v4 and v5, ISO, CAB and CPIO, and 7-Zip writes 7Z with AES and <em>encrypted headers</em> so filenames are hidden too, doubling as the stream compressor for bzip2, xz and zstd. Between them sits a hand-written 512-byte ustar writer, because the missing piece was the container rather than the compression &mdash; including the checksum convention that requires the checksum field to be filled with spaces before it is summed, and the name/prefix split that lets a path exceed a hundred characters or fail loudly rather than truncate. Path sanitisation runs in both directions: the function that rejects <em>..</em> segments, absolute prefixes and NUL bytes on extraction also runs over every path written into a new archive, so the tool cannot author the Zip Slip attack it defends against. At the WebAssembly boundary bytes are copied out of the module heap before it can be reused and every MEMFS entry is unlinked after each run, which is the difference between a page that runs all afternoon and one that dies on the third archive. Dropped folders are walked with a readEntries pump loop &mdash; the missing loop is the commonest drag-and-drop bug, and it fails by producing an archive that merely looks complete. RAR extracts but does not create, and the interface says why instead of quietly shipping a ZIP.</p>
           <p class="keywords"><span class="kw-label">Keywords</span> <span class="kw">React 19</span><span class="sep">&middot;</span><span class="kw">Vite 8</span><span class="sep">&middot;</span><span class="kw">TypeScript</span><span class="sep">&middot;</span><span class="kw">WebAssembly</span><span class="sep">&middot;</span><span class="kw">libarchive.wasm</span><span class="sep">&middot;</span><span class="kw">7-Zip wasm</span><span class="sep">&middot;</span><span class="kw">fflate</span><span class="sep">&middot;</span><span class="kw">ustar</span><span class="sep">&middot;</span><span class="kw">Zip Slip Defense</span><span class="sep">&middot;</span><span class="kw">Zero Upload</span></p>
@@ -1054,14 +1072,14 @@ h2{
         </div>
       </article>
 
-      <!-- Entry V -->
+      <!-- Entry VI -->
       <article class="entry">
         <figure class="entry-fig">
           <span class="frame"><img src="Pikapiku.svg" alt="Pikapiku web transcription app thumbnail" width="400" height="300"></span>
-          <figcaption><span class="fig-no">Fig. 5</span> &mdash; Pikapiku</figcaption>
+          <figcaption><span class="fig-no">Fig. 6</span> &mdash; Pikapiku</figcaption>
         </figure>
         <div class="entry-body">
-          <p class="entry-meta"><span class="entry-no">No. V</span><span class="entry-date">Deployed: 30 August 2026</span></p>
+          <p class="entry-meta"><span class="entry-no">No. VI</span><span class="entry-date">Deployed: 30 August 2026</span></p>
           <h3>&#127911; Pikapiku &mdash; Web Transcription That Never Stores Your Media</h3>
           <p class="entry-desc">Five hours of audio transcribed on a platform whose functions die at ninety seconds and whose request bodies stop at four and a half megabytes. Those two limits make the usual architecture &mdash; upload to a bucket, queue a worker &mdash; impossible, so the orchestration moves into the tab instead: ffmpeg.wasm cuts the file into 4&frac12;-minute chunks locally, re-encodes each to mono 16&nbsp;kHz MP3 down a 64&rarr;48&rarr;32&nbsp;kbps ladder until it fits the body limit, and posts them one at a time to a short-lived function that forwards each to a speech model and forgets it. Chunks overlap by two seconds and the overlap is removed on the way <em>back</em>, so a word spoken across a cut is transcribed with context on both sides but appears once. The privacy claim is a schema property rather than a policy: the transcript table has columns for text, SRT and timed cues and no column for media at all, the decoded chunk buffer is zeroed in a <em>finally</em> block, and the ffmpeg worker is terminated when the job ends. Quota is reserved before the upstream call and keyed on a client-minted job id, so a rejected request costs nothing and a sixty-eight-chunk file spends one job slot instead of sixty-eight. A second, cheaper model then copy-edits the transcript under a prompt of pure prohibitions &mdash; fix typos, never summarise, never translate, never move text between blocks &mdash; batched, halved on failure, and passed through unedited when it still fails, so the transcript is never lost to the pass that was only meant to fix its spelling. Google sign-in gates every route; output leaves as text, Word, or SRT.</p>
           <p class="keywords"><span class="kw-label">Keywords</span> <span class="kw">Next.js 16</span><span class="sep">&middot;</span><span class="kw">React 19</span><span class="sep">&middot;</span><span class="kw">TypeScript</span><span class="sep">&middot;</span><span class="kw">ffmpeg.wasm</span><span class="sep">&middot;</span><span class="kw">OpenRouter STT</span><span class="sep">&middot;</span><span class="kw">Speaker Diarization</span><span class="sep">&middot;</span><span class="kw">Auth.js + Google</span><span class="sep">&middot;</span><span class="kw">Prisma + Postgres</span><span class="sep">&middot;</span><span class="kw">Upstash Redis</span></p>
@@ -1073,14 +1091,14 @@ h2{
         </div>
       </article>
 
-      <!-- Entry VI -->
+      <!-- Entry VII -->
       <article class="entry">
         <figure class="entry-fig">
           <span class="frame"><img src="Jaipong.svg" alt="Jaipong AI song studio thumbnail" width="400" height="300"></span>
-          <figcaption><span class="fig-no">Fig. 6</span> &mdash; Jaipong</figcaption>
+          <figcaption><span class="fig-no">Fig. 7</span> &mdash; Jaipong</figcaption>
         </figure>
         <div class="entry-body">
-          <p class="entry-meta"><span class="entry-no">No. VI</span><span class="entry-date">Deployed: 27 August 2026</span></p>
+          <p class="entry-meta"><span class="entry-no">No. VII</span><span class="entry-date">Deployed: 27 August 2026</span></p>
           <h3>&#129345; Jaipong &mdash; AI Song Studio in Bahasa Indonesia</h3>
           <p class="entry-desc">Named after the kendang-driven dance music of West Java, a studio that turns one Indonesian sentence into a complete song &mdash; sung for real. Type &ldquo;lagu tentang hujan sore di Bandung&rdquo; and a language model writes the plan &mdash; title, genre, a style paragraph and original lyrics, streamed to the screen line by line &mdash; then a music model (Lyria 3 Pro) performs it, the finished stereo track arriving as base64 chunks over SSE with time-stamped lyrics that drive a three-tier karaoke panel. The plan travels as a line-oriented format rather than JSON, so a truncated generation degrades to the last whole line instead of a parse error; the audio format is sniffed from the file&rsquo;s first bytes, because the model sends MP3 even when asked for WAV. Twelve one-tap presets put Jaipong Sunda, Dangdut Koplo, Keroncong and Gamelan Ambient beside pop, rock and EDM; pick female, male or instrumental vocals and 45 seconds to 4 minutes, or supply your own title and lyrics to be sung verbatim. Playback decodes to an AudioBuffer through Web Audio &mdash; immune to autoplay policy &mdash; with a spectrum visualizer, keyboard transport, and MP3 download. Songs belong to the browser: metadata in localStorage, audio in IndexedDB, nothing stored server-side &mdash; while layered burst, daily and global quotas cap the per-song-priced music model&rsquo;s worst day at a known bill.</p>
           <p class="keywords"><span class="kw-label">Keywords</span> <span class="kw">Next.js 16</span><span class="sep">&middot;</span><span class="kw">React 19</span><span class="sep">&middot;</span><span class="kw">TypeScript</span><span class="sep">&middot;</span><span class="kw">OpenRouter</span><span class="sep">&middot;</span><span class="kw">Lyria 3 Pro</span><span class="sep">&middot;</span><span class="kw">SSE Streaming</span><span class="sep">&middot;</span><span class="kw">Web Audio API</span><span class="sep">&middot;</span><span class="kw">IndexedDB</span><span class="sep">&middot;</span><span class="kw">Bahasa Indonesia</span></p>
@@ -1092,14 +1110,14 @@ h2{
         </div>
       </article>
 
-      <!-- Entry VII -->
+      <!-- Entry VIII -->
       <article class="entry">
         <figure class="entry-fig">
           <span class="frame"><img src="EditPDF.svg" alt="EditPDF browser-based PDF editor thumbnail" width="400" height="300"></span>
-          <figcaption><span class="fig-no">Fig. 7</span> &mdash; EditPDF</figcaption>
+          <figcaption><span class="fig-no">Fig. 8</span> &mdash; EditPDF</figcaption>
         </figure>
         <div class="entry-body">
-          <p class="entry-meta"><span class="entry-no">No. VII</span><span class="entry-date">Deployed: 23 August 2026</span></p>
+          <p class="entry-meta"><span class="entry-no">No. VIII</span><span class="entry-date">Deployed: 23 August 2026</span></p>
           <h3>&#128196; EditPDF &mdash; Forty-One PDF Tools in the Browser</h3>
           <p class="entry-desc">A free online PDF editor in the manner of Sejda, with one difference that governs the whole design: nothing is uploaded. Every operation runs in the browser tab, so a contract, a payslip or a scanned passport is opened, edited and saved without a single byte crossing the network &mdash; there is no server to trust, because there is no server. Click a paragraph and retype it in place; whiteout a region, drop in images, shapes and signatures, then fill and sign forms. Forty-one tools cover the rest: merge, alternate-and-mix, split by range, size, text or bookmarks, extract, organize, crop, rotate, resize, N-up, flip, watermark, page numbers, header and footer, Bates numbering, redaction that removes content rather than painting over it, AES protect and unlock, flatten, compress, grayscale, repair, bookmarks and metadata &mdash; plus conversion to Word, Excel, PowerPoint, text and JPG, and Tesseract OCR to make a scan searchable. Built as a React and Vite single-page app over pdf-lib, PDF.js and fontkit.</p>
           <p class="keywords"><span class="kw-label">Keywords</span> <span class="kw">React 18</span><span class="sep">&middot;</span><span class="kw">Vite 5</span><span class="sep">&middot;</span><span class="kw">pdf-lib</span><span class="sep">&middot;</span><span class="kw">PDF.js</span><span class="sep">&middot;</span><span class="kw">fontkit</span><span class="sep">&middot;</span><span class="kw">Tesseract OCR</span><span class="sep">&middot;</span><span class="kw">41 Tools</span><span class="sep">&middot;</span><span class="kw">100% Client-Side</span><span class="sep">&middot;</span><span class="kw">Zero Upload</span></p>
@@ -1111,14 +1129,14 @@ h2{
         </div>
       </article>
 
-      <!-- Entry VIII -->
+      <!-- Entry IX -->
       <article class="entry">
         <figure class="entry-fig">
           <span class="frame"><img src="Somat.svg" alt="Somat Indonesian AI chat application thumbnail" width="400" height="300"></span>
-          <figcaption><span class="fig-no">Fig. 8</span> &mdash; Somat</figcaption>
+          <figcaption><span class="fig-no">Fig. 9</span> &mdash; Somat</figcaption>
         </figure>
         <div class="entry-body">
-          <p class="entry-meta"><span class="entry-no">No. VIII</span><span class="entry-date">Deployed: 16 August 2026</span></p>
+          <p class="entry-meta"><span class="entry-no">No. IX</span><span class="entry-date">Deployed: 16 August 2026</span></p>
           <h3>&#128172; Somat &mdash; AI Chat Indonesia for Text &amp; Images</h3>
           <p class="entry-desc">An Indonesian-language AI chat that hides every knob: no model picker, no API settings, no separate modes &mdash; just one conversation box where capability appears when it is asked for. Ask a question and the answer streams back with Markdown, tables, code blocks and LaTeX; ask about something current and the model searches the web itself, listing its sources beneath the reply. Paste a link and the page is fetched and read. Say &ldquo;buatkan gambar&rdquo; and an image is generated inline with a download button; say &ldquo;buatkan Excel&rdquo; and a real .xlsx is assembled server-side and handed back as a download card &mdash; the same for Word, PowerPoint and PDF, with every slide deck laid out in strategy-consultant form (executive summary first, one message per slide, action titles, MECE bullets, a &ldquo;so what&rdquo; kicker). Uploaded PDFs, Office and OpenDocument files are parsed for their text, while scanned images run OCR in the browser in Indonesian and English. The OpenRouter key never leaves the server, model names are never sent to the client, and conversation history lives in the browser&rsquo;s own IndexedDB &mdash; there is no server-side database at all.</p>
           <p class="keywords"><span class="kw-label">Keywords</span> <span class="kw">Next.js 16</span><span class="sep">&middot;</span><span class="kw">React 19</span><span class="sep">&middot;</span><span class="kw">TypeScript</span><span class="sep">&middot;</span><span class="kw">OpenRouter</span><span class="sep">&middot;</span><span class="kw">Streaming</span><span class="sep">&middot;</span><span class="kw">Web Search</span><span class="sep">&middot;</span><span class="kw">Tesseract OCR</span><span class="sep">&middot;</span><span class="kw">docx &amp; xlsx &amp; pptx &amp; pdf</span><span class="sep">&middot;</span><span class="kw">IndexedDB</span><span class="sep">&middot;</span><span class="kw">Bahasa Indonesia</span></p>
@@ -1130,14 +1148,14 @@ h2{
         </div>
       </article>
 
-      <!-- Entry IX -->
+      <!-- Entry X -->
       <article class="entry">
         <figure class="entry-fig">
           <span class="frame"><img src="PdfRomeo.svg" alt="PdfRomeo macOS PDF toolkit thumbnail" width="400" height="300"></span>
-          <figcaption><span class="fig-no">Fig. 9</span> &mdash; PdfRomeo</figcaption>
+          <figcaption><span class="fig-no">Fig. 10</span> &mdash; PdfRomeo</figcaption>
         </figure>
         <div class="entry-body">
-          <p class="entry-meta"><span class="entry-no">No. IX</span><span class="entry-date">Released: 26 July 2026</span></p>
+          <p class="entry-meta"><span class="entry-no">No. X</span><span class="entry-date">Released: 26 July 2026</span></p>
           <h3>&#128196; PdfRomeo &mdash; 43-Tool PDF Suite for macOS</h3>
           <p class="entry-desc">A professional PDF toolkit for Apple Silicon that keeps every document on the machine &mdash; no upload, no account, no cloud round-trip. Forty-three focused tools across six families: organize (merge, interleaved mix, split by range/bookmark/size/text, extract, reorder, crop, rotate, N-up), edit &amp; sign (click a page to place text or click existing text to rewrite it, fillable form creation, signature images, watermarks, Bates numbering continuous across files), convert (PDF to Word, table-aware Excel, PowerPoint, text, and JPG/PNG/TIFF at any DPI), protect (AES-128 with granular permissions, unlock, flatten), and scan repair (real image-downscaling compression, auto-deskew, Tesseract OCR, damaged-file recovery). Built on PySide6 with pikepdf and PyMuPDF, its engine layer carries no Qt imports at all, so all forty-plus operations are drivable from a CLI, a server, or a test harness without ever opening a window.</p>
           <p class="keywords"><span class="kw-label">Keywords</span> <span class="kw">Python</span><span class="sep">&middot;</span><span class="kw">PySide6</span><span class="sep">&middot;</span><span class="kw">Qt</span><span class="sep">&middot;</span><span class="kw">pikepdf</span><span class="sep">&middot;</span><span class="kw">PyMuPDF</span><span class="sep">&middot;</span><span class="kw">Tesseract OCR</span><span class="sep">&middot;</span><span class="kw">Apple Silicon</span><span class="sep">&middot;</span><span class="kw">Offline</span></p>
@@ -1149,14 +1167,14 @@ h2{
         </div>
       </article>
 
-      <!-- Entry X -->
+      <!-- Entry XI -->
       <article class="entry">
         <figure class="entry-fig">
           <span class="frame"><img src="OpenRomeo.svg" alt="OpenRomeo desktop AI coworker application thumbnail" width="400" height="300"></span>
-          <figcaption><span class="fig-no">Fig. 10</span> &mdash; OpenRomeo</figcaption>
+          <figcaption><span class="fig-no">Fig. 11</span> &mdash; OpenRomeo</figcaption>
         </figure>
         <div class="entry-body">
-          <p class="entry-meta"><span class="entry-no">No. X</span><span class="entry-date">Released: 25 July 2026</span></p>
+          <p class="entry-meta"><span class="entry-no">No. XI</span><span class="entry-date">Released: 25 July 2026</span></p>
           <h3>&#129302; OpenRomeo &mdash; AI Coworker on Your Desktop</h3>
           <p class="entry-desc">A cross-platform desktop AI coworker that delivers finished work, not just chat &mdash; polished documents, updated spreadsheets, triaged inboxes, and Slack replies that land as real files in your workspace. A supercharged fork of OpenWorker, rebuilt around the latest frontier models: GPT&#8209;5.6, Claude Fable 5 &amp; Sonnet 5, Gemini 3.6, Kimi K3, MiniMax M3, DeepSeek V4, GLM&#8209;5.2, and Grok 4.5 &mdash; with vision enabled on the multimodal flagships, or fully local inference via Ollama. Ships the Claude Desktop-standard builtin document skills (docx, pptx, xlsx, pdf)&hellip;</p>
           <p class="keywords"><span class="kw-label">Keywords</span> <span class="kw">Tauri</span><span class="sep">&middot;</span><span class="kw">Python</span><span class="sep">&middot;</span><span class="kw">TypeScript</span><span class="sep">&middot;</span><span class="kw">MCP</span><span class="sep">&middot;</span><span class="kw">Agentic AI</span><span class="sep">&middot;</span><span class="kw">Multi-Model</span><span class="sep">&middot;</span><span class="kw">Local-First</span><span class="sep">&middot;</span><span class="kw">macOS &amp; Windows</span><span class="sep">&middot;</span><span class="kw">MIT License</span></p>
@@ -1168,14 +1186,14 @@ h2{
         </div>
       </article>
 
-      <!-- Entry XI -->
+      <!-- Entry XII -->
       <article class="entry">
         <figure class="entry-fig">
           <span class="frame"><img src="NetScope.svg" alt="NetScope native macOS network scanner thumbnail" width="400" height="300"></span>
-          <figcaption><span class="fig-no">Fig. 11</span> &mdash; NetScope</figcaption>
+          <figcaption><span class="fig-no">Fig. 12</span> &mdash; NetScope</figcaption>
         </figure>
         <div class="entry-body">
-          <p class="entry-meta"><span class="entry-no">No. XI</span><span class="entry-date">Released: 11 April 2026</span></p>
+          <p class="entry-meta"><span class="entry-no">No. XII</span><span class="entry-date">Released: 11 April 2026</span></p>
           <h3>&#128225; NetScope &mdash; Native macOS Network Scanner</h3>
           <p class="entry-desc">A native macOS network scanner built from the ground up with Swift 5.9 and SwiftUI. Features six integrated modules: My Device (local system &amp; interface info), Discovery (TCP knock scan, ARP resolution, 14+ Bonjour service types, OUI vendor lookup), Port Scanner (Top 100/1000/custom ranges with 100+ concurrent probes, banner grabbing, TLS certificate inspection), Ping &amp; Traceroute (ICMP diagnostics, A/AAAA/MX/NS/CNAME/TXT/SRV DNS queries), Monitor (configurable polling with real-time alerts &amp; 24-hour event history via Swift Charts), and Reports (CSV/JSON/HTML/PDF export).</p>
           <p class="keywords"><span class="kw-label">Keywords</span> <span class="kw">Swift</span><span class="sep">&middot;</span><span class="kw">SwiftUI</span><span class="sep">&middot;</span><span class="kw">Network.framework</span><span class="sep">&middot;</span><span class="kw">CoreWLAN</span><span class="sep">&middot;</span><span class="kw">SwiftData</span><span class="sep">&middot;</span><span class="kw">XPC</span><span class="sep">&middot;</span><span class="kw">macOS Native</span><span class="sep">&middot;</span><span class="kw">MIT License</span></p>
@@ -1187,14 +1205,14 @@ h2{
         </div>
       </article>
 
-      <!-- Entry XII -->
+      <!-- Entry XIII -->
       <article class="entry">
         <figure class="entry-fig">
           <span class="frame"><img src="Transkrip.svg" alt="Transkrip local AI transcription application thumbnail" width="400" height="280"></span>
-          <figcaption><span class="fig-no">Fig. 12</span> &mdash; Transkrip</figcaption>
+          <figcaption><span class="fig-no">Fig. 13</span> &mdash; Transkrip</figcaption>
         </figure>
         <div class="entry-body">
-          <p class="entry-meta"><span class="entry-no">No. XII</span><span class="entry-date">Released: 9 April 2026</span></p>
+          <p class="entry-meta"><span class="entry-no">No. XIII</span><span class="entry-date">Released: 9 April 2026</span></p>
           <h3>&#127897;&#65039; Transkrip &mdash; Local AI Audio &amp; Video Transcription</h3>
           <p class="entry-desc">Privacy-first cross-platform desktop application that transcribes audio and video files entirely on-device &mdash; no cloud, no uploads, no data leaks. Built with Electron 41, React 19, TypeScript 6, Vite 8, and Tailwind CSS 4, Transkrip wraps the highly optimized whisper.cpp engine behind a polished drag-and-drop UI. Supports common audio/video containers (MP3, WAV, M4A, MP4, MOV), multilingual transcription via Whisper models, and rich export options to .txt, .docx, and .pdf. Features a persistent local transcription history powered by SQLite (better-sqlite3)&hellip;</p>
           <p class="keywords"><span class="kw-label">Keywords</span> <span class="kw">Electron 41</span><span class="sep">&middot;</span><span class="kw">React 19</span><span class="sep">&middot;</span><span class="kw">TypeScript 6</span><span class="sep">&middot;</span><span class="kw">Vite 8</span><span class="sep">&middot;</span><span class="kw">Tailwind CSS 4</span><span class="sep">&middot;</span><span class="kw">whisper.cpp</span><span class="sep">&middot;</span><span class="kw">SQLite</span><span class="sep">&middot;</span><span class="kw">Privacy-First</span><span class="sep">&middot;</span><span class="kw">MIT License</span></p>
@@ -1206,14 +1224,14 @@ h2{
         </div>
       </article>
 
-      <!-- Entry XIII -->
+      <!-- Entry XIV -->
       <article class="entry">
         <figure class="entry-fig">
           <span class="frame"><img src="SonicAI.svg" alt="SonicAI text-to-song generator thumbnail" width="400" height="300"></span>
-          <figcaption><span class="fig-no">Fig. 13</span> &mdash; SonicAI</figcaption>
+          <figcaption><span class="fig-no">Fig. 14</span> &mdash; SonicAI</figcaption>
         </figure>
         <div class="entry-body">
-          <p class="entry-meta"><span class="entry-no">No. XIII</span><span class="entry-date">Deployed: 4 April 2026</span></p>
+          <p class="entry-meta"><span class="entry-no">No. XIV</span><span class="entry-date">Deployed: 4 April 2026</span></p>
           <h3>&#127925; SonicAI &mdash; AI Text-to-Song Generator</h3>
           <p class="entry-desc">Browser-based AI text-to-song generator that transforms written lyrics into complete musical compositions entirely on the client-side. Features a character-to-note mapping algorithm that converts text into melodies, with multi-layer instrument synthesis (melody, chords, bass, drums) and a dual vocal engine combining formant synthesis with Speech Synthesis API. Supports 6 music genres (Pop, Rock, Jazz, Electronic, Classical, Lo-fi) each with unique scales and chord progressions. Includes real-time 80-bar frequency spectrum visualizer, tempo adjustment (60&ndash;180 BPM), key selection&hellip;</p>
           <p class="keywords"><span class="kw-label">Keywords</span> <span class="kw">HTML5</span><span class="sep">&middot;</span><span class="kw">CSS3</span><span class="sep">&middot;</span><span class="kw">JavaScript</span><span class="sep">&middot;</span><span class="kw">Web Audio API</span><span class="sep">&middot;</span><span class="kw">Speech Synthesis</span><span class="sep">&middot;</span><span class="kw">Formant Synthesis</span><span class="sep">&middot;</span><span class="kw">Zero Dependencies</span><span class="sep">&middot;</span><span class="kw">MIT License</span></p>
@@ -1225,14 +1243,14 @@ h2{
         </div>
       </article>
 
-      <!-- Entry XIV -->
+      <!-- Entry XV -->
       <article class="entry">
         <figure class="entry-fig">
           <span class="frame"><img src="GPUSimulator.svg" alt="GPU versus CPU versus TPU simulator thumbnail" width="400" height="280"></span>
-          <figcaption><span class="fig-no">Fig. 14</span> &mdash; GPU Simulator</figcaption>
+          <figcaption><span class="fig-no">Fig. 15</span> &mdash; GPU Simulator</figcaption>
         </figure>
         <div class="entry-body">
-          <p class="entry-meta"><span class="entry-no">No. XIV</span><span class="entry-date">Deployed: 14 March 2026</span></p>
+          <p class="entry-meta"><span class="entry-no">No. XV</span><span class="entry-date">Deployed: 14 March 2026</span></p>
           <h3>&#128308; GPU vs CPU vs TPU Simulator</h3>
           <p class="entry-desc">Interactive web-based simulator that visually demonstrates performance differences between CPU, GPU, and TPU when handling AI and deep learning workloads. Features a real-time processing race with three horizontal progress bars competing to complete identical tasks, supporting 4 workload types: Matrix Multiplication (1024&times;1024), CNN Training (ResNet-50), Batch Inference, and NLP Transformer (BERT-Base). Includes detailed processor cards with animated core visualization grids (16 cores for CPU, 256 for GPU, 64 for TPU), real-time metrics (ops/sec, throughput, timestamps)&hellip;</p>
           <p class="keywords"><span class="kw-label">Keywords</span> <span class="kw">HTML5</span><span class="sep">&middot;</span><span class="kw">CSS3</span><span class="sep">&middot;</span><span class="kw">JavaScript</span><span class="sep">&middot;</span><span class="kw">GPU Computing</span><span class="sep">&middot;</span><span class="kw">TPU Systolic Array</span><span class="sep">&middot;</span><span class="kw">AI Workloads</span><span class="sep">&middot;</span><span class="kw">Zero Dependencies</span><span class="sep">&middot;</span><span class="kw">MIT License</span></p>
@@ -1244,14 +1262,14 @@ h2{
         </div>
       </article>
 
-      <!-- Entry XV -->
+      <!-- Entry XVI -->
       <article class="entry">
         <figure class="entry-fig">
           <span class="frame"><img src="DiffusionSimulator.svg" alt="AI image diffusion simulator thumbnail" width="400" height="280"></span>
-          <figcaption><span class="fig-no">Fig. 15</span> &mdash; Diffusion Simulator</figcaption>
+          <figcaption><span class="fig-no">Fig. 16</span> &mdash; Diffusion Simulator</figcaption>
         </figure>
         <div class="entry-body">
-          <p class="entry-meta"><span class="entry-no">No. XV</span><span class="entry-date">Deployed: 7 March 2026</span></p>
+          <p class="entry-meta"><span class="entry-no">No. XVI</span><span class="entry-date">Deployed: 7 March 2026</span></p>
           <h3>&#127912; AI Image Diffusion Simulator</h3>
           <p class="entry-desc">Interactive educational tool that visualizes how diffusion models generate images through a simulated denoising process. Select from 10 adorable animals (cat, dog, bunny, panda, fox, penguin, hamster, owl, koala, duck) and watch as random noise transforms into coherent illustrations via reverse diffusion. Features adjustable diffusion steps, Classifier-Free Guidance (CFG) scale slider controlling prompt adherence, manual noise slider for exploring intermediate states, and speed selector (slow/normal/fast). Includes real-time progress bar with step counter&hellip;</p>
           <p class="keywords"><span class="kw-label">Keywords</span> <span class="kw">JavaScript</span><span class="sep">&middot;</span><span class="kw">Canvas API</span><span class="sep">&middot;</span><span class="kw">Diffusion Model</span><span class="sep">&middot;</span><span class="kw">Denoising</span><span class="sep">&middot;</span><span class="kw">CFG Scale</span><span class="sep">&middot;</span><span class="kw">Zero Dependencies</span><span class="sep">&middot;</span><span class="kw">MIT License</span></p>
@@ -1263,14 +1281,14 @@ h2{
         </div>
       </article>
 
-      <!-- Entry XVI -->
+      <!-- Entry XVII -->
       <article class="entry">
         <figure class="entry-fig">
           <span class="frame"><img src="AINewsPresenter.svg" alt="AI news presenter simulator thumbnail" width="800" height="500"></span>
-          <figcaption><span class="fig-no">Fig. 16</span> &mdash; AI News Presenter</figcaption>
+          <figcaption><span class="fig-no">Fig. 17</span> &mdash; AI News Presenter</figcaption>
         </figure>
         <div class="entry-body">
-          <p class="entry-meta"><span class="entry-no">No. XVI</span><span class="entry-date">Deployed: 28 February 2026</span></p>
+          <p class="entry-meta"><span class="entry-no">No. XVII</span><span class="entry-date">Deployed: 28 February 2026</span></p>
           <h3>&#127908; AI News Presenter Simulator</h3>
           <p class="entry-desc">Virtual news anchor simulator powered by Text-to-Speech with professional animated SVG avatar. Features lip-sync mouth animation, automatic eye blink, breathing animation, and intensified avatar glow during broadcast. Bilingual support for Bahasa Indonesia and English using Web Speech API with adjustable speech rate (0.5x&ndash;2x) and pitch control. Delivers a full TV studio experience with running BREAKING news ticker, blinking LIVE badge, real-time clock, SVG news desk, audio equalizer animation, and glassmorphism UI effects. Includes real-time subtitle with word highlighting&hellip;</p>
           <p class="keywords"><span class="kw-label">Keywords</span> <span class="kw">HTML5</span><span class="sep">&middot;</span><span class="kw">CSS3</span><span class="sep">&middot;</span><span class="kw">JavaScript</span><span class="sep">&middot;</span><span class="kw">Web Speech API</span><span class="sep">&middot;</span><span class="kw">SVG Animation</span><span class="sep">&middot;</span><span class="kw">Bilingual TTS</span><span class="sep">&middot;</span><span class="kw">Zero Dependencies</span><span class="sep">&middot;</span><span class="kw">MIT License</span></p>
@@ -1289,39 +1307,39 @@ h2{
   <section class="section" id="more-projects" aria-labelledby="more-h">
     <div class="wrap">
       <div class="section-head">
-        <span class="kicker"><span class="no">&sect; III</span> &mdash; Entries No. 17&ndash;45</span>
+        <span class="kicker"><span class="no">&sect; III</span> &mdash; Entries No. 18&ndash;46</span>
         <h2 id="more-h">The Extended Archive</h2>
       </div>
       <ul class="archive">
-        <li><span class="a-no" aria-hidden="true">17</span><div><span class="a-title"><a href="https://github.com/romizone/RAGSOP">&#128218; RAG SOP Assistant</a></span><span class="a-tags">Python &middot; RAG &middot; ChromaDB &middot; DeepSeek</span><div class="a-links"><a href="https://github.com/romizone/RAGSOP">GitHub</a><a href="https://huggingface.co/spaces/romizone/RAG-SOP">Demo</a><a href="https://rominur.com/RAGSOP_Paper.html">Paper</a></div></div></li>
-        <li><span class="a-no" aria-hidden="true">18</span><div><span class="a-title"><a href="https://github.com/romizone/lecun1989-cnn">&#129504; LeCun 1989 CNN Reproduction</a></span><span class="a-tags">Node.js &middot; CNN &middot; MNIST &middot; Backpropagation</span><div class="a-links"><a href="https://github.com/romizone/lecun1989-cnn">GitHub</a><a href="https://lecun1989-cnn.vercel.app">Demo</a><a href="https://rominur.com/LeCun1989CNN_Paper.html">Paper</a></div></div></li>
-        <li><span class="a-no" aria-hidden="true">19</span><div><span class="a-title"><a href="https://github.com/romizone/web40">&#129302; Web 4.0 &mdash; Autonomous AI Living World</a></span><span class="a-tags">JavaScript &middot; HTML5 Canvas &middot; Agentic AI &middot; Crypto Simulation</span><div class="a-links"><a href="https://github.com/romizone/web40">GitHub</a><a href="https://web40.vercel.app">Demo</a><a href="https://rominur.com/Web40_Paper.html">Paper</a></div></div></li>
-        <li><span class="a-no" aria-hidden="true">20</span><div><span class="a-title"><a href="https://github.com/romizone/optimus">&#129302; Optimus Perceptron &mdash; AI Humanoid Robot Simulation</a></span><span class="a-tags">JavaScript &middot; HTML5 Canvas &middot; 7-Layer AI &middot; 9 Tabs</span><div class="a-links"><a href="https://github.com/romizone/optimus">GitHub</a><a href="https://optimus-azure.vercel.app/optimus-city-simulation.html">Demo</a><a href="https://rominur.com/OptimusPerceptron_Paper.html">Paper</a></div></div></li>
-        <li><span class="a-no" aria-hidden="true">21</span><div><span class="a-title"><a href="https://github.com/romizone/transcribeAI">&#127908; TranscribeAI</a></span><span class="a-tags">Python &middot; Whisper &middot; Apple Silicon &middot; 100% Offline</span><div class="a-links"><a href="https://github.com/romizone/transcribeAI">GitHub</a><a href="https://huggingface.co/spaces/romizone/TranscribeAI">Demo</a><a href="https://rominur.com/TranscribeAI_Paper.html">Paper</a></div></div></li>
-        <li><span class="a-no" aria-hidden="true">22</span><div><span class="a-title"><a href="https://github.com/romizone/PDFtoword">&#128196; AI PDF Tools</a></span><span class="a-tags">Flask &middot; Python &middot; Tesseract OCR &middot; pdf2docx</span><div class="a-links"><a href="https://github.com/romizone/PDFtoword">GitHub</a><a href="https://huggingface.co/spaces/romizone/ai-pdf-tools">Demo</a><a href="https://rominur.com/PDFTools_Paper.html">Paper</a></div></div></li>
-        <li><span class="a-no" aria-hidden="true">23</span><div><span class="a-title"><a href="https://github.com/romizone/teslaway">&#128663; Tesla Self-Driving AI Simulation</a></span><span class="a-tags">JavaScript &middot; HTML5 Canvas &middot; 3D Projection &middot; LiDAR Simulation</span><div class="a-links"><a href="https://github.com/romizone/teslaway">GitHub</a><a href="https://teslaway.vercel.app">Demo</a><a href="https://rominur.com/TeslaWay_Paper.html">Paper</a></div></div></li>
-        <li><span class="a-no" aria-hidden="true">24</span><div><span class="a-title"><a href="https://github.com/romizone/knight-chess">&#9822; Knight Chess AI</a></span><span class="a-tags">Minimax AI &middot; Alpha-Beta Pruning &middot; Next.js &middot; TypeScript</span><div class="a-links"><a href="https://github.com/romizone/knight-chess">GitHub</a><a href="https://knight-chess.vercel.app">Demo</a><a href="https://rominur.com/KnightChess_Paper.html">Paper</a></div></div></li>
-        <li><span class="a-no" aria-hidden="true">25</span><div><span class="a-title"><a href="https://github.com/romizone/simulasillm">&#129504; Transformer Explainer (SimulasiLLM)</a></span><span class="a-tags">Transformer &middot; GPT-2 Simulation &middot; Attention Mechanism &middot; Pure HTML/CSS/JS</span><div class="a-links"><a href="https://github.com/romizone/simulasillm">GitHub</a><a href="https://simulasillm.vercel.app">Demo</a><a href="https://rominur.com/SimulasiLLM_Paper.html">Paper</a></div></div></li>
-        <li><span class="a-no" aria-hidden="true">26</span><div><span class="a-title"><a href="https://github.com/romizone/pytorch">&#128293; PyTorch Neural Network Simulation</a></span><span class="a-tags">PyTorch &middot; Neural Networks &middot; Next.js &middot; TypeScript</span><div class="a-links"><a href="https://github.com/romizone/pytorch">GitHub</a><a href="https://pytorch-ecru.vercel.app">Demo</a><a href="https://rominur.com/PyTorch_Paper.html">Paper</a></div></div></li>
-        <li><span class="a-no" aria-hidden="true">27</span><div><span class="a-title"><a href="https://github.com/romizone/chatbot-next">&#128172; Open Chatbot</a></span><span class="a-tags">Next.js 16 &middot; React 19 &middot; TypeScript &middot; Vercel AI SDK</span><div class="a-links"><a href="https://github.com/romizone/chatbot-next">GitHub</a><a href="https://huggingface.co/spaces/romizone/open-chatbot">Demo</a><a href="https://rominur.com/OpenChatbot_Paper.html">Paper</a></div></div></li>
-        <li><span class="a-no" aria-hidden="true">28</span><div><span class="a-title"><a href="https://github.com/romizone/WinRA">&#128230; WinRA &mdash; Archive Manager for macOS</a></span><span class="a-tags">Python &middot; CustomTkinter &middot; macOS Native &middot; ZIP/RAR</span><div class="a-links"><a href="https://github.com/romizone/WinRA">GitHub</a><a href="https://github.com/romizone/WinRA/releases/download/v1.0/WinRA.dmg">Download .dmg</a><a href="https://rominur.com/WinRA_Paper.html">Paper</a></div></div></li>
-        <li><span class="a-no" aria-hidden="true">29</span><div><span class="a-title"><a href="https://github.com/romizone/acroromi">&#128220; AcroRomi &mdash; Native PDF Editor for macOS</a></span><span class="a-tags">Swift &middot; SwiftUI &middot; PDFKit &middot; Vision OCR</span><div class="a-links"><a href="https://github.com/romizone/acroromi">GitHub</a><a href="https://github.com/romizone/acroromi/releases/download/v1.1.0/Acroromi.dmg">Download .dmg</a><a href="https://rominur.com/AcroRomi_Paper.html">Paper</a></div></div></li>
-        <li><span class="a-no" aria-hidden="true">30</span><div><span class="a-title"><a href="https://rominur.com/LLM-Architecture-Compendium-42-Models-Jekardah-Lab-2026.pdf">&#129302; LLM Architecture Compendium 2025&ndash;2026</a></span><span class="a-tags">Compendium &middot; 42 Models &middot; LLM Architecture &middot; 59 Pages</span><div class="a-links"><a href="https://rominur.com/LLM-Architecture-Compendium-42-Models-Jekardah-Lab-2026.pdf">Compendium</a></div></div></li>
-        <li><span class="a-no" aria-hidden="true">31</span><div><span class="a-title"><a href="https://jekardah.com/ai-exposure-indonesia-vs-us-2026.html">&#128202; AI Exposure in the Job Market &mdash; Indonesia vs United States 2026</a></span><span class="a-tags">Data Viz &middot; Job Market &middot; BPS &middot; BLS</span><div class="a-links"><a href="https://jekardah.com/ai-exposure-indonesia-vs-us-2026.html">Live Demo</a></div></div></li>
-        <li><span class="a-no" aria-hidden="true">32</span><div><span class="a-title"><a href="https://jekardah.com/ai-exposure-indonesia.html">&#128506; Indonesian Jobs AI Map 2026</a></span><span class="a-tags">AI Map &middot; 436 Occupations &middot; KBJI &middot; BPS</span><div class="a-links"><a href="https://jekardah.com/ai-exposure-indonesia.html">Live Demo</a></div></div></li>
-        <li><span class="a-no" aria-hidden="true">33</span><div><span class="a-title"><a href="https://jekardah.com/Vibe-Coding-SDLC-Whitepaper-Jekardah-Lab-2026.pdf">&#128214; Vibe Coding SDLC Framework</a></span><span class="a-tags">Whitepaper &middot; SDLC &middot; Vibe Coding &middot; 61 Pages</span><div class="a-links"><a href="https://jekardah.com/Vibe-Coding-SDLC-Whitepaper-Jekardah-Lab-2026.pdf">Whitepaper</a></div></div></li>
-        <li><span class="a-no" aria-hidden="true">34</span><div><span class="a-title"><a href="https://jekardah.com/VibeCoding-Handbook-Claude-Code-Jekardah-Lab-2026.pdf">&#129302; Vibe Coding Handbook: Using Claude Code</a></span><span class="a-tags">Handbook &middot; Claude Code &middot; Vibe Coding &middot; 60 Pages</span><div class="a-links"><a href="https://jekardah.com/VibeCoding-Handbook-Claude-Code-Jekardah-Lab-2026.pdf">Handbook</a></div></div></li>
-        <li><span class="a-no" aria-hidden="true">35</span><div><span class="a-title"><a href="https://jekardah.com/Web40-Whitepaper-Autonomous-Digital-Life-2026.pdf">&#127760; Web 4.0: The Birth of Autonomous Digital Life</a></span><span class="a-tags">Whitepaper &middot; Web 4.0 &middot; AI Agents &middot; 40 Pages</span><div class="a-links"><a href="https://jekardah.com/Web40-Whitepaper-Autonomous-Digital-Life-2026.pdf">Whitepaper</a></div></div></li>
-        <li><span class="a-no" aria-hidden="true">36</span><div><span class="a-title"><a href="https://jobs.jekardah.com/">&#128188; AI Exposure of the US Job Market &mdash; Karpathy Clone</a></span><span class="a-tags">Data Viz &middot; US Job Market &middot; BLS &middot; 800+ Occupations</span><div class="a-links"><a href="https://jobs.jekardah.com/">Live Demo</a></div></div></li>
-        <li><span class="a-no" aria-hidden="true">37</span><div><span class="a-title"><a href="https://rominur.com/Banking-6.0.pdf">&#127974; Banking 6.0: The Evolution of Digital Banking</a></span><span class="a-tags">Book &middot; Digital Banking &middot; AI-Native Finance &middot; Blockchain &amp; CBDC</span><div class="a-links"><a href="https://rominur.com/Banking-6.0.pdf">Download PDF</a></div></div></li>
-        <li><span class="a-no" aria-hidden="true">38</span><div><span class="a-title"><a href="https://rominur.com/the-future-fit-asian-ai-organization.pdf">&#127983; The Future Fit Asian AI Organization</a></span><span class="a-tags">Book &middot; AI Transformation &middot; Asian Leadership &middot; Change Management</span><div class="a-links"><a href="https://rominur.com/the-future-fit-asian-ai-organization.pdf">Download PDF</a></div></div></li>
-        <li><span class="a-no" aria-hidden="true">39</span><div><span class="a-title"><a href="https://rominur.com/Vibe-Coding-Handbook-SDLC-2026.pdf">&#128214; SDLC Vibe Coding Handbook</a></span><span class="a-tags">Handbook &middot; SDLC &middot; Vibe Coding &middot; AI Development</span><div class="a-links"><a href="https://rominur.com/Vibe-Coding-Handbook-SDLC-2026.pdf">Download PDF</a></div></div></li>
-        <li><span class="a-no" aria-hidden="true">40</span><div><span class="a-title"><a href="https://claude.jekardah.com/">&#129417; Claude Architect Handbook</a></span><span class="a-tags">Study Guide &middot; Claude Platform &middot; Agentic AI &middot; MCP</span><div class="a-links"><a href="https://claude.jekardah.com/">Practice Exam</a><a href="https://rominur.com/Claude-Code-Architect-Handbook-2026.pdf">Download PDF</a></div></div></li>
-        <li><span class="a-no" aria-hidden="true">41</span><div><span class="a-title"><a href="https://rominur.com/AI_Engineering_Handbook_and_Interview_Preparation.pdf">&#129504; AI Engineering Handbook &amp; Interview Preparation</a></span><span class="a-tags">Handbook &middot; Transformers &middot; Vision Transformers &middot; Self-Attention</span><div class="a-links"><a href="https://rominur.com/AI_Engineering_Handbook_and_Interview_Preparation.pdf">Download PDF</a></div></div></li>
-        <li><span class="a-no" aria-hidden="true">42</span><div><span class="a-title"><a href="https://jekardah.com/HuggingFace_Handbook_2026_Jekardah.pdf">&#129303; Hugging Face Handbook</a></span><span class="a-tags">Handbook &middot; Hugging Face &middot; Google Colab &middot; Transformers</span><div class="a-links"><a href="https://jekardah.com/HuggingFace_Handbook_2026_Jekardah.pdf">Download PDF</a></div></div></li>
-        <li><span class="a-no" aria-hidden="true">43</span><div><span class="a-title"><a href="https://rominur.com/AI-Research-Handbook.pdf">&#128300; AI Research Handbook &mdash; A Professional LLM Master</a></span><span class="a-tags">Book &middot; LLM Evaluation &middot; Regulated Industry &middot; 573 Pages</span><div class="a-links"><a href="https://rominur.com/AI-Research-Handbook.pdf">Full Book</a><a href="https://rominur.com/AIResearchHandbook_Paper.html">Paper</a></div></div></li>
-        <li><span class="a-no" aria-hidden="true">44</span><div><span class="a-title"><a href="https://rominur.com/Mastering-PyTorch-Handbook.pdf">&#128293; Mastering PyTorch Handbook</a></span><span class="a-tags">Book &middot; PyTorch 2.11+ &middot; Google Colab &middot; 600 Pages</span><div class="a-links"><a href="https://rominur.com/Mastering-PyTorch-Handbook.pdf">Full Book</a><a href="https://rominur.com/MasteringPyTorchHandbook_Paper.html">Paper</a></div></div></li>
-        <li><span class="a-no" aria-hidden="true">45</span><div><span class="a-title"><a href="https://rominur.com/Agentic-Coding-Claude-Codex.pdf">&#129302; Agentic Coding &mdash; Using Claude Code &amp; Codex</a></span><span class="a-tags">Book &middot; Agentic Coding &middot; SDLC Practicum &middot; 683 Pages</span><div class="a-links"><a href="https://rominur.com/Agentic-Coding-Claude-Codex.pdf">Download PDF</a></div></div></li>
+        <li><span class="a-no" aria-hidden="true">18</span><div><span class="a-title"><a href="https://github.com/romizone/RAGSOP">&#128218; RAG SOP Assistant</a></span><span class="a-tags">Python &middot; RAG &middot; ChromaDB &middot; DeepSeek</span><div class="a-links"><a href="https://github.com/romizone/RAGSOP">GitHub</a><a href="https://huggingface.co/spaces/romizone/RAG-SOP">Demo</a><a href="https://rominur.com/RAGSOP_Paper.html">Paper</a></div></div></li>
+        <li><span class="a-no" aria-hidden="true">19</span><div><span class="a-title"><a href="https://github.com/romizone/lecun1989-cnn">&#129504; LeCun 1989 CNN Reproduction</a></span><span class="a-tags">Node.js &middot; CNN &middot; MNIST &middot; Backpropagation</span><div class="a-links"><a href="https://github.com/romizone/lecun1989-cnn">GitHub</a><a href="https://lecun1989-cnn.vercel.app">Demo</a><a href="https://rominur.com/LeCun1989CNN_Paper.html">Paper</a></div></div></li>
+        <li><span class="a-no" aria-hidden="true">20</span><div><span class="a-title"><a href="https://github.com/romizone/web40">&#129302; Web 4.0 &mdash; Autonomous AI Living World</a></span><span class="a-tags">JavaScript &middot; HTML5 Canvas &middot; Agentic AI &middot; Crypto Simulation</span><div class="a-links"><a href="https://github.com/romizone/web40">GitHub</a><a href="https://web40.vercel.app">Demo</a><a href="https://rominur.com/Web40_Paper.html">Paper</a></div></div></li>
+        <li><span class="a-no" aria-hidden="true">21</span><div><span class="a-title"><a href="https://github.com/romizone/optimus">&#129302; Optimus Perceptron &mdash; AI Humanoid Robot Simulation</a></span><span class="a-tags">JavaScript &middot; HTML5 Canvas &middot; 7-Layer AI &middot; 9 Tabs</span><div class="a-links"><a href="https://github.com/romizone/optimus">GitHub</a><a href="https://optimus-azure.vercel.app/optimus-city-simulation.html">Demo</a><a href="https://rominur.com/OptimusPerceptron_Paper.html">Paper</a></div></div></li>
+        <li><span class="a-no" aria-hidden="true">22</span><div><span class="a-title"><a href="https://github.com/romizone/transcribeAI">&#127908; TranscribeAI</a></span><span class="a-tags">Python &middot; Whisper &middot; Apple Silicon &middot; 100% Offline</span><div class="a-links"><a href="https://github.com/romizone/transcribeAI">GitHub</a><a href="https://huggingface.co/spaces/romizone/TranscribeAI">Demo</a><a href="https://rominur.com/TranscribeAI_Paper.html">Paper</a></div></div></li>
+        <li><span class="a-no" aria-hidden="true">23</span><div><span class="a-title"><a href="https://github.com/romizone/PDFtoword">&#128196; AI PDF Tools</a></span><span class="a-tags">Flask &middot; Python &middot; Tesseract OCR &middot; pdf2docx</span><div class="a-links"><a href="https://github.com/romizone/PDFtoword">GitHub</a><a href="https://huggingface.co/spaces/romizone/ai-pdf-tools">Demo</a><a href="https://rominur.com/PDFTools_Paper.html">Paper</a></div></div></li>
+        <li><span class="a-no" aria-hidden="true">24</span><div><span class="a-title"><a href="https://github.com/romizone/teslaway">&#128663; Tesla Self-Driving AI Simulation</a></span><span class="a-tags">JavaScript &middot; HTML5 Canvas &middot; 3D Projection &middot; LiDAR Simulation</span><div class="a-links"><a href="https://github.com/romizone/teslaway">GitHub</a><a href="https://teslaway.vercel.app">Demo</a><a href="https://rominur.com/TeslaWay_Paper.html">Paper</a></div></div></li>
+        <li><span class="a-no" aria-hidden="true">25</span><div><span class="a-title"><a href="https://github.com/romizone/knight-chess">&#9822; Knight Chess AI</a></span><span class="a-tags">Minimax AI &middot; Alpha-Beta Pruning &middot; Next.js &middot; TypeScript</span><div class="a-links"><a href="https://github.com/romizone/knight-chess">GitHub</a><a href="https://knight-chess.vercel.app">Demo</a><a href="https://rominur.com/KnightChess_Paper.html">Paper</a></div></div></li>
+        <li><span class="a-no" aria-hidden="true">26</span><div><span class="a-title"><a href="https://github.com/romizone/simulasillm">&#129504; Transformer Explainer (SimulasiLLM)</a></span><span class="a-tags">Transformer &middot; GPT-2 Simulation &middot; Attention Mechanism &middot; Pure HTML/CSS/JS</span><div class="a-links"><a href="https://github.com/romizone/simulasillm">GitHub</a><a href="https://simulasillm.vercel.app">Demo</a><a href="https://rominur.com/SimulasiLLM_Paper.html">Paper</a></div></div></li>
+        <li><span class="a-no" aria-hidden="true">27</span><div><span class="a-title"><a href="https://github.com/romizone/pytorch">&#128293; PyTorch Neural Network Simulation</a></span><span class="a-tags">PyTorch &middot; Neural Networks &middot; Next.js &middot; TypeScript</span><div class="a-links"><a href="https://github.com/romizone/pytorch">GitHub</a><a href="https://pytorch-ecru.vercel.app">Demo</a><a href="https://rominur.com/PyTorch_Paper.html">Paper</a></div></div></li>
+        <li><span class="a-no" aria-hidden="true">28</span><div><span class="a-title"><a href="https://github.com/romizone/chatbot-next">&#128172; Open Chatbot</a></span><span class="a-tags">Next.js 16 &middot; React 19 &middot; TypeScript &middot; Vercel AI SDK</span><div class="a-links"><a href="https://github.com/romizone/chatbot-next">GitHub</a><a href="https://huggingface.co/spaces/romizone/open-chatbot">Demo</a><a href="https://rominur.com/OpenChatbot_Paper.html">Paper</a></div></div></li>
+        <li><span class="a-no" aria-hidden="true">29</span><div><span class="a-title"><a href="https://github.com/romizone/WinRA">&#128230; WinRA &mdash; Archive Manager for macOS</a></span><span class="a-tags">Python &middot; CustomTkinter &middot; macOS Native &middot; ZIP/RAR</span><div class="a-links"><a href="https://github.com/romizone/WinRA">GitHub</a><a href="https://github.com/romizone/WinRA/releases/download/v1.0/WinRA.dmg">Download .dmg</a><a href="https://rominur.com/WinRA_Paper.html">Paper</a></div></div></li>
+        <li><span class="a-no" aria-hidden="true">30</span><div><span class="a-title"><a href="https://github.com/romizone/acroromi">&#128220; AcroRomi &mdash; Native PDF Editor for macOS</a></span><span class="a-tags">Swift &middot; SwiftUI &middot; PDFKit &middot; Vision OCR</span><div class="a-links"><a href="https://github.com/romizone/acroromi">GitHub</a><a href="https://github.com/romizone/acroromi/releases/download/v1.1.0/Acroromi.dmg">Download .dmg</a><a href="https://rominur.com/AcroRomi_Paper.html">Paper</a></div></div></li>
+        <li><span class="a-no" aria-hidden="true">31</span><div><span class="a-title"><a href="https://rominur.com/LLM-Architecture-Compendium-42-Models-Jekardah-Lab-2026.pdf">&#129302; LLM Architecture Compendium 2025&ndash;2026</a></span><span class="a-tags">Compendium &middot; 42 Models &middot; LLM Architecture &middot; 59 Pages</span><div class="a-links"><a href="https://rominur.com/LLM-Architecture-Compendium-42-Models-Jekardah-Lab-2026.pdf">Compendium</a></div></div></li>
+        <li><span class="a-no" aria-hidden="true">32</span><div><span class="a-title"><a href="https://jekardah.com/ai-exposure-indonesia-vs-us-2026.html">&#128202; AI Exposure in the Job Market &mdash; Indonesia vs United States 2026</a></span><span class="a-tags">Data Viz &middot; Job Market &middot; BPS &middot; BLS</span><div class="a-links"><a href="https://jekardah.com/ai-exposure-indonesia-vs-us-2026.html">Live Demo</a></div></div></li>
+        <li><span class="a-no" aria-hidden="true">33</span><div><span class="a-title"><a href="https://jekardah.com/ai-exposure-indonesia.html">&#128506; Indonesian Jobs AI Map 2026</a></span><span class="a-tags">AI Map &middot; 436 Occupations &middot; KBJI &middot; BPS</span><div class="a-links"><a href="https://jekardah.com/ai-exposure-indonesia.html">Live Demo</a></div></div></li>
+        <li><span class="a-no" aria-hidden="true">34</span><div><span class="a-title"><a href="https://jekardah.com/Vibe-Coding-SDLC-Whitepaper-Jekardah-Lab-2026.pdf">&#128214; Vibe Coding SDLC Framework</a></span><span class="a-tags">Whitepaper &middot; SDLC &middot; Vibe Coding &middot; 61 Pages</span><div class="a-links"><a href="https://jekardah.com/Vibe-Coding-SDLC-Whitepaper-Jekardah-Lab-2026.pdf">Whitepaper</a></div></div></li>
+        <li><span class="a-no" aria-hidden="true">35</span><div><span class="a-title"><a href="https://jekardah.com/VibeCoding-Handbook-Claude-Code-Jekardah-Lab-2026.pdf">&#129302; Vibe Coding Handbook: Using Claude Code</a></span><span class="a-tags">Handbook &middot; Claude Code &middot; Vibe Coding &middot; 60 Pages</span><div class="a-links"><a href="https://jekardah.com/VibeCoding-Handbook-Claude-Code-Jekardah-Lab-2026.pdf">Handbook</a></div></div></li>
+        <li><span class="a-no" aria-hidden="true">36</span><div><span class="a-title"><a href="https://jekardah.com/Web40-Whitepaper-Autonomous-Digital-Life-2026.pdf">&#127760; Web 4.0: The Birth of Autonomous Digital Life</a></span><span class="a-tags">Whitepaper &middot; Web 4.0 &middot; AI Agents &middot; 40 Pages</span><div class="a-links"><a href="https://jekardah.com/Web40-Whitepaper-Autonomous-Digital-Life-2026.pdf">Whitepaper</a></div></div></li>
+        <li><span class="a-no" aria-hidden="true">37</span><div><span class="a-title"><a href="https://jobs.jekardah.com/">&#128188; AI Exposure of the US Job Market &mdash; Karpathy Clone</a></span><span class="a-tags">Data Viz &middot; US Job Market &middot; BLS &middot; 800+ Occupations</span><div class="a-links"><a href="https://jobs.jekardah.com/">Live Demo</a></div></div></li>
+        <li><span class="a-no" aria-hidden="true">38</span><div><span class="a-title"><a href="https://rominur.com/Banking-6.0.pdf">&#127974; Banking 6.0: The Evolution of Digital Banking</a></span><span class="a-tags">Book &middot; Digital Banking &middot; AI-Native Finance &middot; Blockchain &amp; CBDC</span><div class="a-links"><a href="https://rominur.com/Banking-6.0.pdf">Download PDF</a></div></div></li>
+        <li><span class="a-no" aria-hidden="true">39</span><div><span class="a-title"><a href="https://rominur.com/the-future-fit-asian-ai-organization.pdf">&#127983; The Future Fit Asian AI Organization</a></span><span class="a-tags">Book &middot; AI Transformation &middot; Asian Leadership &middot; Change Management</span><div class="a-links"><a href="https://rominur.com/the-future-fit-asian-ai-organization.pdf">Download PDF</a></div></div></li>
+        <li><span class="a-no" aria-hidden="true">40</span><div><span class="a-title"><a href="https://rominur.com/Vibe-Coding-Handbook-SDLC-2026.pdf">&#128214; SDLC Vibe Coding Handbook</a></span><span class="a-tags">Handbook &middot; SDLC &middot; Vibe Coding &middot; AI Development</span><div class="a-links"><a href="https://rominur.com/Vibe-Coding-Handbook-SDLC-2026.pdf">Download PDF</a></div></div></li>
+        <li><span class="a-no" aria-hidden="true">41</span><div><span class="a-title"><a href="https://claude.jekardah.com/">&#129417; Claude Architect Handbook</a></span><span class="a-tags">Study Guide &middot; Claude Platform &middot; Agentic AI &middot; MCP</span><div class="a-links"><a href="https://claude.jekardah.com/">Practice Exam</a><a href="https://rominur.com/Claude-Code-Architect-Handbook-2026.pdf">Download PDF</a></div></div></li>
+        <li><span class="a-no" aria-hidden="true">42</span><div><span class="a-title"><a href="https://rominur.com/AI_Engineering_Handbook_and_Interview_Preparation.pdf">&#129504; AI Engineering Handbook &amp; Interview Preparation</a></span><span class="a-tags">Handbook &middot; Transformers &middot; Vision Transformers &middot; Self-Attention</span><div class="a-links"><a href="https://rominur.com/AI_Engineering_Handbook_and_Interview_Preparation.pdf">Download PDF</a></div></div></li>
+        <li><span class="a-no" aria-hidden="true">43</span><div><span class="a-title"><a href="https://jekardah.com/HuggingFace_Handbook_2026_Jekardah.pdf">&#129303; Hugging Face Handbook</a></span><span class="a-tags">Handbook &middot; Hugging Face &middot; Google Colab &middot; Transformers</span><div class="a-links"><a href="https://jekardah.com/HuggingFace_Handbook_2026_Jekardah.pdf">Download PDF</a></div></div></li>
+        <li><span class="a-no" aria-hidden="true">44</span><div><span class="a-title"><a href="https://rominur.com/AI-Research-Handbook.pdf">&#128300; AI Research Handbook &mdash; A Professional LLM Master</a></span><span class="a-tags">Book &middot; LLM Evaluation &middot; Regulated Industry &middot; 573 Pages</span><div class="a-links"><a href="https://rominur.com/AI-Research-Handbook.pdf">Full Book</a><a href="https://rominur.com/AIResearchHandbook_Paper.html">Paper</a></div></div></li>
+        <li><span class="a-no" aria-hidden="true">45</span><div><span class="a-title"><a href="https://rominur.com/Mastering-PyTorch-Handbook.pdf">&#128293; Mastering PyTorch Handbook</a></span><span class="a-tags">Book &middot; PyTorch 2.11+ &middot; Google Colab &middot; 600 Pages</span><div class="a-links"><a href="https://rominur.com/Mastering-PyTorch-Handbook.pdf">Full Book</a><a href="https://rominur.com/MasteringPyTorchHandbook_Paper.html">Paper</a></div></div></li>
+        <li><span class="a-no" aria-hidden="true">46</span><div><span class="a-title"><a href="https://rominur.com/Agentic-Coding-Claude-Codex.pdf">&#129302; Agentic Coding &mdash; Using Claude Code &amp; Codex</a></span><span class="a-tags">Book &middot; Agentic Coding &middot; SDLC Practicum &middot; 683 Pages</span><div class="a-links"><a href="https://rominur.com/Agentic-Coding-Claude-Codex.pdf">Download PDF</a></div></div></li>
       </ul>
     </div>
   </section>

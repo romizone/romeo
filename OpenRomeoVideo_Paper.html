@@ -1,0 +1,193 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>OpenRomeo Video Studio: A Cookie-Free, Blob-Counted Quota for a Per-Clip-Priced Video Model</title>
+    <meta name="description" content="OpenRomeo Video Studio turns a sentence or an image into a ten-second cinematic clip. This paper describes a session that is nothing but a Google ID token, a per-account quota kept as a count of blobs with refunds as deletions, a prompt-refinement stage that never shows the model's name, and a client that can lose its connection without losing the job.">
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body {
+            font-family: 'Times New Roman', Times, Georgia, serif;
+            line-height: 1.6;
+            color: #111;
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 60px 40px;
+            background: #fff;
+        }
+        .paper-title { text-align: center; margin-bottom: 30px; }
+        .paper-title h1 { font-size: 1.65em; font-weight: 700; line-height: 1.3; margin-bottom: 18px; }
+        .paper-title .authors { font-size: 1.05em; margin-bottom: 4px; }
+        .paper-title .affiliation { font-size: 0.95em; color: #555; font-style: italic; }
+        .paper-title .email { font-size: 0.9em; color: #1a73e8; margin-top: 4px; }
+        .paper-title .date { font-size: 0.9em; color: #777; margin-top: 10px; }
+        .abstract { background: #f9f9f9; border-left: 4px solid #333; padding: 18px 22px; margin: 30px 0; }
+        .abstract h2 { font-size: 1em; text-transform: uppercase; letter-spacing: 1px; margin-bottom: 8px; border: none; padding: 0; }
+        .abstract p { font-size: 0.95em; color: #333; text-align: justify; }
+        .keywords { font-size: 0.9em; color: #555; margin-bottom: 30px; }
+        .keywords strong { color: #333; }
+        h2 { font-size: 1.2em; font-weight: 700; margin-top: 30px; margin-bottom: 12px; border-bottom: 1px solid #ddd; padding-bottom: 4px; }
+        h3 { font-size: 1.05em; font-weight: 700; margin-top: 18px; margin-bottom: 8px; }
+        p { text-align: justify; margin-bottom: 12px; font-size: 0.97em; }
+        table { width: 100%; border-collapse: collapse; margin: 16px 0; font-size: 0.9em; }
+        table th, table td { border: 1px solid #ccc; padding: 8px 12px; text-align: left; vertical-align: top; }
+        table th { background: #f0f0f0; font-weight: 700; }
+        table caption { font-size: 0.88em; font-style: italic; color: #555; margin-bottom: 6px; text-align: left; }
+        code { font-family: 'Courier New', Courier, monospace; background: #f4f4f4; padding: 2px 5px; border-radius: 3px; font-size: 0.88em; }
+        pre { font-family: 'Courier New', Courier, monospace; background: #f4f4f4; border: 1px solid #e0e0e0; border-radius: 4px; padding: 12px 16px; font-size: 0.85em; line-height: 1.5; overflow-x: auto; margin: 14px 0; }
+        blockquote { margin: 16px 0 16px 24px; padding-left: 16px; border-left: 3px solid #c9b083; font-style: italic; color: #444; font-size: 0.95em; }
+        ul, ol { margin: 10px 0 12px 24px; font-size: 0.97em; }
+        li { margin-bottom: 4px; }
+        .pipeline { background: #f7f9fc; border: 1px solid #d4e2f7; border-radius: 6px; padding: 16px 20px; text-align: center; font-size: 0.95em; color: #1a5276; margin: 16px 0; letter-spacing: 0.3px; }
+        .references { font-size: 0.88em; }
+        .references ol { margin-left: 20px; }
+        .references li { margin-bottom: 8px; color: #444; }
+        .paper-footer { text-align: center; font-size: 0.8em; color: #aaa; margin-top: 50px; padding-top: 20px; border-top: 1px solid #eee; }
+        .paper-footer a { color: #1a73e8; }
+        @media print { body { padding: 20px; } }
+        @media (max-width: 600px) { body { padding: 20px 15px; } .paper-title h1 { font-size: 1.3em; } table { font-size: 0.82em; } }
+    </style>
+</head>
+<body>
+
+    <div class="paper-title">
+        <h1>OpenRomeo Video Studio: A Cookie-Free, Blob-Counted Quota for a Per-Clip-Priced Video Model</h1>
+        <div class="authors">Romi Nur Ismanto</div>
+        <div class="affiliation">Independent AI Research Lab, Jakarta, Indonesia</div>
+        <div class="email">hello@rominur.com</div>
+        <div class="date">September 2026</div>
+    </div>
+
+    <div class="abstract">
+        <h2>Abstract</h2>
+        <p>OpenRomeo Video Studio, deployed at <code>video.rominur.com</code>, turns one sentence or one image into a ten-second cinematic clip at up to 1080p in six aspect ratios, with audio. The generating model is priced per clip rather than per token, which makes the product's central engineering question the same as its central business question: how to let anyone with a Google account try it while making the worst possible day cost a known amount. The answer is small enough to describe completely. The application is one static HTML file and three serverless functions sharing a 142-line helper, with a single dependency. There is no session cookie and no session store: the browser obtains a Google ID token and presents it as a bearer credential on every call, the server verifies it against Google and caches the verdict, and the token's own expiry is the session's. The per-account quota is not a counter but a <em>count</em>: each accepted job writes one small blob under a salted hash of the account's email, the quota used is the number of blobs, and a refund is a deletion &mdash; no email, no counter to corrupt, no transaction to lose. Before a job is submitted, a vision-capable chat model rewrites the user's idea into a 45&ndash;90-word English cinematic prompt with camera movement, lens, lighting and a three-beat motion arc, faithful to the reference image when there is one; the rewritten prompt is shown to the user, the original is kept, and a refusal or malformed rewrite silently falls back to the user's words. The video model's identity never reaches the browser: the server whitelists the fields of every job object it forwards. The client polls every twenty seconds, keeps the job in local storage so that a reload or a lost connection resumes monitoring rather than resubmitting, refuses to show 100% until the provider says <em>completed</em>, and downloads the result from a presigned URL with a server-side streaming proxy as fallback so the provider key is never exposed. Failed jobs return their quota automatically.</p>
+    </div>
+
+    <div class="keywords">
+        <strong>Keywords:</strong> text-to-video, image-to-video, generative video, prompt refinement, Google Identity Services, ID tokens, stateless sessions, quota enforcement, object storage, serverless functions, polling, presigned URLs, cost governance, OpenRouter, Vercel Blob
+    </div>
+
+    <h2>1. Introduction</h2>
+    <p>
+        Generative video is the most expensive inference a small web product can expose to the public. A ten-second clip at 1080p costs a fixed, non-trivial sum every time the button is pressed, and the button is the entire product. Everything else in this application &mdash; the sign-in, the quota, the prompt refinement, the polling, the download path &mdash; exists to make that button safe to put on the open internet.
+    </p>
+    <p>
+        The constraints were chosen to be legible. Four clips per Google account. Ten seconds each. Six aspect ratios from ultra-wide to vertical, two resolutions, optional audio. A landing page that states all of this before asking anyone to sign in, with a showcase of the kinds of shot the studio produces: a neon city drive, a product hero, a portrait reel, a drone over a coastline, a macro of dew on a leaf. Behind the landing page the whole system is one HTML document with an inline script, three Vercel functions of twenty to fifty-five lines each, and a shared helper. This paper describes the decisions inside those files.
+    </p>
+
+    <h2>2. The Session Is the Token</h2>
+    <p>
+        The application sets no cookies and keeps no session table. Sign-in uses Google Identity Services in the browser with nothing but a client ID; the ID token Google returns is decoded on the client for a first sanity check &mdash; a verified email, an audience matching this application &mdash; stored in local storage together with its expiry, and sent as <code>Authorization: Bearer</code> on every API call. Fetches are made with <code>credentials: 'omit'</code>, so there is no cookie to protect and no cross-site request forgery surface to reason about.
+    </p>
+    <p>
+        The server does not trust the client's decoding. Each token is verified against Google's <code>tokeninfo</code> endpoint, and the audience, the verified-email flag and the expiry are checked again. Because the same token accompanies every request during its roughly one-hour life, verified tokens are cached in a per-instance map keyed by the token string, cleared when it grows past five hundred entries; a token is thus verified once per warm instance rather than once per request. When the token expires the client removes it a minute early, the server answers 401, and the interface asks for sign-in again. The trade-off is explicit: sessions are exactly as long as Google makes them, and there is no way to revoke one server-side other than to wait &mdash; acceptable for a tool whose only privileged action is spending one of four credits.
+    </p>
+
+    <h2>3. Quota as a Count of Objects</h2>
+    <p>
+        A counter in a database invites the usual failures: lost updates under concurrency, a counter that drifts from the events it summarises, a refund path that must reverse an increment it cannot see. The studio avoids the counter altogether.
+    </p>
+
+    <table>
+        <caption>Table 1. The quota store: two prefixes in one object bucket.</caption>
+        <tr><th>Object</th><th>Written when</th><th>Contains</th><th>Meaning</th></tr>
+        <tr><td><code>quota/&lt;owner&gt;/&lt;jobId&gt;.json</code></td><td>A job id comes back from the provider</td><td>Timestamp, ratio, resolution</td><td>One credit spent. Quota used = number of objects under the owner prefix.</td></tr>
+        <tr><td><code>jobs/&lt;jobId&gt;.json</code></td><td>Same moment</td><td>Owner hash, timestamp</td><td>Reverse index, so a job id alone is enough to find whose credit to return.</td></tr>
+    </table>
+
+    <p>
+        The owner is <code>sha256("openromeo:" + email)</code>, truncated: no email address is ever stored. Reading the quota is a prefix listing, which for a ceiling of four objects is trivially cheap. Consuming a credit is one <code>put</code>, performed only after the provider has returned a job id, so a request the provider rejects costs nothing. Refunding is one <code>del</code>: when the status endpoint observes a terminal failure &mdash; <em>failed</em>, <em>cancelled</em> or <em>expired</em> &mdash; it resolves the owner through the reverse index, deletes the credit object, and reports <code>refunded: true</code> to the client, which tells the user their credit came back. The bookkeeping cannot disagree with itself, because the events and the count are the same objects.
+    </p>
+
+    <h2>4. Prompt Refinement, Shown and Reversible</h2>
+    <p>
+        Users write ideas, not shot lists. Before submission the server passes the idea &mdash; and the reference image, when the mode is image-to-video &mdash; to a vision-capable chat model under a system prompt that asks for exactly one polished English prompt of 45 to 90 words: the user's subject and named details preserved, plus camera movement, shot size, lens feel, lighting, palette, mood and a start-middle-end motion arc for ten seconds, faithful to whatever is visible in the image and free of text overlays and unsafe content. Reasoning is disabled and the output capped at 320 tokens so the step is fast.
+    </p>
+    <p>
+        Three properties keep the refinement honest. It falls back: a failure of the vision model retries a text model, and if the result is shorter than twenty characters, longer than 1,200, or begins like a refusal, the user's original words are sent instead and the response says <code>enhanced: false</code>. It is shown: the reply carries both the original and the final prompt, and the interface renders the final one in a collapsible block labelled <em>&ldquo;Arahan dipertajam otomatis&rdquo;</em> with the original underneath, so no one wonders why the clip has a dolly move they did not ask for. And it is ordered correctly: the quota is checked <em>before</em> refinement, so an account with no credits left never pays for a rewrite it cannot use.
+    </p>
+
+    <h2>5. The Model Has No Name Here</h2>
+    <p>
+        The generating model is chosen by an environment variable on the server, and the browser never learns it. A <code>publicJob</code> function whitelists the fields forwarded from the provider's job object &mdash; id, status, timestamps, error, polling and download URLs, usage, duration, resolution, aspect ratio &mdash; and nothing else; error objects are flattened to a message. The options offered in the interface (aspect ratios, resolutions, whether audio is available) are read from the provider's model catalogue on the server and sent as plain lists, with a static fallback if the catalogue call fails. Swapping the engine is a configuration change that the front end cannot observe.
+    </p>
+    <div class="pipeline">
+        idea (+ image) &rarr; quota check &rarr; refine prompt &rarr; submit job &rarr; consume credit &rarr; poll every 20&nbsp;s &rarr; completed &rarr; presigned MP4 (proxy fallback)
+    </div>
+
+    <h2>6. A Client That Can Lose the Connection</h2>
+    <p>
+        A video job takes minutes, and a browser tab is not a reliable place to wait. The client is written on that assumption. The job returned by submission is written to local storage immediately, with its start time and an estimate; polling runs every twenty seconds for up to 180 attempts &mdash; an hour &mdash; and each poll merges the latest job state back into storage. If the page is reloaded, the studio finds the stored job and offers to resume monitoring without submitting anything new. If the user stops monitoring, the card says so plainly &mdash; <em>the job is still running on the server</em> &mdash; and the button becomes <em>&ldquo;Cek status lagi&rdquo;</em>, which resumes with the original start time so the elapsed clock stays truthful.
+    </p>
+    <p>
+        The progress bar is deliberately conservative. Its estimate is a heuristic &mdash; sixty seconds plus nine per second of video, plus forty-five for 1080p, clamped between 45 and 420 seconds &mdash; and the bar is allowed to creep toward, but never reach, completion on the estimate alone; 100% is written only when the provider's status is <em>completed</em>. The code carries its own audit trail: comments prefixed with fix identifiers record why the running status was corrected from <em>in_progress</em> to <em>processing</em>, why the start time is preserved across retries, and why a frozen &ldquo;processing 74%&rdquo; card after monitoring stopped was judged misleading and replaced.
+    </p>
+
+    <h2>7. Downloading Without Exposing the Key</h2>
+    <p>
+        When a job completes the provider may return presigned URLs. If the first is an HTTPS URL the browser fetches it directly, with no credentials, and receives the MP4 without the server touching a byte. If there is no such URL, or the direct fetch fails, the client falls back to <code>/api/video-content</code>, which requests the clip from the provider with the server's key and streams the body through with the upstream content type and length preserved, via <code>Readable.fromWeb(&hellip;).pipe(res)</code>, so a hundred-megabyte clip is never buffered in the function. The result is turned into a scoped object URL for playback and download; the previous object URL is revoked when a new one is created.
+    </p>
+
+    <h2>8. Input Discipline</h2>
+    <table>
+        <caption>Table 2. Validation on the submission path.</caption>
+        <tr><th>Input</th><th>Rule</th></tr>
+        <tr><td>Prompt</td><td>Required; at most 2,000 characters.</td></tr>
+        <tr><td>First-frame image</td><td>Must be a <code>data:image/(png|jpeg|webp);base64</code> URL of at most 4&nbsp;MB; the client first downscales anything over 900&nbsp;KB to 1,600&nbsp;px JPEG.</td></tr>
+        <tr><td>Aspect ratio, resolution</td><td>Accepted only from fixed whitelists; anything else is dropped rather than forwarded.</td></tr>
+        <tr><td>Job id</td><td>Must match <code>^[A-Za-z0-9_\-:.]{4,128}$</code> before it is interpolated into an upstream URL.</td></tr>
+        <tr><td>Provider errors</td><td>Mapped by status to Indonesian messages &mdash; credit exhausted, guardrail refusal, busy, provider fault &mdash; with upstream detail truncated to 200 characters and every 5xx collapsed to a 502.</td></tr>
+    </table>
+
+    <h2>9. Deployment</h2>
+    <p>
+        The whole application is a Vercel project deployed from the command line: a <code>public/</code> directory holding the one HTML file, an <code>api/</code> directory holding the three functions with a sixty-second ceiling, a <code>lib/</code> helper, and one dependency. API responses carry <code>Cache-Control: no-store</code>. The README records the setup state truthfully, including a detail most projects would omit: the Google OAuth client's list of authorised origins is full, so sign-in works only on the custom domain and not on the platform's preview hostnames.
+    </p>
+
+    <h2>10. Limits</h2>
+    <p>
+        The quota check and the credit consumption are not atomic. Two submissions from the same account arriving within the same second could both observe one credit remaining and both be accepted; for a four-credit demo the exposure is one extra clip, but a larger allowance would want a conditional write or a lock. Refunds depend on someone polling: a job that fails after the user closes the tab keeps its credit until the next time that job's status is requested, which for an abandoned job may be never.
+    </p>
+    <p>
+        The status and content endpoints are not gated by the Google token; the job identifier &mdash; long, provider-generated and unguessable &mdash; is the capability. That is a common and defensible pattern, but it means a leaked job id lets anyone watch, and download, that clip. Sessions cannot be revoked before the ID token expires. The quota objects are public and deterministically named; they hold no personal data, only a salted hash whose salt is a constant in the source, so the protection against enumerating accounts rests on the bucket hostname and object names not being known rather than on the hash. And the page itself sends no hardening headers, since it is served as a plain static file.
+    </p>
+
+    <h2>11. Conclusion</h2>
+    <p>
+        The studio is small because its problem is small once it is stated correctly: let anyone try an expensive model, four times, and make every path &mdash; sign-in, refusal, failure, reload, download &mdash; cost the right amount and nothing more. The token is the session, the objects are the ledger, the prompt rewrite is shown and reversible, the model is anonymous to the browser, and the client is built to be closed. None of these ideas is specific to video; all of them apply wherever the unit of cost is one API call whose price is felt.
+    </p>
+
+    <h2>References</h2>
+    <div class="references">
+        <ol>
+            <li>Google. &ldquo;Sign In With Google for Web: Verify the Google ID Token on Your Server Side.&rdquo; Google Identity documentation, 2026.</li>
+            <li>Sakimura, N., et al. &ldquo;OpenID Connect Core 1.0.&rdquo; OpenID Foundation, 2014.</li>
+            <li>Jones, M., Bradley, J., and Sakimura, N. &ldquo;JSON Web Token (JWT).&rdquo; RFC 7519, 2015.</li>
+            <li>Sheffer, Y., Hardt, D., and Jones, M. &ldquo;JSON Web Token Best Current Practices.&rdquo; RFC 8725, 2020.</li>
+            <li>Jones, M., and Hardt, D. &ldquo;The OAuth 2.0 Authorization Framework: Bearer Token Usage.&rdquo; RFC 6750, 2012.</li>
+            <li>OpenRouter. &ldquo;Video Generation API: Jobs, Status, and Content.&rdquo; Platform documentation, 2026.</li>
+            <li>OpenRouter. &ldquo;Chat Completions with Image Inputs.&rdquo; Platform documentation, 2026.</li>
+            <li>Vercel. &ldquo;Vercel Blob: put, list, head, and del.&rdquo; Product documentation, 2026.</li>
+            <li>Vercel. &ldquo;Vercel Functions for the Node.js Runtime.&rdquo; Platform documentation, 2026.</li>
+            <li>Node.js Foundation. &ldquo;Stream: Readable.fromWeb.&rdquo; Node.js documentation, 2026.</li>
+            <li>WHATWG. &ldquo;Fetch Standard &mdash; Request Credentials Mode.&rdquo; 2026.</li>
+            <li>WHATWG. &ldquo;HTML Living Standard &mdash; Web Storage.&rdquo; 2026.</li>
+            <li>W3C. &ldquo;File API &mdash; Blob URLs and URL.createObjectURL.&rdquo; Working Draft, 2026.</li>
+            <li>Amazon Web Services. &ldquo;Sharing Objects Using Presigned URLs.&rdquo; Documentation, 2026.</li>
+            <li>Fielding, R., et al. &ldquo;HTTP Semantics.&rdquo; RFC 9110, 2022.</li>
+            <li>Ho, J., et al. &ldquo;Video Diffusion Models.&rdquo; NeurIPS, 2022.</li>
+            <li>Blattmann, A., et al. &ldquo;Stable Video Diffusion: Scaling Latent Video Diffusion Models to Large Datasets.&rdquo; arXiv:2311.15127, 2023.</li>
+            <li>Ismanto, R. N. &ldquo;Jaipong: A Two-Stage Text-to-Song Studio and the Case for a Line-Oriented Plan Format.&rdquo; 2026.</li>
+            <li>Ismanto, R. N. &ldquo;Pikapiku: Client-Side Chunking and a No-Retention Schema for Long-Form Transcription on Serverless Infrastructure.&rdquo; 2026.</li>
+        </ol>
+    </div>
+
+    <div class="paper-footer">
+        <p>&copy; 2026 Romi Nur Ismanto.</p>
+        <p>Live app: <a href="https://video.rominur.com">video.rominur.com</a></p>
+        <p>Describes the deployment of 6 September 2026. Model identifiers are omitted deliberately, matching the application's own policy of never sending them to the browser.</p>
+    </div>
+
+</body>
+</html>
