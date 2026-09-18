@@ -1,0 +1,291 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Padel Heaven: Closed-Form Shot Aiming, a Depth-Scaled Projection, and a Back-Glass Blind Spot in a Three-File Canvas Game</title>
+    <meta name="description" content="Padel Heaven is an arcade doubles padel match drawn on a single HTML canvas and shipped as three static files. This paper describes shots solved backward from their landing point, a projection of a few lines that stands in for a 3D engine, padel's rules encoded in metres and a one-rule opponent AI, and reports what a headless replay of the deployed script measured about all four.">
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body {
+            font-family: 'Times New Roman', Times, Georgia, serif;
+            line-height: 1.6;
+            color: #111;
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 60px 40px;
+            background: #fff;
+        }
+        .paper-title { text-align: center; margin-bottom: 30px; }
+        .paper-title h1 { font-size: 1.65em; font-weight: 700; line-height: 1.3; margin-bottom: 18px; }
+        .paper-title .authors { font-size: 1.05em; margin-bottom: 4px; }
+        .paper-title .affiliation { font-size: 0.95em; color: #555; font-style: italic; }
+        .paper-title .email { font-size: 0.9em; color: #1a73e8; margin-top: 4px; }
+        .paper-title .date { font-size: 0.9em; color: #777; margin-top: 10px; }
+        .abstract { background: #f9f9f9; border-left: 4px solid #333; padding: 18px 22px; margin: 30px 0; }
+        .abstract h2 { font-size: 1em; text-transform: uppercase; letter-spacing: 1px; margin-bottom: 8px; border: none; padding: 0; }
+        .abstract p { font-size: 0.95em; color: #333; text-align: justify; }
+        .keywords { font-size: 0.9em; color: #555; margin-bottom: 30px; }
+        .keywords strong { color: #333; }
+        h2 { font-size: 1.2em; font-weight: 700; margin-top: 30px; margin-bottom: 12px; border-bottom: 1px solid #ddd; padding-bottom: 4px; }
+        h3 { font-size: 1.05em; font-weight: 700; margin-top: 18px; margin-bottom: 8px; }
+        p { text-align: justify; margin-bottom: 12px; font-size: 0.97em; }
+        table { width: 100%; border-collapse: collapse; margin: 16px 0; font-size: 0.9em; }
+        table th, table td { border: 1px solid #ccc; padding: 8px 12px; text-align: left; vertical-align: top; }
+        table th { background: #f0f0f0; font-weight: 700; }
+        table caption { font-size: 0.88em; font-style: italic; color: #555; margin-bottom: 6px; text-align: left; }
+        code { font-family: 'Courier New', Courier, monospace; background: #f4f4f4; padding: 2px 5px; border-radius: 3px; font-size: 0.88em; }
+        pre { font-family: 'Courier New', Courier, monospace; background: #f4f4f4; border: 1px solid #e0e0e0; border-radius: 4px; padding: 12px 16px; font-size: 0.85em; line-height: 1.5; overflow-x: auto; margin: 14px 0; }
+        blockquote { margin: 16px 0 16px 24px; padding-left: 16px; border-left: 3px solid #c9b083; font-style: italic; color: #444; font-size: 0.95em; }
+        ul, ol { margin: 10px 0 12px 24px; font-size: 0.97em; }
+        li { margin-bottom: 4px; }
+        .pipeline { background: #f7f9fc; border: 1px solid #d4e2f7; border-radius: 6px; padding: 16px 20px; text-align: center; font-size: 0.95em; color: #1a5276; margin: 16px 0; letter-spacing: 0.3px; }
+        .references { font-size: 0.88em; }
+        .references ol { margin-left: 20px; }
+        .references li { margin-bottom: 8px; color: #444; }
+        .paper-footer { text-align: center; font-size: 0.8em; color: #aaa; margin-top: 50px; padding-top: 20px; border-top: 1px solid #eee; }
+        .paper-footer a { color: #1a73e8; }
+        @media print { body { padding: 20px; } }
+        @media (max-width: 600px) { body { padding: 20px 15px; } .paper-title h1 { font-size: 1.3em; } table { font-size: 0.82em; } }
+    </style>
+</head>
+<body>
+
+    <div class="paper-title">
+        <h1>Padel Heaven: Closed-Form Shot Aiming, a Depth-Scaled Projection, and a Back-Glass Blind Spot in a Three-File Canvas Game</h1>
+        <div class="authors">Romi Nur Ismanto</div>
+        <div class="affiliation">Independent AI Research Lab, Jakarta, Indonesia</div>
+        <div class="email">hello@rominur.com</div>
+        <div class="date">September 2026</div>
+    </div>
+
+    <div class="abstract">
+        <h2>Abstract</h2>
+        <p>Padel Heaven, deployed at <code>padel.jekardah.com</code>, is an arcade doubles padel match &mdash; the player and a computer partner against two computer opponents &mdash; on a court styled after Bali at golden hour. It ships as three static files totalling 19,937 bytes, 7,903 when gzipped: an HTML shell, a stylesheet, and a 13-kilobyte script that includes no library, loads no image or font, stores nothing and makes no request of its own. Everything that moves is drawn on one 2D canvas, every frame. Depth comes from a projection of a few lines &mdash; a linear depth factor over a fixed ground foreshortening, with a camera toggle that is a 9.8&deg; yaw of the same function &mdash; and occlusion from a painter's algorithm ordered by layer rather than by object. The world is measured in metres: a 10&nbsp;&times;&nbsp;20&nbsp;m court, service lines at 7&nbsp;m, a net tested at 0.94&nbsp;m, and rebounds with a restitution of 0.8 off the glass and 0.76 off the floor. Shots are not simulated forward to discover where they land; they are solved backward. Each hit chooses a landing point 4.5&ndash;7.5&nbsp;m beyond the net and a flight time of 1.05&nbsp;s, or 1.65&nbsp;s for a lob, and the launch velocity follows in closed form from the projectile equation, so every ball the game generates is aimed inside the court. Scoring is padel's golden point in a first-to-three-games set. The three computer players share one rule: the receiving-side player nearest the ball chases a point a tenth of a second ahead of it. To test the code rather than only describe it, the deployed script was run unmodified in a headless harness for 13,409 points. The replay confirms that the out and glass-before-bounce branches never fire; shows that net faults are more than forty times as frequent at 30 frames per second as at 60, and that the explicit integrator lands a shot 0.19&nbsp;m beyond its target at 60&nbsp;Hz and 0.57&nbsp;m at 30&nbsp;Hz; and exposes a blind spot in the opponent rule. Because the receiving side is inferred from the sign of the ball's velocity, which flips at the back glass, the computer players played none of 2,424 back-wall rebounds. Choosing the receiver as the side that did not strike last lets them strike 6% of rebounds in the same experiment.</p>
+    </div>
+
+    <div class="keywords">
+        <strong>Keywords:</strong> browser game, HTML canvas, 2D rendering, pseudo-perspective projection, painter's algorithm, projectile motion, time-of-flight aiming, numerical integration, frame-rate dependence, game AI, steering behaviour, padel, golden point, Web Audio API, Pointer Events, accessibility, headless simulation, zero dependencies
+    </div>
+
+    <h2>1. Introduction</h2>
+    <p>
+        Padel is played in doubles on an enclosed court of 10 by 20 metres, smaller than a tennis court, and the walls are part of the game: a ball that bounces and then strikes the glass is still in play. That makes it an attractive subject for a small arcade game and an awkward one, because the interesting part of the sport &mdash; the rebound &mdash; is exactly the part that a simple game model is most likely to get wrong.
+    </p>
+    <p>
+        Padel Heaven is such a game. One person controls the player marked in mint; a computer partner, Maya, plays beside them against Luna and Sofia. The first screen offers <em>&ldquo;Your court. Your moment.&rdquo;</em> and a single button, <em>Masuk lapangan</em>; the match is a short set of three games with golden-point scoring; the scoreboard, the key hints and the running commentary are in Indonesian, and an on-screen credit says the setting was inspired by Padel Heaven Bali. The whole application is three files served from a static host. This paper describes the decisions inside those files and then checks them: the deployed script was run unmodified in a headless harness, with the rendering stubbed out and the simulation driven directly, so that claims about which rules can fire, how the physics behaves at different frame rates, and what the computer players can and cannot do rest on measurement rather than on reading alone.
+    </p>
+
+    <h2>2. Three Files and No Server</h2>
+    <table>
+        <caption>Table 1. The deployed application, as served on 17 September 2026.</caption>
+        <tr><th>File</th><th>Bytes</th><th>Gzipped</th><th>Contents</th></tr>
+        <tr><td><code>index.html</code></td><td>2,372</td><td>1,101</td><td>The canvas; header with brand, sound and pause buttons; the DOM scoreboard; the toast; the intro and result panels; key hints and camera toggle; a hidden touch pad.</td></tr>
+        <tr><td><code>style.css</code></td><td>4,480</td><td>1,578</td><td>Overlay styling over a full-viewport canvas, and one breakpoint at 800&nbsp;px that hides decorative text and reveals the touch pad.</td></tr>
+        <tr><td><code>game.js</code></td><td>13,085</td><td>5,224</td><td>Projection, drawing, physics, rules, AI, input and sound: 446 lines when re-printed, about twenty named functions.</td></tr>
+        <tr><td><strong>Total</strong></td><td><strong>19,937</strong></td><td><strong>7,903</strong></td><td></td></tr>
+    </table>
+    <p>
+        The absences are the design. There is no framework and no third-party code; every identifier in the script belongs to the game. There are no images and no web fonts &mdash; headlines are set in Georgia and everything else in Arial &mdash; so the page makes two subresource requests and then none of its own. Nothing is written to local storage or IndexedDB: a match lives in memory and ends with the tab. The script is delivered minified but not mangled, so the names in this paper are the names in production.
+    </p>
+    <p>
+        The subdomain is a CNAME to a managed static-site host behind Cloudflare, and its only certificate in the public Certificate Transparency logs was issued on 9 September 2026, which dates the deployment. Responses carry <code>Cache-Control: public, max-age=0, must-revalidate</code> with an ETag, so a returning visitor revalidates rather than re-downloads. The host answers every path with the page itself: <code>/robots.txt</code>, <code>/sitemap.xml</code> and <code>/favicon.ico</code> all return <code>200 text/html</code>. The edge network also appends its own bot-detection snippet to some responses; it is the only script on the page that the game did not bring.
+    </p>
+
+    <h2>3. A Court Measured in Metres</h2>
+    <p>
+        The simulation has one unit, the metre, and one coordinate system: <em>x</em> across the court, <em>z</em> along it with the net at zero and the player's half positive, and <em>y</em> up. Drawing, physics and AI all use it, which is why the numbers in the code can be compared directly with the sport's own.
+    </p>
+    <table>
+        <caption>Table 2. Geometry and physical constants in the script, with the regulation values they approximate.</caption>
+        <tr><th>Quantity</th><th>In the game</th><th>Regulation padel</th></tr>
+        <tr><td>Court</td><td>10 &times; 20&nbsp;m (<em>x</em>&nbsp;&plusmn;5, <em>z</em>&nbsp;&plusmn;10)</td><td>10 &times; 20&nbsp;m</td></tr>
+        <tr><td>Service lines</td><td>7&nbsp;m from the net</td><td>6.95&nbsp;m from the net</td></tr>
+        <tr><td>Net</td><td>Drawn 0.9&nbsp;m; a crossing below 0.94&nbsp;m is a fault</td><td>0.88&nbsp;m at the centre, 0.92&nbsp;m at the posts</td></tr>
+        <tr><td>Walls</td><td>3&nbsp;m glass on both sides and at the far end; the near end drawn as 2.6&nbsp;m translucent posts</td><td>Glass back walls with metal mesh above; glass and mesh side panels</td></tr>
+        <tr><td>Ball</td><td>Radius 0.115&nbsp;m; floor contact when its centre falls below 0.12&nbsp;m</td><td>Tennis-type ball, 6.35&ndash;6.77&nbsp;cm diameter</td></tr>
+        <tr><td>Gravity</td><td>9.8&nbsp;m/s&sup2;</td><td>&mdash;</td></tr>
+        <tr><td>Rebound</td><td>Floor returns 76% of vertical speed; glass returns 80% of the normal component</td><td>&mdash;</td></tr>
+        <tr><td>Players</td><td>About 1.9&nbsp;m tall; the human moves at 5.2&nbsp;m/s, computer players at 4.2&nbsp;m/s</td><td>&mdash;</td></tr>
+    </table>
+    <p>
+        The ball is drawn at roughly three and a half times its real size so that it reads on a phone. Around the court the scene is furnished at the same scale: a 16&nbsp;&times;&nbsp;26&nbsp;m sand apron with a one-metre tile grid, four 6&nbsp;m floodlight poles, four planters with palms, a clubhouse ten metres wide with five dark windows, and a back row of nineteen palms between five and eight metres high, each swaying on its own phase.
+    </p>
+
+    <h2>4. Depth Without a 3D Engine</h2>
+    <p>
+        The canvas is sized to the viewport multiplied by the device pixel ratio and then scaled back, so all drawing happens in CSS pixels. A world metre becomes <code>scale&nbsp;=&nbsp;min(W/31,&nbsp;H/26)</code> pixels, which fits a 31 by 26 metre view in any window. Every point then passes through one function:
+    </p>
+<pre>depth = 1 + 0.024&middot;z
+screenX = 0.51&middot;W + x&middot;scale&middot;depth
+screenY = 0.48&middot;H + 0.65&middot;z&middot;scale&middot;depth &minus; y&middot;scale&middot;depth</pre>
+    <p>
+        It is not a perspective projection, and it does not need to be. The depth factor grows linearly toward the viewer, so the near baseline is drawn at 1.24 times the base scale and the far one at 0.76, a ratio of 1.63; the factor 0.65 compresses the ground into an elevated broadcast view; and height is subtracted in screen space at the same local scale. The camera toggle, labelled <em>Broadcast</em> and <em>Sinematik</em>, does not move a camera: when it is on, <em>x</em> and <em>z</em> are rotated by a matrix with cosine 0.985 and sine 0.17 before projection, a yaw of 9.8&deg; applied to the whole world.
+    </p>
+    <p>
+        There is no depth buffer, so occlusion is a painter's algorithm, and the order is chosen by layer: sky gradient, sun glow, ground, palms, clubhouse, apron and grid, court and lines, side and far glass, floodlights and planters, then the players on the far half sorted by depth, the net, the players on the near half sorted by depth, the ball and its shadow, the translucent near glass, and a vignette. Sorting within each half and fixing the net between the halves is enough for bodies, which never cross the net.
+    </p>
+    <p>
+        The four players are procedural drawings rebuilt every frame from lines and polygons scaled by their local depth: a ground shadow, legs that stride when the player is moving, shoes, a shirt and a flared skirt with five faint pleats, a swinging racket arm, a head, a hair cap, a ponytail that bobs, a headband and a racket. The racket head is an ellipse tilted 0.3 radians with a three-by-three grid of holes, because a padel racket is perforated and a tennis racket is strung. The controlled player's racket rim is mint and a mint ring and pointer mark them on the court. Instrumenting the live page shows the cost of one frame: 562 paths, 312 fills, 258 strokes, 1,019 line segments, 36 arcs for the racket holes, four text draws and three freshly created gradients, in about 0.3&nbsp;ms of script time on an Apple-silicon laptop at a 1024&nbsp;&times;&nbsp;768 viewport and a pixel ratio of two.
+    </p>
+
+    <h2>5. Shots Solved Backward</h2>
+    <p>
+        A physics game usually launches the ball with some velocity and lets the integrator decide where it comes down. Padel Heaven inverts that. When a player strikes the ball, the game first decides the outcome &mdash; a landing point and a flight time &mdash; and then computes the one velocity that produces it.
+    </p>
+    <table>
+        <caption>Table 3. How a strike chooses its landing point and flight time.</caption>
+        <tr><th>Parameter</th><th>Rule</th></tr>
+        <tr><td>Depth</td><td>Uniformly 4.5&ndash;7.5&nbsp;m beyond the net, on the opponents' side.</td></tr>
+        <tr><td>Width, human</td><td>&minus;3.4&nbsp;m while A or &larr; is held, +3.4&nbsp;m while D or &rarr; is held, otherwise &minus;0.5&nbsp;&times; the player's own <em>x</em>, a mirrored cross-court ball.</td></tr>
+        <tr><td>Width, computer</td><td>Uniformly &minus;3 to +3&nbsp;m.</td></tr>
+        <tr><td>Width, serve</td><td>Cross-court to &plusmn;2.2&nbsp;m, whatever keys are held.</td></tr>
+        <tr><td>Flight time</td><td>1.05&nbsp;s for a drive, 1.65&nbsp;s for a lob (the L key, the LOB button, or 15% of computer strikes).</td></tr>
+        <tr><td>Contact height</td><td>Raised to at least 0.65&nbsp;m, so a ball scooped near the floor leaves from a playable height.</td></tr>
+    </table>
+    <p>
+        With start position (<em>x</em><sub>0</sub>, <em>y</em><sub>0</sub>, <em>z</em><sub>0</sub>), target (<em>x</em><sub>t</sub>, <em>z</em><sub>t</sub>) and flight time <em>T</em>, the horizontal velocities are distances over time and the vertical one comes from requiring the ball to be 0.13&nbsp;m above the floor &mdash; just above the 0.12&nbsp;m contact plane &mdash; at time <em>T</em> under gravity:
+    </p>
+<pre>vx = (xt &minus; x0) / T
+vz = (zt &minus; z0) / T
+vy = (0.13 &minus; y0 + 4.9&middot;T&sup2;) / T</pre>
+    <p>
+        The live page confirms it. A first serve from (&minus;2.4, 0.9, 6) produced <code>vx&nbsp;=&nbsp;4.381</code>, <code>vy&nbsp;=&nbsp;4.412</code> and <code>vz&nbsp;=&nbsp;&minus;10.031</code>: the cross-court target at +2.2&nbsp;m, a flight of 1.05&nbsp;s, and a landing 4.53&nbsp;m past the net. From a contact height of 0.9&nbsp;m a drive peaks at 1.89&nbsp;m and a lob at 3.86&nbsp;m, which matters because a computer player only strikes a ball below 1.9&nbsp;m and the human below 2.6&nbsp;m.
+    </p>
+    <p>
+        Solving backward has two consequences. Every ball the game generates is aimed inside the court, because the width targets stay within &plusmn;3.4&nbsp;m of a 10&nbsp;m court and the depth targets stop 2.5&nbsp;m short of the back glass, and horizontal motion is a straight line from the contact point to the target. And skill moves from aiming to positioning: a player chooses the side with the key they are already holding to run, and the game guarantees the ball goes in. The rule branches for a ball that flies out or strikes the glass before bouncing remain in the code; Section 9 shows that they never fired.
+    </p>
+
+    <h2>6. Rules and Scoring</h2>
+    <p>
+        Points count 0, 15, 30, 40, and the first team to a fourth point wins the game. There is no advantage: at 40&ndash;40 the next point decides, which is padel's golden point. The first team to three games wins the match, without a two-game margin or a tie-break, and the scoreboard strip says so: <em>set pendek &middot; 3 game &middot; golden point</em>. The serve passes to the other team after every game.
+    </p>
+    <table>
+        <caption>Table 4. How a rally ends. The commentary line names the reason.</caption>
+        <tr><th>Event</th><th>Check</th><th>Point to</th><th>Commentary</th></tr>
+        <tr><td>Net</td><td>The ball changes sides below 0.94&nbsp;m</td><td>The side that did not strike</td><td><em>bola mengenai net</em></td></tr>
+        <tr><td>Side glass before the floor</td><td>|<em>x</em>|&nbsp;&gt;&nbsp;4.9&nbsp;m with no bounce since the strike or net crossing</td><td>The side that did not strike</td><td><em>kaca sebelum pantulan</em></td></tr>
+        <tr><td>Back glass before the floor</td><td>|<em>z</em>|&nbsp;&gt;&nbsp;9.9&nbsp;m with no bounce</td><td>The side that did not strike</td><td><em>bola keluar</em></td></tr>
+        <tr><td>Second bounce</td><td>Two floor contacts since the strike or net crossing</td><td>The side opposite the bounce</td><td><em>dua pantulan</em></td></tr>
+        <tr><td>Glass after the floor</td><td>Either wall, after a bounce</td><td>No point: the ball rebounds at 80%</td><td>&mdash;</td></tr>
+    </table>
+    <p>
+        Legal glass after a bounce is the rule that makes the game padel rather than tennis, and it is implemented faithfully. The serve is simplified. Only Anda and Luna serve, always from <em>x</em>&nbsp;=&nbsp;&minus;2.4&nbsp;m and six metres from the net, inside the service line; there is no bounce-and-underarm requirement and no service box, and a sixth of serves land beyond the service line where a regulation serve would be a fault. The human may walk anywhere on their half before serving, carrying the ball with them; Luna serves after a 1.5&nbsp;s pause. A strike is accepted only while the ball is live, from the side that did not strike last, at least 0.25&nbsp;s after the previous strike, within 1.6&nbsp;m horizontally and no higher than 2.6&nbsp;m.
+    </p>
+
+    <h2>7. Three Computer Players, One Rule</h2>
+    <p>
+        The computer players are not three agents but one rule applied to three bodies. On every frame the game names the side the ball is travelling toward, finds the player on that side nearest the ball &mdash; the human included &mdash; and makes that player the target. A computer player that is the target, on the side that did not strike last, runs toward where the ball will be: 0.12&nbsp;s ahead of it across the court and 0.13&nbsp;s along it, clamped to its own half. Every other computer player walks back to a home spot 2.4&nbsp;m from the centre line and 5&nbsp;m from the net. Movement is a capped seek at 4.2&nbsp;m/s, and a target within 1.25&nbsp;m of a ball below 1.9&nbsp;m strikes it.
+    </p>
+    <table>
+        <caption>Table 5. The asymmetry between the human and the computer players.</caption>
+        <tr><th></th><th>Human</th><th>Computer</th></tr>
+        <tr><td>Speed</td><td>5.2&nbsp;m/s, normalised on diagonals</td><td>4.2&nbsp;m/s</td></tr>
+        <tr><td>Reach</td><td>1.6&nbsp;m</td><td>1.25&nbsp;m</td></tr>
+        <tr><td>Highest strike</td><td>2.6&nbsp;m</td><td>1.9&nbsp;m</td></tr>
+        <tr><td>Aim</td><td>Left, right or mirrored cross-court, by the key held</td><td>Uniform random width</td></tr>
+        <tr><td>Error</td><td>Whatever the person makes</td><td>None: a ball in reach is always returned</td></tr>
+    </table>
+    <p>
+        The nearest-player rule also settles doubles etiquette without communication. When the ball comes toward the human's side and the human is nearer, Maya stays home and the ball is the human's to play; when Maya is nearer, she takes it. Because the computer never misses once it arrives, difficulty is purely a matter of whether it can arrive.
+    </p>
+
+    <h2>8. Input, Sound and Focus</h2>
+    <p>
+        Keys are recorded by lower-cased name, so W&nbsp;A&nbsp;S&nbsp;D and the arrow keys drive the same four flags. Space strikes and L lobs on the initial key press only, so holding a key does not machine-gun swings; arrow keys and Space have their default scrolling suppressed; Escape toggles the pause. When the window loses focus every key flag is cleared and a running match pauses itself, which removes the classic stuck-key bug of browser games. Below 800&nbsp;px a touch pad appears with a d-pad and PUKUL and LOB buttons; each button writes the same key flags on <code>pointerdown</code>, captures the pointer so that its <code>pointerup</code> arrives even if the finger slides off, and is hidden while a menu is showing.
+    </p>
+    <p>
+        Time is taken from <code>requestAnimationFrame</code> and each step is clamped to 35&nbsp;ms, so a background tab or a stalled frame never teleports the ball; below about 29 frames per second the game runs in slow motion instead. Sound is off by default. The first press of the sound button creates the audio context inside a user gesture, and every event is then a 100&nbsp;ms sine blip decaying from a gain of 0.05, pitched by meaning: 450&nbsp;Hz for a drive, 620&nbsp;Hz for a lob, 330&nbsp;Hz for the floor, 280&nbsp;Hz for glass, and 780&nbsp;Hz or 240&nbsp;Hz for a point won by the home or the away pair, so the outcome of a rally can be heard without looking. The scoreboard is real DOM text rather than canvas pixels, and the commentary line is a <code>role="status"</code> live region, so a screen reader announces serves, rallies and points as they happen.
+    </p>
+
+    <h2>9. A Headless Replay of the Deployed Script</h2>
+    <p>
+        The deployed <code>game.js</code> was loaded unmodified into a Node.js <code>vm</code> context with a stub document, a canvas context whose methods do nothing, and a deterministic replacement for <code>Math.random</code>. A short accessor appended after the script exposed its top-level state; the simulation was advanced by calling its own <code>update(dt)</code> at a fixed step; and point outcomes were read from the commentary line, which names the reason for every point except the last point of a match. Slot 0 was driven either by a scripted player given exactly the human's limits &mdash; 5.2&nbsp;m/s, 1.6&nbsp;m reach, 2.6&nbsp;m ceiling, movement keys as aim, a lob one strike in ten &mdash; or left idle after serving, so that every rally was played by the computer. As a check on the harness, a 60-match run recorded 127,477 strikes by the scripted player and 382,452 by the computer players, with no two consecutive strikes by the same side.
+    </p>
+    <table>
+        <caption>Table 6. Experiment 1: scripted player and partner against the computer pair, 400 matches at each frame rate.</caption>
+        <tr><th></th><th>60&nbsp;Hz</th><th>30&nbsp;Hz</th></tr>
+        <tr><td>Points played</td><td>5,329</td><td>5,656</td></tr>
+        <tr><td>Points with a named reason</td><td>4,929</td><td>5,256</td></tr>
+        <tr><td>Second bounce</td><td>4,927</td><td>5,164</td></tr>
+        <tr><td>Net</td><td>2 (0.04%)</td><td>92 (1.75%)</td></tr>
+        <tr><td>Side glass before the floor</td><td>0</td><td>0</td></tr>
+        <tr><td>Back glass before the floor</td><td>0</td><td>0</td></tr>
+        <tr><td>Matches won by the scripted side</td><td>400 of 400</td><td>400 of 400</td></tr>
+        <tr><td>Mean rally when a point was decided</td><td>659 strikes</td><td>472 strikes</td></tr>
+    </table>
+    <p>
+        Three things follow. The two glass-before-floor branches never fired in 10,185 decided points, as Section 5 predicts. Net faults depend on the frame rate: the net is tested only at whole frames, against the ball's height after it has already crossed, and at 30&nbsp;Hz a fault was more than forty times as likely as at 60&nbsp;Hz. And a player that never misjudges a ball is never beaten by these opponents: rallies ran to hundreds of strikes, because the computer returns everything it reaches and points end only when a ball is placed beyond a defender's reach. Every such ball in this experiment struck the back glass before its second bounce, which raises the question of what the computer does with a ball coming back off the wall.
+    </p>
+    <table>
+        <caption>Table 7. Experiment 2: slot 0 idle after serving, 200 matches at 60&nbsp;Hz, with the receiving side chosen as deployed and with a one-line change.</caption>
+        <tr><th></th><th>Deployed: receiver is the side the ball moves toward</th><th>Changed: receiver is the side that did not strike last</th></tr>
+        <tr><td>Back-glass rebounds</td><td>2,424</td><td>2,552</td></tr>
+        <tr><td>Rebounds struck by a computer player</td><td>0</td><td>152 (6.0%)</td></tr>
+        <tr><td>Points decided, all by second bounce</td><td>2,224</td><td>2,200</td></tr>
+        <tr><td>Simulated seconds per point</td><td>13.1</td><td>13.7</td></tr>
+    </table>
+    <p>
+        The deployed rule reads the receiving side from the sign of the ball's velocity along the court. The back glass reverses that velocity, so at the moment of the rebound the receiving side becomes the side that struck last, which may not strike again &mdash; and the defenders, no longer the target, walk home. In 2,424 rebounds no computer player struck the ball once. Choosing the receiver as the side that did not strike last, a change to one expression, let computer players strike 152 of 2,552 rebounds. The effect is real and modest: most balls that reach the back glass were out of reach before they got there.
+    </p>
+    <table>
+        <caption>Table 8. Experiment 3: how far beyond its target a 12&nbsp;m shot lands, using the game's update equations at a fixed step.</caption>
+        <tr><th>Frame interval</th><th>Drive, T&nbsp;=&nbsp;1.05&nbsp;s</th><th>Lob, T&nbsp;=&nbsp;1.65&nbsp;s</th></tr>
+        <tr><td>6.9&nbsp;ms (144&nbsp;Hz)</td><td>+0.14&nbsp;m</td><td>+0.07&nbsp;m</td></tr>
+        <tr><td>8.3&nbsp;ms (120&nbsp;Hz)</td><td>+0.19&nbsp;m</td><td>+0.12&nbsp;m</td></tr>
+        <tr><td>16.7&nbsp;ms (60&nbsp;Hz)</td><td>+0.19&nbsp;m</td><td>+0.24&nbsp;m</td></tr>
+        <tr><td>33.3&nbsp;ms (30&nbsp;Hz)</td><td>+0.57&nbsp;m</td><td>+0.36&nbsp;m</td></tr>
+        <tr><td>35&nbsp;ms (the clamp)</td><td>+0.40&nbsp;m</td><td>+0.47&nbsp;m</td></tr>
+    </table>
+    <p>
+        The closed-form aim assumes continuous motion; the update moves the ball with its velocity from before gravity is applied, an explicit Euler step, which leaves it &frac12;&middot;<em>g</em>&middot;<em>T</em>&middot;&Delta;<em>t</em> higher than the ideal arc at time <em>T</em> &mdash; 8.6&nbsp;cm for a drive at 60&nbsp;Hz &mdash; and the bounce is detected only at the first whole frame below the contact plane. Both push the landing later and longer, by amounts that depend on the frame interval and do not shrink monotonically with it.
+    </p>
+
+    <h2>10. Limits</h2>
+    <p>
+        The findings above are the principal limits: a computer side that never plays the back glass, net faults and landing points that depend on the frame rate, and opponents that never miss a ball they reach. The simulation also inherits the usual cost of a variable time step &mdash; the same inputs do not produce the same rally on a 60&nbsp;Hz laptop and a 120&nbsp;Hz phone &mdash; which a fixed-step accumulator would remove.
+    </p>
+    <p>
+        Several smaller departures from the sport and from correct drawing are visible in the code. A player may strike a ball before it crosses the net &mdash; up to a metre early for the human, who can stand 0.6&nbsp;m from the net and reach 1.6&nbsp;m &mdash; because the strike check does not look at which side the ball is on. Only Anda and Luna ever serve. The ball is painted after the net and every player regardless of depth, so a low ball behind the net appears in front of it. The solid centre line is drawn between the service line and the back glass, and only a faint line divides the service boxes, the reverse of a real court's markings. And the projection is quadratic in depth on the vertical axis while polygons are drawn with straight edges, so objects sampled mid-court do not lie on the lines drawn through them: at 1280&nbsp;&times;&nbsp;800, a point on the sideline at the net projects 8.9&nbsp;px, or 0.29&nbsp;m, outside the drawn sideline.
+    </p>
+    <p>
+        The render loop never idles. The full scene, with three gradients created per frame, is redrawn at the display's rate behind the intro panel, while paused and after the match, and the canvas backing store is not capped at any pixel ratio. On a 375&nbsp;px phone the 31-metre view gives about 12 pixels per metre, so the players are between about 20 and 26 pixels tall, and the commentary still says <em>tekan Spasi</em>, press Space, on a device whose button reads PUKUL. The sound button's <code>aria-label</code> is fixed at <em>Aktifkan suara</em>, enable sound, and overrides the visible text, so assistive technology hears the same name whether sound is on or off. The script uses ES2021 syntax, so browsers released before mid-2020 reject the whole file. Finally, the page carries no description or social-preview metadata, and because the host answers every path with the page, crawlers asking for <code>robots.txt</code> and browsers asking for a favicon receive HTML.
+    </p>
+
+    <h2>11. Conclusion</h2>
+    <p>
+        Padel Heaven is a complete game in twenty kilobytes because it keeps making the same trade: replace a general mechanism with the specific answer the game needs. A projection of a few lines replaces a 3D engine, a fixed painting order replaces a depth buffer, a solved launch velocity replaces aiming, and one nearest-player rule replaces three agents. Each trade is visible and cheap, and each carries a precise cost that a headless replay can measure: the frame rate leaks into the physics, and the AI's shortcut for deciding whose ball it is fails at exactly the moment that makes padel padel &mdash; when the ball comes back off the glass. The fix for that is one expression. The general lesson is older than the browser: a simulation small enough to read in an afternoon is also small enough to run ten thousand times before anyone plays it.
+    </p>
+
+    <h2>References</h2>
+    <div class="references">
+        <ol>
+            <li>International Padel Federation (FIP). &ldquo;Rules of the Game of Padel.&rdquo; FIP regulations.</li>
+            <li>WHATWG. &ldquo;HTML Living Standard &mdash; The canvas Element.&rdquo; 2026.</li>
+            <li>WHATWG. &ldquo;HTML Living Standard &mdash; Animation Frames.&rdquo; 2026.</li>
+            <li>W3C. &ldquo;Web Audio API.&rdquo; W3C Recommendation, 2021.</li>
+            <li>W3C. &ldquo;Pointer Events Level 2.&rdquo; W3C Recommendation, 2019.</li>
+            <li>W3C. &ldquo;UI Events KeyboardEvent key Values.&rdquo; W3C Candidate Recommendation, 2017.</li>
+            <li>W3C. &ldquo;Accessible Rich Internet Applications (WAI-ARIA) 1.2.&rdquo; W3C Recommendation, 2023.</li>
+            <li>W3C. &ldquo;Accessible Name and Description Computation 1.1.&rdquo; W3C Recommendation, 2018.</li>
+            <li>Newell, M. E., Newell, R. G., and Sancha, T. L. &ldquo;A Solution to the Hidden Surface Problem.&rdquo; Proceedings of the ACM Annual Conference, 1972.</li>
+            <li>Reynolds, C. W. &ldquo;Steering Behaviors for Autonomous Characters.&rdquo; Proceedings of the Game Developers Conference, 1999.</li>
+            <li>Fiedler, G. &ldquo;Fix Your Timestep!&rdquo; Gaffer On Games, 2004.</li>
+            <li>Hairer, E., Lubich, C., and Wanner, G. <em>Geometric Numerical Integration: Structure-Preserving Algorithms for Ordinary Differential Equations</em>, 2nd ed. Springer, 2006.</li>
+            <li>Millington, I. <em>Game Physics Engine Development</em>, 2nd ed. CRC Press, 2010.</li>
+            <li>Brody, H., Cross, R., and Lindsey, C. <em>The Physics and Technology of Tennis</em>. Racquet Tech Publishing, 2002.</li>
+            <li>OpenJS Foundation. &ldquo;VM (Executing JavaScript): vm.createContext and vm.runInContext.&rdquo; Node.js documentation, 2026.</li>
+            <li>Laurie, B., Messeri, E., and Stradling, R. &ldquo;Certificate Transparency Version 2.0.&rdquo; RFC 9162, 2021.</li>
+            <li>Ismanto, R. N. &ldquo;TeslaWay: A Real-Time 3D Autonomous Vehicle Simulation with Multi-Sensor Visualization in Pure JavaScript Canvas.&rdquo; 2026.</li>
+            <li>Ismanto, R. N. &ldquo;ZipRar: Engine Routing and Bidirectional Path Safety in a Zero-Upload Browser Archiver.&rdquo; 2026.</li>
+        </ol>
+    </div>
+
+    <div class="paper-footer">
+        <p>&copy; 2026 Romi Nur Ismanto.</p>
+        <p>Live app: <a href="https://padel.jekardah.com">padel.jekardah.com</a></p>
+        <p>Describes the build served on 17 September 2026. Simulation figures come from the deployed script run unmodified in a headless harness with a seeded random-number generator.</p>
+    </div>
+
+</body>
+</html>
