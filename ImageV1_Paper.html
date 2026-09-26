@@ -1,0 +1,204 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Image V.1: Fifteen Image Tools in One HTML File, and a Server Only Where the Browser Cannot Go</title>
+    <meta name="description" content="Image V.1 is a fifteen-tool image workbench in Indonesian that runs in one HTML file. This paper describes the rule that decides what runs in the browser and what goes to a GPU, the one-face gate in front of the portrait tools, a print-sized ID photo with its DPI written into the JPEG header, background removal by chroma key, a face detector run on tiles, and a serverless screenshot function that has to fit its answer into 4.5 MB.">
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body {
+            font-family: 'Times New Roman', Times, Georgia, serif;
+            line-height: 1.6;
+            color: #111;
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 60px 40px;
+            background: #fff;
+        }
+        .paper-title { text-align: center; margin-bottom: 30px; }
+        .paper-title h1 { font-size: 1.65em; font-weight: 700; line-height: 1.3; margin-bottom: 18px; }
+        .paper-title .authors { font-size: 1.05em; margin-bottom: 4px; }
+        .paper-title .affiliation { font-size: 0.95em; color: #555; font-style: italic; }
+        .paper-title .email { font-size: 0.9em; color: #1a73e8; margin-top: 4px; }
+        .paper-title .date { font-size: 0.9em; color: #777; margin-top: 10px; }
+        .abstract { background: #f9f9f9; border-left: 4px solid #333; padding: 18px 22px; margin: 30px 0; }
+        .abstract h2 { font-size: 1em; text-transform: uppercase; letter-spacing: 1px; margin-bottom: 8px; border: none; padding: 0; }
+        .abstract p { font-size: 0.95em; color: #333; text-align: justify; }
+        .keywords { font-size: 0.9em; color: #555; margin-bottom: 30px; }
+        .keywords strong { color: #333; }
+        h2 { font-size: 1.2em; font-weight: 700; margin-top: 30px; margin-bottom: 12px; border-bottom: 1px solid #ddd; padding-bottom: 4px; }
+        h3 { font-size: 1.05em; font-weight: 700; margin-top: 18px; margin-bottom: 8px; }
+        p { text-align: justify; margin-bottom: 12px; font-size: 0.97em; }
+        table { width: 100%; border-collapse: collapse; margin: 16px 0; font-size: 0.9em; }
+        table th, table td { border: 1px solid #ccc; padding: 8px 12px; text-align: left; vertical-align: top; }
+        table th { background: #f0f0f0; font-weight: 700; }
+        table caption { font-size: 0.88em; font-style: italic; color: #555; margin-bottom: 6px; text-align: left; }
+        code { font-family: 'Courier New', Courier, monospace; background: #f4f4f4; padding: 2px 5px; border-radius: 3px; font-size: 0.88em; }
+        pre { font-family: 'Courier New', Courier, monospace; background: #f4f4f4; border: 1px solid #e0e0e0; border-radius: 4px; padding: 12px 16px; font-size: 0.85em; line-height: 1.5; overflow-x: auto; margin: 14px 0; }
+        blockquote { margin: 16px 0 16px 24px; padding-left: 16px; border-left: 3px solid #c9b083; font-style: italic; color: #444; font-size: 0.95em; }
+        ul, ol { margin: 10px 0 12px 24px; font-size: 0.97em; }
+        li { margin-bottom: 4px; }
+        .pipeline { background: #f7f9fc; border: 1px solid #d4e2f7; border-radius: 6px; padding: 16px 20px; text-align: center; font-size: 0.95em; color: #1a5276; margin: 16px 0; letter-spacing: 0.3px; }
+        .references { font-size: 0.88em; }
+        .references ol { margin-left: 20px; }
+        .references li { margin-bottom: 8px; color: #444; }
+        .paper-footer { text-align: center; font-size: 0.8em; color: #aaa; margin-top: 50px; padding-top: 20px; border-top: 1px solid #eee; }
+        .paper-footer a { color: #1a73e8; }
+        @media print { body { padding: 20px; } }
+        @media (max-width: 600px) { body { padding: 20px 15px; } .paper-title h1 { font-size: 1.3em; } table { font-size: 0.82em; } }
+    </style>
+</head>
+<body>
+
+    <div class="paper-title">
+        <h1>Image V.1: Fifteen Image Tools in One HTML File, and a Server Only Where the Browser Cannot Go</h1>
+        <div class="authors">Romi Nur Ismanto</div>
+        <div class="affiliation">Independent AI Research Lab, Jakarta, Indonesia</div>
+        <div class="email">hello@rominur.com</div>
+        <div class="date">September 2026</div>
+    </div>
+
+    <div class="abstract">
+        <h2>Abstract</h2>
+        <p>Image V.1, deployed at <code>image.rominur.com</code>, is an Indonesian-language image workbench of fifteen tools &mdash; ID photo, a Korean-style portrait retouch, compression, resizing, cropping, conversion to and from JPG, a photo editor, upscaling, background removal, watermarking, a meme maker, rotation, HTML to image, and face censoring &mdash; delivered as one 128&nbsp;KB HTML file with an inline module script, three serverless functions and a 21-line rate limiter. Its design is a single rule applied fifteen times: an image stays on the user's device unless the operation genuinely cannot be done there. Canvas, WebAssembly and in-browser models do the work of every tool; fourteen third-party libraries are fetched from a CDN only when the tool that needs them is opened. Seven tools carry an <em>AI</em> badge, and only those send a downscaled copy of the image to an image or vision model behind a server-side proxy that keeps the API key off the client. The paper describes the decisions inside the file: a one-face gate that refuses non-portraits before the ID-photo and Korean-style tools will run; an ID photo framed from a face box by head-height ratios, rendered at 300&nbsp;DPI and stamped as such by patching four bytes of the JFIF header, with an optional 4R print sheet packed in whichever orientation holds more copies; background removal either by an IS-Net model in WebAssembly or by asking an image model for a flat green backdrop and keying it out; a face detector run on the whole image and four overlapping tiles so small faces in group photos are found; vision-model answers constrained to bounding boxes on a 0&ndash;1000 grid; and a headless-Chromium screenshot function that adapts its pixel budget to the time left and degrades PNG to JPEG to a shorter capture rather than exceed the platform's 4.5&nbsp;MB response ceiling. It closes with the limits the code does not yet address, of which the largest is that the AI proxy relays any chat request, not only the application's own.</p>
+    </div>
+
+    <div class="keywords">
+        <strong>Keywords:</strong> client-side image processing, Canvas 2D, WebAssembly, MediaPipe, BlazeFace, IS-Net, background removal, chroma key, ID photo, JFIF density, GIF encoding, headless Chromium, serverless functions, SSRF, OpenRouter, Vercel, Bahasa Indonesia
+    </div>
+
+    <h2>1. Introduction</h2>
+    <p>
+        Online image tools are a crowded category with a common shape: upload the file, wait for a server, download the result. For most operations that round trip is unnecessary. Compressing a JPEG, resizing a batch, rotating a scan, converting a HEIC from a phone &mdash; a browser can do all of it, faster than an upload, and without the user's photo ever leaving the device. The round trip is necessary only for a short list of things: generating or editing pixels with a large model, reading a web page the browser is forbidden to read, and keeping an API key secret.
+    </p>
+    <p>
+        Image V.1 is built around that list. It is written for an Indonesian audience &mdash; every label, message and error is in Indonesian, and its two featured tools answer local needs: the <em>pas foto</em>, the passport-style portrait on a red, blue or white background that Indonesian forms still ask for, and a <em>Gaya Korea</em> retouch in the style of Korean studio portraits. It is one HTML document, three Vercel functions of 34 to 159 lines, and a small in-memory rate limiter shared with a local Express server that mounts the same handlers. This paper describes the decisions inside those files.
+    </p>
+
+    <h2>2. The Rule: Local Unless Impossible</h2>
+    <p>
+        Every tool is declared by one call to a <code>tool({...})</code> registry with an id, a category, an accepted-file filter, a <code>mount</code> function that builds its controls and a <code>run</code> function that returns a list of named blobs. Nothing in that contract mentions a server. Where a tool needs a library, it asks a loader that injects the script once and memoises the promise, so opening the compressor fetches the PNG quantiser and nothing else, and opening the home page fetches no library at all.
+    </p>
+
+    <table>
+        <caption>Table 1. Where each tool runs. Seven tools have an optional AI path; every other path is on-device.</caption>
+        <tr><th>Tool</th><th>On the device</th><th>AI path (server proxy)</th></tr>
+        <tr><td>Pas foto</td><td>MediaPipe face gate, IS-Net background removal, 300&nbsp;DPI JPEG, 4R sheet</td><td>&mdash;</td></tr>
+        <tr><td>Gaya Korea</td><td>MediaPipe face gate, before/after composite</td><td>Image model with an identity-locking prompt</td></tr>
+        <tr><td>Kompres</td><td>Canvas re-encode, UPNG palette quantisation, SVG minification, GIF re-palette</td><td>&mdash;</td></tr>
+        <tr><td>Ubah ukuran</td><td>Stepwise halving resampler</td><td>&mdash;</td></tr>
+        <tr><td>Potong</td><td>Cropper.js, eight social-media presets</td><td>Vision model proposes a subject box</td></tr>
+        <tr><td>Konversi ke JPG</td><td>Canvas; heic2any, UTIF, ag-psd; GIF frame extraction</td><td>&mdash;</td></tr>
+        <tr><td>Konversi dari JPG</td><td>Canvas; gifenc for single and animated GIF</td><td>&mdash;</td></tr>
+        <tr><td>Editor foto</td><td>Filters, text, emoji stickers, frames, 60-step undo</td><td>Image model edits by instruction</td></tr>
+        <tr><td>Perbesar resolusi</td><td>Resample and unsharp mask, 2&times; or 4&times;</td><td>Image model reconstructs detail</td></tr>
+        <tr><td>Hapus latar</td><td>IS-Net via WebAssembly in three precisions</td><td>Image model paints a green backdrop, keyed locally</td></tr>
+        <tr><td>Watermark</td><td>Canvas text or logo</td><td>&mdash;</td></tr>
+        <tr><td>Pembuat meme</td><td>Canvas with original templates</td><td>Vision model writes the caption</td></tr>
+        <tr><td>Putar</td><td>Canvas, optionally only landscape or only portrait</td><td>&mdash;</td></tr>
+        <tr><td>HTML ke gambar</td><td>Code mode: sandboxed iframe and html2canvas, or SVG <code>foreignObject</code></td><td>URL mode: headless Chromium (not a model)</td></tr>
+        <tr><td>Sensor wajah</td><td>MediaPipe face detection; blur, pixelation or solid box</td><td>Vision model marks plates, screens, IDs</td></tr>
+    </table>
+
+    <p>
+        When an image does go to a model it is first made smaller: drawn onto a canvas no larger than 1,536&nbsp;px on its long side (1,280 for the vision model), flattened onto white, encoded as JPEG at 0.9, and shrunk by a further fifth at a time until the data URL is under three million characters. The platform caps a function's request body at 4.5&nbsp;MB, and a phone photo would otherwise exceed it on its own. The results page closes the loop: every output can be downloaded singly or as a ZIP, and a <em>Lanjutkan dengan</em> row hands the outputs to any other tool as new input, so a user can remove a background, then add a watermark, then compress, without saving anything in between.
+    </p>
+
+    <h2>3. A Gate in Front of the Portrait Tools</h2>
+    <p>
+        An ID photo of a landscape is not a failure the user should discover after printing. The two portrait tools therefore run a gate before they show any control: MediaPipe's BlazeFace short-range detector, loaded in WebAssembly on the CPU delegate, must find exactly one face with a score of at least 0.6 whose shorter side is at least 5% of the image's shorter side. Zero faces is answered with <em>Bukan gambar wajah</em>; two or more with the count and a request for a photo of one person. The tool's <code>run</code> refuses as well, so the gate cannot be bypassed from the button. For the Korean-style retouch, which spends a model call, the gate is also a cost control: nothing is sent unless the input is plausibly a portrait.
+    </p>
+    <p>
+        The same detector serves face censoring, where the requirement is the opposite &mdash; find every face, including small ones. BlazeFace's short-range model is tuned for faces near the camera, so a group photo downscaled to 1,024&nbsp;px loses the back row. The detector is therefore run five times: once on the whole image and once on each of four tiles covering 60% of the width and height, anchored at the four corners so that they overlap. Detections are mapped back to image coordinates, sorted by score, and de-duplicated greedily at an intersection-over-union of 0.25. Each surviving box is widened by 18% and heightened by 28% into an ellipse, because the detector's box stops at the eyebrows and a censor that leaves the forehead visible is not a censor.
+    </p>
+
+    <h2>4. An ID Photo That Prints at Its Stated Size</h2>
+    <p>
+        A <em>pas foto</em> has a physical size &mdash; 2&times;3, 3&times;4 or 4&times;6&nbsp;cm, or 35&times;45&nbsp;mm for a passport &mdash; and a convention for how much of it the head fills. The tool stores, for each size, the head's height as a fraction of the photo's height (0.56 for 2&times;3 and 3&times;4, 0.52 for 4&times;6, 0.70 for the passport) and the gap from the crown to the top edge (0.10, or 0.08 for the passport). Since BlazeFace boxes the face from roughly the brows to the chin, the crown is estimated at 0.62 box-heights above the box and the chin at 1.02 box-heights below its top. From the head height and the ratio follows the crop height, from the aspect ratio the crop width, and from the face centre and crown the crop origin; two sliders let the user nudge head size by &plusmn;20% and position by &plusmn;15%.
+    </p>
+    <p>
+        The crop is composed at up to 2,400&nbsp;px tall over the chosen background colour, with the IS-Net cut-out of the subject in place of the original when background replacement is on, and then resampled to the exact pixel size at 300&nbsp;DPI &mdash; 354&times;472&nbsp;px for 3&times;4. Pixels alone do not tell a print kiosk how large to print, so the JPEG is post-processed: if its first segment is a JFIF APP0 header, four bytes are rewritten to set the density unit to dots per inch and both densities to 300. An optional 4R sheet (152&times;102&nbsp;mm, 1,800&times;1,200&nbsp;px) is filled by trying both orientations, keeping the one that fits more copies at a 2.5&nbsp;mm gutter, centring the grid and drawing a thin cut line around each photo; the file name records the count, so a user knows before printing that a 3&times;4 sheet holds nine.
+    </p>
+    <div class="pipeline">
+        photo &rarr; one-face gate &rarr; IS-Net cut-out (WASM) &rarr; head-ratio crop over red / blue / white &rarr; resample to mm @ 300&nbsp;DPI &rarr; patch JFIF density &rarr; optional 4R sheet
+    </div>
+
+    <h2>5. Two Ways to Remove a Background</h2>
+    <p>
+        The default path never leaves the browser. The IS-Net segmentation model is loaded through a WebAssembly runtime in one of three precisions &mdash; 8-bit quantised, half-precision (the default), or full &mdash; at a one-time download of about 40&nbsp;MB, and returns a transparent PNG. The alternative path uses an image model, which cannot itself return transparency: the prompt asks it to keep the subject exactly and replace the whole background with flat pure green <code>#00FF00</code> without shadows or gradients. The returned image is resampled to the original size and keyed on the device. For each pixel the <em>greenness</em> is <code>g &minus; max(r, b)</code>; above 20 the alpha falls by four for every unit, reaching zero at 84, which gives a soft edge rather than a hard mask, and the green channel is clamped to ten above the larger of the other two so that the fringe does not keep a green cast.
+    </p>
+
+    <h2>6. Models Answer in Boxes</h2>
+    <p>
+        Three tools ask a vision model where something is: the crop tool for the main subject, the censor for number plates, screens with data, identity cards and printed addresses or phone numbers, and the meme maker for a caption. All three prompts end with the same instruction to reply with valid JSON only, and all location answers are requested as <code>[ymin, xmin, ymax, xmax]</code> on a 0&ndash;1000 grid, independent of the image's resolution. The client strips code fences, extracts the outermost bracketed span, parses it, scales the boxes to pixels and discards any smaller than two pixels. The model proposes; the user disposes &mdash; AI boxes appear as ordinary dashed rectangles that can be selected, deleted, or supplemented by dragging.
+    </p>
+    <p>
+        The two tools that ask a model to <em>produce</em> pixels treat identity and composition as constraints. The editor appends an instruction to keep the original composition and aspect ratio to whatever the user types, and resamples the result back to the base image's size so that text and sticker layers stay where they were. The Korean-style prompt opens with an <em>identity lock</em> naming face shape, jawline, eyes, eyelids, nose, lips, brows, ears, age, gender and ethnicity as things that must not change, and only then describes the skin, grooming or make-up, hair, light and background to be changed, at one of three intensities. If the model returns a different aspect ratio the result keeps the model's ratio rather than being stretched, and a labelled before-and-after composite is produced alongside it.
+    </p>
+
+    <h2>7. Formats the Browser Cannot Read</h2>
+    <p>
+        An <code>&lt;img&gt;</code> element cannot decode HEIC, TIFF or PSD, and each is common in its own world &mdash; iPhones, scanners, designers. Each is decoded to a PNG blob first: HEIC through heic2any; TIFF through UTIF, choosing the largest page because many TIFFs store a thumbnail first; PSD through ag-psd reading only the composite image, with an error that tells the user to re-save with <em>Maximize Compatibility</em> when the file has none. Animated GIFs are decoded frame by frame with disposal methods honoured &mdash; restore-to-background clears the previous frame's rectangle, restore-to-previous puts back a snapshot &mdash; so that extracted frames are complete pictures rather than patches. The compressor applies its own honesty rule: if the re-encoded file is not smaller than the original, the original is returned.
+    </p>
+
+    <h2>8. A Screenshot Function That Fits in 4.5 MB</h2>
+    <p>
+        HTML to image has two modes. Pasted code is rendered in an off-screen iframe sandboxed with <code>allow-same-origin</code> and without <code>allow-scripts</code>, then painted by html2canvas &mdash; or, for SVG output, serialised into a <code>foreignObject</code> so the text stays vector and selectable. A URL cannot be rendered in the browser at all, because the same-origin policy forbids reading another site's pixels, so it is the one non-AI feature that needs the server: a function that launches a serverless Chromium build through puppeteer-core with 2&nbsp;GB of memory and a sixty-second ceiling.
+    </p>
+    <p>
+        The function works to a budget. It refuses non-HTTP schemes and any host whose DNS answers include a private, loopback or link-local address, and it intercepts the page's own requests to abort those aimed at private IP literals or <code>localhost</code>, so a redirect cannot turn it into a probe of the internal network. It loads with a fifteen-second allowance, photographing whatever has rendered if the page has meaningful text when time runs out, and treats network idle as best effort because advertising scripts never go quiet. For full-page captures it scrolls to trigger lazy images, then sizes the viewport to the page instead of using a beyond-viewport capture, which on a very long page renders all of it. The height is the least of the page, 10,000 CSS pixels, Chromium's texture limit of about 16,000 device pixels, and a pixel budget computed from the time left at an assumed 800 pixels per millisecond without a GPU. The response must fit in 4.5&nbsp;MB, so the function degrades in order &mdash; PNG to JPEG at 82, then JPEG at 60, then the capture shortened by 40% at a time &mdash; and reports what it did in an <code>X-Olah-Note</code> header that the client turns into a plain-language notice. Timings for launch, load, scroll and capture are returned as <code>Server-Timing</code>.
+    </p>
+
+    <h2>9. The AI Switch</h2>
+    <p>
+        Users never see an API key. The OpenRouter key lives in a server environment variable; the browser calls <code>/api/or/chat/completions</code>, which a rewrite maps to a proxy that accepts only that path and <code>/models</code>, only GET and POST, and at most twenty calls per minute per client address. A status pill in the header reads <em>AI aktif</em> in green or <em>AI tidak aktif</em> in red, and it is not decorative: it is set by a health endpoint that tests the key against OpenRouter's key-information endpoint, which spends no credit, and distinguishes a missing key, a revoked key, an unreachable service and exhausted credit. The server caches that verdict for a minute, the client rechecks every five, a red pill can be clicked to recheck, and any AI call that returns 401, 402 or 403 flips the pill to red at once. The image model and vision model are configurable in an administrator dialog opened with Shift-click on the pill, which can also list the models OpenRouter currently offers.
+    </p>
+
+    <h2>10. Limits</h2>
+    <p>
+        The largest is the proxy. It fixes the path but not the payload: the model, messages and parameters are forwarded as sent, so anyone who finds the endpoint can use the site's key for arbitrary chat completions with any model it can reach. The only brake is the rate limiter, and that limiter is a map in each function instance's memory, so its twenty-per-minute bound holds per instance rather than per client and resets whenever an instance is recycled. A model allow-list on the server and a shared store for the counter &mdash; the README already names Upstash Redis &mdash; would close both gaps.
+    </p>
+    <p>
+        The screenshot function's network guard has two seams. The hostname is resolved once for the check and again by Chromium for the load, so a name that answers differently the second time passes; and the in-page interceptor blocks private addresses only when they are written as IP literals or <code>localhost</code>, not subresources whose hostnames resolve to them. Pinning the resolved address for the navigation, or routing the browser through a filtering proxy, would remove both.
+    </p>
+    <p>
+        The rest are narrower. The 300&nbsp;DPI stamp is written only when the encoder emits a JFIF header first; otherwise the file keeps the right pixel count but no density. The crown and chin are estimated from a face box by fixed ratios, which is why the head-size slider exists. Pasted HTML is rendered without scripts, so pages that build themselves in JavaScript appear empty in code mode. Camera RAW is declined, because decoding it needs native libraries a serverless function does not have. And AI results are at the mercy of the model: an edited face can drift, which the interface says in as many words, suggesting the Natural intensity and a retry.
+    </p>
+
+    <h2>11. Conclusion</h2>
+    <p>
+        Image V.1 is fifteen tools because the rule that shapes it is cheap to apply: do the work where the image already is, fetch a library only when its tool opens, and cross the network only for a model, a foreign web page, or a secret. The interesting code sits at the boundaries that rule creates &mdash; the gate that decides whether a portrait is a portrait before a model is paid, the four bytes that make a photo print at 3&times;4&nbsp;cm, the keyer that turns an opaque model output into transparency, and the screenshot function that trades format, quality and height against a response ceiling it cannot move. Its limits sit at the same boundaries, and are named here so that the next version can close them.
+    </p>
+
+    <h2>References</h2>
+    <div class="references">
+        <ol>
+            <li>Bazarevsky, V., et al. &ldquo;BlazeFace: Sub-millisecond Neural Face Detection on Mobile GPUs.&rdquo; arXiv:1907.05047, 2019.</li>
+            <li>Lugaresi, C., et al. &ldquo;MediaPipe: A Framework for Building Perception Pipelines.&rdquo; arXiv:1906.08172, 2019.</li>
+            <li>Google. &ldquo;MediaPipe Tasks: Face Detector for Web.&rdquo; Developer documentation, 2026.</li>
+            <li>Qin, X., et al. &ldquo;Highly Accurate Dichotomous Image Segmentation.&rdquo; ECCV, 2022.</li>
+            <li>IMG.LY. &ldquo;@imgly/background-removal: In-Browser Background Removal.&rdquo; Package documentation, 2026.</li>
+            <li>Hamilton, E. &ldquo;JPEG File Interchange Format, Version 1.02.&rdquo; C-Cube Microsystems, 1992.</li>
+            <li>International Civil Aviation Organization. &ldquo;Doc 9303: Machine Readable Travel Documents, Part 3.&rdquo; 8th ed., 2021.</li>
+            <li>CompuServe. &ldquo;Graphics Interchange Format, Version 89a.&rdquo; 1990.</li>
+            <li>Smith, A. R., and Blinn, J. F. &ldquo;Blue Screen Matting.&rdquo; SIGGRAPH, 1996.</li>
+            <li>WHATWG. &ldquo;HTML Living Standard &mdash; The canvas element; the iframe sandbox attribute.&rdquo; 2026.</li>
+            <li>W3C. &ldquo;Scalable Vector Graphics (SVG) 2 &mdash; The foreignObject element.&rdquo; Candidate Recommendation, 2018.</li>
+            <li>Google Chrome. &ldquo;Puppeteer: Page.screenshot and Request Interception.&rdquo; Documentation, 2026.</li>
+            <li>OWASP. &ldquo;Server-Side Request Forgery Prevention Cheat Sheet.&rdquo; 2026.</li>
+            <li>OpenRouter. &ldquo;Chat Completions with Image Inputs and Image Outputs.&rdquo; Platform documentation, 2026.</li>
+            <li>Vercel. &ldquo;Vercel Functions: Limits.&rdquo; Platform documentation, 2026.</li>
+            <li>Ismanto, R. N. &ldquo;OpenRomeo Video Studio: A Cookie-Free, Blob-Counted Quota for a Per-Clip-Priced Video Model.&rdquo; 2026.</li>
+            <li>Ismanto, R. N. &ldquo;Padel Heaven: Closed-Form Shot Aiming, a Depth-Scaled Projection, and a Back-Glass Blind Spot in a Three-File Canvas Game.&rdquo; 2026.</li>
+        </ol>
+    </div>
+
+    <div class="paper-footer">
+        <p>&copy; 2026 Romi Nur Ismanto.</p>
+        <p>Live app: <a href="https://image.rominur.com">image.rominur.com</a> &middot; Source: <a href="https://github.com/romizone/image-v1">github.com/romizone/image-v1</a></p>
+        <p>Describes the deployment of 26 September 2026.</p>
+    </div>
+
+</body>
+</html>
