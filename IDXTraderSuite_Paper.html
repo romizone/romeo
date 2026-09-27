@@ -1,0 +1,209 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>IDX Trader Suite: Eighteen Desks for the Indonesia Stock Exchange, and Every Trade Plan Snapped to the Tick</title>
+    <meta name="description" content="IDX Trader Suite is an eighteen-desk analysis workstation in Indonesian for traders on the Indonesia Stock Exchange, built in zero-dependency Node.js on one serverless function. This paper describes its session-aware cache in front of a metered data API, a scalping engine that encodes tick sizes and auto-reject limits into every stop and target, an order-flow reading of the trade tape, its screeners and in-browser backtester, and its limits.">
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body {
+            font-family: 'Times New Roman', Times, Georgia, serif;
+            line-height: 1.6;
+            color: #111;
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 60px 40px;
+            background: #fff;
+        }
+        .paper-title { text-align: center; margin-bottom: 30px; }
+        .paper-title h1 { font-size: 1.65em; font-weight: 700; line-height: 1.3; margin-bottom: 18px; }
+        .paper-title .authors { font-size: 1.05em; margin-bottom: 4px; }
+        .paper-title .affiliation { font-size: 0.95em; color: #555; font-style: italic; }
+        .paper-title .email { font-size: 0.9em; color: #1a73e8; margin-top: 4px; }
+        .paper-title .date { font-size: 0.9em; color: #777; margin-top: 10px; }
+        .abstract { background: #f9f9f9; border-left: 4px solid #333; padding: 18px 22px; margin: 30px 0; }
+        .abstract h2 { font-size: 1em; text-transform: uppercase; letter-spacing: 1px; margin-bottom: 8px; border: none; padding: 0; }
+        .abstract p { font-size: 0.95em; color: #333; text-align: justify; }
+        .keywords { font-size: 0.9em; color: #555; margin-bottom: 30px; }
+        .keywords strong { color: #333; }
+        h2 { font-size: 1.2em; font-weight: 700; margin-top: 30px; margin-bottom: 12px; border-bottom: 1px solid #ddd; padding-bottom: 4px; }
+        h3 { font-size: 1.05em; font-weight: 700; margin-top: 18px; margin-bottom: 8px; }
+        p { text-align: justify; margin-bottom: 12px; font-size: 0.97em; }
+        table { width: 100%; border-collapse: collapse; margin: 16px 0; font-size: 0.9em; }
+        table th, table td { border: 1px solid #ccc; padding: 8px 12px; text-align: left; vertical-align: top; }
+        table th { background: #f0f0f0; font-weight: 700; }
+        table caption { font-size: 0.88em; font-style: italic; color: #555; margin-bottom: 6px; text-align: left; }
+        code { font-family: 'Courier New', Courier, monospace; background: #f4f4f4; padding: 2px 5px; border-radius: 3px; font-size: 0.88em; }
+        pre { font-family: 'Courier New', Courier, monospace; background: #f4f4f4; border: 1px solid #e0e0e0; border-radius: 4px; padding: 12px 16px; font-size: 0.85em; line-height: 1.5; overflow-x: auto; margin: 14px 0; }
+        blockquote { margin: 16px 0 16px 24px; padding-left: 16px; border-left: 3px solid #c9b083; font-style: italic; color: #444; font-size: 0.95em; }
+        ul, ol { margin: 10px 0 12px 24px; font-size: 0.97em; }
+        li { margin-bottom: 4px; }
+        .pipeline { background: #f7f9fc; border: 1px solid #d4e2f7; border-radius: 6px; padding: 16px 20px; text-align: center; font-size: 0.95em; color: #1a5276; margin: 16px 0; letter-spacing: 0.3px; }
+        .references { font-size: 0.88em; }
+        .references ol { margin-left: 20px; }
+        .references li { margin-bottom: 8px; color: #444; }
+        .paper-footer { text-align: center; font-size: 0.8em; color: #aaa; margin-top: 50px; padding-top: 20px; border-top: 1px solid #eee; }
+        .paper-footer a { color: #1a73e8; }
+        @media print { body { padding: 20px; } }
+        @media (max-width: 600px) { body { padding: 20px 15px; } .paper-title h1 { font-size: 1.3em; } table { font-size: 0.82em; } }
+    </style>
+</head>
+<body>
+
+    <div class="paper-title">
+        <h1>IDX Trader Suite: Eighteen Desks for the Indonesia Stock Exchange, and Every Trade Plan Snapped to the Tick</h1>
+        <div class="authors">Romi Nur Ismanto</div>
+        <div class="affiliation">Independent AI Research Lab, Jakarta, Indonesia</div>
+        <div class="email">hello@rominur.com</div>
+        <div class="date">September 2026</div>
+    </div>
+
+    <div class="abstract">
+        <h2>Abstract</h2>
+        <p>IDX Trader Suite, deployed at <code>saham.rominur.com</code>, is an Indonesian-language analysis workstation for short-term traders on the Indonesia Stock Exchange (IDX). It offers eighteen desks &mdash; five screeners, three market views, six per-stock views, comparison, backtesting, a position calculator and a trading journal &mdash; built in plain Node.js with no npm dependencies, served by a single serverless function and a static front end with no build step. This paper describes how one handler serves both a local server and the cloud function; a cache whose lifetimes follow the exchange&rsquo;s trading sessions, in front of a metered upstream API; a scalping engine that encodes the exchange&rsquo;s tick-size and auto-reject rules so that every stop and target is a price that can actually be ordered; an order-flow reading of the trade tape; the technical and 200-day-average screeners; an in-browser backtester with gap-aware stops; and the limits of the current deployment.</p>
+    </div>
+
+    <div class="keywords">
+        <strong>Keywords:</strong> Indonesia Stock Exchange, IDX, scalping, stock screener, tick size, auto-reject limit, ATR, relative volume, VWAP, order flow, HAKA/HAKI, RSI, MACD, moving average, backtesting, zero-dependency Node.js, Vercel Functions, TradingView Lightweight Charts, Bahasa Indonesia
+    </div>
+
+    <h2>1. Introduction</h2>
+    <p>
+        A scalper on the IDX works inside rules that most generic charting tools ignore. Prices move in fractions (<em>fraksi</em>) that depend on the price itself, so a stock at Rp&nbsp;68 moves one rupiah at a time &mdash; almost 1.5% a tick &mdash; while one at Rp&nbsp;4,270 moves in tens. Each day a stock may rise no further than an auto-reject limit (<em>ARA</em>) of 20 to 35% above the previous close, and a stock near that limit fills its offer queue and becomes hard to buy or sell. Local trading vocabulary &mdash; <em>HAKA</em> for buying at the offer, <em>HAKI</em> for selling at the bid, <em>bandarmologi</em> for reading broker accumulation &mdash; describes signals that come from the trade tape, not the candle.
+    </p>
+    <p>
+        IDX Trader Suite gathers these into one workstation, written for that audience in Indonesian, with the market clock and all prices in Western Indonesian Time and the <code>id-ID</code> number format. Its footer states the boundary plainly: <em>Alat bantu analisa, bukan rekomendasi investasi</em> &mdash; an analysis aid, not investment advice.
+    </p>
+
+    <table>
+        <caption>Table 1. The eighteen desks, grouped as in the sidebar.</caption>
+        <tr><th>Group</th><th>Desks</th></tr>
+        <tr><td>Screener</td><td>Scalper, Swing, SwingMA200, Teknikal, Aliran Asing (foreign flow)</td></tr>
+        <tr><td>Pasar</td><td>Market, Heatmap, Watchlist</td></tr>
+        <tr><td>Per saham</td><td>Analisa Saham, Bandarmologi, Running Trade, Fundamental, Insider, Musiman (seasonality)</td></tr>
+        <tr><td>Riset</td><td>Bandingkan (compare up to six stocks), Backtest</td></tr>
+        <tr><td>Alat</td><td>Kalkulator (position size, break-even, ARA/ARB ladder, averaging), Jurnal Trading</td></tr>
+    </table>
+
+    <h2>2. No Dependencies, One Handler</h2>
+    <p>
+        The project&rsquo;s <code>package.json</code> has no dependencies. All server logic is one module, <code>lib/app.js</code>, that takes a request and returns a response. Locally, a thin <code>node:http</code> server serves the static front end, guards against path traversal, and passes API paths to the handler; on Vercel, one function wraps the same handler, and a rewrite sends every <code>/api/*</code> path to it with the original path carried in a query parameter. There is one code path to test and one to deploy, and cold starts are small because there is nothing to load.
+    </p>
+    <p>
+        The front end is vanilla ES modules with no bundler. A hash router lazily imports one of eighteen view modules, so opening the calculator does not load the backtester, and every state worth sharing is in the URL &mdash; <code>#/bandar/BBRI</code> opens broker analysis for Bank Rakyat Indonesia. Candlestick charts use TradingView&rsquo;s Lightweight Charts from a CDN; sparklines, histograms and the heatmap&rsquo;s squarified treemap are drawn by hand in SVG. Stock search autocompletes from the cached list of issuers and costs no API calls.
+    </p>
+
+    <h2>3. A Cache That Knows the Trading Sessions</h2>
+    <p>
+        All market data comes from one metered third-party API, IDX Edge PRO, called with a key held in a server environment variable and never sent to the browser. The handler treats that quota as the scarce resource. Upstream calls pass through a semaphore of five, time out after 25 seconds, and are retried once after 800&nbsp;ms on a network error or a 5xx response. The remaining quota is read from the upstream&rsquo;s rate-limit headers, kept per Jakarta calendar day, and shown in the header bar, turning amber and then red as it falls.
+    </p>
+    <p>
+        Responses are cached twice: in the function&rsquo;s memory and on disk (locally in a cache directory, on Vercel in <code>/tmp</code>), with concurrent requests for the same key merged into one upstream call. What matters is that lifetimes depend on whether the market is trading. A small clock encodes the IDX schedule in WIB &mdash; pre-opening from 08:45, session one to 12:00 (11:30 on Fridays), session two from 13:30 (14:00 on Fridays) to 15:50, pre-closing until 16:15 &mdash; and every TTL asks it first.
+    </p>
+
+    <table>
+        <caption>Table 2. Cache lifetimes. The CDN layer adds <code>s-maxage</code> with <code>stale-while-revalidate</code> on top.</caption>
+        <tr><th>Data</th><th>Market open</th><th>Market closed</th></tr>
+        <tr><td>Live quote</td><td>15&nbsp;s</td><td>15&nbsp;s</td></tr>
+        <tr><td>Trade tape</td><td>30&nbsp;s</td><td>1&nbsp;h</td></tr>
+        <tr><td>End-of-day screener data</td><td>30&nbsp;min (CDN 15&nbsp;min)</td><td>6&nbsp;h (CDN 1&nbsp;h)</td></tr>
+        <tr><td>Issuer universe</td><td colspan="2">3&nbsp;h</td></tr>
+        <tr><td>Price history</td><td colspan="2">24&nbsp;h, keyed by data date</td></tr>
+        <tr><td>Insiders; seasonality and financial statements</td><td colspan="2">6&nbsp;h; 24&nbsp;h</td></tr>
+    </table>
+
+    <p>
+        A scan whose stocks partly failed is still returned, but its CDN lifetime is cut to 60 seconds so the gap is not frozen for an hour. In the browser, the scalper&rsquo;s auto-live mode refreshes the twenty best candidates every five minutes by default, pauses while the market is closed, and turns itself off when the remaining quota drops below one hundred calls.
+    </p>
+
+    <h2>4. The Scalping Engine</h2>
+    <p>
+        The scalper scans the sixty most liquid stocks, chosen by a value proxy &mdash; turnover ratio times market capitalisation &mdash; of at least Rp&nbsp;3 billion and a price of at least Rp&nbsp;50. For each, a pure function builds a row from 250 days of history and, during trading hours, a partial candle from the live quote. It computes relative volume against the mean value of the previous twenty days, a fourteen-day ATR, the tick as a percentage of price, where the close sits in the day&rsquo;s range, VWAP, a five-day-high breakout, foreign net flow, the distance to the auto-reject limit and the length of the current up-streak.
+    </p>
+    <h3>4.1 Exchange rules as code</h3>
+    <p>
+        Tick size follows the IDX table: Rp&nbsp;1 below 200, 2 below 500, 5 below 2,000, 10 below 5,000 and 25 above. The auto-reject limit is 35% of the previous close up to Rp&nbsp;200, 25% up to Rp&nbsp;5,000 and 20% above, floored to a valid tick. The trade plan is derived from both:
+    </p>
+    <pre>SL  = floorTick(price &minus; max(2 ticks, 0.4 &times; ATR))
+TP1 = min(ARA, ceilTick(price + max(3 ticks, 0.6 &times; ATR)))
+TP2 = min(ARA, ceilTick(price + max(5 ticks, 1.0 &times; ATR)))
+R:R = (TP1 &minus; entry) / (entry &minus; SL)</pre>
+    <p>
+        The minimum tick distances matter most for cheap stocks, where 0.4&nbsp;ATR can be smaller than one tick; rounding the stop down and the targets up keeps every level orderable; and capping at the ARA stops the plan from targeting a price the exchange will reject.
+    </p>
+    <h3>4.2 A score of 0&ndash;100</h3>
+    <table>
+        <caption>Table 3. Components of the scalping score.</caption>
+        <tr><th>Component</th><th>Weight</th><th>Rule</th></tr>
+        <tr><td>Liquidity</td><td>25</td><td>log<sub>10</sub> of 20-day average value, from Rp&nbsp;1 billion (0) to Rp&nbsp;50 billion (full)</td></tr>
+        <tr><td>Volatility</td><td>20</td><td>ATR% rising to 8 points at 2% and 20 at 4%; full to 8%; then &minus;2 per point, floor 8</td></tr>
+        <tr><td>Relative volume</td><td>20</td><td>(RVOL &minus; 0.8) / 2.2, clamped</td></tr>
+        <tr><td>Momentum</td><td>20</td><td>change/5% (&plusmn;8) + close position (7) + above VWAP (5)</td></tr>
+        <tr><td>Tick cost</td><td>15</td><td>(2 &minus; tick%) / 1.7, clamped</td></tr>
+        <tr><td>Adjustments</td><td>&plusmn;</td><td>+5 breakout, +3 foreign net buy, +3 also on the swing list; &minus;12 within 2% of ARA, &minus;5 if down 7% or more</td></tr>
+    </table>
+    <p>
+        The volatility term is deliberately not monotonic: a scalper needs movement, but above 8% daily ATR the stock is more likely to gap through a stop than to trend. The tick-cost term prices the structural disadvantage of low-priced stocks, where the spread alone can exceed the target. Signal tags accompany each row in plain Indonesian &mdash; <em>Breakout 5H</em>, <em>&gt; VWAP</em>, <em>Asing net buy</em>, <em>Dekat ARA</em>, <em>Fraksi mahal</em> &mdash; so the score can be read, not just trusted.
+    </p>
+
+    <h2>5. Reading the Tape</h2>
+    <p>
+        Opening a stock shows its candles with the stop and both targets drawn as price lines, and an order-flow panel built from the latest three hundred trades (three pages of the tape). Trades executed at the offer count as aggressive buying and those at the bid as aggressive selling; the HAKA share of traded value is reported for the whole window and for the last fifty trades, with a verdict of <em>Buyer agresif</em> at 60% or more, <em>Seller agresif</em> at 40% or less, and <em>Seimbang</em> between. The same pass computes the window VWAP, foreign net value from the buyer and seller type flags, the five largest net-buying and net-selling brokers, and the eight largest prints.
+    </p>
+
+    <h2>6. Screeners Beyond the Scalp</h2>
+    <p>
+        The technical screener works on the last 120 bars: simple averages of 5, 20 and 50 days, Wilder&rsquo;s fourteen-day RSI, and MACD 12/26/9. It classifies trend (strong uptrend, uptrend, sideways, downtrend), flags golden and death crosses of the 20 and 50-day averages within five days, MACD crosses within three, RSI extremes, new 120-day highs, twenty-day breakouts on 1.5&times; volume and pullbacks to the 20-day average, and scores trend, RSI in the 50&ndash;70 band, positive MACD histogram, twenty-day return, volume and proximity to the high.
+    </p>
+    <p>
+        SwingMA200 looks for stocks resting just above a rising 200-day average: distance from the average (by default between 0 and 12%), its slope over about twenty days, the number of days above it, and the closest approach in the last ten days to detect a retest. A histogram in 3% bins shows where the whole universe sits relative to its 200-day line. The foreign-flow desk sums foreign net value over one, five, twenty and sixty days, measures the signed streak of consecutive buying or selling days, and reports foreign participation as a share of volume.
+    </p>
+
+    <h2>7. Research That Stays in the Browser</h2>
+    <p>
+        The backtester runs on up to 500 daily bars without any further API cost. Four strategies are provided &mdash; a moving-average cross (10/30), RSI reversal (buy below 30, sell above 65), a twenty-day breakout with a ten-day low exit, and a MACD cross. Every order is filled at the next day&rsquo;s open, after the signal, with default fees of 0.15% to buy and 0.25% to sell, as charged by Indonesian brokers. The stop loss, 7% by default, exits at the lower of the open and the stop, so a gap down is booked at the open rather than at a price that never traded. The result is an equity curve against buy-and-hold, with maximum drawdown, win rate, profit factor and time in the market, and the page states its own assumptions: no slippage and no order queue.
+    </p>
+    <p>
+        The comparison desk rebases up to six stocks to zero and reports annualised volatility, a Sharpe ratio without a risk-free rate, maximum drawdown, the share of up days and pairwise correlations. The calculator sizes a position from the rupiah amount at risk, in lots of one hundred shares, computes break-even including both fees and rounded up to a tick, and draws the ARA and ARB ladder. The watchlist, calculator inputs and journal &mdash; with net-of-fee profit, per-strategy statistics and CSV import and export &mdash; are stored only in <code>localStorage</code>.
+    </p>
+
+    <h2>8. Limits</h2>
+    <p>
+        The largest concern is the metered quota. The public deployment has no password (one can be enabled with an environment variable) and no per-client rate limit; its protections are the two cache layers and the per-instance semaphore. A visitor can request a forced rescan that bypasses both caches, and query strings that vary the stock list or tape page also miss the CDN, so the daily quota can be spent by anyone who studies the API. When the optional password is enabled, it becomes a static token that never expires and travels as a URL parameter so it can form part of the CDN cache key &mdash; convenient, but it lands in logs and browser history, and the login route has no throttling.
+    </p>
+    <p>
+        On a serverless platform, the in-memory cache, the <code>/tmp</code> files, the quota counter and the semaphore all live per instance, so they are approximate across instances and disappear on cold starts. The market clock knows weekends but not exchange holidays, so on a holiday it treats the market as open and uses short cache lifetimes. The page sets no Content Security Policy, loads its chart library without a subresource-integrity hash, and inserts a few upstream fields and imported journal fields into the page without escaping. The engine is written as pure functions to be testable, but there are no tests yet, and the code is not under version control or published.
+    </p>
+    <p>
+        Finally, the tool&rsquo;s view of the market is only as good as one upstream feed, and its automatic analysis text is that feed&rsquo;s, displayed as received. Scores, signals and backtests describe the past; they are aids to a trader&rsquo;s judgment, as the footer says, not recommendations.
+    </p>
+
+    <h2>9. Conclusion</h2>
+    <p>
+        IDX Trader Suite is eighteen desks with no dependencies because it asks little of its infrastructure: one handler, one function, a static front end, and a cache that knows when the exchange is open. Its value is in encoding the local market&rsquo;s rules where general-purpose tools do not &mdash; a tick table and an auto-reject limit that shape every stop and target, a score that penalises the queue at the limit and the cost of a tick, and a tape reading in the vocabulary Indonesian traders already use.
+    </p>
+
+    <h2>References</h2>
+    <div class="references">
+        <ol>
+            <li>PT Bursa Efek Indonesia. &ldquo;Peraturan Nomor II-A tentang Perdagangan Efek Bersifat Ekuitas&rdquo; (tick size, auto-rejection and trading sessions), as amended.</li>
+            <li>Wilder, J. W. <em>New Concepts in Technical Trading Systems.</em> Trend Research, 1978.</li>
+            <li>Appel, G. <em>Technical Analysis: Power Tools for Active Investors.</em> FT Press, 2005.</li>
+            <li>Bruls, M., Huizing, K., and van Wijk, J. J. &ldquo;Squarified Treemaps.&rdquo; <em>Data Visualization 2000</em>, Springer, 2000.</li>
+            <li>Sharpe, W. F. &ldquo;The Sharpe Ratio.&rdquo; <em>Journal of Portfolio Management</em> 21(1), 1994.</li>
+            <li>Berkowitz, S. A., Logue, D. E., and Noser, E. A. &ldquo;The Total Cost of Transactions on the NYSE.&rdquo; <em>Journal of Finance</em> 43(1), 1988 (VWAP as an execution benchmark).</li>
+            <li>TradingView. &ldquo;Lightweight Charts.&rdquo; Version 4.2, documentation.</li>
+            <li>Vercel. &ldquo;Vercel Functions&rdquo; and &ldquo;Caching: s-maxage and stale-while-revalidate.&rdquo; Documentation, 2026.</li>
+            <li>Ismanto, R. N. &ldquo;Alihformat: Eighty File Converters That Never Upload the File, and One Route for the Four That Must.&rdquo; 2026.</li>
+        </ol>
+    </div>
+
+    <div class="paper-footer">
+        <p>&copy; 2026 Romi Nur Ismanto.</p>
+        <p>Live app: <a href="https://saham.rominur.com">saham.rominur.com</a></p>
+        <p>Describes the deployment of 27 September 2026. Not investment advice.</p>
+    </div>
+
+</body>
+</html>

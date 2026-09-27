@@ -1,0 +1,209 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 400 300">
+  <defs>
+    <linearGradient id="itbg" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#070b14"/>
+      <stop offset="100%" style="stop-color:#0f1a2e"/>
+    </linearGradient>
+    <linearGradient id="ithead" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" style="stop-color:#0c1322"/>
+      <stop offset="100%" style="stop-color:#070b14"/>
+    </linearGradient>
+  </defs>
+  <rect width="400" height="300" fill="url(#itbg)" rx="16"/>
+
+  <!-- window -->
+  <rect x="20" y="16" width="360" height="236" rx="10" fill="#070b14" stroke="#1c2740" stroke-width="0.8"/>
+  <path d="M30 16 h340 a10 10 0 0 1 10 10 v14 h-360 v-14 a10 10 0 0 1 10 -10 z" fill="url(#ithead)"/>
+  <line x1="20" y1="40" x2="380" y2="40" stroke="#1c2740" stroke-width="0.8"/>
+  <!-- logo -->
+  <rect x="28" y="21" width="14" height="14" rx="3" fill="#0b1220" stroke="#1c2740" stroke-width="0.5"/>
+  <polyline points="30.2,30.6 33.3,27.1 35.4,29.3 39.8,24.5" fill="none" stroke="#22d3a6" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/>
+  <text x="47" y="27.6" font-family="Inter,system-ui,Arial,sans-serif" font-size="7.4" font-weight="700" fill="#dbe4f3">IDX Trader Suite</text>
+  <text x="47" y="34.6" font-family="Inter,system-ui,Arial,sans-serif" font-size="4.6" fill="#7d8aa5">Data: IDX Edge PRO</text>
+  <!-- status -->
+  <rect x="222" y="23" width="36" height="11" rx="5.5" fill="#0d1422" stroke="#1c2740" stroke-width="0.6"/>
+  <circle cx="228.5" cy="28.5" r="2" fill="#22d3a6"/>
+  <text x="233" y="30.3" font-family="Inter,system-ui,Arial,sans-serif" font-size="4.8" font-weight="600" fill="#dbe4f3">Sesi 1</text>
+  <text x="264" y="30.3" font-family="JetBrains Mono,Menlo,monospace" font-size="5" fill="#dbe4f3">10:42:17 WIB</text>
+  <text x="311" y="27.6" font-family="JetBrains Mono,Menlo,monospace" font-size="4.3" fill="#7d8aa5">Kuota 19.120 / 21.000</text>
+  <rect x="311" y="30.5" width="60" height="2.4" rx="1.2" fill="#1c2740"/>
+  <rect x="311" y="30.5" width="54.6" height="2.4" rx="1.2" fill="#22d3a6"/>
+
+  <!-- sidebar -->
+  <line x1="78" y1="40" x2="78" y2="252" stroke="#1c2740" stroke-width="0.8"/>
+  <g font-family="Inter,system-ui,Arial,sans-serif" font-size="4.8" fill="#dbe4f3">
+    <text x="27" y="51" font-size="3.8" font-weight="700" fill="#56617a" letter-spacing="0.4">SCREENER</text>
+    <rect x="23" y="54" width="53" height="9" rx="2" fill="#111a2c"/>
+    <rect x="23" y="54" width="1.4" height="9" fill="#22d3a6"/>
+    <text x="28" y="60.2" font-weight="600">&#9889; Scalper</text>
+    <text x="28" y="70.2">&#127919; Swing</text>
+    <text x="28" y="79.2">&#128207; SwingMA200</text>
+    <text x="28" y="88.2">&#128208; Teknikal</text>
+    <text x="28" y="97.2">&#127759; Aliran Asing</text>
+    <text x="27" y="108" font-size="3.8" font-weight="700" fill="#56617a" letter-spacing="0.4">PASAR</text>
+    <text x="28" y="117.2">&#127963; Market</text>
+    <text x="28" y="126.2">&#129001; Heatmap</text>
+    <text x="28" y="135.2">&#11088; Watchlist</text>
+    <text x="27" y="146" font-size="3.8" font-weight="700" fill="#56617a" letter-spacing="0.4">PER SAHAM</text>
+    <text x="28" y="155.2">&#128200; Analisa Saham</text>
+    <text x="28" y="164.2">&#127974; Bandarmologi</text>
+    <text x="28" y="173.2">&#129534; Running Trade</text>
+    <text x="28" y="182.2">&#128202; Fundamental</text>
+    <text x="27" y="193" font-size="3.8" font-weight="700" fill="#56617a" letter-spacing="0.4">RISET</text>
+    <text x="28" y="202.2">&#9878;&#65039; Bandingkan</text>
+    <text x="28" y="211.2">&#129514; Backtest</text>
+    <text x="27" y="222" font-size="3.8" font-weight="700" fill="#56617a" letter-spacing="0.4">ALAT</text>
+    <text x="28" y="231.2">&#129518; Kalkulator</text>
+    <text x="28" y="240.2">&#128211; Jurnal Trading</text>
+  </g>
+
+  <!-- actions row -->
+  <g font-family="Inter,system-ui,Arial,sans-serif" font-size="4.6" font-weight="600">
+    <rect x="86" y="47" width="38" height="10" rx="2.5" fill="#22d3a6"/>
+    <text x="105" y="53.6" fill="#04221a" text-anchor="middle">&#10227; Scan ulang</text>
+    <rect x="128" y="47" width="58" height="10" rx="2.5" fill="#111a2c" stroke="#1c2740" stroke-width="0.6"/>
+    <text x="157" y="53.6" fill="#dbe4f3" text-anchor="middle">&#9889; Update live Top 20</text>
+    <text x="372" y="53.6" font-family="JetBrains Mono,Menlo,monospace" font-size="3.9" font-weight="400" fill="#7d8aa5" text-anchor="end">60 paling likuid &#183; scan 10:40</text>
+  </g>
+
+  <!-- KPI cards -->
+  <g font-family="Inter,system-ui,Arial,sans-serif">
+    <rect x="86" y="62" width="53" height="23" rx="3" fill="#0d1422" stroke="#1c2740" stroke-width="0.5"/>
+    <text x="90" y="69" font-size="3.4" font-weight="600" fill="#7d8aa5" letter-spacing="0.2">LOLOS FILTER</text>
+    <text x="90" y="80" font-family="JetBrains Mono,Menlo,monospace" font-size="8" font-weight="600" fill="#dbe4f3">41</text>
+    <rect x="143" y="62" width="53" height="23" rx="3" fill="#0d1422" stroke="#1c2740" stroke-width="0.5"/>
+    <text x="147" y="69" font-size="3.4" font-weight="600" fill="#7d8aa5" letter-spacing="0.2">BREADTH (LIKUID)</text>
+    <text x="147" y="80" font-family="JetBrains Mono,Menlo,monospace" font-size="8" font-weight="600"><tspan fill="#22d3a6">34&#9650;</tspan><tspan fill="#7d8aa5" font-size="5"> / </tspan><tspan fill="#f45b69">22&#9660;</tspan></text>
+    <rect x="200" y="62" width="53" height="23" rx="3" fill="#0d1422" stroke="#1c2740" stroke-width="0.5"/>
+    <text x="204" y="69" font-size="3.4" font-weight="600" fill="#7d8aa5" letter-spacing="0.2">VOLUME SPIKE</text>
+    <text x="204" y="80" font-family="JetBrains Mono,Menlo,monospace" font-size="8" font-weight="600" fill="#ff7a45">9</text>
+    <rect x="257" y="62" width="53" height="23" rx="3" fill="#0d1422" stroke="#1c2740" stroke-width="0.5"/>
+    <text x="261" y="69" font-size="3.4" font-weight="600" fill="#7d8aa5" letter-spacing="0.2">KANDIDAT TERATAS</text>
+    <text x="261" y="80" font-family="JetBrains Mono,Menlo,monospace" font-size="8" font-weight="600" fill="#dbe4f3">BBRI</text>
+    <rect x="314" y="62" width="58" height="23" rx="3" fill="#0d1422" stroke="#1c2740" stroke-width="0.5"/>
+    <text x="318" y="69" font-size="3.4" font-weight="600" fill="#7d8aa5" letter-spacing="0.2">LIVE TERPANTAU</text>
+    <text x="318" y="80" font-family="JetBrains Mono,Menlo,monospace" font-size="8" font-weight="600" fill="#22d3a6">20</text>
+  </g>
+
+  <!-- table header -->
+  <g font-family="Inter,system-ui,Arial,sans-serif" font-size="3.7" font-weight="600" fill="#7d8aa5">
+    <rect x="86" y="90" width="286" height="8" fill="#0d1422"/>
+    <text x="89" y="95.3">SAHAM</text>
+    <text x="126" y="95.3">HARGA</text>
+    <text x="150" y="95.3">CHG%</text>
+    <text x="172" y="95.3">20H</text>
+    <text x="202" y="95.3">RVOL</text>
+    <text x="222" y="95.3">ATR%</text>
+    <text x="243" y="95.3">SKOR</text>
+    <text x="276" y="95.3">PLAN (SL &#183; TP1 &#183; TP2)</text>
+  </g>
+
+  <!-- table rows -->
+  <g font-family="JetBrains Mono,Menlo,monospace" font-size="4.4" fill="#dbe4f3">
+    <!-- row 1 -->
+    <line x1="86" y1="109" x2="372" y2="109" stroke="#1c2740" stroke-width="0.5"/>
+    <text x="89" y="105" font-family="Inter,system-ui,Arial,sans-serif" font-weight="700">BBRI</text>
+    <rect x="104" y="101.4" width="11" height="4.6" rx="1" fill="#22d3a6" fill-opacity=".18"/><text x="109.5" y="104.9" font-size="3.2" fill="#22d3a6" text-anchor="middle">LIVE</text>
+    <text x="126" y="105">4.270</text>
+    <text x="150" y="105" fill="#22d3a6">+2,89</text>
+    <polyline points="172,106 176,105 180,106.5 184,104 188,104.5 192,102.5 196,101.5" fill="none" stroke="#22d3a6" stroke-width="0.7"/>
+    <text x="202" y="105" fill="#ff7a45">2,4x</text>
+    <text x="222" y="105">2,6</text>
+    <rect x="243" y="102" width="18" height="3.2" rx="1.6" fill="#1c2740"/><rect x="243" y="102" width="15.1" height="3.2" rx="1.6" fill="#22d3a6"/>
+    <text x="264" y="105" font-size="4">84</text>
+    <text x="276" y="105" font-size="4"><tspan fill="#f45b69">4.230</tspan> &#183; <tspan fill="#22d3a6">4.340</tspan> &#183; <tspan fill="#22d3a6">4.390</tspan></text>
+
+    <!-- row 2 -->
+    <line x1="86" y1="120" x2="372" y2="120" stroke="#1c2740" stroke-width="0.5"/>
+    <text x="89" y="116" font-family="Inter,system-ui,Arial,sans-serif" font-weight="700">ANTM</text>
+    <text x="126" y="116">1.585</text>
+    <text x="150" y="116" fill="#22d3a6">+4,28</text>
+    <polyline points="172,117 176,117.5 180,116 184,116.5 188,114.5 192,113.5 196,112.5" fill="none" stroke="#22d3a6" stroke-width="0.7"/>
+    <text x="202" y="116" fill="#ff7a45">3,1x</text>
+    <text x="222" y="116">4,1</text>
+    <rect x="243" y="113" width="18" height="3.2" rx="1.6" fill="#1c2740"/><rect x="243" y="113" width="14" height="3.2" rx="1.6" fill="#22d3a6"/>
+    <text x="264" y="116" font-size="4">78</text>
+    <text x="276" y="116" font-size="4"><tspan fill="#f45b69">1.545</tspan> &#183; <tspan fill="#22d3a6">1.625</tspan> &#183; <tspan fill="#22d3a6">1.650</tspan></text>
+
+    <!-- row 3 -->
+    <line x1="86" y1="131" x2="372" y2="131" stroke="#1c2740" stroke-width="0.5"/>
+    <text x="89" y="127" font-family="Inter,system-ui,Arial,sans-serif" font-weight="700">GOTO</text>
+    <text x="126" y="127">68</text>
+    <text x="150" y="127" fill="#22d3a6">+1,49</text>
+    <polyline points="172,127 176,128 180,127.5 184,128.5 188,127 192,126.5 196,126" fill="none" stroke="#22d3a6" stroke-width="0.7"/>
+    <text x="202" y="127">1,6x</text>
+    <text x="222" y="127">3,2</text>
+    <rect x="243" y="124" width="18" height="3.2" rx="1.6" fill="#1c2740"/><rect x="243" y="124" width="11" height="3.2" rx="1.6" fill="#f5b942"/>
+    <text x="264" y="127" font-size="4">61</text>
+    <text x="276" y="127" font-size="4"><tspan fill="#f45b69">66</tspan> &#183; <tspan fill="#22d3a6">71</tspan> &#183; <tspan fill="#22d3a6">73</tspan></text>
+
+    <!-- row 4 -->
+    <line x1="86" y1="142" x2="372" y2="142" stroke="#1c2740" stroke-width="0.5"/>
+    <text x="89" y="138" font-family="Inter,system-ui,Arial,sans-serif" font-weight="700">TLKM</text>
+    <text x="126" y="138">2.710</text>
+    <text x="150" y="138" fill="#f45b69">&#8722;0,73</text>
+    <polyline points="172,135 176,135.5 180,136.5 184,136 188,137.5 192,138 196,138.5" fill="none" stroke="#f45b69" stroke-width="0.7"/>
+    <text x="202" y="138">0,9x</text>
+    <text x="222" y="138">1,8</text>
+    <rect x="243" y="135" width="18" height="3.2" rx="1.6" fill="#1c2740"/><rect x="243" y="135" width="7" height="3.2" rx="1.6" fill="#f45b69"/>
+    <text x="264" y="138" font-size="4">38</text>
+    <text x="276" y="138" font-size="4"><tspan fill="#f45b69">2.680</tspan> &#183; <tspan fill="#22d3a6">2.740</tspan> &#183; <tspan fill="#22d3a6">2.760</tspan></text>
+  </g>
+
+  <!-- candlestick drawer preview -->
+  <rect x="86" y="148" width="286" height="96" rx="4" fill="#0d1422" stroke="#1c2740" stroke-width="0.5"/>
+  <text x="92" y="157" font-family="Inter,system-ui,Arial,sans-serif" font-size="5" font-weight="700" fill="#dbe4f3">BBRI <tspan font-weight="400" fill="#7d8aa5" font-size="4.2">Bank Rakyat Indonesia &#183; Plan scalping</tspan></text>
+  <g stroke="#16213a" stroke-width="0.4">
+    <line x1="92" y1="170" x2="300" y2="170"/><line x1="92" y1="190" x2="300" y2="190"/><line x1="92" y1="210" x2="300" y2="210"/><line x1="92" y1="230" x2="300" y2="230"/>
+  </g>
+  <!-- TP / SL levels -->
+  <line x1="92" y1="172" x2="300" y2="172" stroke="#22d3a6" stroke-width="0.5" stroke-dasharray="2 1.5"/>
+  <line x1="92" y1="182" x2="300" y2="182" stroke="#22d3a6" stroke-width="0.5" stroke-dasharray="2 1.5"/>
+  <line x1="92" y1="216" x2="300" y2="216" stroke="#f45b69" stroke-width="0.5" stroke-dasharray="2 1.5"/>
+  <g font-family="JetBrains Mono,Menlo,monospace" font-size="3.6">
+    <text x="302" y="173.3" fill="#22d3a6">TP2</text>
+    <text x="302" y="183.3" fill="#22d3a6">TP1</text>
+    <text x="302" y="217.3" fill="#f45b69">SL</text>
+  </g>
+  <!-- candles -->
+  <g stroke-width="0.6">
+    <line x1="98" y1="214" x2="98" y2="232" stroke="#f45b69"/><rect x="96" y="218" width="4" height="10" fill="#f45b69"/>
+    <line x1="106" y1="216" x2="106" y2="234" stroke="#f45b69"/><rect x="104" y="222" width="4" height="8" fill="#f45b69"/>
+    <line x1="114" y1="218" x2="114" y2="236" stroke="#22d3a6"/><rect x="112" y="224" width="4" height="8" fill="#22d3a6"/>
+    <line x1="122" y1="214" x2="122" y2="230" stroke="#22d3a6"/><rect x="120" y="218" width="4" height="8" fill="#22d3a6"/>
+    <line x1="130" y1="212" x2="130" y2="228" stroke="#f45b69"/><rect x="128" y="216" width="4" height="7" fill="#f45b69"/>
+    <line x1="138" y1="210" x2="138" y2="226" stroke="#22d3a6"/><rect x="136" y="214" width="4" height="9" fill="#22d3a6"/>
+    <line x1="146" y1="206" x2="146" y2="222" stroke="#22d3a6"/><rect x="144" y="209" width="4" height="9" fill="#22d3a6"/>
+    <line x1="154" y1="204" x2="154" y2="220" stroke="#f45b69"/><rect x="152" y="208" width="4" height="7" fill="#f45b69"/>
+    <line x1="162" y1="202" x2="162" y2="218" stroke="#22d3a6"/><rect x="160" y="205" width="4" height="9" fill="#22d3a6"/>
+    <line x1="170" y1="200" x2="170" y2="214" stroke="#22d3a6"/><rect x="168" y="202" width="4" height="8" fill="#22d3a6"/>
+    <line x1="178" y1="202" x2="178" y2="216" stroke="#f45b69"/><rect x="176" y="204" width="4" height="7" fill="#f45b69"/>
+    <line x1="186" y1="198" x2="186" y2="212" stroke="#22d3a6"/><rect x="184" y="200" width="4" height="8" fill="#22d3a6"/>
+    <line x1="194" y1="196" x2="194" y2="210" stroke="#22d3a6"/><rect x="192" y="198" width="4" height="8" fill="#22d3a6"/>
+    <line x1="202" y1="198" x2="202" y2="212" stroke="#f45b69"/><rect x="200" y="200" width="4" height="6" fill="#f45b69"/>
+    <line x1="210" y1="194" x2="210" y2="208" stroke="#22d3a6"/><rect x="208" y="196" width="4" height="8" fill="#22d3a6"/>
+    <line x1="218" y1="192" x2="218" y2="206" stroke="#22d3a6"/><rect x="216" y="194" width="4" height="8" fill="#22d3a6"/>
+    <line x1="226" y1="194" x2="226" y2="208" stroke="#f45b69"/><rect x="224" y="196" width="4" height="6" fill="#f45b69"/>
+    <line x1="234" y1="192" x2="234" y2="206" stroke="#22d3a6"/><rect x="232" y="194" width="4" height="8" fill="#22d3a6"/>
+    <line x1="242" y1="190" x2="242" y2="204" stroke="#22d3a6"/><rect x="240" y="192" width="4" height="8" fill="#22d3a6"/>
+    <line x1="250" y1="186" x2="250" y2="202" stroke="#22d3a6"/><rect x="248" y="189" width="4" height="9" fill="#22d3a6"/>
+    <line x1="258" y1="188" x2="258" y2="202" stroke="#f45b69"/><rect x="256" y="190" width="4" height="7" fill="#f45b69"/>
+    <line x1="266" y1="184" x2="266" y2="200" stroke="#22d3a6"/><rect x="264" y="187" width="4" height="9" fill="#22d3a6"/>
+    <line x1="274" y1="180" x2="274" y2="198" stroke="#22d3a6"/><rect x="272" y="184" width="4" height="10" fill="#22d3a6"/>
+    <line x1="282" y1="178" x2="282" y2="196" stroke="#22d3a6"/><rect x="280" y="181" width="4" height="11" fill="#22d3a6"/>
+  </g>
+  <!-- order flow mini panel -->
+  <g font-family="Inter,system-ui,Arial,sans-serif">
+    <text x="318" y="193" font-size="3.6" font-weight="600" fill="#7d8aa5" letter-spacing="0.2">ORDER FLOW</text>
+    <text x="318" y="203" font-family="JetBrains Mono,Menlo,monospace" font-size="6.4" font-weight="600" fill="#22d3a6">HAKA 67%</text>
+    <rect x="318" y="206" width="48" height="3" rx="1.5" fill="#f45b69"/>
+    <rect x="318" y="206" width="32.2" height="3" rx="1.5" fill="#22d3a6"/>
+    <text x="318" y="216" font-size="3.4" fill="#dbe4f3">Buyer agresif</text>
+    <text x="318" y="221" font-size="3.4" fill="#7d8aa5">(HAKA dominan)</text>
+    <text x="318" y="233" font-family="JetBrains Mono,Menlo,monospace" font-size="3.6" fill="#7d8aa5">R:R 1,75</text>
+  </g>
+
+  <!-- caption strip -->
+  <text x="200" y="271" font-family="Inter,system-ui,Arial,sans-serif" font-size="10.5" font-weight="700" fill="#dbe4f3" text-anchor="middle">18 menu &#183; skor scalping 0&#8211;100 &#183; plan berbasis tick</text>
+  <text x="200" y="285" font-family="Inter,system-ui,Arial,sans-serif" font-size="6.2" fill="#7d8aa5" text-anchor="middle">Node.js tanpa dependensi &#183; satu Vercel Function &#183; lightweight-charts &#183; IDX Edge PRO</text>
+</svg>

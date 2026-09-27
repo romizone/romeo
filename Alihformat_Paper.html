@@ -1,0 +1,198 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Alihformat: Eighty File Converters That Never Upload the File, and One Route for the Four That Must</title>
+    <meta name="description" content="Alihformat is an eighty-tool file converter in Indonesian whose seventy-six local tools never upload the file. This paper describes the one data catalogue behind its static pages and client dispatcher, the canvas, EXIF, archive and ffmpeg problems solved in the browser, a 7Z writer that compresses and then decompresses, and the single AI route that handles the four tools that must send a file to a model.">
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body {
+            font-family: 'Times New Roman', Times, Georgia, serif;
+            line-height: 1.6;
+            color: #111;
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 60px 40px;
+            background: #fff;
+        }
+        .paper-title { text-align: center; margin-bottom: 30px; }
+        .paper-title h1 { font-size: 1.65em; font-weight: 700; line-height: 1.3; margin-bottom: 18px; }
+        .paper-title .authors { font-size: 1.05em; margin-bottom: 4px; }
+        .paper-title .affiliation { font-size: 0.95em; color: #555; font-style: italic; }
+        .paper-title .email { font-size: 0.9em; color: #1a73e8; margin-top: 4px; }
+        .paper-title .date { font-size: 0.9em; color: #777; margin-top: 10px; }
+        .abstract { background: #f9f9f9; border-left: 4px solid #333; padding: 18px 22px; margin: 30px 0; }
+        .abstract h2 { font-size: 1em; text-transform: uppercase; letter-spacing: 1px; margin-bottom: 8px; border: none; padding: 0; }
+        .abstract p { font-size: 0.95em; color: #333; text-align: justify; }
+        .keywords { font-size: 0.9em; color: #555; margin-bottom: 30px; }
+        .keywords strong { color: #333; }
+        h2 { font-size: 1.2em; font-weight: 700; margin-top: 30px; margin-bottom: 12px; border-bottom: 1px solid #ddd; padding-bottom: 4px; }
+        h3 { font-size: 1.05em; font-weight: 700; margin-top: 18px; margin-bottom: 8px; }
+        p { text-align: justify; margin-bottom: 12px; font-size: 0.97em; }
+        table { width: 100%; border-collapse: collapse; margin: 16px 0; font-size: 0.9em; }
+        table th, table td { border: 1px solid #ccc; padding: 8px 12px; text-align: left; vertical-align: top; }
+        table th { background: #f0f0f0; font-weight: 700; }
+        table caption { font-size: 0.88em; font-style: italic; color: #555; margin-bottom: 6px; text-align: left; }
+        code { font-family: 'Courier New', Courier, monospace; background: #f4f4f4; padding: 2px 5px; border-radius: 3px; font-size: 0.88em; }
+        pre { font-family: 'Courier New', Courier, monospace; background: #f4f4f4; border: 1px solid #e0e0e0; border-radius: 4px; padding: 12px 16px; font-size: 0.85em; line-height: 1.5; overflow-x: auto; margin: 14px 0; }
+        blockquote { margin: 16px 0 16px 24px; padding-left: 16px; border-left: 3px solid #c9b083; font-style: italic; color: #444; font-size: 0.95em; }
+        ul, ol { margin: 10px 0 12px 24px; font-size: 0.97em; }
+        li { margin-bottom: 4px; }
+        .pipeline { background: #f7f9fc; border: 1px solid #d4e2f7; border-radius: 6px; padding: 16px 20px; text-align: center; font-size: 0.95em; color: #1a5276; margin: 16px 0; letter-spacing: 0.3px; }
+        .references { font-size: 0.88em; }
+        .references ol { margin-left: 20px; }
+        .references li { margin-bottom: 8px; color: #444; }
+        .paper-footer { text-align: center; font-size: 0.8em; color: #aaa; margin-top: 50px; padding-top: 20px; border-top: 1px solid #eee; }
+        .paper-footer a { color: #1a73e8; }
+        @media print { body { padding: 20px; } }
+        @media (max-width: 600px) { body { padding: 20px 15px; } .paper-title h1 { font-size: 1.3em; } table { font-size: 0.82em; } }
+    </style>
+</head>
+<body>
+
+    <div class="paper-title">
+        <h1>Alihformat: Eighty File Converters That Never Upload the File, and One Route for the Four That Must</h1>
+        <div class="authors">Romi Nur Ismanto</div>
+        <div class="affiliation">Independent AI Research Lab, Jakarta, Indonesia</div>
+        <div class="email">hello@rominur.com</div>
+        <div class="date">September 2026</div>
+    </div>
+
+    <div class="abstract">
+        <h2>Abstract</h2>
+        <p>Alihformat, deployed at <code>alihformat.rominur.com</code>, is an Indonesian-language file converter of eighty tools on seven shelves: images, PDF, archives, spreadsheets and data, documents, audio and video, and AI. Seventy-six of them run entirely in the user&rsquo;s browser, so the hosting platform serves only static pages; the remaining four &mdash; PDF to Markdown, OCR, table photo to CSV and invoice to JSON &mdash; send the file through a single server route to a language model. This paper describes the catalogue that generates both the search-engine pages and the client dispatcher from one data file; the browser limits each engine has to work around, from iOS Safari&rsquo;s silent canvas ceiling to EXIF rotation that pdf-lib ignores; a 7Z writer that only works by compressing the stream and then decompressing it; a serialised queue in front of a shared ffmpeg.wasm instance; the constraints on the AI route; and the limits that remain.</p>
+    </div>
+
+    <div class="keywords">
+        <strong>Keywords:</strong> client-side file conversion, WebAssembly, Canvas 2D, ffmpeg.wasm, libarchive.js, fflate, pdf-lib, pdf.js, SheetJS, HEIC, ICO, BMP, EXIF orientation, static site generation, Next.js, OpenRouter, Vercel, Bahasa Indonesia
+    </div>
+
+    <h2>1. Introduction</h2>
+    <p>
+        Search for &ldquo;JPG ke PDF&rdquo; or &ldquo;RAR ke ZIP&rdquo; and the results are the same kind of site: upload the file, wait, download the result. For a holiday photo that is merely slow; for a scanned identity card, a payslip or a signed contract it means handing a private document to a server the user knows nothing about. Almost none of these conversions need a server. A modern browser can decode and re-encode images, build and render PDFs, unpack RAR and 7Z through WebAssembly, read and write Excel workbooks, and run ffmpeg.
+    </p>
+    <p>
+        Alihformat is built on that observation. Its home page leads with a sentence that is also its design constraint &mdash; <em>Ubah format file tanpa mengunggahnya</em>, change a file&rsquo;s format without uploading it &mdash; and every tool page carries one of two badges: a green <em>Diproses di perangkatmu, tanpa upload</em> or an amber <em>Diproses AI lewat OpenRouter, maksimal 3&nbsp;MB</em>. Beneath each page a short section answers the question the user should be asking, <em>Ke mana file saya dikirim?</em>, with &ldquo;nowhere&rdquo; for seventy-six tools and a plain disclosure of the third parties for the other four.
+    </p>
+
+    <h2>2. One Catalogue, Two Readers</h2>
+    <p>
+        Every converter is a record in <code>lib/converters.ts</code>: a slug, source and target labels, a title and description in Indonesian, a category, an <code>accept</code> filter, optional flags for multiple files, a minimum file count and heavy engines, and an <code>engine</code> value from a discriminated union of thirteen kinds. The file deliberately contains data only, because it has two readers. On the server, Next.js calls <code>generateStaticParams</code> over the list and pre-renders one static page per converter, with its own title, description, canonical URL and Open Graph tags, and the sitemap is generated from the same list. In the browser, a dispatcher switches on the engine kind and dynamically imports only the module that kind needs, so opening &ldquo;CSV ke JSON&rdquo; never downloads the PDF or ffmpeg code.
+    </p>
+    <p>
+        Most tools are generated rather than written. Twenty image pairs, eight archive pairs, ten spreadsheet pairs, six JSON/YAML/XML pairs, five document pairs and thirteen media presets are arrays of tuples expanded in loops; the README&rsquo;s instruction for adding WEBP to BMP is a single tuple, after which the page, the sitemap entry and the index card appear on the next build.
+    </p>
+
+    <table>
+        <caption>Table 1. The seven shelves. Counts are taken from the catalogue; only the AI shelf leaves the device.</caption>
+        <tr><th>Shelf</th><th>Tools</th><th>Engine</th><th>Where it runs</th></tr>
+        <tr><td>Gambar</td><td>20</td><td>Canvas; heic2any; hand-written BMP and ICO encoders</td><td>Browser</td></tr>
+        <tr><td>PDF</td><td>11</td><td>pdf-lib (create, merge, split, text to PDF); pdf.js (render, extract text)</td><td>Browser</td></tr>
+        <tr><td>Arsip</td><td>11</td><td>fflate (ZIP); libarchive.js in WebAssembly (RAR, 7Z, TAR, GZ)</td><td>Browser</td></tr>
+        <tr><td>Spreadsheet &amp; data</td><td>16</td><td>SheetJS 0.20.3; js-yaml; fast-xml-parser</td><td>Browser</td></tr>
+        <tr><td>Dokumen</td><td>5</td><td>mammoth (DOCX); marked; turndown</td><td>Browser</td></tr>
+        <tr><td>Audio &amp; video</td><td>13</td><td>ffmpeg.wasm 0.12, single-threaded core</td><td>Browser</td></tr>
+        <tr><td>Dengan AI</td><td>4</td><td>One Next.js route &rarr; OpenRouter chat completions</td><td>Server &rarr; model provider</td></tr>
+    </table>
+
+    <p>
+        The WebAssembly workers cannot be bundled by webpack in the usual way, so a post-install script copies the pdf.js legacy build, the libarchive worker and the ffmpeg worker into <code>public/vendor/</code> under a directory named after the three library versions &mdash; for example <code>p4.10.38-l2.0.2-f0.12.15</code>. That path is served with a one-year <code>immutable</code> cache header, which is safe precisely because an upgrade changes the directory name and therefore every URL.
+    </p>
+
+    <h2>3. Images and the Canvas Ceiling</h2>
+    <p>
+        Image conversion is decode, draw, encode: load the file into an <code>&lt;img&gt;</code>, draw it onto a canvas, and ask the canvas for a blob of the target type. Each of the three steps has a trap. Decoding: only Safari reads HEIC, so HEIC files are first converted to PNG with heic2any; an SVG without absolute <code>width</code> and <code>height</code> is rasterised by browsers at 300&times;150, so the SVG is parsed, sized from its <code>viewBox</code> with the long side at least 1,024&nbsp;px, and re-serialised; and the image is awaited through <code>onload</code> rather than <code>img.decode()</code>, because Chrome defers <code>decode()</code> while the tab is hidden and a user who switches tabs would otherwise find the job frozen.
+    </p>
+    <p>
+        Drawing: canvases have a pixel budget, and iOS Safari enforces a lower one by returning an empty canvas instead of throwing. The engine caps the canvas at 16&nbsp;million pixels on iOS (detected, for iPadOS, by a Mac platform string with touch points) and 50&nbsp;million elsewhere, scales larger images down by the square root of the ratio, and attaches a note to the result stating the original and new dimensions so the reduction is never silent. Encoding: <code>toBlob</code> falls back to PNG when a browser cannot write the requested type, so the returned blob&rsquo;s type is checked and a mismatch becomes an error naming the browsers that can. JPEG output is drawn over white so transparency does not turn black.
+    </p>
+    <p>
+        Browsers cannot encode BMP or ICO at all, so both are written by hand. The BMP encoder emits a 54-byte header and 24-bit bottom-up rows padded to four bytes, compositing each pixel&rsquo;s alpha onto white. The ICO encoder renders the image at 16, 32, 48, 64, 128 and 256&nbsp;px, encodes each as PNG, and writes the ICONDIR and six sixteen-byte directory entries in front of them &mdash; with the width and height bytes of the 256&nbsp;px entry set to zero, which is how the format spells 256.
+    </p>
+
+    <h2>4. PDFs That Respect the Phone&rsquo;s Rotation</h2>
+    <p>
+        Images to PDF places each image on an A4 page with 24-point margins, turning the page to landscape when the image is wider than tall and never scaling an image up. pdf-lib can embed JPEG and PNG bytes directly, which is fast and lossless, but it ignores the EXIF Orientation tag &mdash; and a phone photo taken in portrait is usually stored sideways with a tag telling viewers to rotate it. The engine therefore reads the tag itself: it walks the JPEG markers until the start of scan, finds the APP1 <code>Exif</code> segment, honours the TIFF byte order, and reads tag <code>0x0112</code> from the first directory. Only a JPEG with orientation 1 is embedded as-is; anything else, and any file whose content does not match its extension, is drawn through a canvas, where the browser applies the rotation, and embedded from there.
+    </p>
+    <p>
+        PDF to image renders each page with pdf.js at twice its natural scale, reduced when a page is large enough (a poster or an A0 drawing) to exceed 16&nbsp;million pixels or 16,000&nbsp;px on a side. Rendering uses the <code>print</code> intent, which avoids <code>requestAnimationFrame</code> &mdash; so rendering continues in a background tab &mdash; and hides annotations flagged not to print. Text to PDF uses the standard Helvetica font, which covers only WinAnsi, so unsupported characters are replaced rather than crashing the encoder, and long words are broken at the page width character by character.
+    </p>
+
+    <h2>5. Archives, and a 7Z Writer That Works Backwards</h2>
+    <p>
+        A plain ZIP is opened with fflate, a small pure-JavaScript inflater, because it is faster than starting a WebAssembly worker; if that fails &mdash; an encrypted ZIP or an unusual method &mdash; the file falls through to libarchive.js, which handles RAR3, RAR5, 7Z, TAR and GZ. Encrypted archives are detected before extraction and answered with a clear message instead of a corrupted result. Repacking preserves folder structure, and when two entries collide the second gets a numbered suffix on the file name only, not on a folder whose name happens to contain a dot.
+    </p>
+    <p>
+        Writing 7Z exposed a defect in libarchive.js: with compression set to none, it returns an empty file. The workaround is to ask it for a 7Z archive with gzip compression &mdash; which it produces correctly, wrapped in a gzip stream &mdash; and then gunzip that stream with fflate, leaving a pure <code>.7z</code>. TAR.GZ uses the same call and keeps the wrapper. RAR remains input-only: the format is proprietary and there is no free encoder.
+    </p>
+    <div class="pipeline">
+        files &rarr; libarchive.js write(7Z, compression = GZIP) &rarr; .7z.gz &rarr; fflate gunzip &rarr; .7z
+    </div>
+
+    <h2>6. Spreadsheets and Structured Data</h2>
+    <p>
+        SheetJS is installed from its own CDN at version 0.20.3, because the last release published to npm (0.18.5) is years old and carries known prototype-pollution and ReDoS advisories. A workbook with several sheets becomes several CSV files, or one JSON object keyed by sheet name; in the other direction, a JSON object whose values are all arrays becomes one sheet per key, with names cleaned of the characters Excel forbids, cut to 31 characters and made unique case-insensitively. Every CSV starts with a UTF-8 byte-order mark, without which Excel on Windows reads Indonesian names with diacritics as mojibake. Excel dates carry no time zone, so they are written as the date or local timestamp that was typed rather than shifted to UTC.
+    </p>
+    <p>
+        For JSON, YAML and XML, the XML parser is configured with <code>parseTagValue: false</code>, so values such as a phone number <code>08123</code>, a code <code>007</code> or <code>0x1F</code> remain text rather than becoming numbers and losing their leading zeros. Since XML requires a single root element, a value with more than one top-level key or an array is wrapped in <code>&lt;root&gt;</code> before it is written.
+    </p>
+
+    <h2>7. One ffmpeg, One Queue</h2>
+    <p>
+        Audio and video conversion runs on ffmpeg.wasm. Its core, about 30&nbsp;MB, is downloaded from jsDelivr the first time any media tool runs, turned into blob URLs, and cached by the browser; the page states the size before the download starts. The core is single-threaded: the multi-threaded build needs cross-origin isolation headers, which would complicate embedding third-party content, and the trade is slower video. The presets are fixed: MP3 as LAME VBR quality 2; MP4 as H.264 <code>veryfast</code> at CRF 23 in <code>yuv420p</code> with dimensions rounded to even numbers and <code>+faststart</code>; GIF at 12&nbsp;fps and 480&nbsp;px wide through a generated palette.
+    </p>
+    <p>
+        One ffmpeg instance is shared by the whole session, and its progress and log events are global to that instance. If a user starts a job on one tool page and then opens another, two jobs would interleave their progress reports and could collide on temporary file names. Every media job is therefore chained onto a single promise queue, gets a random identifier in its temporary names, and removes its listeners and files in a <code>finally</code> block. The last thirty log lines are kept so that a failure can be explained &mdash; a video without an audio track is reported as such rather than as a generic error.
+    </p>
+
+    <h2>8. The Only Route That Sees a File</h2>
+    <p>
+        The four AI tools post a data URL to <code>/api/ai</code>, a Next.js function that holds the OpenRouter key in an environment variable. The route accepts only a known task name and only PDF, PNG, JPEG or WebP data URLs of at most 4.2&nbsp;million characters &mdash; about 3&nbsp;MB of file after base64 &mdash; because the platform limits a function&rsquo;s request body to 4.5&nbsp;MB. The client enforces the same limit first: a PDF over 3&nbsp;MB is refused with advice to split it with the PDF splitter, while a photo is redrawn as JPEG with its long side at no more than 2,400&nbsp;px and reduced by a fifth at a time until it fits, giving up at 800&nbsp;px so that text is never shrunk past legibility.
+    </p>
+    <p>
+        Each task has a fixed English prompt that asks for output only &mdash; Markdown, verbatim text, CSV with a stated quoting rule, or a JSON invoice schema that uses <code>null</code> for missing fields and says <em>do not guess</em>. Requests run at temperature zero on <code>google/gemini-2.5-flash</code> by default, with JSON mode for invoices and an optional OpenRouter file-parser engine for scanned PDFs. Replies wrapped in a code fence are unwrapped, invoice JSON is re-indented, and CSV gets the same byte-order mark as the local converters. Without a key, the route answers 503 with a message naming the missing variable, and every non-AI tool continues to work.
+    </p>
+
+    <h2>9. Limits</h2>
+    <p>
+        The AI route is unauthenticated. Its only brake is a rate limiter of twenty requests per hour per client address, stored in a map in the function&rsquo;s memory, so the bound holds per warm instance rather than globally and resets on a cold start; anyone who finds the endpoint can spend the site&rsquo;s key within that allowance. A shared store such as Redis, and ideally sign-in or per-account quotas, would be needed before the AI shelf is promoted. Files sent to the AI tools pass through OpenRouter to a model provider, which is disclosed on the page but is still a transfer the rest of the site avoids.
+    </p>
+    <p>
+        The local engines have their own boundaries. Everything is held in browser memory, so the practical ceiling is about 500&nbsp;MB for media and archives, and single-threaded ffmpeg makes long videos slow. Password-protected archives are not supported, RAR cannot be written, and 7Z output may mangle non-ASCII file names, whereas ZIP and TAR.GZ do not. Layout-faithful DOCX to PDF and clean PDF to DOCX are absent because both need an office engine on a server. The bundled ffmpeg core includes libx264, which is GPL-licensed. The README records fifty-one end-to-end scenarios passing in Chromium, including RAR3, RAR5, 7Z, TAR.GZ and the error paths; HEIC conversion and live AI calls had not been tested at the time of writing.
+    </p>
+
+    <h2>10. Conclusion</h2>
+    <p>
+        Alihformat is eighty tools because its catalogue makes a tool cheap: a tuple becomes a static page, an index card and a lazily loaded engine. The work that is not cheap sits where the browser&rsquo;s promises run out &mdash; a canvas that fails silently on a phone, a PDF library that does not rotate phone photos, an archive library that writes empty files unless asked to compress, a shared ffmpeg that must be taken in turns. Solving those in the browser is what lets the site keep the sentence on its front page, and confine the network to the four tools that genuinely need a model.
+    </p>
+
+    <h2>References</h2>
+    <div class="references">
+        <ol>
+            <li>WHATWG. &ldquo;HTML Living Standard &mdash; The canvas element; HTMLImageElement.decode().&rdquo; 2026.</li>
+            <li>Apple. &ldquo;Safari Web Content Guide: Know iOS Resource Limits.&rdquo; Developer documentation.</li>
+            <li>Hopding, A. &ldquo;pdf-lib: Create and Modify PDF Documents in Any JavaScript Environment.&rdquo; Version 1.17, documentation.</li>
+            <li>Mozilla. &ldquo;PDF.js.&rdquo; Version 4.10, documentation, 2026.</li>
+            <li>CIPA. &ldquo;Exchangeable Image File Format for Digital Still Cameras: Exif Version 2.32.&rdquo; CIPA DC-008, 2019.</li>
+            <li>Microsoft. &ldquo;BITMAPINFOHEADER Structure&rdquo; and &ldquo;Icons (ICO file format).&rdquo; Win32 documentation.</li>
+            <li>libarchive project. &ldquo;libarchive: Multi-format Archive and Compression Library.&rdquo; 2026; and &ldquo;libarchive.js: WebAssembly port.&rdquo; Version 2.0.</li>
+            <li>101arrowz. &ldquo;fflate: High-Performance (De)compression in an 8kB Package.&rdquo; Version 0.8.</li>
+            <li>SheetJS LLC. &ldquo;SheetJS Community Edition 0.20.3.&rdquo; Documentation and security advisories, 2024&ndash;2026.</li>
+            <li>ffmpeg.wasm contributors. &ldquo;ffmpeg.wasm: FFmpeg for Browser, Powered by WebAssembly.&rdquo; Version 0.12, documentation.</li>
+            <li>Vercel. &ldquo;Next.js: generateStaticParams&rdquo; and &ldquo;Vercel Functions: Limits.&rdquo; Documentation, 2026.</li>
+            <li>OpenRouter. &ldquo;Chat Completions with PDF and Image Inputs; File-Parser Plugin.&rdquo; Platform documentation, 2026.</li>
+            <li>Ismanto, R. N. &ldquo;Image V.1: Sixteen Image Tools in One HTML File, and a Server Only Where the Browser Cannot Go.&rdquo; 2026.</li>
+            <li>Ismanto, R. N. &ldquo;ZipRar: Engine Routing and Bidirectional Path Safety in a Zero-Upload Browser Archiver.&rdquo; 2026.</li>
+            <li>Ismanto, R. N. &ldquo;EditPDF: A Zero-Upload PDF Workspace in the Browser Tab.&rdquo; 2026.</li>
+        </ol>
+    </div>
+
+    <div class="paper-footer">
+        <p>&copy; 2026 Romi Nur Ismanto.</p>
+        <p>Live app: <a href="https://alihformat.rominur.com">alihformat.rominur.com</a> &middot; Source: <a href="https://github.com/romizone/alihformat">github.com/romizone/alihformat</a></p>
+        <p>Describes the deployment of 27 September 2026.</p>
+    </div>
+
+</body>
+</html>
