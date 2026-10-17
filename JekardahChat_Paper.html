@@ -1,0 +1,200 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Jekardah Chat: A Messenger Keyed by Gmail Address, Realtime Without a Socket, and a History That Ends Every Midnight</title>
+    <meta name="description" content="Jekardah Chat is a WhatsApp Web-style messenger whose identity is a Gmail address rather than a phone number. This paper describes the canonical email key, a long-poll realtime channel built on one version counter per user, private media behind membership checks, a daily purge at midnight Jakarta time claimed by the first request of the day, and one web deployment that serves the browser, the phone and the desktop apps.">
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body {
+            font-family: 'Times New Roman', Times, Georgia, serif;
+            line-height: 1.6;
+            color: #111;
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 60px 40px;
+            background: #fff;
+        }
+        .paper-title { text-align: center; margin-bottom: 30px; }
+        .paper-title h1 { font-size: 1.65em; font-weight: 700; line-height: 1.3; margin-bottom: 18px; }
+        .paper-title .authors { font-size: 1.05em; margin-bottom: 4px; }
+        .paper-title .affiliation { font-size: 0.95em; color: #555; font-style: italic; }
+        .paper-title .email { font-size: 0.9em; color: #1a73e8; margin-top: 4px; }
+        .paper-title .date { font-size: 0.9em; color: #777; margin-top: 10px; }
+        .abstract { background: #f9f9f9; border-left: 4px solid #333; padding: 18px 22px; margin: 30px 0; }
+        .abstract h2 { font-size: 1em; text-transform: uppercase; letter-spacing: 1px; margin-bottom: 8px; border: none; padding: 0; }
+        .abstract p { font-size: 0.95em; color: #333; text-align: justify; }
+        .keywords { font-size: 0.9em; color: #555; margin-bottom: 30px; }
+        .keywords strong { color: #333; }
+        h2 { font-size: 1.2em; font-weight: 700; margin-top: 30px; margin-bottom: 12px; border-bottom: 1px solid #ddd; padding-bottom: 4px; }
+        h3 { font-size: 1.05em; font-weight: 700; margin-top: 18px; margin-bottom: 8px; }
+        p { text-align: justify; margin-bottom: 12px; font-size: 0.97em; }
+        table { width: 100%; border-collapse: collapse; margin: 16px 0; font-size: 0.9em; }
+        table th, table td { border: 1px solid #ccc; padding: 8px 12px; text-align: left; vertical-align: top; }
+        table th { background: #f0f0f0; font-weight: 700; }
+        table caption { font-size: 0.88em; font-style: italic; color: #555; margin-bottom: 6px; text-align: left; }
+        code { font-family: 'Courier New', Courier, monospace; background: #f4f4f4; padding: 2px 5px; border-radius: 3px; font-size: 0.88em; }
+        pre { font-family: 'Courier New', Courier, monospace; background: #f4f4f4; border: 1px solid #e0e0e0; border-radius: 4px; padding: 12px 16px; font-size: 0.85em; line-height: 1.5; overflow-x: auto; margin: 14px 0; }
+        ul, ol { margin: 10px 0 12px 24px; font-size: 0.97em; }
+        li { margin-bottom: 4px; }
+        .pipeline { background: #f7f9fc; border: 1px solid #d4e2f7; border-radius: 6px; padding: 16px 20px; text-align: center; font-size: 0.95em; color: #1a5276; margin: 16px 0; letter-spacing: 0.3px; }
+        .references { font-size: 0.88em; }
+        .references ol { margin-left: 20px; }
+        .references li { margin-bottom: 8px; color: #444; }
+        .paper-footer { text-align: center; font-size: 0.8em; color: #aaa; margin-top: 50px; padding-top: 20px; border-top: 1px solid #eee; }
+        .paper-footer a { color: #1a73e8; }
+        @media print { body { padding: 20px; } }
+        @media (max-width: 600px) { body { padding: 20px 15px; } .paper-title h1 { font-size: 1.3em; } table { font-size: 0.82em; } pre { font-size: 0.78em; } }
+    </style>
+</head>
+<body>
+
+    <div class="paper-title">
+        <h1>Jekardah Chat: A Messenger Keyed by Gmail Address, Realtime Without a Socket, and a History That Ends Every Midnight</h1>
+        <div class="authors">Romi Nur Ismanto</div>
+        <div class="affiliation">Independent AI Research Lab, Jakarta, Indonesia</div>
+        <div class="email">hello@rominur.com</div>
+        <div class="date">October 2026</div>
+    </div>
+
+    <div class="abstract">
+        <h2>Abstract</h2>
+        <p>Jekardah Chat, deployed at <code>chat.jekardah.com</code>, is an Indonesian-language messenger laid out like WhatsApp Web whose user identity is a Gmail address instead of a phone number. Users sign in with Google, start a conversation by typing a friend&rsquo;s email, and can write to someone who has never signed in; the messages are waiting when that person does. The same web deployment is the browser app, an installable phone app on iPhone and Android, and the content of Electron apps for macOS and Windows. This paper describes the canonical email key that makes two spellings of one Gmail inbox the same person; a realtime channel built from one version counter per user and a held HTTP request, with no socket service required; delivery and read ticks for direct and group chats; media stored privately and served only to members of the conversation; a purge of every message and file at 00.00 Western Indonesia Time that is claimed by the first request of the new day; and the limits that remain, chief among them that messages are not end-to-end encrypted.</p>
+    </div>
+
+    <div class="keywords">
+        <strong>Keywords:</strong> instant messaging, email-based identity, Google Identity Services, long polling, realtime, read receipts, group chat, Web Push, service worker, progressive web app, Electron, Neon Postgres, Vercel Functions, Vercel Blob, data retention, Bahasa Indonesia
+    </div>
+
+    <h2>1. Introduction</h2>
+    <p>
+        Nearly every messenger used in Indonesia is tied to a phone number. That is convenient until it is not: a number is handed to every group a person joins, numbers are recycled by carriers, and someone who wants to message a colleague, a supplier or a classmate often knows their email address but not their mobile number. Almost everyone with an Android phone already has a Google account, and its Gmail address is an identifier people are used to sharing.
+    </p>
+    <p>
+        Jekardah Chat is built on that identifier. The login page lists five steps, and two of them are the design: <em>Tidak perlu nomor HP &mdash; identitas Anda adalah alamat email</em>, no phone number is needed because the identity is the email address, and <em>semua pesan &amp; file dihapus otomatis setiap hari pukul 00.00 WIB</em>, every message and file is deleted automatically each day at midnight Jakarta time. The interface deliberately copies the conventions people already know from WhatsApp Web &mdash; a chat list on the left, the conversation on the right, ticks under each message, a <em>mengetik&hellip;</em> indicator &mdash; so the only new idea a user has to learn is to type an email address where they would have typed a number.
+    </p>
+
+    <h2>2. Architecture</h2>
+    <p>
+        The application is a static front end and a single function. The front end is plain HTML, CSS and JavaScript in <code>public/</code> &mdash; one 2,784-line <code>app.js</code> holds the whole client &mdash; served from Vercel&rsquo;s edge. Every <code>/api/*</code> path is rewritten to one Vercel Function running an Express 5 application of about 950 lines, pinned to the Singapore region, which is the closest to Jakarta and to the database. State lives in Neon Postgres, whose schema is created or migrated by the build command itself, so a deploy cannot run against an older schema. Files live in Vercel Blob with private access. The daily purge has a backup trigger in Vercel Cron.
+    </p>
+
+    <table>
+        <caption>Table 1. Components. Everything except Google sign-in and push delivery runs inside one Vercel project.</caption>
+        <tr><th>Concern</th><th>Implementation</th></tr>
+        <tr><td>Client</td><td>HTML/CSS/JS without a framework; service worker; web app manifest</td></tr>
+        <tr><td>API</td><td>Express 5 in one Vercel Function (<code>api/index.js</code> &rarr; <code>src/chat-api.js</code>), region <code>sin1</code></td></tr>
+        <tr><td>Database</td><td>Neon Postgres over its serverless HTTP driver; schema in <code>src/db.js</code></td></tr>
+        <tr><td>Realtime</td><td>Long poll on <code>/api/wait</code> against a <code>user_events</code> version per user; Pusher channels optional</td></tr>
+        <tr><td>Notifications while closed</td><td>Web Push with VAPID keys; service worker shows the notification and the badge count</td></tr>
+        <tr><td>Media</td><td>Vercel Blob, private; images and documents streamed through the function, video through a signed URL</td></tr>
+        <tr><td>Sign-in</td><td>Google Identity Services ID token &rarr; 30-day JWT session cookie, renewed while in use</td></tr>
+        <tr><td>Retention</td><td><code>src/purge.js</code> at the first request after 00.00 WIB; Vercel Cron at 17.00 UTC as backup</td></tr>
+    </table>
+
+    <h2>3. An Email Address as the Primary Key</h2>
+    <p>
+        Using an email as identity raises a question a phone number does not: when are two strings the same person? Gmail delivers <code>Budi.Santoso+kerja@gmail.com</code>, <code>budisantoso@gmail.com</code> and <code>budisantoso@googlemail.com</code> to the same inbox, because it ignores dots in the local part and everything after a plus sign, and treats the two domains as one. If the server stored addresses as typed, a friend who added the dotted spelling would open a conversation with someone who can never sign in under that spelling, and the messages would wait forever.
+    </p>
+    <p>
+        Every address therefore passes through one function, <code>normalizeEmail</code>, before it is stored, compared or used to look anything up: it is trimmed and lower-cased, checked against a length of 254 characters and an address pattern, and, for the two Gmail domains only, has its plus-suffix removed, its dots deleted and its domain rewritten to <code>gmail.com</code>. Other domains are left as written, since a company mail server may well treat dots as significant. The canonical form is what conversations, group memberships and push subscriptions are keyed on, and it is also the identity read from the Google token at sign-in, so the person who later signs in is matched to the same row.
+    </p>
+    <p>
+        Because the key is an address rather than an account, a conversation can be created with someone who has never visited the site. Their side of it exists from the first message; when they sign in, it is simply there, unread. The client offers an <em>Undang</em> button that opens a ready-written invitation in the user&rsquo;s own mail client, so the invitation is sent by the user and not by the service.
+    </p>
+
+    <h2>4. Realtime Without a Socket</h2>
+    <p>
+        A serverless function cannot hold a WebSocket open, and the usual answer is a hosted socket service. Jekardah Chat supports one &mdash; Pusher, with one private channel per user whose name is an HMAC of the email so the address never appears on the wire &mdash; but does not depend on it. The default channel is a counter. Table <code>user_events</code> holds one integer <code>version</code> per user. Anything that should change a user&rsquo;s screen &mdash; a new message, a tick turning blue, a typing indicator, a renamed group, a purge &mdash; increments the counter of every affected user in a single <code>INSERT &hellip; ON CONFLICT DO UPDATE</code> over an array of emails.
+    </p>
+    <p>
+        The client calls <code>GET /api/wait?v=&lt;last version&gt;</code>. The function reads the user&rsquo;s version and, while it equals the one the client already has, sleeps 300&nbsp;ms and reads again, for up to 25 seconds; then it answers with the new version, and the client fetches only what changed. The poll also returns immediately if the client is running an older build than the server, which is how open tabs and installed apps learn that a deploy has happened and reload themselves at a safe moment.
+    </p>
+    <div class="pipeline">
+        send message &rarr; INSERT message + bump version(sender, recipients) &rarr; /api/wait sees version &ne; v &rarr; client fetches delta &rarr; screen updates
+    </div>
+    <p>
+        The 300&nbsp;ms read interval is what sets the latency; end-to-end tests recorded a message appearing on the other side in about 0.3 to 0.4 seconds. The same counter keeps several tabs of one user consistent, because a message sent from one tab bumps the sender&rsquo;s own version too. The cost is a short query against Postgres every 300&nbsp;ms per open client, which is acceptable at the scale of a personal service and is the main reason Pusher is kept as an option. Without Pusher there is also no true presence signal, so <em>online</em> is inferred from the last-seen timestamp, which the wait endpoint refreshes at most once every 15 seconds and which counts as online for 45 seconds.
+    </p>
+
+    <h2>5. Ticks, Groups and Notifications</h2>
+    <p>
+        Each message carries the three states users expect: one grey tick when the server has stored it, two grey ticks when it has reached a device of the recipient, and two blue ticks when it has been read. Delivery is recorded when the recipient&rsquo;s client next loads its conversations, or earlier, when its service worker receives a push notification and calls <code>/api/push/delivered</code>. Read is recorded when the conversation is open and the window is visible. In a group, a message turns blue only when every member has read it, and receipts are recalculated and broadcast when members join, leave or read.
+    </p>
+    <p>
+        Groups are created from a list of member emails, normalised like any other. Their creator is an admin; admins can add and remove members and promote others; anyone can rename the group or leave it, and each of these events is written into the conversation as a system message. Membership is checked on every request by middleware that resolves the conversation and refuses it unless the caller is one of its two participants or a member of the group, so a user who has left a group cannot read or post to it again by guessing its identifier.
+    </p>
+    <p>
+        When no tab is open, new messages arrive as Web Push notifications. On iPhone this requires iOS 16.4 or later and the site opened from its home-screen icon, where the user then taps <em>Aktifkan notifikasi</em>. The service worker also sets the unread count on the app icon and serves an offline page when there is no connection, reconnecting by itself.
+    </p>
+
+    <h2>6. Private Media</h2>
+    <p>
+        Photos and documents &mdash; PDF, Word, Excel, PowerPoint, text, CSV and ZIP, RAR or 7Z archives &mdash; are uploaded through the function, capped at 4&nbsp;MB to stay under the platform&rsquo;s request body limit, given a random 128-bit name and stored in Blob with <code>access: private</code>. HEIC photos from iPhones are converted to JPEG on the client first wherever the browser can decode them. Videos of up to 64&nbsp;MB are too large to pass through a function, so the client asks for a one-hour upload token for a video content type and uploads directly to Blob; when the message is sent, the server confirms the object exists and takes its size from Blob rather than from the client.
+    </p>
+    <p>
+        A message stores a path of the form <code>/api/media/&lt;name&gt;</code>, never a storage URL. Fetching that path performs one query: does a message with this file exist in a conversation the caller belongs to? If not, the answer is 404, whether the file exists or not. Images and documents are then streamed from Blob through the function, with PDFs shown inline and every other document sent as an attachment under a sandboxing content-security policy; videos are redirected to a signed Blob URL valid for one hour, so the browser can seek with range requests without the function in the path. Signed URLs are cached in memory and reused while they have more than 35 minutes left.
+    </p>
+
+    <h2>7. A History That Ends at Midnight</h2>
+    <p>
+        The service keeps no history. Every day at 00.00 WIB (UTC+7), all messages, typing states and uploaded files are deleted permanently; accounts, contacts, groups and memberships remain, so the next day starts with the same chat list and empty conversations. A cron job alone could not keep that promise precisely, because Vercel&rsquo;s Hobby plan runs a daily job somewhere inside the scheduled hour. The purge is therefore triggered by traffic.
+    </p>
+    <p>
+        Every request that reads or writes messages first calls <code>ensureDailyPurge()</code>. Each function instance remembers in memory the last WIB date it has seen purged, so on an ordinary request this is a comparison of two strings and no query. When the date changes, the first request on any instance attempts to claim the new day with a conditional update:
+    </p>
+    <pre>UPDATE system_state SET value = :today
+WHERE key = 'purge_day' AND value &lt; :today
+RETURNING value</pre>
+    <p>
+        Only one request in the whole deployment can move the value forward, so only one runs the purge, inside a transaction that deletes the messages and typing states, records the purge time, and bumps every user&rsquo;s version so that open apps clear the screen at once. Concurrent requests on the same instance wait on the same promise; requests on other instances see that the day has been claimed and carry on. Because sending a message also calls <code>ensureDailyPurge()</code> first, a message written at 00.00:01 cannot be swept away by a purge that starts after it. Files are listed and deleted from Blob in pages of a thousand, skipping anything uploaded in the last two minutes, which may belong to a message about to be sent; an unused file is removed the following night. The Vercel Cron job at 17.00 UTC calls the same function with a bearer secret and does nothing if the day has already been claimed.
+    </p>
+
+    <h2>8. One Deployment, Five Platforms</h2>
+    <p>
+        On a phone, the site is installed from the browser rather than from an app store: a manifest, a set of blue icons and a service worker make it open full screen from the home screen, and the download link in the interface turns into installation instructions for the detected platform. Google&rsquo;s sign-in popup does not return to an iPhone home-screen app, so there the client switches to Google&rsquo;s redirect mode: Google posts the ID token to <code>/api/auth/google/redirect</code>, and the server accepts it only if the <code>g_csrf_token</code> in the form matches the one in the cookie. On the desktop, a separate Electron project packages a window that loads <code>chat.jekardah.com</code>, adding a Dock badge on macOS, a tray icon and taskbar dot on Windows, and native notifications; it is distributed as <code>.dmg</code> files for Apple Silicon and Intel and a 64-bit Windows installer.
+    </p>
+    <p>
+        Since every client loads the same site, a web deploy updates all five platforms at once, and the build check in the long poll means even an app left open for days picks up the change. The visual system is shared too: a blue palette with a dark mode that follows the operating system, San Francisco on Apple devices and Inter elsewhere, message text at 15&nbsp;px, and layout that respects the iPhone notch and the Android gesture bar.
+    </p>
+
+    <h2>9. Security and Limits</h2>
+    <p>
+        Sessions are JWTs in an <code>httpOnly</code>, <code>Secure</code>, <code>SameSite=Lax</code> cookie valid for 30 days. Responses carry a strict content-security policy that allows scripts only from the site and Google&rsquo;s sign-in client, HSTS, <code>nosniff</code> and <code>frame-ancestors 'none'</code>. A development login that accepts any email exists for local testing and is disabled in production; the README records that, against production, unauthenticated API calls return 401, the development login returns 404, and the cron endpoint rejects a wrong secret.
+    </p>
+    <p>
+        The most important limit is stated on the project page: messages are <strong>not</strong> end-to-end encrypted. They are stored in Postgres like any web chat, readable by whoever operates the database, and the daily purge bounds how long that exposure lasts rather than removing it. Media are private and checked per request, but they too are held by the operator until midnight. The default realtime path trades database load for independence from a socket service, which suits a personal deployment more than a large one. At the time of writing the Mac builds were not yet notarised, so macOS asks the user to approve the app once; the phone apps had not been tested on physical iPhone and Android devices, nor the Windows installer on a physical PC. The project&rsquo;s own checks list 28 end-to-end tests and 17 smoke tests passing against the deployment.
+    </p>
+
+    <h2>10. Conclusion</h2>
+    <p>
+        Jekardah Chat replaces the phone number with the one identifier most of its users already share freely, and keeps the rest of the experience exactly where they expect it. Most of the engineering is in making that substitution hold: one normalisation function so that an inbox is one person however it is spelled; one counter per user so that a serverless function can deliver messages in under half a second without a socket; one membership query in front of every file; and one conditional update that lets the first request after midnight erase the day for everyone, exactly once.
+    </p>
+
+    <h2>References</h2>
+    <div class="references">
+        <ol>
+            <li>Google. &ldquo;Google Identity Services: Sign In With Google for Web&rdquo; and &ldquo;Verify the Google ID Token on Your Server Side.&rdquo; Developer documentation, 2026.</li>
+            <li>Google. &ldquo;Gmail Help: Dots don&rsquo;t matter in Gmail addresses&rdquo; and &ldquo;Create task-specific email addresses.&rdquo; 2026.</li>
+            <li>Loreto, S., Saint-Andre, P., Salsano, S., Wilkins, G. &ldquo;Known Issues and Best Practices for the Use of Long Polling and Streaming in Bidirectional HTTP.&rdquo; RFC 6202, IETF, 2011.</li>
+            <li>Thomson, M., Damaggio, E., Raymor, B. &ldquo;Generic Event Delivery Using HTTP Push.&rdquo; RFC 8030, IETF, 2016; and Thomson, M., Beverloo, P. &ldquo;Voluntary Application Server Identification (VAPID) for Web Push.&rdquo; RFC 8292, 2017.</li>
+            <li>W3C. &ldquo;Service Workers&rdquo; and &ldquo;Web Application Manifest.&rdquo; 2026; and &ldquo;Badging API.&rdquo; Draft, 2026.</li>
+            <li>Apple. &ldquo;Sending Web Push Notifications in Web Apps and Browsers.&rdquo; WebKit documentation, iOS 16.4, 2023.</li>
+            <li>Vercel. &ldquo;Vercel Functions: Limits&rdquo;, &ldquo;Cron Jobs: Usage and Pricing&rdquo; and &ldquo;Vercel Blob: Private Storage and Client Uploads.&rdquo; Documentation, 2026.</li>
+            <li>Neon. &ldquo;Neon Serverless Driver.&rdquo; Documentation, 2026.</li>
+            <li>Pusher. &ldquo;Channels: Private Channels and Authorizing Users.&rdquo; Documentation, 2026.</li>
+            <li>OpenJS Foundation. &ldquo;Electron&rdquo; and &ldquo;electron-builder.&rdquo; Documentation, 2026.</li>
+            <li>Ismanto, R. N. &ldquo;Jekardah COD: A Meet-Check-Pay Marketplace on a Go Serverless Function.&rdquo; 2026.</li>
+            <li>Ismanto, R. N. &ldquo;Somat: A Single-Surface Conversational Interface with Server-Resident Capability and Client-Resident State.&rdquo; 2026.</li>
+        </ol>
+    </div>
+
+    <div class="paper-footer">
+        <p>&copy; 2026 Romi Nur Ismanto.</p>
+        <p>Live app: <a href="https://chat.jekardah.com">chat.jekardah.com</a> &middot; Desktop app: <a href="https://github.com/romizone/jekardah-chat-desktop">github.com/romizone/jekardah-chat-desktop</a></p>
+        <p>Describes the deployment of 16 October 2026.</p>
+    </div>
+
+</body>
+</html>
